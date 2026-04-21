@@ -1,192 +1,25 @@
 import { useState } from 'react'
 
-const S = {
-  // Layout
-  nav: {
-    position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    padding: '16px 32px',
-    background: 'rgba(10,15,30,0.85)',
-    backdropFilter: 'blur(12px)',
-    borderBottom: '1px solid rgba(0,210,255,0.1)',
-  },
-  logo: {
-    display: 'flex', alignItems: 'center', gap: 10,
-  },
-  logoMark: {
-    width: 38, height: 38, borderRadius: 10,
-    background: 'linear-gradient(135deg, #00D2FF, #0086C8)',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontWeight: 900, fontSize: 16, color: '#fff', letterSpacing: '-0.5px',
-  },
-  logoText: { fontWeight: 800, fontSize: 18, color: '#fff' },
-  logoSub: { fontSize: 10, color: '#00D2FF', fontWeight: 600, letterSpacing: 1, marginTop: -2 },
-  navLinks: { display: 'flex', gap: 32, listStyle: 'none' },
-  navLink: { color: '#94A3B8', fontSize: 14, fontWeight: 500, cursor: 'pointer', transition: 'color .2s' },
-  navCta: {
-    background: 'linear-gradient(135deg, #00D2FF, #0086C8)',
-    color: '#fff', border: 'none', borderRadius: 10,
-    padding: '9px 20px', fontWeight: 700, fontSize: 13, cursor: 'pointer',
-  },
-
-  // Hero
-  hero: {
-    minHeight: '100vh',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    flexDirection: 'column', textAlign: 'center',
-    padding: '120px 24px 80px',
-    background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,210,255,0.12) 0%, transparent 70%)',
-    position: 'relative', overflow: 'hidden',
-  },
-  heroBadge: {
-    display: 'inline-flex', alignItems: 'center', gap: 8,
-    background: 'rgba(0,210,255,0.1)', border: '1px solid rgba(0,210,255,0.25)',
-    borderRadius: 100, padding: '6px 16px', marginBottom: 28,
-    fontSize: 12, fontWeight: 600, color: '#00D2FF', letterSpacing: 0.5,
-  },
-  heroTitle: {
-    fontSize: 'clamp(2.4rem, 6vw, 4.2rem)',
-    fontWeight: 900, lineHeight: 1.1, marginBottom: 20,
-    maxWidth: 700,
-  },
-  heroGrad: {
-    background: 'linear-gradient(135deg, #00D2FF, #00E676)',
-    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-  },
-  heroSub: {
-    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-    color: '#94A3B8', maxWidth: 520, marginBottom: 44,
-  },
-  heroBtns: { display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 56 },
-  btnPrimary: {
-    display: 'flex', alignItems: 'center', gap: 10,
-    background: 'linear-gradient(135deg, #00D2FF, #0086C8)',
-    color: '#fff', border: 'none', borderRadius: 14,
-    padding: '14px 26px', fontWeight: 700, fontSize: 15, cursor: 'pointer',
-    boxShadow: '0 8px 32px rgba(0,210,255,0.3)',
-  },
-  btnSecondary: {
-    display: 'flex', alignItems: 'center', gap: 10,
-    background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
-    color: '#fff', borderRadius: 14,
-    padding: '14px 26px', fontWeight: 700, fontSize: 15, cursor: 'pointer',
-  },
-  heroStats: {
-    display: 'flex', gap: 48, flexWrap: 'wrap', justifyContent: 'center',
-  },
-  statItem: { textAlign: 'center' },
-  statNum: { fontSize: 28, fontWeight: 900, color: '#00D2FF' },
-  statLabel: { fontSize: 12, color: '#64748B', fontWeight: 500, marginTop: 2 },
-
-  // Sections
-  section: { padding: '96px 24px' },
-  sectionCenter: { padding: '96px 24px', textAlign: 'center' },
-  container: { maxWidth: 1100, margin: '0 auto' },
-  sectionTag: {
-    display: 'inline-block',
-    background: 'rgba(0,210,255,0.1)', border: '1px solid rgba(0,210,255,0.2)',
-    color: '#00D2FF', borderRadius: 100, padding: '4px 14px',
-    fontSize: 11, fontWeight: 700, letterSpacing: 1, marginBottom: 16, textTransform: 'uppercase',
-  },
-  sectionTitle: { fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', fontWeight: 800, marginBottom: 14 },
-  sectionDesc: { color: '#94A3B8', fontSize: 16, maxWidth: 560, margin: '0 auto 56px' },
-
-  // Features grid
-  grid3: {
-    display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20,
-  },
-  card: {
-    background: '#111827', border: '1px solid rgba(255,255,255,0.07)',
-    borderRadius: 20, padding: 28,
-    transition: 'border-color .2s, transform .2s',
-  },
-  cardIcon: {
-    width: 52, height: 52, borderRadius: 14,
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontSize: 24, marginBottom: 16,
-    background: 'rgba(0,210,255,0.1)',
-  },
-  cardTitle: { fontWeight: 700, fontSize: 17, marginBottom: 8 },
-  cardDesc: { color: '#94A3B8', fontSize: 14, lineHeight: 1.6 },
-
-  // Steps
-  stepsGrid: {
-    display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20, marginTop: 12,
-  },
-  stepCard: {
-    background: '#111827', border: '1px solid rgba(255,255,255,0.07)',
-    borderRadius: 20, padding: '28px 24px', position: 'relative',
-  },
-  stepNum: {
-    width: 40, height: 40, borderRadius: 12,
-    background: 'linear-gradient(135deg, #00D2FF, #0086C8)',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontWeight: 900, fontSize: 16, color: '#fff', marginBottom: 16,
-  },
-  stepTitle: { fontWeight: 700, fontSize: 16, marginBottom: 6 },
-  stepDesc: { color: '#94A3B8', fontSize: 13, lineHeight: 1.6 },
-
-  // Tabs
-  tabs: { display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 40 },
-  tab: {
-    padding: '10px 24px', borderRadius: 100, fontWeight: 600, fontSize: 14,
-    cursor: 'pointer', border: '1px solid rgba(255,255,255,0.1)',
-    background: 'transparent', color: '#64748B', transition: 'all .2s',
-  },
-  tabActive: {
-    background: 'linear-gradient(135deg, #00D2FF, #0086C8)',
-    border: '1px solid transparent', color: '#fff',
-  },
-
-  // Download
-  downloadSection: {
-    padding: '96px 24px',
-    background: 'radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0,210,255,0.08) 0%, transparent 70%)',
-  },
-  downloadBox: {
-    maxWidth: 700, margin: '0 auto', textAlign: 'center',
-    background: 'linear-gradient(135deg, rgba(0,210,255,0.1), rgba(0,134,200,0.1))',
-    border: '1px solid rgba(0,210,255,0.2)', borderRadius: 28, padding: '56px 32px',
-  },
-  storeBtn: {
-    display: 'inline-flex', alignItems: 'center', gap: 12,
-    background: '#0F1628', border: '1px solid rgba(255,255,255,0.12)',
-    borderRadius: 14, padding: '12px 24px', cursor: 'pointer',
-    transition: 'border-color .2s',
-  },
-  storeBtnIcon: { fontSize: 28 },
-  storeBtnText: { textAlign: 'left' },
-  storeBtnSub: { fontSize: 10, color: '#64748B', fontWeight: 500 },
-  storeBtnTitle: { fontSize: 15, fontWeight: 700, color: '#fff', marginTop: 1 },
-
-  // Footer
-  footer: {
-    borderTop: '1px solid rgba(255,255,255,0.07)',
-    padding: '40px 24px',
-    textAlign: 'center',
-    color: '#475569', fontSize: 13,
-  },
-  footerLinks: {
-    display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap',
-    marginBottom: 20,
-  },
-  footerLink: { color: '#64748B', fontSize: 13, fontWeight: 500 },
-
-  // Divider
-  divider: {
-    height: 1,
-    background: 'linear-gradient(90deg, transparent, rgba(0,210,255,0.2), transparent)',
-    margin: '0 auto', maxWidth: 800,
-  },
+const C = {
+  cyan:  '#00D2FF',
+  cyan2: '#0086C8',
+  teal:  '#00897B',
+  dark:  '#021520',
+  card:  'rgba(255,255,255,0.08)',
+  cardB: 'rgba(255,255,255,0.13)',
+  text:  '#FFFFFF',
+  muted: 'rgba(255,255,255,0.65)',
+  grad:  'linear-gradient(160deg, #00D2FF 0%, #0086C8 55%, #005A8C 100%)',
+  gradDark: 'linear-gradient(160deg, #004D66 0%, #002D45 55%, #001830 100%)',
 }
 
 const features = [
   { icon: '⚡', title: 'Livraison ultra-rapide', desc: 'Nos livreurs à moto sont proches de vous. Votre colis arrive en quelques minutes.' },
   { icon: '📍', title: 'Suivi en temps réel', desc: 'Suivez votre livreur sur la carte en direct, de la prise en charge jusqu\'à la livraison.' },
-  { icon: '💳', title: 'Paiement simple', desc: 'Payez facilement via Mobile Money ou en espèces. Simple et sécurisé.' },
+  { icon: '💳', title: 'Paiement simple', desc: 'Payez via Mobile Money ou en espèces. Simple et sécurisé.' },
   { icon: '🛡️', title: 'Livreurs vérifiés', desc: 'Chaque livreur est identifié et validé avant de rejoindre la plateforme DEM.' },
-  { icon: '🔔', title: 'Notifications instant', desc: 'Recevez des alertes à chaque étape de votre livraison directement sur votre téléphone.' },
-  { icon: '🌍', title: 'Couverture locale', desc: 'DEM couvre Dakar et ses environs, avec une expansion en cours dans d\'autres villes.' },
+  { icon: '🔔', title: 'Notifications instant', desc: 'Recevez des alertes à chaque étape de votre livraison.' },
+  { icon: '🌍', title: 'Couverture locale', desc: 'DEM couvre Dakar et ses environs, expansion en cours.' },
 ]
 
 const clientSteps = [
@@ -203,155 +36,353 @@ const driverSteps = [
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('client')
-
+  const [menuOpen, setMenuOpen] = useState(false)
   const steps = activeTab === 'client' ? clientSteps : driverSteps
 
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    setMenuOpen(false)
+  }
+
   return (
-    <>
-      {/* NAV */}
-      <nav style={S.nav}>
-        <div style={S.logo}>
-          <div style={S.logoMark}>D</div>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: C.dark, color: C.text, overflowX: 'hidden' }}>
+      <style>{`
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { overflow-x: hidden; }
+        a { color: inherit; text-decoration: none; }
+
+        .nav-link:hover { color: #fff !important; }
+        .card-hover:hover { border-color: rgba(0,210,255,0.4) !important; transform: translateY(-3px); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,210,255,0.45) !important; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.12) !important; }
+        .store-btn:hover { border-color: rgba(0,210,255,0.5) !important; }
+        .footer-link:hover { color: #fff !important; }
+
+        @media (max-width: 768px) {
+          .nav-links { display: none !important; }
+          .nav-cta-desktop { display: none !important; }
+          .hamburger { display: flex !important; }
+          .hero-title { font-size: 2rem !important; }
+          .hero-stats { gap: 24px !important; }
+          .section-pad { padding: 64px 20px !important; }
+          .grid3 { grid-template-columns: 1fr !important; }
+          .steps-grid { grid-template-columns: 1fr !important; }
+          .store-btns { flex-direction: column !important; align-items: center !important; }
+          .footer-links { gap: 16px !important; }
+          .download-box { padding: 36px 20px !important; }
+          .phone-mockup { display: none !important; }
+          .hero-inner { flex-direction: column !important; text-align: center !important; }
+          .hero-text { max-width: 100% !important; }
+          .hero-btns { justify-content: center !important; }
+        }
+
+        @media (min-width: 769px) {
+          .hamburger { display: none !important; }
+          .mobile-menu { display: none !important; }
+        }
+      `}</style>
+
+      {/* ── NAV ── */}
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '12px 32px',
+        background: 'rgba(0,21,32,0.88)',
+        backdropFilter: 'blur(14px)',
+        borderBottom: '1px solid rgba(0,210,255,0.15)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <img src="/logo.png" alt="DEM" style={{ width: 40, height: 40, borderRadius: 10, objectFit: 'cover' }} />
           <div>
-            <div style={S.logoText}>DEM</div>
-            <div style={S.logoSub}>DELIVERY EXPRESS MOBILITY</div>
+            <div style={{ fontWeight: 800, fontSize: 17, letterSpacing: '-0.3px' }}>DEM</div>
+            <div style={{ fontSize: 9, color: C.cyan, fontWeight: 600, letterSpacing: 1 }}>DELIVERY EXPRESS MOBILITY</div>
           </div>
         </div>
-        <ul style={S.navLinks}>
-          {['Fonctionnalités', 'Comment ça marche', 'Télécharger'].map(l => (
-            <li key={l}><a style={S.navLink} href={`#${l.toLowerCase().replace(/\s/g, '-').replace(/[àâ]/g,'a').replace('é','e').replace('ç','c')}`}>{l}</a></li>
+
+        <ul className="nav-links" style={{ display: 'flex', gap: 28, listStyle: 'none' }}>
+          {[['Fonctionnalités','features'],['Comment ça marche','how'],['Télécharger','download']].map(([l,id]) => (
+            <li key={id}>
+              <span className="nav-link" onClick={() => scrollTo(id)}
+                style={{ color: 'rgba(255,255,255,0.65)', fontSize: 14, fontWeight: 500, cursor: 'pointer', transition: 'color .2s' }}>
+                {l}
+              </span>
+            </li>
           ))}
         </ul>
-        <button style={S.navCta} onClick={() => window.open('mailto:contact@dem.sn')}>Contact</button>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <a href="https://admin.dem.sn" className="nav-cta-desktop"
+            style={{
+              background: 'rgba(0,210,255,0.12)', border: '1px solid rgba(0,210,255,0.3)',
+              color: C.cyan, borderRadius: 10, padding: '8px 16px',
+              fontWeight: 600, fontSize: 12, cursor: 'pointer',
+            }}>Admin ↗</a>
+          <button className="hamburger"
+            onClick={() => setMenuOpen(o => !o)}
+            style={{ background: 'none', border: 'none', color: '#fff', fontSize: 22, cursor: 'pointer', display: 'none' }}>
+            {menuOpen ? '✕' : '☰'}
+          </button>
+        </div>
       </nav>
 
-      {/* HERO */}
-      <section style={S.hero}>
-        <div style={S.heroBadge}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#00E676', display: 'inline-block' }} />
-          Disponible maintenant à Dakar
-        </div>
-        <h1 style={S.heroTitle}>
-          <span style={S.heroGrad}>Livraison express,</span>
-          <br />partout au Sénégal
-        </h1>
-        <p style={S.heroSub}>
-          DEM connecte clients et livreurs pour des livraisons rapides, fiables et traçables. Commandez en un instant, recevez en quelques minutes.
-        </p>
-        <div style={S.heroBtns}>
-          <button style={S.btnPrimary}>
-            <span>📱</span> Télécharger l'app
-          </button>
-          <button style={S.btnSecondary} onClick={() => document.getElementById('comment-ca-marche').scrollIntoView({ behavior: 'smooth' })}>
-            <span>▶</span> Comment ça marche
-          </button>
-        </div>
-        <div style={S.heroStats}>
-          {[['Rapide', 'Livraison en minutes'], ['Fiable', 'Livreurs vérifiés'], ['Local', 'Sénégal d\'abord']].map(([n, l]) => (
-            <div key={n} style={S.statItem}>
-              <div style={S.statNum}>{n}</div>
-              <div style={S.statLabel}>{l}</div>
-            </div>
+      {/* ── MOBILE MENU ── */}
+      {menuOpen && (
+        <div className="mobile-menu" style={{
+          position: 'fixed', top: 65, left: 0, right: 0, zIndex: 99,
+          background: 'rgba(0,21,32,0.97)', borderBottom: '1px solid rgba(0,210,255,0.15)',
+          padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: 16,
+        }}>
+          {[['Fonctionnalités','features'],['Comment ça marche','how'],['Télécharger','download']].map(([l,id]) => (
+            <span key={id} onClick={() => scrollTo(id)}
+              style={{ color: 'rgba(255,255,255,0.8)', fontSize: 15, fontWeight: 500, cursor: 'pointer', padding: '6px 0' }}>
+              {l}
+            </span>
           ))}
+          <a href="https://admin.dem.sn"
+            style={{ color: C.cyan, fontSize: 14, fontWeight: 600, padding: '6px 0' }}>
+            Administration ↗
+          </a>
+        </div>
+      )}
+
+      {/* ── HERO ── */}
+      <section style={{
+        minHeight: '100vh',
+        background: C.grad,
+        display: 'flex', alignItems: 'center',
+        padding: '100px 32px 80px',
+        position: 'relative', overflow: 'hidden',
+      }}>
+        {/* Déco arrière-plan */}
+        <div style={{ position: 'absolute', top: -100, right: -100, width: 500, height: 500, borderRadius: '50%', background: 'rgba(255,255,255,0.06)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: -150, left: -100, width: 400, height: 400, borderRadius: '50%', background: 'rgba(0,0,0,0.1)', pointerEvents: 'none' }} />
+
+        <div className="hero-inner" style={{ maxWidth: 1100, margin: '0 auto', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 48 }}>
+          {/* Texte */}
+          <div className="hero-text" style={{ maxWidth: 560 }}>
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: 'rgba(255,255,255,0.15)', borderRadius: 100, padding: '6px 16px',
+              marginBottom: 24, fontSize: 12, fontWeight: 600, letterSpacing: 0.5,
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#00FF88', display: 'inline-block' }} />
+              Disponible maintenant à Dakar
+            </div>
+
+            <h1 className="hero-title" style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: 18 }}>
+              Livraison express,<br />
+              <span style={{ color: 'rgba(255,255,255,0.85)' }}>partout au Sénégal</span>
+            </h1>
+
+            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.8)', marginBottom: 36, lineHeight: 1.7 }}>
+              DEM connecte clients et livreurs pour des livraisons rapides, fiables et traçables. Commandez en un instant, recevez en quelques minutes.
+            </p>
+
+            <div className="hero-btns" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 48 }}>
+              <button className="btn-primary" onClick={() => scrollTo('download')}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  background: '#fff', color: C.cyan2, border: 'none', borderRadius: 14,
+                  padding: '14px 28px', fontWeight: 800, fontSize: 15, cursor: 'pointer',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.2)', transition: 'all .2s',
+                }}>
+                <span>📱</span> Télécharger l'app
+              </button>
+              <button className="btn-secondary" onClick={() => scrollTo('how')}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)',
+                  color: '#fff', borderRadius: 14,
+                  padding: '14px 28px', fontWeight: 700, fontSize: 15, cursor: 'pointer',
+                  transition: 'all .2s',
+                }}>
+                <span>▶</span> Comment ça marche
+              </button>
+            </div>
+
+            <div className="hero-stats" style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
+              {[['Rapide', 'Livraison en minutes'], ['Fiable', 'Livreurs vérifiés'], ['Local', 'Sénégal d\'abord']].map(([n, l]) => (
+                <div key={n}>
+                  <div style={{ fontSize: 22, fontWeight: 900, color: '#fff' }}>{n}</div>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)', fontWeight: 500, marginTop: 2 }}>{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Phone mockup */}
+          <div className="phone-mockup" style={{ flexShrink: 0 }}>
+            <div style={{
+              width: 240, height: 480,
+              background: 'rgba(255,255,255,0.12)',
+              borderRadius: 36,
+              border: '2px solid rgba(255,255,255,0.25)',
+              backdropFilter: 'blur(10px)',
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              padding: 16, gap: 12,
+              boxShadow: '0 32px 80px rgba(0,0,0,0.3)',
+              position: 'relative',
+            }}>
+              <div style={{ width: 60, height: 5, background: 'rgba(255,255,255,0.4)', borderRadius: 3 }} />
+              <img src="/logo.png" alt="DEM" style={{ width: 72, height: 72, borderRadius: 18, marginTop: 8 }} />
+              <div style={{ fontWeight: 800, fontSize: 18, color: '#fff' }}>DEM</div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>Delivery Express Mobility</div>
+              <div style={{ width: '100%', background: 'rgba(255,255,255,0.1)', borderRadius: 14, padding: '12px 14px', marginTop: 8 }}>
+                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginBottom: 6 }}>ADRESSE DE LIVRAISON</div>
+                <div style={{ fontSize: 12, fontWeight: 600 }}>Plateau, Dakar</div>
+              </div>
+              <div style={{ width: '100%', background: 'rgba(255,255,255,0.1)', borderRadius: 14, padding: '12px 14px' }}>
+                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginBottom: 6 }}>LIVREUR EN ROUTE</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>🏍</div>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 600 }}>Mamadou D.</div>
+                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)' }}>⭐ 4.9 · 3 min</div>
+                  </div>
+                </div>
+              </div>
+              <div style={{
+                width: '100%', background: '#fff', borderRadius: 14, padding: '13px',
+                textAlign: 'center', fontWeight: 800, fontSize: 13, color: C.cyan2, marginTop: 'auto',
+              }}>
+                Suivre ma livraison →
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <div style={S.divider} />
-
-      {/* FEATURES */}
-      <section id="fonctionnalités" style={S.section}>
-        <div style={S.container}>
+      {/* ── FEATURES ── */}
+      <section id="features" className="section-pad" style={{ padding: '96px 32px', background: C.gradDark }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <span style={S.sectionTag}>Fonctionnalités</span>
-            <h2 style={S.sectionTitle}>Tout ce qu'il vous faut</h2>
-            <p style={{ ...S.sectionDesc, margin: '0 auto' }}>Une expérience de livraison pensée pour le Sénégal, simple et efficace.</p>
+            <span style={{
+              display: 'inline-block', background: 'rgba(0,210,255,0.15)', border: '1px solid rgba(0,210,255,0.3)',
+              color: C.cyan, borderRadius: 100, padding: '4px 14px',
+              fontSize: 11, fontWeight: 700, letterSpacing: 1, marginBottom: 14, textTransform: 'uppercase',
+            }}>Fonctionnalités</span>
+            <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, marginBottom: 12 }}>Tout ce qu'il vous faut</h2>
+            <p style={{ color: C.muted, fontSize: 15, maxWidth: 500, margin: '0 auto' }}>Une expérience pensée pour le Sénégal, simple et efficace.</p>
           </div>
-          <div style={S.grid3}>
+          <div className="grid3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: 18 }}>
             {features.map(f => (
-              <div key={f.title} style={S.card}>
-                <div style={S.cardIcon}>{f.icon}</div>
-                <div style={S.cardTitle}>{f.title}</div>
-                <div style={S.cardDesc}>{f.desc}</div>
+              <div key={f.title} className="card-hover" style={{
+                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: 20, padding: 26, transition: 'all .25s',
+              }}>
+                <div style={{
+                  width: 50, height: 50, borderRadius: 14, background: 'rgba(0,210,255,0.12)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 22, marginBottom: 14,
+                }}>{f.icon}</div>
+                <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 8 }}>{f.title}</div>
+                <div style={{ color: C.muted, fontSize: 13, lineHeight: 1.65 }}>{f.desc}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <div style={S.divider} />
+      {/* ── HOW IT WORKS ── */}
+      <section id="how" className="section-pad" style={{ padding: '96px 32px', background: C.grad, textAlign: 'center' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <span style={{
+            display: 'inline-block', background: 'rgba(255,255,255,0.15)', borderRadius: 100, padding: '4px 14px',
+            fontSize: 11, fontWeight: 700, letterSpacing: 1, marginBottom: 14, textTransform: 'uppercase',
+          }}>Comment ça marche</span>
+          <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, marginBottom: 12 }}>Simple en 3 étapes</h2>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 15, marginBottom: 40 }}>Que vous soyez client ou livreur, DEM est fait pour vous.</p>
 
-      {/* HOW IT WORKS */}
-      <section id="comment-ca-marche" style={S.sectionCenter}>
-        <div style={S.container}>
-          <span style={S.sectionTag}>Comment ça marche</span>
-          <h2 style={S.sectionTitle}>Simple en 3 étapes</h2>
-          <p style={S.sectionDesc}>Que vous soyez client ou livreur, DEM est fait pour vous.</p>
-
-          <div style={S.tabs}>
-            <button
-              style={{ ...S.tab, ...(activeTab === 'client' ? S.tabActive : {}) }}
-              onClick={() => setActiveTab('client')}
-            >Je suis client</button>
-            <button
-              style={{ ...S.tab, ...(activeTab === 'driver' ? S.tabActive : {}) }}
-              onClick={() => setActiveTab('driver')}
-            >Je suis livreur</button>
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 40 }}>
+            {[['client','Je suis client'],['driver','Je suis livreur']].map(([v,l]) => (
+              <button key={v} onClick={() => setActiveTab(v)} style={{
+                padding: '10px 24px', borderRadius: 100, fontWeight: 600, fontSize: 14, cursor: 'pointer',
+                border: activeTab === v ? '1px solid transparent' : '1px solid rgba(255,255,255,0.25)',
+                background: activeTab === v ? '#fff' : 'transparent',
+                color: activeTab === v ? C.cyan2 : 'rgba(255,255,255,0.75)',
+                transition: 'all .2s',
+              }}>{l}</button>
+            ))}
           </div>
 
-          <div style={S.stepsGrid}>
+          <div className="steps-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 18 }}>
             {steps.map((s, i) => (
-              <div key={s.title} style={S.stepCard}>
-                <div style={S.stepNum}>{i + 1}</div>
-                <div style={S.stepTitle}>{s.title}</div>
-                <div style={S.stepDesc}>{s.desc}</div>
+              <div key={s.title} style={{
+                background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)',
+                borderRadius: 20, padding: '28px 24px', textAlign: 'left',
+              }}>
+                <div style={{
+                  width: 40, height: 40, borderRadius: 12, background: '#fff',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontWeight: 900, fontSize: 16, color: C.cyan2, marginBottom: 16,
+                }}>{i + 1}</div>
+                <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 6 }}>{s.title}</div>
+                <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: 13, lineHeight: 1.6 }}>{s.desc}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <div style={S.divider} />
-
-      {/* DOWNLOAD */}
-      <section id="télécharger" style={S.downloadSection}>
-        <div style={S.downloadBox}>
-          <span style={S.sectionTag}>Application mobile</span>
-          <h2 style={{ ...S.sectionTitle, marginBottom: 12 }}>Téléchargez DEM</h2>
-          <p style={{ color: '#94A3B8', fontSize: 15, marginBottom: 36 }}>
-            Disponible bientôt sur iOS et Android. Soyez parmi les premiers à l'utiliser.
+      {/* ── DOWNLOAD ── */}
+      <section id="download" className="section-pad" style={{ padding: '96px 32px', background: C.gradDark }}>
+        <div className="download-box" style={{
+          maxWidth: 680, margin: '0 auto', textAlign: 'center',
+          background: 'rgba(0,210,255,0.08)', border: '1px solid rgba(0,210,255,0.2)',
+          borderRadius: 28, padding: '56px 32px',
+        }}>
+          <img src="/logo.png" alt="DEM" style={{ width: 72, height: 72, borderRadius: 18, marginBottom: 20 }} />
+          <span style={{
+            display: 'inline-block', background: 'rgba(0,210,255,0.15)', border: '1px solid rgba(0,210,255,0.3)',
+            color: C.cyan, borderRadius: 100, padding: '4px 14px',
+            fontSize: 11, fontWeight: 700, letterSpacing: 1, marginBottom: 16, textTransform: 'uppercase',
+          }}>Application mobile</span>
+          <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, marginBottom: 12 }}>Téléchargez DEM</h2>
+          <p style={{ color: C.muted, fontSize: 15, marginBottom: 36 }}>
+            Disponible bientôt sur iOS et Android.<br />Soyez parmi les premiers à l'utiliser.
           </p>
-          <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <div style={S.storeBtn}>
-              <span style={S.storeBtnIcon}>🤖</span>
-              <div style={S.storeBtnText}>
-                <div style={S.storeBtnSub}>BIENTÔT SUR</div>
-                <div style={S.storeBtnTitle}>Google Play</div>
+          <div className="store-btns" style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
+            {[['🤖','BIENTÔT SUR','Google Play'],['🍎','BIENTÔT SUR','App Store']].map(([icon, sub, title]) => (
+              <div key={title} className="store-btn" style={{
+                display: 'inline-flex', alignItems: 'center', gap: 12,
+                background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: 14, padding: '12px 24px', cursor: 'pointer', transition: 'border-color .2s',
+              }}>
+                <span style={{ fontSize: 28 }}>{icon}</span>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: 10, color: C.muted, fontWeight: 500 }}>{sub}</div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginTop: 1 }}>{title}</div>
+                </div>
               </div>
-            </div>
-            <div style={S.storeBtn}>
-              <span style={S.storeBtnIcon}>🍎</span>
-              <div style={S.storeBtnText}>
-                <div style={S.storeBtnSub}>BIENTÔT SUR</div>
-                <div style={S.storeBtnTitle}>App Store</div>
-              </div>
-            </div>
+            ))}
           </div>
-          <p style={{ marginTop: 28, fontSize: 13, color: '#475569' }}>
+          <p style={{ marginTop: 28, fontSize: 13, color: C.muted }}>
             Vous êtes livreur ?{' '}
-            <a href="mailto:contact@dem.sn" style={{ color: '#00D2FF', fontWeight: 600 }}>Rejoignez la flotte →</a>
+            <a href="mailto:contact@dem.sn" style={{ color: C.cyan, fontWeight: 600 }}>Rejoignez la flotte →</a>
           </p>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer style={S.footer}>
-        <div style={S.footerLinks}>
-          <a href="https://admin.dem.sn" style={S.footerLink}>Administration</a>
-          <a href="/privacy" style={S.footerLink}>Politique de confidentialité</a>
-          <a href="mailto:contact@dem.sn" style={S.footerLink}>Contact</a>
+      {/* ── FOOTER ── */}
+      <footer style={{
+        borderTop: '1px solid rgba(255,255,255,0.08)',
+        padding: '36px 24px', textAlign: 'center',
+        color: 'rgba(255,255,255,0.35)', fontSize: 13,
+        background: '#010E18',
+      }}>
+        <div className="footer-links" style={{ display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 16 }}>
+          {[
+            ['Politique de confidentialité', '/privacy'],
+            ['Contact', 'mailto:contact@dem.sn'],
+            ['Administration', 'https://admin.dem.sn'],
+          ].map(([l, h]) => (
+            <a key={l} href={h} className="footer-link"
+              style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, fontWeight: 500, transition: 'color .2s' }}>{l}</a>
+          ))}
         </div>
         <p>© {new Date().getFullYear()} DEM — Delivery Express Mobility. Tous droits réservés.</p>
       </footer>
-    </>
+    </div>
   )
 }
