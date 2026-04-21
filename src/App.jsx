@@ -64,7 +64,7 @@ export default function App() {
           .nav-cta-desktop { display: none !important; }
           .hamburger { display: flex !important; }
           .hero-title { font-size: 2rem !important; }
-          .hero-stats { gap: 24px !important; }
+          .hero-stats { gap: 0 !important; display: grid !important; grid-template-columns: repeat(3,1fr) !important; width: 100% !important; }
           .section-pad { padding: 64px 20px !important; }
           .grid3 { grid-template-columns: 1fr !important; }
           .steps-grid { grid-template-columns: 1fr !important; }
@@ -94,10 +94,7 @@ export default function App() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <img src="/logo.png" alt="DEM" style={{ width: 40, height: 40, borderRadius: 10, objectFit: 'cover' }} />
-          <div>
-            <div style={{ fontWeight: 800, fontSize: 17, letterSpacing: '-0.3px' }}>DEM</div>
-            <div style={{ fontSize: 9, color: C.cyan, fontWeight: 600, letterSpacing: 1 }}>DELIVERY EXPRESS MOBILITY</div>
-          </div>
+          <div style={{ fontSize: 10, color: C.cyan, fontWeight: 700, letterSpacing: 1.2 }}>DELIVERY EXPRESS MOBILITY</div>
         </div>
 
         <ul className="nav-links" style={{ display: 'flex', gap: 28, listStyle: 'none' }}>
@@ -187,7 +184,7 @@ export default function App() {
                   padding: '14px 28px', fontWeight: 800, fontSize: 15, cursor: 'pointer',
                   boxShadow: '0 8px 32px rgba(0,0,0,0.2)', transition: 'all .2s',
                 }}>
-                <span>📱</span> Télécharger l'app
+                <span>⬇️</span> Télécharger l'app
               </button>
               <button className="btn-secondary" onClick={() => scrollTo('how')}
                 style={{
@@ -203,7 +200,7 @@ export default function App() {
 
             <div className="hero-stats" style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
               {[['Rapide', 'Livraison en minutes'], ['Fiable', 'Livreurs vérifiés'], ['Local', 'Sénégal d\'abord']].map(([n, l]) => (
-                <div key={n}>
+                <div key={n} style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: 22, fontWeight: 900, color: '#fff' }}>{n}</div>
                   <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)', fontWeight: 500, marginTop: 2 }}>{l}</div>
                 </div>
