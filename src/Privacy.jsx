@@ -29,7 +29,7 @@ const sections = [
             <tbody>
               {[
                 ['Numéro de téléphone', 'Clients, Drivers', 'Authentification par code OTP'],
-                ['Nom complet', 'Drivers', 'Identification sur la plateforme'],
+                ['Nom complet', 'Clients, Drivers', 'Identification sur la plateforme'],
                 ['Photo de profil', 'Drivers', 'Affichage dans l\'application'],
                 ['Numéro de plaque', 'Drivers', 'Vérification du véhicule'],
                 ['Photo carte d\'identité', 'Drivers', 'Vérification d\'identité'],
@@ -94,7 +94,7 @@ const sections = [
         <p style={{ marginBottom: 10 }}>Nous ne vendons pas vos données personnelles. Elles peuvent être partagées avec :</p>
         <ul style={{ paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
           {[
-            ['Les autres utilisateurs :', 'nom, numéro de téléphone et position pendant une course active uniquement.'],
+            ['Les autres utilisateurs :', 'nom et numéro de téléphone pendant une course active uniquement (client ↔ driver).'],
             ['Nos prestataires techniques :', 'hébergement Render.com, base de données PostgreSQL, service SMS OTP (Africa\'s Talking).'],
             ['Les autorités compétentes :', 'uniquement sur obligation légale.'],
           ].map(([k, v]) => (
