@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import Privacy from './Privacy.jsx'
+import Terms from './Terms.jsx'
 import DeleteAccount from './DeleteAccount.jsx'
 
 createRoot(document.getElementById('root')).render(
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
         <Route path="/delete-account" element={<DeleteAccount />} />
       </Routes>
     </BrowserRouter>
