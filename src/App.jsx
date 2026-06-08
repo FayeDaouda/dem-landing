@@ -109,12 +109,6 @@ export default function App() {
         </ul>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <a href="https://admin.dem.sn" className="nav-cta-desktop"
-            style={{
-              background: 'rgba(0,210,255,0.12)', border: '1px solid rgba(0,210,255,0.3)',
-              color: C.cyan, borderRadius: 10, padding: '8px 16px',
-              fontWeight: 600, fontSize: 12, cursor: 'pointer',
-            }}>Admin ↗</a>
           <button className="hamburger"
             onClick={() => setMenuOpen(o => !o)}
             style={{ background: 'none', border: 'none', color: '#fff', fontSize: 22, cursor: 'pointer', display: 'none' }}>
@@ -136,10 +130,6 @@ export default function App() {
               {l}
             </span>
           ))}
-          <a href="https://admin.dem.sn"
-            style={{ color: C.cyan, fontSize: 14, fontWeight: 600, padding: '6px 0' }}>
-            Administration ↗
-          </a>
         </div>
       )}
 
@@ -399,7 +389,6 @@ export default function App() {
           {[
             ['Politique de confidentialité', '/privacy'],
             ['Contact', 'mailto:contact@dem.sn'],
-            ['Administration', 'https://admin.dem.sn'],
           ].map(([l, h]) => (
             <a key={l} href={h} className="footer-link"
               style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, fontWeight: 500, transition: 'color .2s' }}>{l}</a>
