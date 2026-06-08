@@ -34,10 +34,17 @@ const driverSteps = [
   { title: 'Gagnez de l\'argent', desc: 'Effectuez les livraisons et recevez vos revenus directement.' },
 ]
 
+const chefSteps = [
+  { title: 'Soumettez votre dossier', desc: 'Téléversez votre CNI et vos informations. Validation par notre équipe sous 24 à 48 h.' },
+  { title: 'Recrutez votre flotte', desc: 'Ajoutez vos livreurs depuis l\'app. Ils sont rattachés à votre compte et opérationnels immédiatement.' },
+  { title: 'Suivez et encaissez', desc: 'Tableau de bord en temps réel : courses, performances et commissions sur chaque livraison de votre flotte.' },
+]
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('client')
   const [menuOpen, setMenuOpen] = useState(false)
-  const steps = activeTab === 'client' ? clientSteps : driverSteps
+  const stepsMap = { client: clientSteps, driver: driverSteps, chef: chefSteps }
+  const steps = stepsMap[activeTab] ?? clientSteps
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -268,6 +275,42 @@ export default function App() {
               </div>
             ))}
           </div>
+
+          {/* ── Chef de flotte highlight ── */}
+          <div style={{ marginTop: 40, borderRadius: 24, overflow: 'hidden', border: '1px solid rgba(0,210,255,0.2)' }}>
+            <div style={{
+              background: 'rgba(0,210,255,0.06)',
+              padding: '36px 32px',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
+                <div style={{
+                  background: 'rgba(0,210,255,0.15)', border: '1px solid rgba(0,210,255,0.3)',
+                  borderRadius: 100, padding: '4px 14px',
+                  fontSize: 11, fontWeight: 700, letterSpacing: 1, color: C.cyan, textTransform: 'uppercase',
+                }}>Chef de flotte</div>
+                <h3 style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 800, color: '#fff', margin: 0 }}>
+                  Lancez votre propre activité de livraison
+                </h3>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+                {[
+                  { icon: '👥', title: 'Gérez votre équipe', desc: 'Recrutez vos livreurs, suivez leur activité et gérez leur disponibilité depuis un seul endroit.' },
+                  { icon: '💰', title: 'Revenus sur votre flotte', desc: 'Percevez une commission automatique sur chaque course effectuée par vos livreurs.' },
+                  { icon: '📊', title: 'Tableau de bord dédié', desc: 'Statistiques en temps réel : courses, revenus, classement de vos livreurs.' },
+                  { icon: '🔗', title: 'Intégration complète', desc: 'Vos livreurs sont rattachés à vous dès l\'inscription — aucune configuration supplémentaire.' },
+                ].map(item => (
+                  <div key={item.title} style={{
+                    background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: '20px 18px',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                  }}>
+                    <div style={{ fontSize: 24, marginBottom: 10 }}>{item.icon}</div>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: '#fff', marginBottom: 6 }}>{item.title}</div>
+                    <div style={{ color: C.muted, fontSize: 12, lineHeight: 1.6 }}>{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -281,8 +324,8 @@ export default function App() {
           <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, marginBottom: 12 }}>Simple en 3 étapes</h2>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 15, marginBottom: 40 }}>Que vous soyez client ou livreur, DEM est fait pour vous.</p>
 
-          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 40 }}>
-            {[['client','Je suis client'],['driver','Je suis livreur']].map(([v,l]) => (
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 40, flexWrap: 'wrap' }}>
+            {[['client','Je suis client'],['driver','Je suis livreur'],['chef','Je suis chef de flotte']].map(([v,l]) => (
               <button key={v} onClick={() => setActiveTab(v)} style={{
                 padding: '10px 24px', borderRadius: 100, fontWeight: 600, fontSize: 14, cursor: 'pointer',
                 border: activeTab === v ? '1px solid transparent' : '1px solid rgba(255,255,255,0.25)',
