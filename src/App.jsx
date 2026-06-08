@@ -338,14 +338,15 @@ export default function App() {
           }}>Application mobile</span>
           <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, marginBottom: 12 }}>Téléchargez DEM</h2>
           <p style={{ color: C.muted, fontSize: 15, marginBottom: 36 }}>
-            Disponible bientôt sur iOS et Android.<br />Soyez parmi les premiers à l'utiliser.
+            Disponible sur iOS. Android arrive bientôt.
           </p>
           <div className="store-btns" style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-            {/* Google Play */}
+            {/* Google Play — bientôt */}
             <div className="store-btn" style={{
               display: 'inline-flex', alignItems: 'center', gap: 12,
               background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: 14, padding: '12px 24px', cursor: 'pointer', transition: 'border-color .2s',
+              borderRadius: 14, padding: '12px 24px', cursor: 'not-allowed', transition: 'border-color .2s',
+              opacity: 0.55,
             }}>
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                 <path d="M3.18 1.07C2.76 1.3 2.5 1.75 2.5 2.3v19.4c0 .55.26 1 .68 1.23l.1.06 10.87-10.87v-.25L3.28 1.01l-.1.06z" fill="#4285F4"/>
@@ -358,20 +359,27 @@ export default function App() {
                 <div style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginTop: 1 }}>Google Play</div>
               </div>
             </div>
-            {/* App Store */}
-            <div className="store-btn" style={{
-              display: 'inline-flex', alignItems: 'center', gap: 12,
-              background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: 14, padding: '12px 24px', cursor: 'pointer', transition: 'border-color .2s',
-            }}>
+            {/* App Store — disponible */}
+            <a
+              href="https://apps.apple.com/us/app/dem-livraison/id6764724342"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="store-btn"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 12,
+                background: 'rgba(0,210,255,0.12)', border: '1px solid rgba(0,210,255,0.4)',
+                borderRadius: 14, padding: '12px 24px', cursor: 'pointer', transition: 'border-color .2s',
+                textDecoration: 'none',
+              }}
+            >
               <svg width="28" height="28" viewBox="0 0 814 1000" fill="white">
                 <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.5 135.4-317.3 268.5-317.3 99.8 0 182.6 66.2 245.6 66.2 60.2 0 155.6-70.1 270.3-70.1zm-174-208.7c43.4-50.7 74.3-120.7 74.3-190.7 0-9.7-.6-19.4-2-29.1-70.7 2.6-154 47.2-204.7 107.1-37.2 42.5-74.3 116.5-74.3 186.5 0 10.7 1.9 21.4 2.6 24.8 4.5.6 11.7 1.3 18.9 1.3 63.5 0 143.9-42.5 185.2-99.9z"/>
               </svg>
               <div style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: 10, color: C.muted, fontWeight: 500 }}>BIENTÔT SUR</div>
+                <div style={{ fontSize: 10, color: C.cyan, fontWeight: 700, letterSpacing: 0.5 }}>DISPONIBLE SUR</div>
                 <div style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginTop: 1 }}>App Store</div>
               </div>
-            </div>
+            </a>
           </div>
           <p style={{ marginTop: 28, fontSize: 13, color: C.muted }}>
             Vous êtes livreur ?{' '}
