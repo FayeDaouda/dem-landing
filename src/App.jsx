@@ -1,7 +1,5 @@
 import { useState } from 'react'
 
-const FLEET_URL = import.meta.env.VITE_FLEET_URL || 'https://admin.dem.sn/fleet/login'
-
 const C = {
   cyan:  '#00D2FF',
   cyan2: '#0086C8',
@@ -118,23 +116,11 @@ export default function App() {
           ))}
         </ul>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <a href={FLEET_URL} target="_blank" rel="noopener noreferrer" className="fleet-btn nav-cta-desktop"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              border: '1px solid rgba(0,210,255,0.4)', borderRadius: 100,
-              padding: '8px 18px', fontSize: 13, fontWeight: 700,
-              color: '#fff', background: 'rgba(0,210,255,0.1)',
-              transition: 'border-color .2s, background .2s',
-            }}>
-            Chef de flotte
-          </a>
-          <button className="hamburger"
-            onClick={() => setMenuOpen(o => !o)}
-            style={{ background: 'none', border: 'none', color: '#fff', fontSize: 22, cursor: 'pointer', display: 'none' }}>
-            {menuOpen ? '✕' : '☰'}
-          </button>
-        </div>
+        <button className="hamburger"
+          onClick={() => setMenuOpen(o => !o)}
+          style={{ background: 'none', border: 'none', color: '#fff', fontSize: 22, cursor: 'pointer', display: 'none' }}>
+          {menuOpen ? '✕' : '☰'}
+        </button>
       </nav>
 
       {/* ── MOBILE MENU ── */}
@@ -150,10 +136,6 @@ export default function App() {
               {l}
             </span>
           ))}
-          <a href={FLEET_URL} target="_blank" rel="noopener noreferrer"
-            style={{ color: C.cyan, fontSize: 15, fontWeight: 700, padding: '6px 0' }}>
-            Chef de flotte
-          </a>
         </div>
       )}
 
