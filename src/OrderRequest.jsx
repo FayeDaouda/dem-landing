@@ -10,6 +10,36 @@ const C = {
   success: '#00E08C',
 }
 
+// ── Icônes ligne, dessinées à la main (pas de dépendance externe, même
+// approche que App.jsx pour les logos App Store/Google Play) — évite le
+// registre "emoji partout" pour un rendu plus sobre et professionnel.
+const ICON_PATHS = {
+  bag: <><path d="M6 8h12l1 12H5L6 8z" /><path d="M9 8V6a3 3 0 016 0v2" /></>,
+  basket: <><path d="M4 8h16l-1.5 10.5a2 2 0 01-2 1.5H7.5a2 2 0 01-2-1.5L4 8z" /><path d="M8 8l1-4h6l1 4" /><path d="M9 12v4M12 12v4M15 12v4" /></>,
+  pin: <><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z" /><circle cx="12" cy="10" r="2.4" /></>,
+  crosshair: <><circle cx="12" cy="12" r="7" /><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" /></>,
+  card: <><rect x="3" y="6" width="18" height="13" rx="2.5" /><path d="M3 10.5h18" /><path d="M7 14.5h4" /></>,
+  user: <><circle cx="12" cy="8" r="3.6" /><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4" /></>,
+  box: <><path d="M3 8.5L12 4l9 4.5-9 4.5-9-4.5z" /><path d="M3 8.5V16l9 4.5 9-4.5V8.5" /><path d="M12 13v7.5" /></>,
+  check: <path d="M5 13l4 4L19 7" />,
+  phone: <><rect x="7" y="2" width="10" height="20" rx="2.2" /><path d="M11 18.4h2" /></>,
+  search: <><circle cx="11" cy="11" r="6.5" /><path d="M20 20l-4.5-4.5" /></>,
+  arrowLeft: <><path d="M19 12H5" /><path d="M11 6l-6 6 6 6" /></>,
+  linkOff: <><path d="M9 15l6-6" /><path d="M13 5l1.5-1.5a3.5 3.5 0 015 5L18 10" /><path d="M11 19l-1.5 1.5a3.5 3.5 0 01-5-5L6 14" /></>,
+}
+
+function Icon({ name, size = 18, color = 'currentColor', strokeWidth = 1.8, style }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
+      strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round"
+      style={{ flexShrink: 0, ...style }}
+    >
+      {ICON_PATHS[name]}
+    </svg>
+  )
+}
+
 const inputStyle = {
   width: '100%',
   boxSizing: 'border-box',
@@ -21,6 +51,7 @@ const inputStyle = {
   color: '#fff',
   fontFamily: "'Inter', sans-serif",
   outline: 'none',
+  transition: 'border-color .15s, box-shadow .15s',
 }
 
 const labelStyle = {
@@ -46,7 +77,21 @@ const sectionTitleStyle = {
   marginBottom: 14,
   display: 'flex',
   alignItems: 'center',
-  gap: 8,
+  gap: 10,
+}
+
+function SectionTitle({ icon, children }) {
+  return (
+    <div style={sectionTitleStyle}>
+      <span style={{
+        width: 30, height: 30, borderRadius: 9, flexShrink: 0,
+        background: 'rgba(0,210,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <Icon name={icon} size={16} color={C.cyan} />
+      </span>
+      {children}
+    </div>
+  )
 }
 
 const primaryBtnStyle = (enabled) => ({
@@ -60,6 +105,7 @@ const primaryBtnStyle = (enabled) => ({
   fontWeight: 800,
   fontFamily: "'Inter', sans-serif",
   cursor: enabled ? 'pointer' : 'not-allowed',
+  transition: 'transform .15s, box-shadow .15s',
 })
 
 function Field({ label, required, children }) {
@@ -83,27 +129,24 @@ function isValidSenegalMobile(digits) {
 
 const newSessionToken = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`
 
-// ── Vignette produit — image si le commerçant en a mis une, sinon une icône
-// générique (jamais bloquant : la photo est optionnelle côté DEM Pro).
+// ── Vignette produit — image si le commerçant en a mis une, sinon l'icône
+// catalogue (jamais bloquant : la photo est optionnelle côté DEM Pro).
 function ProductThumb({ url, size = 44 }) {
   const [failed, setFailed] = useState(false)
   const base = {
     width: size, height: size, borderRadius: 10, flexShrink: 0,
     display: 'flex', alignItems: 'center', justifyContent: 'center',
+    background: 'rgba(0,210,255,0.08)',
   }
   if (!url || failed) {
-    return (
-      <div style={{ ...base, background: 'rgba(0,210,255,0.10)', fontSize: size * 0.45 }}>
-        🛍️
-      </div>
-    )
+    return <div style={base}><Icon name="bag" size={size * 0.45} color="rgba(255,255,255,0.35)" /></div>
   }
   return (
     <img
       src={url}
       alt=""
       onError={() => setFailed(true)}
-      style={{ ...base, objectFit: 'cover' }}
+      style={{ ...base, background: undefined, objectFit: 'cover' }}
     />
   )
 }
@@ -128,7 +171,7 @@ function OpenInAppBanner({ merchantId }) {
         color: '#fff', textDecoration: 'none', padding: '12px 16px', fontSize: 13.5, fontWeight: 700,
       }}
     >
-      📱 Ouvrir dans l'app DEM
+      <Icon name="phone" size={15} color={C.cyan} /> Ouvrir dans l'app DEM
     </a>
   )
 }
@@ -144,12 +187,13 @@ function StepIndicator({ step, onBack }) {
           type="button"
           onClick={onBack}
           aria-label="Retour"
+          className="dem-icon-btn"
           style={{
-            width: 32, height: 32, borderRadius: 10, flexShrink: 0, cursor: 'pointer',
+            width: 34, height: 34, borderRadius: 10, flexShrink: 0, cursor: 'pointer',
             background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
-            color: '#fff', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}
-        >←</button>
+        ><Icon name="arrowLeft" size={16} /></button>
       )}
       <div style={{ flex: 1 }}>
         <div style={{ display: 'flex', gap: 6, marginBottom: 6 }}>
@@ -159,6 +203,7 @@ function StepIndicator({ step, onBack }) {
               style={{
                 flex: 1, height: 4, borderRadius: 2,
                 background: n <= step ? C.cyan : 'rgba(255,255,255,0.12)',
+                transition: 'background .2s',
               }}
             />
           ))}
@@ -183,16 +228,24 @@ function CatalogueStep({ products, cart, cartItems, cartTotal, onChangeQty, onNe
   }, [products])
 
   const [selected, setSelected] = useState('Tous')
-  const visibleProducts = selected === 'Tous'
-    ? products
-    : products.filter(p => (p.category?.trim() || 'Autres produits') === selected)
+  const [query, setQuery] = useState('')
+
+  const visibleProducts = useMemo(() => {
+    let list = selected === 'Tous'
+      ? products
+      : products.filter(p => (p.category?.trim() || 'Autres produits') === selected)
+    const q = query.trim().toLowerCase()
+    if (q) list = list.filter(p => p.name.toLowerCase().includes(q))
+    return list
+  }, [products, selected, query])
 
   const canNext = cartItems.length > 0
+  const showSearch = products.length >= 8
 
   return (
     <div>
       <div style={sectionCardStyle}>
-        <div style={sectionTitleStyle}>🛍️ Catalogue</div>
+        <SectionTitle icon="bag">Catalogue</SectionTitle>
 
         {products.length === 0 ? (
           <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', margin: 0 }}>
@@ -200,68 +253,92 @@ function CatalogueStep({ products, cart, cartItems, cartTotal, onChangeQty, onNe
           </p>
         ) : (
           <>
+            {showSearch && (
+              <div style={{ position: 'relative', marginBottom: 14 }}>
+                <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+                  <Icon name="search" size={16} color="rgba(255,255,255,0.4)" />
+                </span>
+                <input
+                  className="dem-input"
+                  style={{ ...inputStyle, padding: '12px 14px 12px 40px', fontSize: 14 }}
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                  placeholder="Rechercher un produit…"
+                />
+              </div>
+            )}
+
             {categories.length > 0 && (
-              <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 12, marginBottom: 4 }}>
-                {['Tous', ...categories].map(cat => {
-                  const active = selected === cat
+              <div className="dem-chip-scroll" style={{ position: 'relative', marginBottom: 4 }}>
+                <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 12 }}>
+                  {['Tous', ...categories].map(cat => {
+                    const active = selected === cat
+                    return (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setSelected(cat)}
+                        style={{
+                          flexShrink: 0, padding: '8px 14px', borderRadius: 20, cursor: 'pointer',
+                          border: active ? `1.5px solid ${C.cyan}` : '1px solid rgba(255,255,255,0.14)',
+                          background: active ? 'rgba(0,210,255,0.14)' : 'rgba(255,255,255,0.04)',
+                          color: active ? C.cyan : 'rgba(255,255,255,0.7)',
+                          fontSize: 13, fontWeight: 700, fontFamily: "'Inter', sans-serif", whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {cat}
+                      </button>
+                    )
+                  })}
+                </div>
+                <div className="dem-chip-fade" />
+              </div>
+            )}
+
+            {visibleProducts.length === 0 ? (
+              <p style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: '20px 0', margin: 0 }}>
+                Aucun produit ne correspond à votre recherche.
+              </p>
+            ) : (
+              <div style={{ maxHeight: '55vh', overflowY: 'auto', paddingRight: 4 }}>
+                {visibleProducts.map(p => {
+                  const qty = cart[p.id] || 0
+                  const atMax = p.quantity != null && qty >= p.quantity
                   return (
-                    <button
-                      key={cat}
-                      type="button"
-                      onClick={() => setSelected(cat)}
+                    <div
+                      key={p.id}
                       style={{
-                        flexShrink: 0, padding: '8px 14px', borderRadius: 20, cursor: 'pointer',
-                        border: active ? `1.5px solid ${C.cyan}` : '1px solid rgba(255,255,255,0.14)',
-                        background: active ? 'rgba(0,210,255,0.14)' : 'rgba(255,255,255,0.04)',
-                        color: active ? C.cyan : 'rgba(255,255,255,0.7)',
-                        fontSize: 13, fontWeight: 700, fontFamily: "'Inter', sans-serif", whiteSpace: 'nowrap',
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.06)',
                       }}
                     >
-                      {cat}
-                    </button>
+                      <ProductThumb url={p.image} />
+                      <div style={{ minWidth: 0, flex: 1, margin: '0 12px' }}>
+                        <p style={{ fontSize: 14.5, fontWeight: 600, color: '#fff', margin: 0 }}>{p.name}</p>
+                        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: '2px 0 0' }}>
+                          {p.defaultPrice != null ? formatFcfa(p.defaultPrice) : 'Prix sur demande'}
+                        </p>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                        <button
+                          type="button"
+                          onClick={() => onChangeQty(p.id, Math.max(0, qty - 1))}
+                          disabled={qty === 0}
+                          style={qtyBtnStyle(qty === 0)}
+                        >−</button>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: '#fff', minWidth: 16, textAlign: 'center' }}>{qty}</span>
+                        <button
+                          type="button"
+                          onClick={() => onChangeQty(p.id, qty + 1)}
+                          disabled={atMax}
+                          style={qtyBtnStyle(atMax)}
+                        >+</button>
+                      </div>
+                    </div>
                   )
                 })}
               </div>
             )}
-
-            <div style={{ maxHeight: '55vh', overflowY: 'auto', paddingRight: 4 }}>
-              {visibleProducts.map(p => {
-                const qty = cart[p.id] || 0
-                const atMax = p.quantity != null && qty >= p.quantity
-                return (
-                  <div
-                    key={p.id}
-                    style={{
-                      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                      padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.06)',
-                    }}
-                  >
-                    <ProductThumb url={p.image} />
-                    <div style={{ minWidth: 0, flex: 1, margin: '0 12px' }}>
-                      <p style={{ fontSize: 14.5, fontWeight: 600, color: '#fff', margin: 0 }}>{p.name}</p>
-                      <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: '2px 0 0' }}>
-                        {p.defaultPrice != null ? formatFcfa(p.defaultPrice) : 'Prix sur demande'}
-                      </p>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-                      <button
-                        type="button"
-                        onClick={() => onChangeQty(p.id, Math.max(0, qty - 1))}
-                        disabled={qty === 0}
-                        style={qtyBtnStyle(qty === 0)}
-                      >−</button>
-                      <span style={{ fontSize: 14, fontWeight: 700, color: '#fff', minWidth: 16, textAlign: 'center' }}>{qty}</span>
-                      <button
-                        type="button"
-                        onClick={() => onChangeQty(p.id, qty + 1)}
-                        disabled={atMax}
-                        style={qtyBtnStyle(atMax)}
-                      >+</button>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
           </>
         )}
       </div>
@@ -279,7 +356,7 @@ function CatalogueStep({ products, cart, cartItems, cartTotal, onChangeQty, onNe
         </div>
       )}
 
-      <button type="button" disabled={!canNext} onClick={onNext} style={primaryBtnStyle(canNext)}>
+      <button type="button" disabled={!canNext} className="dem-primary-btn" onClick={onNext} style={primaryBtnStyle(canNext)}>
         Choisir l'adresse
       </button>
       {!canNext && (
@@ -352,25 +429,28 @@ function AddressStep({ address, onAddressChange, onSelectPlace, onUseGps, gpsLoa
   return (
     <div>
       <div style={sectionCardStyle}>
-        <div style={sectionTitleStyle}>📍 Adresse de livraison</div>
+        <SectionTitle icon="pin">Adresse de livraison</SectionTitle>
         <button
           type="button"
           onClick={onUseGps}
           disabled={gpsLoading}
           style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             width: '100%', marginBottom: 8, padding: '12px 16px', borderRadius: 12,
             border: '1px solid rgba(0,210,255,0.3)', background: 'rgba(0,210,255,0.08)',
             color: C.cyan, fontSize: 14, fontWeight: 700, cursor: gpsLoading ? 'default' : 'pointer',
             fontFamily: "'Inter', sans-serif",
           }}
         >
-          {gpsLoading ? 'Localisation…' : '📡 Utiliser ma position actuelle'}
+          <Icon name="crosshair" size={16} color={C.cyan} />
+          {gpsLoading ? 'Localisation…' : 'Utiliser ma position actuelle'}
         </button>
         {gpsError && (
           <p style={{ fontSize: 12.5, color: C.danger, margin: '0 0 14px' }}>{gpsError}</p>
         )}
         <div style={{ position: 'relative', marginTop: gpsError ? 0 : 6 }}>
           <input
+            className="dem-input"
             style={inputStyle}
             value={query}
             onChange={e => handleChange(e.target.value)}
@@ -397,7 +477,7 @@ function AddressStep({ address, onAddressChange, onSelectPlace, onUseGps, gpsLoa
         </div>
       </div>
 
-      <button type="button" disabled={!canNext} onClick={onNext} style={primaryBtnStyle(canNext)}>
+      <button type="button" disabled={!canNext} className="dem-primary-btn" onClick={onNext} style={primaryBtnStyle(canNext)}>
         Continuer
       </button>
       {!canNext && (
@@ -410,11 +490,14 @@ function AddressStep({ address, onAddressChange, onSelectPlace, onUseGps, gpsLoa
 }
 
 // ── Étape 3 : Mode de paiement + coordonnées ─────────────────────────────────
+// Pas de logos de marque (Wave/Orange Money/Free Money) — un badge de
+// couleur + le nom suffit à identifier le moyen de paiement sans dépendre
+// d'assets externes, même esprit "sobre" que le reste de la page.
 const PAYMENT_METHODS = [
-  { value: 'CASH', label: 'Espèces', emoji: '💵' },
-  { value: 'WAVE', label: 'Wave', emoji: '🌊' },
-  { value: 'ORANGE_MONEY', label: 'Orange Money', emoji: '🟠' },
-  { value: 'FREE_MONEY', label: 'Free Money', emoji: '🔵' },
+  { value: 'CASH', label: 'Espèces', color: '#00E08C' },
+  { value: 'WAVE', label: 'Wave', color: '#1DC8CE' },
+  { value: 'ORANGE_MONEY', label: 'Orange Money', color: '#FF7A00' },
+  { value: 'FREE_MONEY', label: 'Free Money', color: '#7B61FF' },
 ]
 
 function PaymentStep({
@@ -430,7 +513,7 @@ function PaymentStep({
   return (
     <div>
       <div style={sectionCardStyle}>
-        <div style={sectionTitleStyle}>💳 Mode de paiement à la livraison</div>
+        <SectionTitle icon="card">Mode de paiement à la livraison</SectionTitle>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           {PAYMENT_METHODS.map(m => {
             const active = paymentMethod === m.value
@@ -444,10 +527,11 @@ function PaymentStep({
                   border: active ? `1.5px solid ${C.cyan}` : '1px solid rgba(255,255,255,0.12)',
                   background: active ? 'rgba(0,210,255,0.12)' : 'rgba(255,255,255,0.04)',
                   color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: "'Inter', sans-serif",
-                  display: 'flex', alignItems: 'center', gap: 8,
+                  display: 'flex', alignItems: 'center', gap: 10,
                 }}
               >
-                <span>{m.emoji}</span>{m.label}
+                <span style={{ width: 10, height: 10, borderRadius: '50%', background: m.color, flexShrink: 0 }} />
+                {m.label}
               </button>
             )
           })}
@@ -455,9 +539,10 @@ function PaymentStep({
       </div>
 
       <div style={sectionCardStyle}>
-        <div style={sectionTitleStyle}>📦 Repère &amp; instructions</div>
+        <SectionTitle icon="box">Repère &amp; instructions</SectionTitle>
         <Field label="Repère (optionnel)">
           <input
+            className="dem-input"
             style={inputStyle}
             value={landmark}
             onChange={e => onChangeLandmark(e.target.value)}
@@ -467,6 +552,7 @@ function PaymentStep({
         <div style={{ marginBottom: 0 }}>
           <label style={labelStyle}>Instructions pour le livreur (optionnel)</label>
           <textarea
+            className="dem-input"
             style={{ ...inputStyle, resize: 'vertical', minHeight: 60, fontFamily: "'Inter', sans-serif" }}
             value={notes}
             onChange={e => onChangeNotes(e.target.value)}
@@ -476,9 +562,10 @@ function PaymentStep({
       </div>
 
       <div style={sectionCardStyle}>
-        <div style={sectionTitleStyle}>👤 Vos coordonnées</div>
+        <SectionTitle icon="user">Vos coordonnées</SectionTitle>
         <Field label="Votre nom (optionnel)">
           <input
+            className="dem-input"
             style={inputStyle}
             value={customerName}
             onChange={e => onChangeName(e.target.value)}
@@ -489,6 +576,7 @@ function PaymentStep({
         <div style={{ marginBottom: 0 }}>
           <label style={labelStyle}>Votre téléphone<span style={{ color: C.cyan }}> *</span></label>
           <input
+            className="dem-input"
             style={inputStyle}
             value={customerPhone}
             onChange={e => onChangePhone(e.target.value)}
@@ -504,7 +592,7 @@ function PaymentStep({
         </div>
       </div>
 
-      <button type="button" disabled={!canNext} onClick={onNext} style={primaryBtnStyle(canNext)}>
+      <button type="button" disabled={!canNext} className="dem-primary-btn" onClick={onNext} style={primaryBtnStyle(canNext)}>
         Finaliser ma commande
       </button>
       {!canNext && (
@@ -522,11 +610,11 @@ function ReviewStep({
   paymentMethod, customerName, customerPhone,
   submitting, submitError, onSubmit,
 }) {
-  const paymentLabel = PAYMENT_METHODS.find(m => m.value === paymentMethod)
+  const payment = PAYMENT_METHODS.find(m => m.value === paymentMethod)
   return (
     <div>
       <div style={sectionCardStyle}>
-        <div style={sectionTitleStyle}>🧺 Votre panier</div>
+        <SectionTitle icon="basket">Votre panier</SectionTitle>
         {cartItems.map(item => (
           <div key={item.productId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
             <ProductThumb url={item.image} size={32} />
@@ -543,16 +631,17 @@ function ReviewStep({
       </div>
 
       <div style={sectionCardStyle}>
-        <div style={sectionTitleStyle}>📍 Livraison</div>
+        <SectionTitle icon="pin">Livraison</SectionTitle>
         <p style={{ fontSize: 14, color: '#fff', margin: 0 }}>{deliveryAddress}</p>
         {landmark && <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '6px 0 0' }}>Repère : {landmark}</p>}
         {notes && <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '4px 0 0' }}>Instructions : {notes}</p>}
       </div>
 
       <div style={sectionCardStyle}>
-        <div style={sectionTitleStyle}>💳 Paiement &amp; contact</div>
-        <p style={{ fontSize: 14, color: '#fff', margin: 0 }}>
-          {paymentLabel?.emoji} {paymentLabel?.label} — à la livraison
+        <SectionTitle icon="card">Paiement &amp; contact</SectionTitle>
+        <p style={{ fontSize: 14, color: '#fff', margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ width: 9, height: 9, borderRadius: '50%', background: payment?.color }} />
+          {payment?.label} — à la livraison
         </p>
         {customerName && <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '8px 0 0' }}>{customerName}</p>}
         <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '4px 0 0' }}>{customerPhone}</p>
@@ -567,7 +656,7 @@ function ReviewStep({
         </div>
       )}
 
-      <button type="button" disabled={submitting} onClick={onSubmit} style={primaryBtnStyle(!submitting)}>
+      <button type="button" disabled={submitting} className="dem-primary-btn" onClick={onSubmit} style={primaryBtnStyle(!submitting)}>
         {submitting ? 'Envoi en cours…' : `Envoyer ma commande — ${formatFcfa(cartTotal)}`}
       </button>
     </div>
@@ -712,147 +801,178 @@ export default function OrderRequest() {
   }
 
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", background: '#021520', color: 'rgba(255,255,255,0.85)', minHeight: '100vh' }}>
-      {loadState === 'ready' && <OpenInAppBanner merchantId={merchantId} />}
+    <div style={{ fontFamily: "'Inter', sans-serif", background: '#021520', color: 'rgba(255,255,255,0.85)', minHeight: '100vh', overflowX: 'hidden' }}>
+      <style>{`
+        .dem-order * { box-sizing: border-box; }
+        .dem-input:focus { border-color: ${C.cyan} !important; box-shadow: 0 0 0 3px rgba(0,210,255,0.15); }
+        .dem-input::placeholder { color: rgba(255,255,255,0.35); }
+        .dem-primary-btn:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(0,210,255,0.3); }
+        .dem-icon-btn:hover { border-color: rgba(0,210,255,0.4) !important; }
+        .dem-chip-scroll > div::-webkit-scrollbar { display: none; }
+        .dem-chip-scroll > div { scrollbar-width: none; }
+        .dem-chip-fade {
+          position: absolute; top: 0; right: 0; bottom: 12px; width: 28px;
+          background: linear-gradient(90deg, rgba(2,21,32,0), #021520);
+          pointer-events: none;
+        }
+        .dem-content { max-width: 560px; }
+        @media (min-width: 720px) {
+          .dem-content { max-width: 660px; padding-top: 44px !important; }
+          .dem-header { padding: 52px 24px 44px !important; }
+        }
+        @media (max-width: 360px) {
+          .dem-content { padding-left: 14px !important; padding-right: 14px !important; }
+        }
+      `}</style>
 
-      {/* Header */}
-      <div style={{
-        background: 'linear-gradient(160deg, #00D2FF 0%, #0086C8 55%, #005A8C 100%)',
-        padding: '40px 24px 36px', textAlign: 'center',
-      }}>
-        <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 20, textDecoration: 'none' }}>
-          <img src="/logo.png" alt="DEM" style={{ width: 36, height: 36, borderRadius: 9 }} />
-          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.85)', fontWeight: 700, letterSpacing: 1.2 }}>DELIVERY EXPRESS MOBILITY</span>
-        </Link>
+      <div className="dem-order">
+        {loadState === 'ready' && <OpenInAppBanner merchantId={merchantId} />}
 
-        {loadState === 'ready' && (
-          <>
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', marginBottom: 6 }}>Commander chez</p>
-            <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.1rem)', fontWeight: 900, color: '#fff', margin: 0 }}>
-              {merchant.businessName}
-            </h1>
-          </>
-        )}
-        {loadState === 'loading' && (
-          <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', margin: 0 }}>Chargement…</h1>
-        )}
-        {loadState === 'notfound' && (
-          <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', margin: 0 }}>Lien introuvable</h1>
-        )}
-      </div>
+        {/* Header */}
+        <div className="dem-header" style={{
+          background: 'linear-gradient(160deg, #00D2FF 0%, #0086C8 55%, #005A8C 100%)',
+          padding: '40px 24px 36px', textAlign: 'center',
+        }}>
+          <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 20, textDecoration: 'none' }}>
+            <img src="/logo.png" alt="DEM" style={{ width: 36, height: 36, borderRadius: 9 }} />
+            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.85)', fontWeight: 700, letterSpacing: 1.2 }}>DELIVERY EXPRESS MOBILITY</span>
+          </Link>
 
-      {/* Contenu */}
-      <div style={{ maxWidth: 560, margin: '0 auto', padding: '36px 20px 80px' }}>
+          {loadState === 'ready' && (
+            <>
+              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', marginBottom: 6 }}>Commander chez</p>
+              <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.1rem)', fontWeight: 900, color: '#fff', margin: 0 }}>
+                {merchant.businessName}
+              </h1>
+            </>
+          )}
+          {loadState === 'loading' && (
+            <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', margin: 0 }}>Chargement…</h1>
+          )}
+          {loadState === 'notfound' && (
+            <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', margin: 0 }}>Lien introuvable</h1>
+          )}
+        </div>
 
-        {loadState === 'notfound' && (
-          <div style={{
-            background: 'rgba(255,92,92,0.08)', border: '1px solid rgba(255,92,92,0.25)',
-            borderRadius: 16, padding: '24px 28px', textAlign: 'center',
-          }}>
-            <p style={{ fontSize: 15, lineHeight: 1.7, margin: 0 }}>
-              Ce lien de commande n'est plus disponible. Il a peut-être expiré, le compte n'est plus actif,
-              ou n'est pas (ou plus) sur un plan payant. Contactez directement le commerçant pour passer votre commande.
-            </p>
-          </div>
-        )}
+        {/* Contenu */}
+        <div className="dem-content" style={{ margin: '0 auto', padding: '36px 20px 80px' }}>
 
-        {loadState === 'ready' && !submitted && (
-          <>
-            <StepIndicator step={step} onBack={() => setStep(s => Math.max(1, s - 1))} />
-
-            {step === 1 && (
-              <CatalogueStep
-                products={products}
-                cart={cart}
-                cartItems={cartItems}
-                cartTotal={cartTotal}
-                onChangeQty={changeQty}
-                onNext={() => setStep(2)}
-              />
-            )}
-
-            {step === 2 && (
-              <AddressStep
-                address={deliveryAddress}
-                onAddressChange={setDeliveryAddress}
-                onSelectPlace={selectPlace}
-                onUseGps={useGps}
-                gpsLoading={gpsLoading}
-                gpsError={gpsError}
-                onNext={() => setStep(3)}
-              />
-            )}
-
-            {step === 3 && (
-              <PaymentStep
-                paymentMethod={paymentMethod}
-                onChangePaymentMethod={setPaymentMethod}
-                landmark={landmark}
-                onChangeLandmark={setLandmark}
-                notes={notes}
-                onChangeNotes={setNotes}
-                customerName={customerName}
-                onChangeName={setCustomerName}
-                customerPhone={customerPhone}
-                onChangePhone={setCustomerPhone}
-                onNext={() => setStep(4)}
-              />
-            )}
-
-            {step === 4 && (
-              <ReviewStep
-                cartItems={cartItems}
-                cartTotal={cartTotal}
-                deliveryAddress={deliveryAddress}
-                landmark={landmark}
-                notes={notes}
-                paymentMethod={paymentMethod}
-                customerName={customerName}
-                customerPhone={customerPhone}
-                submitting={submitting}
-                submitError={submitError}
-                onSubmit={handleSubmit}
-              />
-            )}
-
-            {/* Honeypot — masqué visuellement et hors du parcours clavier, jamais rempli par un humain */}
-            <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
-              <label htmlFor="website">Ne pas remplir</label>
-              <input
-                id="website"
-                name="website"
-                tabIndex={-1}
-                autoComplete="off"
-                value={website}
-                onChange={e => setWebsite(e.target.value)}
-              />
+          {loadState === 'notfound' && (
+            <div style={{
+              background: 'rgba(255,92,92,0.08)', border: '1px solid rgba(255,92,92,0.25)',
+              borderRadius: 16, padding: '24px 28px', textAlign: 'center',
+            }}>
+              <Icon name="linkOff" size={30} color="rgba(255,255,255,0.5)" style={{ marginBottom: 12 }} />
+              <p style={{ fontSize: 15, lineHeight: 1.7, margin: 0 }}>
+                Ce lien de commande n'est plus disponible. Il a peut-être expiré, le compte n'est plus actif,
+                ou n'est pas (ou plus) sur un plan payant. Contactez directement le commerçant pour passer votre commande.
+              </p>
             </div>
-          </>
-        )}
+          )}
 
-        {submitted && (
-          <div style={{
-            background: 'rgba(0,224,140,0.08)', border: '1px solid rgba(0,224,140,0.25)',
-            borderRadius: 16, padding: '32px 28px', textAlign: 'center',
-          }}>
-            <div style={{ fontSize: 40, marginBottom: 12 }}>✓</div>
-            <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginBottom: 10 }}>Commande envoyée !</h2>
-            <p style={{ fontSize: 14.5, lineHeight: 1.7, color: 'rgba(255,255,255,0.75)', margin: 0 }}>
-              {merchant.businessName} va confirmer votre commande. Un livreur DEM viendra récupérer et vous livrer votre commande.
-            </p>
-          </div>
-        )}
-      </div>
+          {loadState === 'ready' && !submitted && (
+            <>
+              <StepIndicator step={step} onBack={() => setStep(s => Math.max(1, s - 1))} />
 
-      {/* Footer */}
-      <div style={{
-        borderTop: '1px solid rgba(255,255,255,0.08)',
-        padding: '28px 24px', textAlign: 'center',
-        color: 'rgba(255,255,255,0.35)', fontSize: 13, background: '#010E18',
-      }}>
-        <p>© {new Date().getFullYear()} DEM — Delivery Express Mobility &nbsp;|&nbsp;
-          <Link to="/" style={{ color: C.cyan }}>dem.sn</Link>
-        </p>
+              {step === 1 && (
+                <CatalogueStep
+                  products={products}
+                  cart={cart}
+                  cartItems={cartItems}
+                  cartTotal={cartTotal}
+                  onChangeQty={changeQty}
+                  onNext={() => setStep(2)}
+                />
+              )}
+
+              {step === 2 && (
+                <AddressStep
+                  address={deliveryAddress}
+                  onAddressChange={setDeliveryAddress}
+                  onSelectPlace={selectPlace}
+                  onUseGps={useGps}
+                  gpsLoading={gpsLoading}
+                  gpsError={gpsError}
+                  onNext={() => setStep(3)}
+                />
+              )}
+
+              {step === 3 && (
+                <PaymentStep
+                  paymentMethod={paymentMethod}
+                  onChangePaymentMethod={setPaymentMethod}
+                  landmark={landmark}
+                  onChangeLandmark={setLandmark}
+                  notes={notes}
+                  onChangeNotes={setNotes}
+                  customerName={customerName}
+                  onChangeName={setCustomerName}
+                  customerPhone={customerPhone}
+                  onChangePhone={setCustomerPhone}
+                  onNext={() => setStep(4)}
+                />
+              )}
+
+              {step === 4 && (
+                <ReviewStep
+                  cartItems={cartItems}
+                  cartTotal={cartTotal}
+                  deliveryAddress={deliveryAddress}
+                  landmark={landmark}
+                  notes={notes}
+                  paymentMethod={paymentMethod}
+                  customerName={customerName}
+                  customerPhone={customerPhone}
+                  submitting={submitting}
+                  submitError={submitError}
+                  onSubmit={handleSubmit}
+                />
+              )}
+
+              {/* Honeypot — masqué visuellement et hors du parcours clavier, jamais rempli par un humain */}
+              <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
+                <label htmlFor="website">Ne pas remplir</label>
+                <input
+                  id="website"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={website}
+                  onChange={e => setWebsite(e.target.value)}
+                />
+              </div>
+            </>
+          )}
+
+          {submitted && (
+            <div style={{
+              background: 'rgba(0,224,140,0.08)', border: '1px solid rgba(0,224,140,0.25)',
+              borderRadius: 16, padding: '32px 28px', textAlign: 'center',
+            }}>
+              <div style={{
+                width: 56, height: 56, borderRadius: '50%', margin: '0 auto 16px',
+                background: 'rgba(0,224,140,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <Icon name="check" size={26} color={C.success} strokeWidth={2.4} />
+              </div>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginBottom: 10 }}>Commande envoyée !</h2>
+              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: 'rgba(255,255,255,0.75)', margin: 0 }}>
+                {merchant.businessName} va confirmer votre commande. Un livreur DEM viendra récupérer et vous livrer votre commande.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div style={{
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          padding: '28px 24px', textAlign: 'center',
+          color: 'rgba(255,255,255,0.35)', fontSize: 13, background: '#010E18',
+        }}>
+          <p>© {new Date().getFullYear()} DEM — Delivery Express Mobility &nbsp;|&nbsp;
+            <Link to="/" style={{ color: C.cyan }}>dem.sn</Link>
+          </p>
+        </div>
       </div>
     </div>
   )
