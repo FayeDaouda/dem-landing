@@ -62,6 +62,31 @@ function formatFcfa(n) {
   return `${Math.round(n).toLocaleString('fr-FR')} FCFA`
 }
 
+// ── Vignette produit — image si le commerçant en a mis une, sinon une icône
+// générique (jamais bloquant : la photo est optionnelle côté DEM Pro).
+function ProductThumb({ url, size = 44 }) {
+  const [failed, setFailed] = useState(false)
+  const base = {
+    width: size, height: size, borderRadius: 10, flexShrink: 0,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+  }
+  if (!url || failed) {
+    return (
+      <div style={{ ...base, background: 'rgba(0,210,255,0.10)', fontSize: size * 0.45 }}>
+        🛍️
+      </div>
+    )
+  }
+  return (
+    <img
+      src={url}
+      alt=""
+      onError={() => setFailed(true)}
+      style={{ ...base, objectFit: 'cover' }}
+    />
+  )
+}
+
 const newSessionToken = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`
 
 // ── Bannière "Ouvrir dans l'app" ────────────────────────────────────────────
@@ -137,7 +162,8 @@ function ProductCatalogue({ products, cart, onChangeQty }) {
                   padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.06)',
                 }}
               >
-                <div style={{ minWidth: 0, flex: 1, marginRight: 12 }}>
+                <ProductThumb url={p.image} />
+                <div style={{ minWidth: 0, flex: 1, margin: '0 12px' }}>
                   <p style={{ fontSize: 14.5, fontWeight: 600, color: '#fff', margin: 0 }}>{p.name}</p>
                   <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: '2px 0 0' }}>
                     {p.defaultPrice != null ? formatFcfa(p.defaultPrice) : 'Prix sur demande'}
@@ -184,7 +210,8 @@ function CartSummary({ items, total, onChangeQty }) {
       <div style={sectionTitleStyle}>🧺 Votre panier</div>
       {items.map(item => (
         <div key={item.productId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
-          <div style={{ minWidth: 0, flex: 1, marginRight: 12 }}>
+          <ProductThumb url={item.image} size={32} />
+          <div style={{ minWidth: 0, flex: 1, margin: '0 12px' }}>
             <p style={{ fontSize: 14, color: '#fff', margin: 0 }}>{item.name} × {item.quantity}</p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
@@ -386,7 +413,7 @@ export default function OrderRequest() {
       .filter(([, qty]) => qty > 0)
       .map(([productId, quantity]) => {
         const p = productsById.get(productId)
-        return p ? { productId, name: p.name, price: p.defaultPrice ?? 0, quantity } : null
+        return p ? { productId, name: p.name, price: p.defaultPrice ?? 0, quantity, image: p.image } : null
       })
       .filter(Boolean)
   }, [cart, productsById])
