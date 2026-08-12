@@ -49,6 +49,19 @@ const sectionTitleStyle = {
   gap: 8,
 }
 
+const primaryBtnStyle = (enabled) => ({
+  width: '100%',
+  background: enabled ? `linear-gradient(135deg, ${C.cyan}, ${C.cyan2})` : 'rgba(255,255,255,0.08)',
+  color: enabled ? '#021520' : 'rgba(255,255,255,0.4)',
+  border: 'none',
+  borderRadius: 14,
+  padding: '16px',
+  fontSize: 15,
+  fontWeight: 800,
+  fontFamily: "'Inter', sans-serif",
+  cursor: enabled ? 'pointer' : 'not-allowed',
+})
+
 function Field({ label, required, children }) {
   return (
     <div style={{ marginBottom: 18 }}>
@@ -61,6 +74,14 @@ function Field({ label, required, children }) {
 function formatFcfa(n) {
   return `${Math.round(n).toLocaleString('fr-FR')} FCFA`
 }
+
+// Mêmes préfixes que isValidSenegalMobile côté app (senegal_phone.dart) —
+// Orange (77/78), Free (76/75), Expresso (70), 9 chiffres sans le +221.
+function isValidSenegalMobile(digits) {
+  return /^(70|75|76|77|78)\d{7}$/.test(digits)
+}
+
+const newSessionToken = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`
 
 // ── Vignette produit — image si le commerçant en a mis une, sinon une icône
 // générique (jamais bloquant : la photo est optionnelle côté DEM Pro).
@@ -87,8 +108,6 @@ function ProductThumb({ url, size = 44 }) {
   )
 }
 
-const newSessionToken = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`
-
 // ── Bannière "Ouvrir dans l'app" ────────────────────────────────────────────
 // Lien personnalisé (pas de vrai lien universel https pour l'instant) —
 // propose l'ouverture au tap, échoue silencieusement si l'app n'est pas
@@ -114,81 +133,160 @@ function OpenInAppBanner({ merchantId }) {
   )
 }
 
-// ── Catalogue ────────────────────────────────────────────────────────────────
-function ProductCatalogue({ products, cart, onChangeQty }) {
-  const grouped = useMemo(() => {
-    const map = new Map()
-    for (const p of products) {
-      const key = p.category?.trim() || 'Autres produits'
-      if (!map.has(key)) map.set(key, [])
-      map.get(key).push(p)
-    }
-    const keys = [...map.keys()].sort((a, b) => {
-      if (a === 'Autres produits') return 1
-      if (b === 'Autres produits') return -1
-      return a.localeCompare(b)
-    })
-    return keys.map(k => [k, map.get(k)])
-  }, [products])
+// ── Indicateur de progression (4 étapes) ────────────────────────────────────
+const STEP_LABELS = ['Catalogue', 'Adresse', 'Paiement', 'Résumé']
 
-  if (products.length === 0) {
-    return (
-      <div style={{ ...sectionCardStyle }}>
-        <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', margin: 0 }}>
-          Ce commerçant n'a pas encore de produits dans son catalogue.
+function StepIndicator({ step, onBack }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
+      {step > 1 && (
+        <button
+          type="button"
+          onClick={onBack}
+          aria-label="Retour"
+          style={{
+            width: 32, height: 32, borderRadius: 10, flexShrink: 0, cursor: 'pointer',
+            background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
+            color: '#fff', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+        >←</button>
+      )}
+      <div style={{ flex: 1 }}>
+        <div style={{ display: 'flex', gap: 6, marginBottom: 6 }}>
+          {[1, 2, 3, 4].map(n => (
+            <div
+              key={n}
+              style={{
+                flex: 1, height: 4, borderRadius: 2,
+                background: n <= step ? C.cyan : 'rgba(255,255,255,0.12)',
+              }}
+            />
+          ))}
+        </div>
+        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', margin: 0, fontWeight: 600 }}>
+          Étape {step}/4 — {STEP_LABELS[step - 1]}
         </p>
       </div>
-    )
-  }
+    </div>
+  )
+}
+
+// ── Étape 1 : Catalogue ──────────────────────────────────────────────────────
+function CatalogueStep({ products, cart, cartItems, cartTotal, onChangeQty, onNext }) {
+  const categories = useMemo(() => {
+    const set = new Set()
+    for (const p of products) {
+      const cat = p.category?.trim()
+      if (cat) set.add(cat)
+    }
+    return [...set].sort()
+  }, [products])
+
+  const [selected, setSelected] = useState('Tous')
+  const visibleProducts = selected === 'Tous'
+    ? products
+    : products.filter(p => (p.category?.trim() || 'Autres produits') === selected)
+
+  const canNext = cartItems.length > 0
 
   return (
-    <div style={sectionCardStyle}>
-      <div style={sectionTitleStyle}>🛍️ Catalogue</div>
-      {grouped.map(([category, items]) => (
-        <div key={category} style={{ marginBottom: 16 }}>
-          {grouped.length > 1 && (
-            <p style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.45)', letterSpacing: 0.5, marginBottom: 8 }}>
-              {category.toUpperCase()}
-            </p>
-          )}
-          {items.map(p => {
-            const qty = cart[p.id] || 0
-            const atMax = p.quantity != null && qty >= p.quantity
-            return (
-              <div
-                key={p.id}
-                style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.06)',
-                }}
-              >
-                <ProductThumb url={p.image} />
-                <div style={{ minWidth: 0, flex: 1, margin: '0 12px' }}>
-                  <p style={{ fontSize: 14.5, fontWeight: 600, color: '#fff', margin: 0 }}>{p.name}</p>
-                  <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: '2px 0 0' }}>
-                    {p.defaultPrice != null ? formatFcfa(p.defaultPrice) : 'Prix sur demande'}
-                  </p>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-                  <button
-                    type="button"
-                    onClick={() => onChangeQty(p.id, Math.max(0, qty - 1))}
-                    disabled={qty === 0}
-                    style={qtyBtnStyle(qty === 0)}
-                  >−</button>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: '#fff', minWidth: 16, textAlign: 'center' }}>{qty}</span>
-                  <button
-                    type="button"
-                    onClick={() => onChangeQty(p.id, qty + 1)}
-                    disabled={atMax}
-                    style={qtyBtnStyle(atMax)}
-                  >+</button>
-                </div>
+    <div>
+      <div style={sectionCardStyle}>
+        <div style={sectionTitleStyle}>🛍️ Catalogue</div>
+
+        {products.length === 0 ? (
+          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', margin: 0 }}>
+            Ce commerçant n'a pas encore de produits dans son catalogue.
+          </p>
+        ) : (
+          <>
+            {categories.length > 0 && (
+              <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 12, marginBottom: 4 }}>
+                {['Tous', ...categories].map(cat => {
+                  const active = selected === cat
+                  return (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => setSelected(cat)}
+                      style={{
+                        flexShrink: 0, padding: '8px 14px', borderRadius: 20, cursor: 'pointer',
+                        border: active ? `1.5px solid ${C.cyan}` : '1px solid rgba(255,255,255,0.14)',
+                        background: active ? 'rgba(0,210,255,0.14)' : 'rgba(255,255,255,0.04)',
+                        color: active ? C.cyan : 'rgba(255,255,255,0.7)',
+                        fontSize: 13, fontWeight: 700, fontFamily: "'Inter', sans-serif", whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {cat}
+                    </button>
+                  )
+                })}
               </div>
-            )
-          })}
+            )}
+
+            <div style={{ maxHeight: '55vh', overflowY: 'auto', paddingRight: 4 }}>
+              {visibleProducts.map(p => {
+                const qty = cart[p.id] || 0
+                const atMax = p.quantity != null && qty >= p.quantity
+                return (
+                  <div
+                    key={p.id}
+                    style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                      padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.06)',
+                    }}
+                  >
+                    <ProductThumb url={p.image} />
+                    <div style={{ minWidth: 0, flex: 1, margin: '0 12px' }}>
+                      <p style={{ fontSize: 14.5, fontWeight: 600, color: '#fff', margin: 0 }}>{p.name}</p>
+                      <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: '2px 0 0' }}>
+                        {p.defaultPrice != null ? formatFcfa(p.defaultPrice) : 'Prix sur demande'}
+                      </p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                      <button
+                        type="button"
+                        onClick={() => onChangeQty(p.id, Math.max(0, qty - 1))}
+                        disabled={qty === 0}
+                        style={qtyBtnStyle(qty === 0)}
+                      >−</button>
+                      <span style={{ fontSize: 14, fontWeight: 700, color: '#fff', minWidth: 16, textAlign: 'center' }}>{qty}</span>
+                      <button
+                        type="button"
+                        onClick={() => onChangeQty(p.id, qty + 1)}
+                        disabled={atMax}
+                        style={qtyBtnStyle(atMax)}
+                      >+</button>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </>
+        )}
+      </div>
+
+      {cartItems.length > 0 && (
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          padding: '12px 16px', marginBottom: 14, borderRadius: 12,
+          background: 'rgba(0,210,255,0.08)', border: '1px solid rgba(0,210,255,0.2)',
+        }}>
+          <span style={{ fontSize: 13.5, color: '#fff', fontWeight: 600 }}>
+            {cartItems.length} article{cartItems.length > 1 ? 's' : ''}
+          </span>
+          <span style={{ fontSize: 15, fontWeight: 800, color: C.cyan }}>{formatFcfa(cartTotal)}</span>
         </div>
-      ))}
+      )}
+
+      <button type="button" disabled={!canNext} onClick={onNext} style={primaryBtnStyle(canNext)}>
+        Choisir l'adresse
+      </button>
+      {!canNext && (
+        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textAlign: 'center', marginTop: 12 }}>
+          Choisissez au moins un produit
+        </p>
+      )}
     </div>
   )
 }
@@ -202,39 +300,8 @@ function qtyBtnStyle(disabled) {
   }
 }
 
-// ── Panier ───────────────────────────────────────────────────────────────────
-function CartSummary({ items, total, onChangeQty }) {
-  if (items.length === 0) return null
-  return (
-    <div style={sectionCardStyle}>
-      <div style={sectionTitleStyle}>🧺 Votre panier</div>
-      {items.map(item => (
-        <div key={item.productId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
-          <ProductThumb url={item.image} size={32} />
-          <div style={{ minWidth: 0, flex: 1, margin: '0 12px' }}>
-            <p style={{ fontSize: 14, color: '#fff', margin: 0 }}>{item.name} × {item.quantity}</p>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <span style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.7)' }}>{formatFcfa(item.price * item.quantity)}</span>
-            <button
-              type="button"
-              onClick={() => onChangeQty(item.productId, 0)}
-              style={{ background: 'none', border: 'none', color: C.danger, fontSize: 16, cursor: 'pointer', padding: 4 }}
-              aria-label="Retirer"
-            >✕</button>
-          </div>
-        </div>
-      ))}
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 12, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <span style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>Total</span>
-        <span style={{ fontSize: 17, fontWeight: 800, color: C.cyan }}>{formatFcfa(total)}</span>
-      </div>
-    </div>
-  )
-}
-
-// ── Adresse (GPS ou saisie + suggestions) ────────────────────────────────────
-function AddressStep({ address, onAddressChange, onSelectPlace, onUseGps, gpsLoading }) {
+// ── Étape 2 : Adresse (GPS ou saisie + suggestions) ──────────────────────────
+function AddressStep({ address, onAddressChange, onSelectPlace, onUseGps, gpsLoading, gpsError, onNext }) {
   const [query, setQuery] = useState(address)
   const [suggestions, setSuggestions] = useState([])
   const [open, setOpen] = useState(false)
@@ -280,53 +347,69 @@ function AddressStep({ address, onAddressChange, onSelectPlace, onUseGps, gpsLoa
     sessionToken.current = newSessionToken()
   }
 
+  const canNext = address.trim().length >= 4
+
   return (
-    <div style={sectionCardStyle}>
-      <div style={sectionTitleStyle}>📍 Adresse de livraison</div>
-      <button
-        type="button"
-        onClick={onUseGps}
-        disabled={gpsLoading}
-        style={{
-          width: '100%', marginBottom: 14, padding: '12px 16px', borderRadius: 12,
-          border: '1px solid rgba(0,210,255,0.3)', background: 'rgba(0,210,255,0.08)',
-          color: C.cyan, fontSize: 14, fontWeight: 700, cursor: gpsLoading ? 'default' : 'pointer',
-          fontFamily: "'Inter', sans-serif",
-        }}
-      >
-        {gpsLoading ? 'Localisation…' : '📡 Utiliser ma position actuelle'}
-      </button>
-      <div style={{ position: 'relative' }}>
-        <input
-          style={inputStyle}
-          value={query}
-          onChange={e => handleChange(e.target.value)}
-          onFocus={() => suggestions.length > 0 && setOpen(true)}
-          placeholder="Quartier, rue, numéro…"
-        />
-        {open && suggestions.length > 0 && (
-          <div style={{
-            position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 4, zIndex: 10,
-            background: '#0A2233', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 12,
-            overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
-          }}>
-            {suggestions.map(s => (
-              <div
-                key={s.place_id}
-                onClick={() => pick(s)}
-                style={{ padding: '12px 16px', fontSize: 13.5, color: '#fff', cursor: 'pointer', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
-              >
-                {s.description}
-              </div>
-            ))}
-          </div>
+    <div>
+      <div style={sectionCardStyle}>
+        <div style={sectionTitleStyle}>📍 Adresse de livraison</div>
+        <button
+          type="button"
+          onClick={onUseGps}
+          disabled={gpsLoading}
+          style={{
+            width: '100%', marginBottom: 8, padding: '12px 16px', borderRadius: 12,
+            border: '1px solid rgba(0,210,255,0.3)', background: 'rgba(0,210,255,0.08)',
+            color: C.cyan, fontSize: 14, fontWeight: 700, cursor: gpsLoading ? 'default' : 'pointer',
+            fontFamily: "'Inter', sans-serif",
+          }}
+        >
+          {gpsLoading ? 'Localisation…' : '📡 Utiliser ma position actuelle'}
+        </button>
+        {gpsError && (
+          <p style={{ fontSize: 12.5, color: C.danger, margin: '0 0 14px' }}>{gpsError}</p>
         )}
+        <div style={{ position: 'relative', marginTop: gpsError ? 0 : 6 }}>
+          <input
+            style={inputStyle}
+            value={query}
+            onChange={e => handleChange(e.target.value)}
+            onFocus={() => suggestions.length > 0 && setOpen(true)}
+            placeholder="Quartier, rue, numéro…"
+          />
+          {open && suggestions.length > 0 && (
+            <div style={{
+              position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 4, zIndex: 10,
+              background: '#0A2233', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 12,
+              overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+            }}>
+              {suggestions.map(s => (
+                <div
+                  key={s.place_id}
+                  onClick={() => pick(s)}
+                  style={{ padding: '12px 16px', fontSize: 13.5, color: '#fff', cursor: 'pointer', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+                >
+                  {s.description}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
+
+      <button type="button" disabled={!canNext} onClick={onNext} style={primaryBtnStyle(canNext)}>
+        Continuer
+      </button>
+      {!canNext && (
+        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textAlign: 'center', marginTop: 12 }}>
+          Renseignez l'adresse de livraison
+        </p>
+      )}
     </div>
   )
 }
 
-// ── Mode de paiement ─────────────────────────────────────────────────────────
+// ── Étape 3 : Mode de paiement + coordonnées ─────────────────────────────────
 const PAYMENT_METHODS = [
   { value: 'CASH', label: 'Espèces', emoji: '💵' },
   { value: 'WAVE', label: 'Wave', emoji: '🌊' },
@@ -334,31 +417,159 @@ const PAYMENT_METHODS = [
   { value: 'FREE_MONEY', label: 'Free Money', emoji: '🔵' },
 ]
 
-function PaymentMethodStep({ value, onChange }) {
+function PaymentStep({
+  paymentMethod, onChangePaymentMethod,
+  landmark, onChangeLandmark, notes, onChangeNotes,
+  customerName, onChangeName, customerPhone, onChangePhone,
+  onNext,
+}) {
+  const phoneDigits = customerPhone.replace(/\D/g, '')
+  const phoneValid = isValidSenegalMobile(phoneDigits)
+  const canNext = phoneValid
+
   return (
-    <div style={sectionCardStyle}>
-      <div style={sectionTitleStyle}>💳 Mode de paiement à la livraison</div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-        {PAYMENT_METHODS.map(m => {
-          const active = value === m.value
-          return (
-            <button
-              key={m.value}
-              type="button"
-              onClick={() => onChange(m.value)}
-              style={{
-                padding: '14px 12px', borderRadius: 12, cursor: 'pointer',
-                border: active ? `1.5px solid ${C.cyan}` : '1px solid rgba(255,255,255,0.12)',
-                background: active ? 'rgba(0,210,255,0.12)' : 'rgba(255,255,255,0.04)',
-                color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: "'Inter', sans-serif",
-                display: 'flex', alignItems: 'center', gap: 8,
-              }}
-            >
-              <span>{m.emoji}</span>{m.label}
-            </button>
-          )
-        })}
+    <div>
+      <div style={sectionCardStyle}>
+        <div style={sectionTitleStyle}>💳 Mode de paiement à la livraison</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          {PAYMENT_METHODS.map(m => {
+            const active = paymentMethod === m.value
+            return (
+              <button
+                key={m.value}
+                type="button"
+                onClick={() => onChangePaymentMethod(m.value)}
+                style={{
+                  padding: '14px 12px', borderRadius: 12, cursor: 'pointer',
+                  border: active ? `1.5px solid ${C.cyan}` : '1px solid rgba(255,255,255,0.12)',
+                  background: active ? 'rgba(0,210,255,0.12)' : 'rgba(255,255,255,0.04)',
+                  color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: "'Inter', sans-serif",
+                  display: 'flex', alignItems: 'center', gap: 8,
+                }}
+              >
+                <span>{m.emoji}</span>{m.label}
+              </button>
+            )
+          })}
+        </div>
       </div>
+
+      <div style={sectionCardStyle}>
+        <div style={sectionTitleStyle}>📦 Repère &amp; instructions</div>
+        <Field label="Repère (optionnel)">
+          <input
+            style={inputStyle}
+            value={landmark}
+            onChange={e => onChangeLandmark(e.target.value)}
+            placeholder="Ex: face à la pharmacie, portail bleu…"
+          />
+        </Field>
+        <div style={{ marginBottom: 0 }}>
+          <label style={labelStyle}>Instructions pour le livreur (optionnel)</label>
+          <textarea
+            style={{ ...inputStyle, resize: 'vertical', minHeight: 60, fontFamily: "'Inter', sans-serif" }}
+            value={notes}
+            onChange={e => onChangeNotes(e.target.value)}
+            placeholder="Ex: m'appeler à l'arrivée…"
+          />
+        </div>
+      </div>
+
+      <div style={sectionCardStyle}>
+        <div style={sectionTitleStyle}>👤 Vos coordonnées</div>
+        <Field label="Votre nom (optionnel)">
+          <input
+            style={inputStyle}
+            value={customerName}
+            onChange={e => onChangeName(e.target.value)}
+            placeholder="Prénom Nom"
+            autoComplete="name"
+          />
+        </Field>
+        <div style={{ marginBottom: 0 }}>
+          <label style={labelStyle}>Votre téléphone<span style={{ color: C.cyan }}> *</span></label>
+          <input
+            style={inputStyle}
+            value={customerPhone}
+            onChange={e => onChangePhone(e.target.value)}
+            placeholder="77 000 00 00"
+            type="tel"
+            autoComplete="tel"
+          />
+          {customerPhone.trim().length > 0 && !phoneValid && (
+            <p style={{ fontSize: 12.5, color: C.danger, margin: '8px 0 0' }}>
+              Numéro mobile invalide (7X XXX XX XX)
+            </p>
+          )}
+        </div>
+      </div>
+
+      <button type="button" disabled={!canNext} onClick={onNext} style={primaryBtnStyle(canNext)}>
+        Finaliser ma commande
+      </button>
+      {!canNext && (
+        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textAlign: 'center', marginTop: 12 }}>
+          Renseignez un numéro de téléphone valide
+        </p>
+      )}
+    </div>
+  )
+}
+
+// ── Étape 4 : Résumé ─────────────────────────────────────────────────────────
+function ReviewStep({
+  cartItems, cartTotal, deliveryAddress, landmark, notes,
+  paymentMethod, customerName, customerPhone,
+  submitting, submitError, onSubmit,
+}) {
+  const paymentLabel = PAYMENT_METHODS.find(m => m.value === paymentMethod)
+  return (
+    <div>
+      <div style={sectionCardStyle}>
+        <div style={sectionTitleStyle}>🧺 Votre panier</div>
+        {cartItems.map(item => (
+          <div key={item.productId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
+            <ProductThumb url={item.image} size={32} />
+            <div style={{ minWidth: 0, flex: 1, margin: '0 12px' }}>
+              <p style={{ fontSize: 14, color: '#fff', margin: 0 }}>{item.name} × {item.quantity}</p>
+            </div>
+            <span style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.7)' }}>{formatFcfa(item.price * item.quantity)}</span>
+          </div>
+        ))}
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 12, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <span style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>Total</span>
+          <span style={{ fontSize: 17, fontWeight: 800, color: C.cyan }}>{formatFcfa(cartTotal)}</span>
+        </div>
+      </div>
+
+      <div style={sectionCardStyle}>
+        <div style={sectionTitleStyle}>📍 Livraison</div>
+        <p style={{ fontSize: 14, color: '#fff', margin: 0 }}>{deliveryAddress}</p>
+        {landmark && <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '6px 0 0' }}>Repère : {landmark}</p>}
+        {notes && <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '4px 0 0' }}>Instructions : {notes}</p>}
+      </div>
+
+      <div style={sectionCardStyle}>
+        <div style={sectionTitleStyle}>💳 Paiement &amp; contact</div>
+        <p style={{ fontSize: 14, color: '#fff', margin: 0 }}>
+          {paymentLabel?.emoji} {paymentLabel?.label} — à la livraison
+        </p>
+        {customerName && <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '8px 0 0' }}>{customerName}</p>}
+        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '4px 0 0' }}>{customerPhone}</p>
+      </div>
+
+      {submitError && (
+        <div style={{
+          background: 'rgba(255,92,92,0.1)', border: '1px solid rgba(255,92,92,0.3)',
+          borderRadius: 10, padding: '12px 16px', marginBottom: 16, fontSize: 13.5, color: '#FFB3B3',
+        }}>
+          {submitError}
+        </div>
+      )}
+
+      <button type="button" disabled={submitting} onClick={onSubmit} style={primaryBtnStyle(!submitting)}>
+        {submitting ? 'Envoi en cours…' : `Envoyer ma commande — ${formatFcfa(cartTotal)}`}
+      </button>
     </div>
   )
 }
@@ -373,10 +584,13 @@ export default function OrderRequest() {
   const [products, setProducts] = useState([])
   const [cart, setCart] = useState({}) // { [productId]: quantity }
 
+  const [step, setStep] = useState(1)
+
   const [deliveryAddress, setDeliveryAddress] = useState('')
   const [deliveryLat, setDeliveryLat] = useState(null)
   const [deliveryLng, setDeliveryLng] = useState(null)
   const [gpsLoading, setGpsLoading] = useState(false)
+  const [gpsError, setGpsError] = useState(null)
 
   const [paymentMethod, setPaymentMethod] = useState('CASH')
   const [customerName, setCustomerName] = useState('')
@@ -425,16 +639,37 @@ export default function OrderRequest() {
   }
 
   function useGps() {
-    if (!navigator.geolocation) return
+    if (!navigator.geolocation) {
+      setGpsError("Votre navigateur ne permet pas la géolocalisation.")
+      return
+    }
     setGpsLoading(true)
+    setGpsError(null)
     navigator.geolocation.getCurrentPosition(
-      pos => {
-        setDeliveryLat(pos.coords.latitude)
-        setDeliveryLng(pos.coords.longitude)
-        setDeliveryAddress('Position GPS actuelle')
-        setGpsLoading(false)
+      async pos => {
+        const { latitude, longitude } = pos.coords
+        setDeliveryLat(latitude)
+        setDeliveryLng(longitude)
+        try {
+          const res = await fetch(`${API_URL}/public/places/reverse-geocode?lat=${latitude}&lng=${longitude}`)
+          const data = await res.json()
+          setDeliveryAddress(data.address || 'Position actuelle (coordonnées GPS)')
+        } catch {
+          setDeliveryAddress('Position actuelle (coordonnées GPS)')
+        } finally {
+          setGpsLoading(false)
+        }
       },
-      () => setGpsLoading(false),
+      err => {
+        setGpsLoading(false)
+        if (err.code === err.PERMISSION_DENIED) {
+          setGpsError("Autorisez la localisation dans votre navigateur pour utiliser cette option.")
+        } else if (err.code === err.TIMEOUT) {
+          setGpsError("Délai dépassé — réessayez ou saisissez votre adresse.")
+        } else {
+          setGpsError("Position indisponible — saisissez votre adresse manuellement.")
+        }
+      },
       { enableHighAccuracy: true, timeout: 10000 },
     )
   }
@@ -443,13 +678,10 @@ export default function OrderRequest() {
     setDeliveryAddress(address)
     setDeliveryLat(lat)
     setDeliveryLng(lng)
+    setGpsError(null)
   }
 
-  const canSubmit = deliveryAddress.trim().length >= 4 && cartItems.length > 0 && !submitting
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-    if (!canSubmit) return
+  async function handleSubmit() {
     setSubmitting(true)
     setSubmitError(null)
     try {
@@ -470,7 +702,7 @@ export default function OrderRequest() {
         }),
       })
       const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data.message || "Impossible d'envoyer votre demande. Réessayez.")
+      if (!res.ok) throw new Error(data.message || "Impossible d'envoyer votre commande. Réessayez.")
       setSubmitted(true)
     } catch (err) {
       setSubmitError(err.message)
@@ -525,61 +757,63 @@ export default function OrderRequest() {
         )}
 
         {loadState === 'ready' && !submitted && (
-          <form onSubmit={handleSubmit}>
-            <ProductCatalogue products={products} cart={cart} onChangeQty={changeQty} />
-            <CartSummary items={cartItems} total={cartTotal} onChangeQty={changeQty} />
+          <>
+            <StepIndicator step={step} onBack={() => setStep(s => Math.max(1, s - 1))} />
 
-            <AddressStep
-              address={deliveryAddress}
-              onAddressChange={setDeliveryAddress}
-              onSelectPlace={selectPlace}
-              onUseGps={useGps}
-              gpsLoading={gpsLoading}
-            />
+            {step === 1 && (
+              <CatalogueStep
+                products={products}
+                cart={cart}
+                cartItems={cartItems}
+                cartTotal={cartTotal}
+                onChangeQty={changeQty}
+                onNext={() => setStep(2)}
+              />
+            )}
 
-            <div style={sectionCardStyle}>
-              <Field label="Repère (optionnel)">
-                <input
-                  style={inputStyle}
-                  value={landmark}
-                  onChange={e => setLandmark(e.target.value)}
-                  placeholder="Ex: face à la pharmacie, portail bleu…"
-                />
-              </Field>
-              <Field label="Instructions pour le livreur (optionnel)">
-                <textarea
-                  style={{ ...inputStyle, resize: 'vertical', minHeight: 60, fontFamily: "'Inter', sans-serif" }}
-                  value={notes}
-                  onChange={e => setNotes(e.target.value)}
-                  placeholder="Ex: m'appeler à l'arrivée…"
-                />
-              </Field>
-            </div>
+            {step === 2 && (
+              <AddressStep
+                address={deliveryAddress}
+                onAddressChange={setDeliveryAddress}
+                onSelectPlace={selectPlace}
+                onUseGps={useGps}
+                gpsLoading={gpsLoading}
+                gpsError={gpsError}
+                onNext={() => setStep(3)}
+              />
+            )}
 
-            <PaymentMethodStep value={paymentMethod} onChange={setPaymentMethod} />
+            {step === 3 && (
+              <PaymentStep
+                paymentMethod={paymentMethod}
+                onChangePaymentMethod={setPaymentMethod}
+                landmark={landmark}
+                onChangeLandmark={setLandmark}
+                notes={notes}
+                onChangeNotes={setNotes}
+                customerName={customerName}
+                onChangeName={setCustomerName}
+                customerPhone={customerPhone}
+                onChangePhone={setCustomerPhone}
+                onNext={() => setStep(4)}
+              />
+            )}
 
-            <div style={sectionCardStyle}>
-              <div style={sectionTitleStyle}>👤 Vos coordonnées (optionnel)</div>
-              <Field label="Votre nom">
-                <input
-                  style={inputStyle}
-                  value={customerName}
-                  onChange={e => setCustomerName(e.target.value)}
-                  placeholder="Prénom Nom"
-                  autoComplete="name"
-                />
-              </Field>
-              <Field label="Votre téléphone">
-                <input
-                  style={inputStyle}
-                  value={customerPhone}
-                  onChange={e => setCustomerPhone(e.target.value)}
-                  placeholder="77 000 00 00"
-                  type="tel"
-                  autoComplete="tel"
-                />
-              </Field>
-            </div>
+            {step === 4 && (
+              <ReviewStep
+                cartItems={cartItems}
+                cartTotal={cartTotal}
+                deliveryAddress={deliveryAddress}
+                landmark={landmark}
+                notes={notes}
+                paymentMethod={paymentMethod}
+                customerName={customerName}
+                customerPhone={customerPhone}
+                submitting={submitting}
+                submitError={submitError}
+                onSubmit={handleSubmit}
+              />
+            )}
 
             {/* Honeypot — masqué visuellement et hors du parcours clavier, jamais rempli par un humain */}
             <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
@@ -593,41 +827,7 @@ export default function OrderRequest() {
                 onChange={e => setWebsite(e.target.value)}
               />
             </div>
-
-            {submitError && (
-              <div style={{
-                background: 'rgba(255,92,92,0.1)', border: '1px solid rgba(255,92,92,0.3)',
-                borderRadius: 10, padding: '12px 16px', marginBottom: 16, fontSize: 13.5, color: '#FFB3B3',
-              }}>
-                {submitError}
-              </div>
-            )}
-            {!canSubmit && !submitting && (
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textAlign: 'center', marginBottom: 12 }}>
-                {cartItems.length === 0 ? 'Choisissez au moins un produit' : "Renseignez l'adresse de livraison"}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              disabled={!canSubmit}
-              style={{
-                width: '100%',
-                background: canSubmit ? `linear-gradient(135deg, ${C.cyan}, ${C.cyan2})` : 'rgba(255,255,255,0.08)',
-                color: canSubmit ? '#021520' : 'rgba(255,255,255,0.4)',
-                border: 'none',
-                borderRadius: 14,
-                padding: '16px',
-                fontSize: 15,
-                fontWeight: 800,
-                fontFamily: "'Inter', sans-serif",
-                cursor: canSubmit ? 'pointer' : 'not-allowed',
-                marginTop: 8,
-              }}
-            >
-              {submitting ? 'Envoi en cours…' : cartTotal > 0 ? `Envoyer ma demande — ${formatFcfa(cartTotal)}` : 'Envoyer ma demande'}
-            </button>
-          </form>
+          </>
         )}
 
         {submitted && (
@@ -636,9 +836,9 @@ export default function OrderRequest() {
             borderRadius: 16, padding: '32px 28px', textAlign: 'center',
           }}>
             <div style={{ fontSize: 40, marginBottom: 12 }}>✓</div>
-            <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginBottom: 10 }}>Demande envoyée !</h2>
+            <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginBottom: 10 }}>Commande envoyée !</h2>
             <p style={{ fontSize: 14.5, lineHeight: 1.7, color: 'rgba(255,255,255,0.75)', margin: 0 }}>
-              {merchant.businessName} va confirmer votre commande. Un livreur DEM viendra récupérer et vous livrer votre colis.
+              {merchant.businessName} va confirmer votre commande. Un livreur DEM viendra récupérer et vous livrer votre commande.
             </p>
           </div>
         )}
