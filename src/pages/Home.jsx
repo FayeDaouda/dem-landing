@@ -1,17 +1,26 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import HeroHomePage from '../components/sections/HeroHomePage.jsx';
+import Mission from '../components/sections/Mission.jsx';
+import DeliveryJourney from '../components/sections/DeliveryJourney.jsx';
+import HorizontalGallery from '../components/sections/HorizontalGallery.jsx';
+import ScrollExpandSection from '../components/sections/ScrollExpandSection.jsx';
+import PartnersSection from '../components/sections/PartnersSection.jsx';
+import ContactCTA from '../components/sections/ContactCTA.jsx';
+import CircularGallery from '../components/atoms/CircularGallery.jsx';
+import SectionHeading from '../components/atoms/SectionHeading.jsx';
 
 const C = {
-  cyan:  '#00D2FF',
+  cyan: '#00D2FF',
   cyan2: '#0086C8',
-  teal:  '#00897B',
-  dark:  '#021520',
-  card:  'rgba(255,255,255,0.08)',
+  teal: '#00897B',
+  dark: '#021520',
+  card: 'rgba(255,255,255,0.08)',
   cardB: 'rgba(255,255,255,0.13)',
-  text:  '#FFFFFF',
+  text: '#FFFFFF',
   muted: 'rgba(255,255,255,0.65)',
-  grad:  'linear-gradient(160deg, #00D2FF 0%, #0086C8 55%, #005A8C 100%)',
+  grad: 'linear-gradient(160deg, #00D2FF 0%, #0086C8 55%, #005A8C 100%)',
   gradDark: 'linear-gradient(160deg, #004D66 0%, #002D45 55%, #001830 100%)',
-}
+};
 
 const features = [
   { icon: '⚡', title: 'Livraison ultra-rapide', desc: 'Nos livreurs à moto sont proches de vous. Votre colis arrive en quelques minutes.' },
@@ -20,37 +29,64 @@ const features = [
   { icon: '🛡️', title: 'Livreurs vérifiés', desc: 'Chaque livreur est identifié et validé avant de rejoindre la plateforme DEM.' },
   { icon: '🔔', title: 'Notifications instant', desc: 'Recevez des alertes à chaque étape de votre livraison.' },
   { icon: '🌍', title: 'Couverture locale', desc: 'DEM couvre Dakar et ses environs, expansion en cours.' },
-]
+];
 
 const clientSteps = [
   { title: 'Créez votre commande', desc: 'Indiquez l\'adresse de départ et d\'arrivée directement sur la carte.' },
   { title: 'Un livreur accepte', desc: 'Un livreur proche de vous accepte votre commande en quelques secondes.' },
   { title: 'Suivez et recevez', desc: 'Suivez votre livreur en temps réel et recevez votre colis.' },
-]
+];
 
 const driverSteps = [
   { title: 'Inscrivez-vous', desc: 'Créez votre compte livreur avec vos informations et votre véhicule.' },
   { title: 'Acceptez des courses', desc: 'Activez votre disponibilité et recevez des courses près de vous.' },
   { title: 'Gagnez de l\'argent', desc: 'Effectuez les livraisons et recevez vos revenus directement.' },
-]
+];
 
 const chefSteps = [
   { title: 'Soumettez votre dossier', desc: 'Téléversez votre CNI et vos informations. Validation par notre équipe sous 24 à 48 h.' },
   { title: 'Recrutez votre flotte', desc: 'Ajoutez vos livreurs depuis l\'app. Ils sont rattachés à votre compte et opérationnels immédiatement.' },
   { title: 'Suivez et encaissez', desc: 'Tableau de bord en temps réel : courses, performances et commissions sur chaque livraison de votre flotte.' },
-]
+];
 
-export default function App() {
-  const [activeTab, setActiveTab] = useState('client')
-  const stepsMap = { client: clientSteps, driver: driverSteps, chef: chefSteps }
-  const steps = stepsMap[activeTab] ?? clientSteps
+const galleryItems = [
+  { 
+    image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=900&auto=format&fit=crop&q=85', 
+    text: '< 45 min · Point à point' 
+  },
+  { 
+    image: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85', 
+    text: '100% · Traçabilité GPS' 
+  },
+  { 
+    image: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85', 
+    text: 'Impact · Revenus dignes' 
+  },
+  { 
+    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900&auto=format&fit=crop&q=85', 
+    text: '< 45 min · Enlèvement Express' 
+  },
+  { 
+    image: 'https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?w=900&auto=format&fit=crop&q=85', 
+    text: '100% · Suivi direct 7j/7' 
+  },
+  { 
+    image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=900&auto=format&fit=crop&q=85', 
+    text: 'Impact · Flotte valorisée' 
+  },
+];
+
+export default function Home() {
+  const [activeTab, setActiveTab] = useState('client');
+  const stepsMap = { client: clientSteps, driver: driverSteps, chef: chefSteps };
+  const steps = stepsMap[activeTab] ?? clientSteps;
 
   const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", background: C.dark, color: C.text, overflowX: 'hidden' }}>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: C.dark, color: C.text, overflowX: 'clip' }}>
       <style>{`
         .fleet-btn:hover { border-color: rgba(0,210,255,0.7) !important; background: rgba(0,210,255,0.18) !important; }
         .card-hover:hover { border-color: rgba(0,210,255,0.4) !important; transform: translateY(-3px); }
@@ -73,20 +109,73 @@ export default function App() {
         }
       `}</style>
 
-      {/* ── HERO ── */}
+      {/* ── HERO HOMEPAGE ── */}
+      <HeroHomePage
+        title="DEM LIVRAISON"
+        subtitle="Livraison express à moto partout au Sénégal"
+        image="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=1920&auto=format&fit=crop&q=85"
+      />
+
+      {/* ── MISSION ── */}
+      <Mission />
+
+      {/* ── VISUAL GALLERY SHOWCASE ── */}
+      <section className="relative w-full py-20 px-4 overflow-hidden border-t border-b border-slate-200" style={{ background: '#FFFFFF' }}>
+        <div className="max-w-5xl mx-auto text-center mb-8">
+          <SectionHeading
+            title="DEM en"
+            highlight="action"
+            subtitle="Nos 3 Piliers Clés"
+            titleColor="text-[#021520]"
+            highlightClassName="text-[#0086C8]"
+            scriptColor="text-[#0086C8]"
+            titleSize="text-3xl md:text-5xl"
+            subtitleSize="text-xl md:text-2xl lg:text-3xl"
+          />
+          <p className="text-slate-600 mt-2 text-sm md:text-base max-w-md mx-auto">
+            &lt; 45 min point à point · 100% traçabilité GPS · Impact & revenus dignes
+          </p>
+        </div>
+
+        <div className="w-full relative" style={{ height: '560px' }}>
+          <CircularGallery
+            items={galleryItems}
+            bend={1.2}
+            textColor="#021520"
+            borderRadius={0}
+            font="bold 28px Inter, sans-serif"
+            scrollSpeed={2}
+            scrollEase={0.05}
+          />
+        </div>
+      </section>
+
+      {/* ── DELIVERY JOURNEY ── */}
+      <DeliveryJourney />
+
+      {/* ── HORIZONTAL GALLERY ── */}
+      <HorizontalGallery theme="white" />
+
+      {/* ── SCROLL EXPAND SHOWCASE ── */}
+      <ScrollExpandSection />
+
+
+      {/* ── PARTNERS SECTION ── */}
+      <PartnersSection />
+
+      {/* ── PRESENTATION / APERÇU ── 
       <section data-header-theme="black" style={{
-        minHeight: 'calc(100vh - 80px)',
         background: C.grad,
         display: 'flex', alignItems: 'center',
-        padding: '60px 32px 80px',
+        padding: '80px 32px',
         position: 'relative', overflow: 'hidden',
       }}>
-        {/* Déco arrière-plan */}
+        {/* Déco arrière-plan 
         <div style={{ position: 'absolute', top: -100, right: -100, width: 500, height: 500, borderRadius: '50%', background: 'rgba(255,255,255,0.06)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: -150, left: -100, width: 400, height: 400, borderRadius: '50%', background: 'rgba(0,0,0,0.1)', pointerEvents: 'none' }} />
 
         <div className="hero-inner" style={{ maxWidth: 1100, margin: '0 auto', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 48 }}>
-          {/* Texte */}
+          {/* Texte 
           <div className="hero-text" style={{ maxWidth: 560 }}>
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -97,10 +186,10 @@ export default function App() {
               Disponible maintenant à Dakar
             </div>
 
-            <h1 className="hero-title" style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: 18 }}>
+            <h2 className="hero-title" style={{ fontSize: 'clamp(2rem, 5vw, 3.4rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: 18 }}>
               Livraison express,<br />
               <span style={{ color: 'rgba(255,255,255,0.85)' }}>partout au Sénégal</span>
-            </h1>
+            </h2>
 
             <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.8)', marginBottom: 36, lineHeight: 1.7 }}>
               DEM connecte clients et livreurs pour des livraisons rapides, fiables et traçables. Commandez en un instant, recevez en quelques minutes.
@@ -132,16 +221,16 @@ export default function App() {
               {[['Rapide', 'Livraison en minutes'], ['Fiable', 'Livreurs vérifiés'], ['Local', 'Sénégal d\'abord']].map(([n, l]) => (
                 <div key={n} style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: 22, fontWeight: 900, color: '#fff' }}>{n}</div>
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)', fontWeight: 500, marginTop: 2 }}>{l}</div>
+                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 2 }}>{l}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Phone mockup */}
-          <div className="phone-mockup" style={{ flexShrink: 0 }}>
+          {/* Mockup téléphone 
+          <div className="phone-mockup" style={{ flexShrink: 0, position: 'relative' }}>
             <div style={{
-              width: 240, height: 480,
+              width: 260, height: 480,
               background: 'rgba(255,255,255,0.12)',
               borderRadius: 36,
               border: '2px solid rgba(255,255,255,0.25)',
@@ -180,17 +269,21 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── FEATURES ── */}
+      {/* ── FEATURES ── *
       <section id="features" data-header-theme="black" className="section-pad" style={{ padding: '96px 32px', background: C.gradDark }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <span style={{
-              display: 'inline-block', background: 'rgba(0,210,255,0.15)', border: '1px solid rgba(0,210,255,0.3)',
-              color: C.cyan, borderRadius: 100, padding: '4px 14px',
-              fontSize: 11, fontWeight: 700, letterSpacing: 1, marginBottom: 14, textTransform: 'uppercase',
-            }}>Fonctionnalités</span>
-            <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, marginBottom: 12 }}>Tout ce qu'il vous faut</h2>
-            <p style={{ color: C.muted, fontSize: 15, maxWidth: 500, margin: '0 auto' }}>Une expérience pensée pour le Sénégal, simple et efficace.</p>
+          <div className="text-center mb-14">
+            <SectionHeading
+              title="Tout ce qu'il"
+              highlight="vous faut"
+              subtitle="Fonctionnalités"
+              titleColor="text-white"
+              highlightClassName="text-transparent bg-clip-text bg-gradient-to-r from-[#00D2FF] to-[#00E08C]"
+              scriptColor="text-[#00D2FF]"
+              titleSize="text-3xl md:text-5xl"
+              subtitleSize="text-xl md:text-2xl lg:text-3xl"
+            />
+            <p className="text-slate-400 mt-3 text-sm md:text-base max-w-lg mx-auto">Une expérience pensée pour le Sénégal, simple et efficace.</p>
           </div>
           <div className="grid3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: 18 }}>
             {features.map(f => (
@@ -209,7 +302,7 @@ export default function App() {
             ))}
           </div>
 
-          {/* ── Chef de flotte highlight ── */}
+          {/* ── Chef de flotte highlight ── *
           <div style={{ marginTop: 40, borderRadius: 24, overflow: 'hidden', border: '1px solid rgba(0,210,255,0.2)' }}>
             <div style={{
               background: 'rgba(0,210,255,0.06)',
@@ -247,18 +340,25 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ── */}
+      {/* ── HOW IT WORKS ── *
       <section id="how" data-header-theme="black" className="section-pad" style={{ padding: '96px 32px', background: C.grad, textAlign: 'center' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <span style={{
-            display: 'inline-block', background: 'rgba(255,255,255,0.15)', borderRadius: 100, padding: '4px 14px',
-            fontSize: 11, fontWeight: 700, letterSpacing: 1, marginBottom: 14, textTransform: 'uppercase',
-          }}>Comment ça marche</span>
-          <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, marginBottom: 12 }}>Simple en 3 étapes</h2>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 15, marginBottom: 40 }}>Que vous soyez client ou livreur, DEM est fait pour vous.</p>
+          <div className="mb-10">
+            <SectionHeading
+              title="Simple en"
+              highlight="3 étapes"
+              subtitle="Comment ça marche"
+              titleColor="text-white"
+              highlightClassName="text-white underline decoration-[#00D2FF] decoration-2 underline-offset-4"
+              scriptColor="text-white/90"
+              titleSize="text-3xl md:text-5xl"
+              subtitleSize="text-xl md:text-2xl lg:text-3xl"
+            />
+            <p className="text-white/80 text-sm md:text-base mt-3 max-w-lg mx-auto">Que vous soyez client ou livreur, DEM est fait pour vous.</p>
+          </div>
 
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 40, flexWrap: 'wrap' }}>
-            {[['client','Je suis client'],['driver','Je suis livreur'],['chef','Je suis chef de flotte']].map(([v,l]) => (
+            {[['client', 'Je suis client'], ['driver', 'Je suis livreur'], ['chef', 'Je suis chef de flotte']].map(([v, l]) => (
               <button key={v} onClick={() => setActiveTab(v)} style={{
                 padding: '10px 24px', borderRadius: 100, fontWeight: 600, fontSize: 14, cursor: 'pointer',
                 border: activeTab === v ? '1px solid transparent' : '1px solid rgba(255,255,255,0.25)',
@@ -288,8 +388,11 @@ export default function App() {
         </div>
       </section>
 
+      {/* ── CONTACT CTA SECTION (Watermark Background) ── */}
+      <ContactCTA theme="white" />
+
       {/* ── DOWNLOAD ── */}
-      <section id="download" data-header-theme="black" className="section-pad" style={{ padding: '96px 32px', background: C.gradDark }}>
+      {/* <section id="download" data-header-theme="black" className="section-pad" style={{ padding: '96px 32px', background: C.gradDark }}>
         <div className="download-box" style={{
           maxWidth: 680, margin: '0 auto', textAlign: 'center',
           background: 'rgba(0,210,255,0.08)', border: '1px solid rgba(0,210,255,0.2)',
@@ -297,17 +400,21 @@ export default function App() {
           display: 'flex', flexDirection: 'column', alignItems: 'center',
         }}>
           <img src="/logo.png" alt="DEM" style={{ width: 80, height: 80, borderRadius: 20, marginBottom: 20, display: 'block' }} />
-          <span style={{
-            display: 'inline-block', background: 'rgba(0,210,255,0.15)', border: '1px solid rgba(0,210,255,0.3)',
-            color: C.cyan, borderRadius: 100, padding: '4px 14px',
-            fontSize: 11, fontWeight: 700, letterSpacing: 1, marginBottom: 16, textTransform: 'uppercase',
-          }}>Application mobile</span>
-          <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, marginBottom: 12 }}>Téléchargez DEM</h2>
+          <SectionHeading
+            title="Téléchargez"
+            highlight="DEM"
+            subtitle="Application mobile"
+            titleColor="text-white"
+            highlightClassName="text-transparent bg-clip-text bg-gradient-to-r from-[#00D2FF] to-[#00E08C]"
+            scriptColor="text-[#00D2FF]"
+            titleSize="text-3xl md:text-5xl"
+            subtitleSize="text-xl md:text-2xl lg:text-3xl"
+          />
           <p style={{ color: C.muted, fontSize: 15, marginBottom: 36 }}>
             Disponible sur iOS et Android.
           </p>
           <div className="store-btns" style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-            {/* Google Play — disponible */}
+            {/* Google Play *
             <a
               href="https://play.google.com/store/apps/details?id=sn.dem.demapp"
               target="_blank"
@@ -321,17 +428,17 @@ export default function App() {
               }}
             >
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                <path d="M3.18 1.07C2.76 1.3 2.5 1.75 2.5 2.3v19.4c0 .55.26 1 .68 1.23l.1.06 10.87-10.87v-.25L3.28 1.01l-.1.06z" fill="#4285F4"/>
-                <path d="M17.77 15.73l-3.62-3.62v-.25l3.62-3.62.08.05 4.29 2.44c1.23.7 1.23 1.83 0 2.53l-4.29 2.44-.08.03z" fill="#FBBC05"/>
-                <path d="M17.85 15.7L14.15 12 3.18 22.97c.4.43 1.07.48 1.82.05l12.85-7.32" fill="#EA4335"/>
-                <path d="M17.85 8.3L5 .98C4.25.55 3.58.6 3.18 1.03L14.15 12l3.7-3.7z" fill="#34A853"/>
+                <path d="M3.18 1.07C2.76 1.3 2.5 1.75 2.5 2.3v19.4c0 .55.26 1 .68 1.23l.1.06 10.87-10.87v-.25L3.28 1.01l-.1.06z" fill="#4285F4" />
+                <path d="M17.77 15.73l-3.62-3.62v-.25l3.62-3.62.08.05 4.29 2.44c1.23.7 1.23 1.83 0 2.53l-4.29 2.44-.08.03z" fill="#FBBC05" />
+                <path d="M17.85 15.7L14.15 12 3.18 22.97c.4.43 1.07.48 1.82.05l12.85-7.32" fill="#EA4335" />
+                <path d="M17.85 8.3L5 .98C4.25.55 3.58.6 3.18 1.03L14.15 12l3.7-3.7z" fill="#34A853" />
               </svg>
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: 10, color: C.cyan, fontWeight: 700, letterSpacing: 0.5 }}>DISPONIBLE SUR</div>
                 <div style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginTop: 1 }}>Google Play</div>
               </div>
             </a>
-            {/* App Store — disponible */}
+            {/* App Store *
             <a
               href="https://apps.apple.com/us/app/dem-livraison/id6764724342"
               target="_blank"
@@ -345,7 +452,7 @@ export default function App() {
               }}
             >
               <svg width="26" height="26" viewBox="0 0 24 24" fill="white" style={{ flexShrink: 0 }}>
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
               </svg>
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: 10, color: C.cyan, fontWeight: 700, letterSpacing: 0.5 }}>DISPONIBLE SUR</div>
@@ -358,7 +465,7 @@ export default function App() {
             <a href="mailto:contact@dem.sn" style={{ color: C.cyan, fontWeight: 600 }}>Rejoignez la flotte →</a>
           </p>
         </div>
-      </section>
+      </section> */}
     </div>
-  )
+  );
 }
