@@ -7,7 +7,7 @@ export default function Footer() {
     };
 
     return (
-        <footer className="w-full bg-[#081624] text-white border-t border-white/10 relative z-10 overflow-hidden">
+        <footer className="w-full bg-dark text-white border-t border-white/10 relative z-10 overflow-hidden">
             {/* Conteneur Principal */}
             <div className="w-full max-w-[1400px] mx-auto px-6 sm:px-8 md:px-12 lg:px-16 pt-10 md:pt-14 pb-6 relative z-10">
                 
@@ -22,7 +22,7 @@ export default function Footer() {
                                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none text-white uppercase font-sans">
                                     DEM
                                 </h2>
-                                <span className="text-red-500 font-bold text-lg mt-0.5">®</span>
+                                <span className="text-red font-bold text-lg mt-0.5">®</span>
                             </div>
 
                             {/* Badge Logo */}
@@ -61,13 +61,13 @@ export default function Footer() {
                                 <span className="text-white/80 font-sans text-base md:text-lg font-medium tracking-wide">
                                     © {new Date().getFullYear()}
                                 </span>
-                                <div className="w-12 sm:w-16 h-[2px] bg-red-500 rounded-full"></div>
+                                <div className="w-12 sm:w-16 h-[2px] bg-red rounded-full"></div>
                             </div>
 
                             <button 
                                 onClick={scrollToTop}
                                 aria-label="Retour en haut"
-                                className="w-9 h-9 md:w-10 md:h-10 rounded-full border border-white/25 flex items-center justify-center text-white/85 hover:bg-white hover:text-[#081624] hover:border-white transition-all duration-300 cursor-pointer shrink-0 shadow"
+                                className="w-9 h-9 md:w-10 md:h-10 rounded-full border border-white/25 flex items-center justify-center text-white/85 hover:bg-white hover:text-dark hover:border-white transition-all duration-300 cursor-pointer shrink-0 shadow"
                             >
                                 <ArrowUp size={18} strokeWidth={2} />
                             </button>
@@ -128,7 +128,7 @@ export default function Footer() {
                                         href="https://facebook.com" 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:border-white hover:bg-white hover:text-[#081624] transition-all"
+                                        className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:border-white hover:bg-white hover:text-dark transition-all"
                                         aria-label="Facebook"
                                     >
                                         <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
@@ -140,7 +140,7 @@ export default function Footer() {
                                         href="https://instagram.com" 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:border-white hover:bg-white hover:text-[#081624] transition-all"
+                                        className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:border-white hover:bg-white hover:text-dark transition-all"
                                         aria-label="Instagram"
                                     >
                                         <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
@@ -152,7 +152,7 @@ export default function Footer() {
                                         href="https://tiktok.com" 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:border-white hover:bg-white hover:text-[#081624] transition-all"
+                                        className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:border-white hover:bg-white hover:text-dark transition-all"
                                         aria-label="TikTok"
                                     >
                                         <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">

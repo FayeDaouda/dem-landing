@@ -11,7 +11,7 @@ export default function Contact() {
   return (
     <div className="w-full bg-[#021520] text-white min-h-screen pt-24 pb-20 font-sans">
       <section className="max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16 pt-12 pb-16">
-        
+
         {/* En-tête */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan/10 border border-cyan/30 text-cyan text-xs font-semibold uppercase tracking-wider mb-6">
           <span>📞</span> Support & Assistance 7j/7
@@ -24,14 +24,14 @@ export default function Contact() {
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          
+
           {/* Coordonnées */}
           <div className="lg:col-span-5 space-y-6">
-            
+
             {/* WhatsApp Box */}
-            <a 
-              href="https://wa.me/221770000000" 
-              target="_blank" 
+            <a
+              href="https://wa.me/221770000000"
+              target="_blank"
               rel="noopener noreferrer"
               className="p-6 rounded-2xl bg-gradient-to-r from-[#00E08C]/15 to-transparent border border-[#00E08C]/30 flex items-center justify-between group hover:border-[#00E08C] transition-all block"
             >
