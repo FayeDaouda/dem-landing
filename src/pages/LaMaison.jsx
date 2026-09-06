@@ -38,7 +38,7 @@ const IngredientsDetailSection = () => (
           <div className="flex flex-col gap-3">
             <h3 className="text-xl font-bold text-cyan">Dispatch millimétré</h3>
             <p className="text-balance text-sm text-white/70 leading-relaxed">
-              Notre algorithme prédictif attribue chaque course au livreur le plus proche pour une prise en charge en moins de 10 minutes chrono.
+              Notre algorithme prédictif attribue chaque course au coursier le plus proche pour une prise en charge en moins de 10 minutes chrono.
             </p>
           </div>
           <div className="flex flex-col gap-3">
@@ -156,7 +156,7 @@ export default function LaMaison() {
 
       {/* ── Page Hero Section ── */}
       <PageHeroSection
-        contentMiniBar="L'ÂME DE LA MAISON"
+        contentMiniBar="À PROPOS DE DEM"
         firstTitle="Plus qu'une plateforme,"
         secondTitle="Une révolution de la mobilité et de la livraison urbaine à Dakar."
       />
@@ -169,7 +169,7 @@ export default function LaMaison() {
         image="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=900&auto=format&fit=crop&q=85"
         content={[
           "Tout a commencé dans le tumulte des artères de Dakar : des retards constants, un manque d'informations fiables sur l'acheminement des colis et des commerçants ralentis dans leur essor quotidien.",
-          "Fascinés par le potentiel de la technologie pour transformer le quotidien, nous avons conçu DEM (Delivery Express Mobility) comme un pont fluide entre les marchands, les particuliers et des livreurs formés à l'excellence.",
+          "Fascinés par le potentiel de la technologie pour transformer le quotidien, nous avons conçu DEM (Delivery Express Mobility) comme un pont fluide entre les marchands, les particuliers et des coursiers formés à l'excellence.",
           "Chaque course DEM porte en elle cette promesse fondatrice : offrir une expérience de livraison transparente, respectueuse du temps de chacun et profondément humaine."
         ]}
       />
@@ -197,7 +197,7 @@ export default function LaMaison() {
         image="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=900&auto=format&fit=crop&q=85"
         content={[
           "Dans un univers logistique souvent impersonnel, nous faisons le choix du soin et de la responsabilité. Chaque colis confié est traité avec la même exigence qu'un objet précieux.",
-          "Nos livreurs et chefs de flotte ne sont pas de simples numéros : ce sont les ambassadeurs de vos marques, formés à la courtoisie, à la sécurité routière et à l'usage des outils numériques.",
+          "Nos coursiers et chefs de flotte ne sont pas de simples numéros : ce sont les ambassadeurs de vos marques, formés à la courtoisie, à la sécurité routière et à l'usage des outils numériques.",
           "L'excellence n'est pas un hasard, c'est une discipline quotidienne qui bâtit une confiance inaltérable entre acheteurs et vendeurs."
         ]}
       />
@@ -366,7 +366,7 @@ export default function LaMaison() {
       {/* ── CTA Final / Info ── */}
       <ContactCTA
         theme="white"
-        watermark="MAISON"
+        watermark="DEM"
         title="Rejoignez la nouvelle vision de la"
         highlight="mobilité urbaine."
         subtitle="L'Aventure DEM"
@@ -374,7 +374,7 @@ export default function LaMaison() {
         primaryBtnText="Explorer les services"
         primaryBtnLink="/services"
         primaryBtnIcon="arrow"
-        secondaryBtnText="Écrire à la Maison"
+        secondaryBtnText="Contacter l'équipe"
         secondaryBtnLink="/contact"
         bullets={[
           "Présent sur l'ensemble de Dakar",

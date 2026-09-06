@@ -14,11 +14,6 @@ export default function ContactCTA({
   primaryBtnIcon = "download",
   secondaryBtnText = "Prendre contact",
   secondaryBtnLink = "mailto:contact@dem.sn",
-  bullets = [
-    "Support client 7j/7",
-    "Dakar & banlieue",
-    "Prise en charge instantanée"
-  ]
 }) {
   const isLight = theme === 'white' || theme === 'light';
 
@@ -86,24 +81,6 @@ export default function ContactCTA({
           </a>
         </div>
 
-        {/* Trust bullet footer */}
-        {bullets && bullets.length > 0 && (
-          <div 
-            className={`mt-14 pt-8 border-t flex flex-wrap justify-center items-center gap-6 md:gap-8 text-xs font-semibold uppercase tracking-wider ${
-              isLight ? 'border-slate-200 text-slate-500' : 'border-white/[0.08] text-slate-400'
-            }`}
-          >
-            {bullets.map((bullet, idx) => (
-              <React.Fragment key={idx}>
-                {idx > 0 && <span>·</span>}
-                <span className="flex items-center gap-2">
-                  {idx === 0 && <span className="w-2 h-2 bg-[#00E08C] animate-pulse" />}
-                  {bullet}
-                </span>
-              </React.Fragment>
-            ))}
-          </div>
-        )}
       </div>
     </section>
   );

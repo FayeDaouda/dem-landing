@@ -29,7 +29,7 @@ const DEFAULT_DEM_SERVICES = [
     category: 'Impact Social',
     badge: 'Chauffeurs & Flotte',
     image: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?q=80&w=1200&auto=format&fit=crop',
-    description: 'Revenus équitables et garantis pour nos livreurs. Formations, équipements de sécurité certifiés et opportunités d’évolution en chef de flotte.',
+    description: 'Revenus équitables et garantis pour nos coursiers. Formations, équipements de sécurité certifiés et opportunités d’évolution en chef de flotte.',
   },
   {
     slug: 'solution-entreprises',

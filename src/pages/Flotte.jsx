@@ -92,7 +92,7 @@ export default function Flotte() {
                   Vous gérez vos conducteurs
                 </h3>
                 <p className="text-sm text-slate-600 leading-relaxed mb-8 font-['Poppins',sans-serif]">
-                  Idéal si vous disposez déjà de vos livreurs. DEM vous fournit la technologie de dispatch, l'accès au volume de commandes de Dakar et le dashboard de télématique.
+                  Idéal si vous disposez déjà de vos coursiers. DEM vous fournit la technologie de dispatch, l'accès au volume de commandes de Dakar et le dashboard de télématique.
                 </p>
 
                 <ul className="space-y-3 pt-6 border-t border-slate-100 text-xs text-dark font-medium font-['Poppins',sans-serif]">
@@ -364,7 +364,7 @@ export default function Flotte() {
               },
               {
                 q: "Comment sont sécurisées les recettes Cash on Delivery (COD) ?",
-                a: "Les livreurs versent les fonds encaissés quotidiennement via nos points relais sécurisés ou par code OTP Wave. Vous disposez d'un relevé en temps réel de chaque encaissement sur votre cockpit gestionnaire."
+                a: "Les coursiers versent les fonds encaissés quotidiennement via nos points relais sécurisés ou par code OTP Wave. Vous disposez d'un relevé en temps réel de chaque encaissement sur votre cockpit gestionnaire."
               }
             ].map((faq, idx) => (
               <div key={idx} className="p-6 lg:p-8 bg-white hover:bg-slate-50 transition-colors">

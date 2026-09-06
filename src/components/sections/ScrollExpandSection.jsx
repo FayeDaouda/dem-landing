@@ -10,17 +10,10 @@ export default function ScrollExpandSection() {
         alt="DEM Livraison Express au Sénégal"
         title="LIVRAISON EN TEMPS RÉEL"
         scrollHint="Faites défiler pour explorer"
-        useWindowScroll
-        startWidth={42}
-        startHeight={58}
-        startRadius={24}
-        endRadius={0}
-        mediaZoom={1.35}
-        scrollDistance={1.2}
-        holdDistance={0.35}
-        smoothing={0.1}
+        startWidth={44}
+        startHeight={56}
+        mediaZoom={1.3}
         overlayScrim={0.85}
-        enabled
       >
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-center text-center max-w-5xl mx-auto text-white">

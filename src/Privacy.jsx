@@ -9,7 +9,7 @@ const sections = [
   {
     title: '1. Qui sommes-nous ?',
     content: (
-      <p>DEM (Delivery Express Mobility) est une application mobile de mise en relation entre clients et livreurs/chauffeurs au Sénégal. Nous nous engageons à protéger vos données personnelles conformément aux lois applicables.</p>
+      <p>DEM (Delivery Express Mobility) est une application mobile de mise en relation entre clients et coursiers/chauffeurs au Sénégal. Nous nous engageons à protéger vos données personnelles conformément aux lois applicables.</p>
     ),
   },
   {

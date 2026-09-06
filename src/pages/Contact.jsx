@@ -102,7 +102,7 @@ export default function Contact() {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-white/70 mb-2">Objet du message</label>
                   <select className="w-full px-4 py-3 rounded-xl bg-[#081624] border border-white/15 text-white focus:outline-none focus:border-cyan text-sm">
                     <option value="general">Renseignement général</option>
-                    <option value="livreur">Devenir Livreur DEM</option>
+                    <option value="livreur">Devenir Coursier DEM</option>
                     <option value="entreprise">Partenariat Entreprise / Marchand</option>
                     <option value="flotte">Programme Chef de Flotte</option>
                     <option value="support">Suivi de commande & Réclamation</option>

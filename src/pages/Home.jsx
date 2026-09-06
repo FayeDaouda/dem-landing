@@ -23,29 +23,29 @@ const C = {
 };
 
 const features = [
-  { icon: '⚡', title: 'Livraison ultra-rapide', desc: 'Nos livreurs à moto sont proches de vous. Votre colis arrive en quelques minutes.' },
-  { icon: '📍', title: 'Suivi en temps réel', desc: 'Suivez votre livreur sur la carte en direct, de la prise en charge jusqu\'à la livraison.' },
-  { icon: '💳', title: 'Paiement simple', desc: 'Payez via Mobile Money ou en espèces. Simple et sécurisé.' },
-  { icon: '🛡️', title: 'Livreurs vérifiés', desc: 'Chaque livreur est identifié et validé avant de rejoindre la plateforme DEM.' },
-  { icon: '🔔', title: 'Notifications instant', desc: 'Recevez des alertes à chaque étape de votre livraison.' },
-  { icon: '🌍', title: 'Couverture locale', desc: 'DEM couvre Dakar et ses environs, expansion en cours.' },
+  { title: 'Livraison ultra-rapide', desc: 'Nos coursiers à moto sont proches de vous. Votre colis arrive en quelques minutes.' },
+  { title: 'Suivi en temps réel', desc: 'Suivez votre coursier sur la carte en direct, de la prise en charge jusqu\'à la livraison.' },
+  { title: 'Paiement simple', desc: 'Payez via Mobile Money ou en espèces. Simple et sécurisé.' },
+  { title: 'Coursiers vérifiés', desc: 'Chaque coursier est identifié et validé avant de rejoindre la plateforme DEM.' },
+  { title: 'Notifications instant', desc: 'Recevez des alertes à chaque étape de votre livraison.' },
+  { title: 'Couverture locale', desc: 'DEM couvre Dakar et ses environs, expansion en cours.' },
 ];
 
 const clientSteps = [
   { title: 'Créez votre commande', desc: 'Indiquez l\'adresse de départ et d\'arrivée directement sur la carte.' },
-  { title: 'Un livreur accepte', desc: 'Un livreur proche de vous accepte votre commande en quelques secondes.' },
-  { title: 'Suivez et recevez', desc: 'Suivez votre livreur en temps réel et recevez votre colis.' },
+  { title: 'Un coursier accepte', desc: 'Un coursier proche de vous accepte votre commande en quelques secondes.' },
+  { title: 'Suivez et recevez', desc: 'Suivez votre coursier en temps réel et recevez votre colis.' },
 ];
 
 const driverSteps = [
-  { title: 'Inscrivez-vous', desc: 'Créez votre compte livreur avec vos informations et votre véhicule.' },
+  { title: 'Inscrivez-vous', desc: 'Créez votre compte coursier avec vos informations et votre véhicule.' },
   { title: 'Acceptez des courses', desc: 'Activez votre disponibilité et recevez des courses près de vous.' },
   { title: 'Gagnez de l\'argent', desc: 'Effectuez les livraisons et recevez vos revenus directement.' },
 ];
 
 const chefSteps = [
   { title: 'Soumettez votre dossier', desc: 'Téléversez votre CNI et vos informations. Validation par notre équipe sous 24 à 48 h.' },
-  { title: 'Recrutez votre flotte', desc: 'Ajoutez vos livreurs depuis l\'app. Ils sont rattachés à votre compte et opérationnels immédiatement.' },
+  { title: 'Recrutez votre flotte', desc: 'Ajoutez vos coursiers depuis l\'app. Ils sont rattachés à votre compte et opérationnels immédiatement.' },
   { title: 'Suivez et encaissez', desc: 'Tableau de bord en temps réel : courses, performances et commissions sur chaque livraison de votre flotte.' },
 ];
 
@@ -119,6 +119,17 @@ export default function Home() {
       {/* ── MISSION ── */}
       <Mission />
 
+      
+
+      {/* ── DELIVERY JOURNEY ── */}
+      <DeliveryJourney />
+
+      {/* ── HORIZONTAL GALLERY ── */}
+      <HorizontalGallery theme="white" />
+
+      {/* ── SCROLL EXPAND SHOWCASE ── */}
+      <ScrollExpandSection />
+
       {/* ── VISUAL GALLERY SHOWCASE ── */}
       <section className="relative w-full py-20 px-4 overflow-hidden border-t border-b border-slate-200" style={{ background: '#FFFFFF' }}>
         <div className="max-w-5xl mx-auto text-center mb-8">
@@ -132,9 +143,6 @@ export default function Home() {
             titleSize="text-3xl md:text-5xl"
             subtitleSize="text-xl md:text-2xl lg:text-3xl"
           />
-          <p className="text-slate-600 mt-2 text-sm md:text-base max-w-md mx-auto">
-            &lt; 45 min point à point · 100% traçabilité GPS · Impact & revenus dignes
-          </p>
         </div>
 
         <div className="w-full relative" style={{ height: '560px' }}>
@@ -146,19 +154,11 @@ export default function Home() {
             font="bold 28px Inter, sans-serif"
             scrollSpeed={2}
             scrollEase={0.05}
+            autoRotate={true}
+            autoRotateSpeed={0.8}
           />
         </div>
       </section>
-
-      {/* ── DELIVERY JOURNEY ── */}
-      <DeliveryJourney />
-
-      {/* ── HORIZONTAL GALLERY ── */}
-      <HorizontalGallery theme="white" />
-
-      {/* ── SCROLL EXPAND SHOWCASE ── */}
-      <ScrollExpandSection />
-
 
       {/* ── PARTNERS SECTION ── */}
       <PartnersSection />
@@ -192,7 +192,7 @@ export default function Home() {
             </h2>
 
             <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.8)', marginBottom: 36, lineHeight: 1.7 }}>
-              DEM connecte clients et livreurs pour des livraisons rapides, fiables et traçables. Commandez en un instant, recevez en quelques minutes.
+              DEM connecte clients et coursiers pour des livraisons rapides, fiables et traçables. Commandez en un instant, recevez en quelques minutes.
             </p>
 
             <div className="hero-btns" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 48 }}>
@@ -218,7 +218,7 @@ export default function Home() {
             </div>
 
             <div className="hero-stats" style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
-              {[['Rapide', 'Livraison en minutes'], ['Fiable', 'Livreurs vérifiés'], ['Local', 'Sénégal d\'abord']].map(([n, l]) => (
+              {[['Rapide', 'Livraison en minutes'], ['Fiable', 'Coursiers vérifiés'], ['Local', 'Sénégal d\'abord']].map(([n, l]) => (
                 <div key={n} style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: 22, fontWeight: 900, color: '#fff' }}>{n}</div>
                   <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 2 }}>{l}</div>
@@ -249,7 +249,7 @@ export default function Home() {
                 <div style={{ fontSize: 12, fontWeight: 600 }}>Plateau, Dakar</div>
               </div>
               <div style={{ width: '100%', background: 'rgba(255,255,255,0.1)', borderRadius: 14, padding: '12px 14px' }}>
-                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginBottom: 6 }}>LIVREUR EN ROUTE</div>
+                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginBottom: 6 }}>COURSIER EN ROUTE</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>🏍</div>
                   <div>
@@ -320,10 +320,10 @@ export default function Home() {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
                 {[
-                  { icon: '👥', title: 'Gérez votre équipe', desc: 'Recrutez vos livreurs, suivez leur activité et gérez leur disponibilité depuis un seul endroit.' },
-                  { icon: '💰', title: 'Revenus sur votre flotte', desc: 'Percevez une commission automatique sur chaque course effectuée par vos livreurs.' },
-                  { icon: '📊', title: 'Tableau de bord dédié', desc: 'Statistiques en temps réel : courses, revenus, classement de vos livreurs.' },
-                  { icon: '🔗', title: 'Intégration complète', desc: 'Vos livreurs sont rattachés à vous dès l\'inscription — aucune configuration supplémentaire.' },
+                  { icon: '👥', title: 'Gérez votre équipe', desc: 'Recrutez vos coursiers, suivez leur activité et gérez leur disponibilité depuis un seul endroit.' },
+                  { icon: '💰', title: 'Revenus sur votre flotte', desc: 'Percevez une commission automatique sur chaque course effectuée par vos coursiers.' },
+                  { icon: '📊', title: 'Tableau de bord dédié', desc: 'Statistiques en temps réel : courses, revenus, classement de vos coursiers.' },
+                  { icon: '🔗', title: 'Intégration complète', desc: 'Vos coursiers sont rattachés à vous dès l\'inscription — aucune configuration supplémentaire.' },
                 ].map(item => (
                   <div key={item.title} style={{
                     background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: '20px 18px',
@@ -354,11 +354,11 @@ export default function Home() {
               titleSize="text-3xl md:text-5xl"
               subtitleSize="text-xl md:text-2xl lg:text-3xl"
             />
-            <p className="text-white/80 text-sm md:text-base mt-3 max-w-lg mx-auto">Que vous soyez client ou livreur, DEM est fait pour vous.</p>
+            <p className="text-white/80 text-sm md:text-base mt-3 max-w-lg mx-auto">Que vous soyez client ou coursier, DEM est fait pour vous.</p>
           </div>
 
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 40, flexWrap: 'wrap' }}>
-            {[['client', 'Je suis client'], ['driver', 'Je suis livreur'], ['chef', 'Je suis chef de flotte']].map(([v, l]) => (
+            {[['client', 'Je suis client'], ['driver', 'Je suis coursier'], ['chef', 'Je suis chef de flotte']].map(([v, l]) => (
               <button key={v} onClick={() => setActiveTab(v)} style={{
                 padding: '10px 24px', borderRadius: 100, fontWeight: 600, fontSize: 14, cursor: 'pointer',
                 border: activeTab === v ? '1px solid transparent' : '1px solid rgba(255,255,255,0.25)',
@@ -461,7 +461,7 @@ export default function Home() {
             </a>
           </div>
           <p style={{ marginTop: 28, fontSize: 13, color: C.muted }}>
-            Vous êtes livreur ?{' '}
+            Vous êtes coursier ?{' '}
             <a href="mailto:contact@dem.sn" style={{ color: C.cyan, fontWeight: 600 }}>Rejoignez la flotte →</a>
           </p>
         </div>

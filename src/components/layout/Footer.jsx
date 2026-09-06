@@ -82,7 +82,7 @@ export default function Footer() {
                                     Découvrir
                                 </span>
                                 <Link to="/" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Accueil</Link>
-                                <Link to="/la-maison" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">La maison</Link>
+                                <Link to="/la-maison" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">À propos</Link>
                                 <Link to="/services" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Services</Link>
                                 <a href="/#download" className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Télécharger</a>
                             </div>
@@ -92,7 +92,7 @@ export default function Footer() {
                                 <span className="text-[10px] tracking-[0.18em] uppercase text-white/50 font-sans font-semibold mb-0.5">
                                     Rejoindre
                                 </span>
-                                <Link to="/livreurs" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Devenir Livreur</Link>
+                                <Link to="/livreurs" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Devenir Coursier</Link>
                                 <Link to="/flotte" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Chef de Flotte</Link>
                                 <Link to="/entreprises" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Entreprises</Link>
                             </div>

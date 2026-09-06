@@ -236,7 +236,7 @@ export default function Livreurs() {
             <MiniTitleWithBar content="COMMENT ÇA MARCHE" />
             <SectionHeading
               align="left"
-              title="Devenir livreur DEM"
+              title="Devenir coursier DEM"
               highlight="en 4 étapes simples"
               subtitle="Parcours d'admission"
               titleColor="text-dark"
@@ -430,14 +430,14 @@ export default function Livreurs() {
         </div>
       </section>
 
-      {/* ── 6. INFO / CTA PERSONNALISÉ LIVREURS ── */}
+      {/* ── 6. INFO / CTA PERSONNALISÉ COURSIERS ── */}
       <ContactCTA
         theme="dark"
-        watermark="LIVREURS"
+        watermark="COURSIERS"
         title="Prêt à prendre la route et"
         highlight="encaisser chaque semaine ?"
         subtitle="Rejoignez la flotte DEM"
-        description="Téléchargez l'application livreur DEM ou déposez votre dossier au siège pour commencer vos premières missions dès aujourd'hui."
+        description="Téléchargez l'application coursier DEM ou déposez votre dossier au siège pour commencer vos premières missions dès aujourd'hui."
         primaryBtnText="Postuler en ligne"
         primaryBtnLink="#postuler"
         primaryBtnIcon="arrow"

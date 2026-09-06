@@ -322,12 +322,16 @@ class App {
             borderRadius = 0,
             font = 'bold 30px Figtree',
             scrollSpeed = 2,
-            scrollEase = 0.05
+            scrollEase = 0.05,
+            autoRotate = true,
+            autoRotateSpeed = 0.6
         }
     ) {
         document.documentElement.classList.remove('no-js');
         this.container = container;
         this.scrollSpeed = scrollSpeed;
+        this.autoRotate = autoRotate;
+        this.autoRotateSpeed = autoRotateSpeed;
         this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
         this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
         this.medias = [];
@@ -411,13 +415,17 @@ class App {
 
     onTouchUp() {
         this.isDown = false;
-        this.onCheck();
+        if (!this.autoRotate) {
+            this.onCheck();
+        }
     }
 
     onWheel(e) {
         const delta = e.deltaY || e.wheelDelta || e.detail;
         this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
-        this.onCheckDebounce();
+        if (!this.autoRotate) {
+            this.onCheckDebounce();
+        }
     }
 
     onCheck() {
@@ -447,8 +455,13 @@ class App {
     }
 
     update() {
+        // Continuous smooth auto-rotation
+        if (this.autoRotate && !this.isDown) {
+            this.scroll.target += this.autoRotateSpeed * 0.04;
+        }
+
         this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
-        const direction = this.scroll.current > this.scroll.last ? 'right' : 'left';
+        const direction = this.scroll.current >= this.scroll.last ? 'right' : 'left';
         if (this.medias) {
             this.medias.forEach(media => media.update(this.scroll, direction));
         }
@@ -498,7 +511,9 @@ export default function CircularGallery({
     borderRadius = 0.05,
     font = 'bold 30px Figtree',
     scrollSpeed = 2,
-    scrollEase = 0.05
+    scrollEase = 0.05,
+    autoRotate = true,
+    autoRotateSpeed = 0.6
 }) {
     const containerRef = useRef(null);
 
@@ -511,12 +526,14 @@ export default function CircularGallery({
             borderRadius,
             font,
             scrollSpeed,
-            scrollEase
+            scrollEase,
+            autoRotate,
+            autoRotateSpeed
         });
         return () => {
             app.destroy();
         };
-    }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
+    }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase, autoRotate, autoRotateSpeed]);
 
     return <div className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing" ref={containerRef} />;
 }
