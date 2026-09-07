@@ -3,9 +3,11 @@ import PageHeroSection from '../components/sections/PageHeroSection.jsx';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../components/atoms/SectionHeading.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
+import PricingDemPro from '../components/sections/PricingDemPro.jsx';
 
 export default function Entreprises() {
   const [submitted, setSubmitted] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState('business');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -122,7 +124,10 @@ export default function Entreprises() {
         </div>
       </section>
 
-      {/* ── 4. FORMULAIRE OUVERTURE COMPTE PRO MARCHAND ── */}
+      {/* ── 4. TARIFICATION & TABLEAU COMPARATIF DEM PRO (AWWWARDS) ── */}
+      <PricingDemPro onSelectPlan={(plan) => setSelectedPlan(plan)} />
+
+      {/* ── 5. FORMULAIRE OUVERTURE COMPTE PRO MARCHAND ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-slate-50" id="demande-pro">
         <div className="max-w-[1000px] mx-auto">
           
@@ -209,13 +214,16 @@ export default function Entreprises() {
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Volume mensuel estimé *
+                      Formule DEM Pro choisie *
                     </label>
-                    <select className="w-full px-4 py-3.5 bg-slate-50 border border-black/15 text-dark focus:outline-none focus:border-cyan-2 text-sm rounded-none">
-                      <option value="1-50">1 à 50 livraisons / mois (Démarrage)</option>
-                      <option value="50-200">50 à 200 livraisons / mois (Régulier)</option>
-                      <option value="200-500">200 à 500 livraisons / mois (Grand volume)</option>
-                      <option value="500+">500+ livraisons / mois (Entreprise clé)</option>
+                    <select
+                      value={selectedPlan}
+                      onChange={(e) => setSelectedPlan(e.target.value)}
+                      className="w-full px-4 py-3.5 bg-slate-50 border border-black/15 text-dark focus:outline-none focus:border-cyan-2 text-sm rounded-none font-semibold"
+                    >
+                      <option value="business">DEM Pro Business (3 000 F/sem) — Le plus choisi</option>
+                      <option value="starter">DEM Pro Starter (2 000 F/sem) — Le tremplin</option>
+                      <option value="premium">DEM Pro Premium (6 000 F/sem) — L'offre complète & API</option>
                     </select>
                   </div>
                 </div>
@@ -264,24 +272,20 @@ export default function Entreprises() {
         </div>
       </section>
 
-      {/* ── 5. SECTION INFO / CTA PERSONNALISÉ ENTREPRISES ── */}
+      {/* ── 6. SECTION INFO & CTA PERSONNALISÉ DEM PRO (PARAMÉTRABLE) ── */}
       <ContactCTA
-        theme="dark"
-        watermark="B2B PRO"
-        title="Accélérez la croissance de vos ventes avec"
-        highlight="la logistique DEM."
-        subtitle="Partenariat Marchands"
-        description="Déléguez vos expéditions à nos coursiers qualifiés et offrez à vos clients l'expérience de livraison Same-Day la plus rapide et fiable du Sénégal."
-        primaryBtnText="Demander une démo API"
+        theme="white"
+        watermark="DEM PRO"
+        subtitle="Accélérez vos ventes"
+        title="Propulsez votre marque avec"
+        highlight="la logistique d'élite."
+        description="Offrez à vos clients l'expérience de livraison Same-Day la plus rapide et fiable de Dakar. Déléguez vos expéditions, sécurisez vos encaissements COD et fidélisez vos acheteurs dès aujourd'hui."
+        primaryBtnText="Ouvrir un compte Pro"
         primaryBtnLink="#demande-pro"
         primaryBtnIcon="arrow"
         secondaryBtnText="Contacter le pôle B2B"
-        secondaryBtnLink="mailto:contact@dem.sn"
-        bullets={[
-          "Reversement COD sous 24h garanti",
-          "Plugins Shopify & WooCommerce",
-          "Tableau de bord de suivi en direct"
-        ]}
+        secondaryBtnLink="mailto:pro@dem.sn"
+        secondaryBtnIcon="phone"
       />
 
     </div>

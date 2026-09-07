@@ -389,7 +389,19 @@ export default function Home() {
       </section>
 
       {/* ── CONTACT CTA SECTION (Watermark Background) ── */}
-      <ContactCTA theme="white" />
+      <ContactCTA
+        theme="white"
+        watermark="CONTACT"
+        subtitle="Contactez-nous"
+        title="Faites le premier pas vers"
+        highlight="l'excellence."
+        description="Que vous soyez un particulier, un commerçant ou une entreprise, profitez du réseau de livraison le plus rapide et fiable de Dakar."
+        primaryBtnText="Télécharger l'application"
+        primaryBtnLink="#download"
+        primaryBtnIcon="download"
+        secondaryBtnText="Prendre contact"
+        secondaryBtnLink="mailto:contact@dem.sn"
+      />
 
       {/* ── DOWNLOAD ── */}
       {/* <section id="download" data-header-theme="black" className="section-pad" style={{ padding: '96px 32px', background: C.gradDark }}>

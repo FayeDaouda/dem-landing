@@ -8,6 +8,19 @@ export default function Flotte() {
   const [activeTab, setActiveTab] = useState('delegue');
   const [openFaq, setOpenFaq] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [motosCount, setMotosCount] = useState(5);
+  const [coursesPerDay, setCoursesPerDay] = useState(6);
+  const [formMotos, setFormMotos] = useState(5);
+
+  // Modèle financier Chef de Flotte DEM : 1 500 FCFA par course / livraison
+  const PRICE_PER_DELIVERY = 1500;
+  const WORKING_DAYS_MONTH = 26; // Base standard 26 jours ouvrés par mois
+
+  const totalCoursesDaily = motosCount * coursesPerDay;
+  const estimatedDaily = totalCoursesDaily * PRICE_PER_DELIVERY;
+  const estimatedWeekly = estimatedDaily * 6;
+  const estimatedMonthly = estimatedDaily * WORKING_DAYS_MONTH;
+  const estimatedPerMotoMonthly = coursesPerDay * PRICE_PER_DELIVERY * WORKING_DAYS_MONTH;
 
   const toggleFaq = (idx) => {
     setOpenFaq(openFaq === idx ? null : idx);
@@ -16,6 +29,14 @@ export default function Flotte() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
+  };
+
+  const handleApplyFromSimulator = () => {
+    setFormMotos(motosCount);
+    const formElement = document.getElementById('enregistrer');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -59,7 +80,241 @@ export default function Flotte() {
         </div>
       </section>
 
-      {/* ── 3. MATRICE COMPARATIVE : 3 MODÈLES DE PARTENARIAT FLOTTE ── */}
+      {/* ── 3. SECTION SIMULATEUR DE RENDEMENT FLOTTE ── */}
+      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white" id="simulateur">
+        <div className="max-w-[1400px] mx-auto">
+          
+          <div className="mb-16">
+            <MiniTitleWithBar content="SIMULATEUR DE RENTABILITÉ FLOTTE" />
+            <SectionHeading
+              align="left"
+              title="Estimez les revenus"
+              highlight="de votre parc deux-roues"
+              subtitle="Transparence & Modèle Économique DEM"
+              titleColor="text-dark"
+              highlightColor="var(--color-cyan-2, #0086C8)"
+              scriptColor="text-cyan-2"
+              titleSize="text-3xl md:text-5xl lg:text-6xl"
+              className="mt-4"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 border border-black/10">
+            
+            {/* Colonne Gauche : Le Calculateur Dynamique Sharp */}
+            <div className="lg:col-span-7 p-8 lg:p-14 bg-dark text-white flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10">
+              <div>
+                {/* Header HUD Box */}
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-8 pb-6 border-b border-white/10">
+                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-cyan">
+                    // SIMULATEUR FLOTTE B2B
+                  </span>
+                  <span className="text-xs px-3 py-1 bg-cyan/15 border border-cyan/30 text-cyan font-bold uppercase tracking-wider font-mono">
+                    Tarif DEM : 1 500 FCFA / livraison
+                  </span>
+                </div>
+
+                {/* Contrôle 1 : Nombre de motos */}
+                <div className="mb-8">
+                  <div className="flex justify-between items-end mb-4">
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-widest text-cyan font-['Raleway',sans-serif] block mb-1">
+                        Taille du parc
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-bold text-white">Nombre de motos</h3>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-cyan font-['DM_Sans',sans-serif]">
+                        {motosCount}
+                      </span>
+                      <span className="text-xs text-white/60 block font-mono">
+                        {motosCount > 1 ? 'motos en exploitation' : 'moto en exploitation'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <input
+                    type="range"
+                    min="1"
+                    max="50"
+                    value={motosCount}
+                    onChange={(e) => setMotosCount(Number(e.target.value))}
+                    className="w-full accent-cyan cursor-pointer h-2 bg-white/20 rounded-none"
+                  />
+
+                  {/* Sélecteurs rapides de parc */}
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {[1, 3, 5, 10, 15, 20, 30, 50].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => setMotosCount(preset)}
+                        className={`text-[11px] font-mono font-bold px-2.5 py-1 transition-colors cursor-pointer border ${
+                          motosCount === preset
+                            ? 'bg-cyan text-dark border-cyan'
+                            : 'bg-white/5 text-white/70 border-white/15 hover:border-cyan hover:text-white'
+                        }`}
+                      >
+                        {preset} {preset > 1 ? 'motos' : 'moto'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Contrôle 2 : Courses par jour et par moto */}
+                <div className="mb-10">
+                  <div className="flex justify-between items-end mb-4">
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-widest text-cyan font-['Raleway',sans-serif] block mb-1">
+                        Activité journalière moyenne
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-bold text-white">Courses / jour par moto</h3>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-cyan font-['DM_Sans',sans-serif]">
+                        {coursesPerDay}
+                      </span>
+                      <span className="text-xs text-white/60 block font-mono">
+                        courses / moto / jour
+                      </span>
+                    </div>
+                  </div>
+
+                  <input
+                    type="range"
+                    min="2"
+                    max="15"
+                    value={coursesPerDay}
+                    onChange={(e) => setCoursesPerDay(Number(e.target.value))}
+                    className="w-full accent-cyan cursor-pointer h-2 bg-white/20 rounded-none"
+                  />
+                  <div className="flex justify-between text-[11px] text-white/50 uppercase tracking-wider font-semibold mt-3 font-['Raleway',sans-serif]">
+                    <span>2 courses</span>
+                    <span className="text-cyan font-bold">6 courses (Standard DEM)</span>
+                    <span>15 courses (Intensif)</span>
+                  </div>
+                </div>
+
+                {/* Grille des gains financiers */}
+                <div className="space-y-3 pt-6 border-t border-white/10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="p-4 bg-white/[0.04] border border-white/10 flex flex-col justify-between">
+                      <span className="text-[11px] uppercase tracking-widest text-white/70 font-['Raleway',sans-serif] block mb-1">
+                        Volume total / jour
+                      </span>
+                      <span className="text-lg font-bold text-white font-mono">
+                        {totalCoursesDaily} courses / j
+                      </span>
+                    </div>
+
+                    <div className="p-4 bg-white/[0.04] border border-white/10 flex flex-col justify-between">
+                      <span className="text-[11px] uppercase tracking-widest text-white/70 font-['Raleway',sans-serif] block mb-1">
+                        Revenu brut estimé / jour
+                      </span>
+                      <span className="text-lg font-bold text-white font-mono">
+                        {estimatedDaily.toLocaleString('fr-FR')} FCFA
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center p-4 bg-white/[0.04] border border-white/10">
+                    <div>
+                      <span className="text-xs uppercase tracking-widest text-white/70 font-['Raleway',sans-serif] block">
+                        Revenu estimé / semaine (6j)
+                      </span>
+                      <small className="text-[10px] text-white/50">{motosCount} moto{motosCount > 1 ? 's' : ''} en exploitation</small>
+                    </div>
+                    <span className="text-xl font-bold text-white font-mono">
+                      {estimatedWeekly.toLocaleString('fr-FR')} FCFA
+                    </span>
+                  </div>
+
+                  {/* Bloc Mis en Avant (Highlight Cyan Awwwards) */}
+                  <div className="p-6 bg-cyan/15 border border-cyan/40">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div>
+                        <span className="text-xs uppercase tracking-widest text-cyan font-bold block font-['Raleway',sans-serif]">
+                          Revenu mensuel estimé de la flotte
+                        </span>
+                        <small className="text-[11px] text-white/70">
+                          Base de 26 jours ouvrés · 1 500 FCFA / course
+                        </small>
+                      </div>
+                      <div className="text-left sm:text-right">
+                        <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-cyan font-['DM_Sans',sans-serif] block">
+                          {estimatedMonthly.toLocaleString('fr-FR')} FCFA
+                        </span>
+                        <span className="text-[11px] text-white/80 font-mono">
+                          soit ~{estimatedPerMotoMonthly.toLocaleString('fr-FR')} FCFA / moto / mois
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bouton d'action direct */}
+                <div className="pt-8">
+                  <button
+                    type="button"
+                    onClick={handleApplyFromSimulator}
+                    className="w-full py-4 uppercase font-bold tracking-widest text-xs sm:text-sm bg-cyan text-dark hover:bg-white transition-all duration-250 cursor-pointer border border-cyan rounded-none"
+                  >
+                    Enregistrer ma flotte de {motosCount} moto{motosCount > 1 ? 's' : ''} →
+                  </button>
+                </div>
+              </div>
+
+              <p className="text-[11px] text-white/40 mt-8 m-0 uppercase tracking-wider font-['Raleway',sans-serif]">
+                * Données estimatives calculées sur la base de 1 500 FCFA TTC par course réalisée à Dakar. Relevé consolidé et virement hebdomadaire automatisé sur compte bancaire ou Wave/OM pro.
+              </p>
+            </div>
+
+            {/* Colonne Droite : Les 4 Piliers Chef de Flotte (Sharp Awwwards Cards) */}
+            <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 divide-y sm:divide-y-0 lg:divide-y divide-black/10 bg-slate-50">
+              {[
+                {
+                  code: "01",
+                  title: "Reversements Hebdomadaires",
+                  desc: "Commissions virées chaque lundi matin sur votre compte bancaire, Wave ou Orange Money pro, avec un relevé financier détaillé."
+                },
+                {
+                  code: "02",
+                  title: "Volume B2B Garanti",
+                  desc: "Accès prioritaire aux commandes des e-commerces, enseignes de distribution et pharmacies partenaires à fort trafic à Dakar."
+                },
+                {
+                  code: "03",
+                  title: "Télématique & GPS 24/7",
+                  desc: "Supervision live complète : géolocalisation continue, alertes d'arrêts anormaux et historique de navigation certifié."
+                },
+                {
+                  code: "04",
+                  title: "Accords Maintenance & Pièces",
+                  desc: "Jusqu'à -20% de remise négociée sur les vidanges, pneumatiques et révisions auprès de notre réseau de garages agréés."
+                }
+              ].map((pil, idx) => (
+                <div key={idx} className="p-8 lg:p-10 flex flex-col justify-between bg-white border-b border-black/10 hover:bg-slate-50 transition-colors">
+                  <span className="text-xs font-mono font-bold text-cyan-2 mb-4 block">
+                    /{pil.code}
+                  </span>
+                  <div>
+                    <h4 className="text-base font-bold uppercase tracking-wider text-dark mb-2 font-['DM_Sans',sans-serif]">
+                      {pil.title}
+                    </h4>
+                    <p className="text-sm text-slate-600 leading-relaxed m-0 font-['Poppins',sans-serif]">
+                      {pil.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 4. MATRICE COMPARATIVE : 3 MODÈLES DE PARTENARIAT FLOTTE ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white">
         <div className="max-w-[1400px] mx-auto">
           
@@ -472,6 +727,8 @@ export default function Flotte() {
                       required
                       type="number"
                       min="1"
+                      value={formMotos}
+                      onChange={(e) => setFormMotos(Number(e.target.value))}
                       placeholder="Ex: 5"
                       className="w-full px-4 py-3.5 bg-slate-50 border border-black/15 text-dark placeholder-slate-400 focus:outline-none focus:border-cyan-2 text-sm rounded-none"
                     />
@@ -534,24 +791,20 @@ export default function Flotte() {
         </div>
       </section>
 
-      {/* ── 7. CTA ADAPTÉ SPÉCIFIQUEMENT POUR LA FLOTTE ── */}
+      {/* ── 8. SECTION ENGAGEMENT & IMPACT CHEF DE FLOTTE (PARAMÉTRABLE) ── */}
       <ContactCTA
-        theme="dark"
+        theme="white"
         watermark="FLOTTE"
-        title="Multipliez le rendement de vos deux-roues avec"
-        highlight="la technologie DEM."
-        subtitle="Partenariat Flottes"
-        description="Rencontrez nos experts B2B pour auditer votre parc, configurer votre cockpit télématique et activer vos premières courses dès cette semaine."
-        primaryBtnText="Déposer un dossier flotte"
-        primaryBtnLink="#enregistrer"
+        subtitle="Partenariat d'excellence"
+        title="Optimisez chaque kilomètre"
+        highlight="vers un rendement garanti."
+        description="Que vous possédiez 1 moto ou un parc de 50 véhicules, DEM met à votre disposition sa technologie télématique de pointe, son flux continu de courses B2B et ses reversements hebdomadaires 100% garantis."
+        primaryBtnText="Simuler mes gains mensuels"
+        primaryBtnLink="#simulateur"
         primaryBtnIcon="arrow"
-        secondaryBtnText="Prendre rendez-vous B2B"
-        secondaryBtnLink="mailto:contact@dem.sn"
-        bullets={[
-          "Contrat d'agrément certifié",
-          "Supervision télématique incluse",
-          "Reversements hebdomadaires garantis"
-        ]}
+        secondaryBtnText="Enregistrer mon parc"
+        secondaryBtnLink="#enregistrer"
+        secondaryBtnIcon="phone"
       />
 
     </div>
