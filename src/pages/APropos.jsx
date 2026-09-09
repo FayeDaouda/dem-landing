@@ -9,16 +9,16 @@ import ContactCTA from '../components/sections/ContactCTA.jsx';
 gsap.registerPlugin(ScrollTrigger);
 
 const IngredientsDetailSection = () => (
-  <section className="relative z-10 mb-14 flex max-w-[120rem] mx-auto items-center justify-center bg-[#021520] lg:my-24 lg:px-[64px] rounded-3xl overflow-hidden border border-white/[0.06]">
+  <section className="relative z-10 mb-14 flex max-w-[120rem] mx-auto items-center justify-center bg-[#021520] lg:my-24 lg:px-[64px] rounded-0 overflow-hidden border border-white/[0.06]">
     <div className="relative mx-6 my-12 grid grid-cols-1 items-center gap-8 text-center lg:mx-0 lg:my-16 lg:grid-cols-12 lg:gap-20 lg:text-left">
-      <div className="relative row-start-2 aspect-square lg:col-span-6 lg:row-start-auto overflow-hidden rounded-2xl">
+      <div className="relative row-start-2 aspect-square lg:col-span-6 lg:row-start-auto overflow-hidden rounded-0">
         <img 
           alt="Opérations de livraison DEM" 
           loading="lazy" 
           src="https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85" 
           className="absolute inset-0 h-full w-full object-cover shadow-2xl" 
         />
-        <div className="absolute inset-0 border border-cyan/30 rounded-2xl pointer-events-none" />
+        <div className="absolute inset-0 border border-cyan/30 rounded-0 pointer-events-none" />
       </div>
       <div className="flex flex-col gap-8 lg:col-span-6 lg:col-start-7 text-white">
         <div className="relative mt-16 flex flex-col gap-8 md:mt-4 lg:-mt-4">
@@ -65,7 +65,7 @@ const IngredientsDetailSection = () => (
   </section>
 );
 
-export default function LaMaison() {
+export default function APropos() {
   const manifestoRef = useRef(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
@@ -131,7 +131,7 @@ export default function LaMaison() {
             aria-label="Faites défiler vers le bas pour explorer l'histoire DEM"
           >
             <div className="relative flex items-center justify-center gap-3 animate-bounce" aria-hidden="true">
-              <div className="relative h-[48px] w-[48px] flex items-center justify-center overflow-hidden border border-solid border-white/50 bg-black/40 backdrop-blur-sm text-white rounded-full">
+              <div className="relative h-[48px] w-[48px] flex items-center justify-center overflow-hidden border border-solid border-white/50 bg-black/40 backdrop-blur-sm text-white rounded-0">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M12 5v14M5 12l7 7 7-7" />
                 </svg>
@@ -238,7 +238,7 @@ export default function LaMaison() {
               }
             ].map((v, i) => (
               <div key={i} className="flex flex-col gap-6 group">
-                <div className="aspect-[3/4] overflow-hidden rounded-2xl relative shadow-xl">
+                <div className="aspect-[3/4] overflow-hidden rounded-0 relative shadow-xl">
                   <img 
                     src={v.img} 
                     alt={v.label} 
@@ -308,7 +308,7 @@ export default function LaMaison() {
       <section className="bg-white py-20 overflow-hidden text-[#021520]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="aspect-[4/5] overflow-hidden rounded-2xl shadow-xl">
+            <div className="aspect-[4/5] overflow-hidden rounded-0 shadow-xl">
               <img 
                 src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=900&auto=format&fit=crop&q=85" 
                 alt="DEM Réseau Dakar" 
@@ -316,7 +316,7 @@ export default function LaMaison() {
                 loading="lazy"
               />
             </div>
-            <div className="aspect-[4/5] overflow-hidden rounded-2xl shadow-xl md:translate-y-12">
+            <div className="aspect-[4/5] overflow-hidden rounded-0 shadow-xl md:translate-y-12">
               <img 
                 src="https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85" 
                 alt="DEM Logistique" 
@@ -324,7 +324,7 @@ export default function LaMaison() {
                 loading="lazy"
               />
             </div>
-            <div className="aspect-[4/5] overflow-hidden rounded-2xl shadow-xl">
+            <div className="aspect-[4/5] overflow-hidden rounded-0 shadow-xl">
               <img 
                 src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85" 
                 alt="DEM Impact" 
@@ -376,11 +376,6 @@ export default function LaMaison() {
         primaryBtnIcon="arrow"
         secondaryBtnText="Contacter l'équipe"
         secondaryBtnLink="/contact"
-        bullets={[
-          "Présent sur l'ensemble de Dakar",
-          "Technologie développée localement",
-          "Support & accompagnement 7j/7"
-        ]}
       />
 
     </div>

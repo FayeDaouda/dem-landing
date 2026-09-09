@@ -5,6 +5,7 @@ import DeliveryJourney from '../components/sections/DeliveryJourney.jsx';
 import HorizontalGallery from '../components/sections/HorizontalGallery.jsx';
 import ScrollExpandSection from '../components/sections/ScrollExpandSection.jsx';
 import PartnersSection from '../components/sections/PartnersSection.jsx';
+import DownloadAppCTA from '../components/sections/DownloadAppCTA.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
 import CircularGallery from '../components/atoms/CircularGallery.jsx';
 import SectionHeading from '../components/atoms/SectionHeading.jsx';
@@ -14,40 +15,8 @@ const C = {
   cyan2: '#0086C8',
   teal: '#00897B',
   dark: '#021520',
-  card: 'rgba(255,255,255,0.08)',
-  cardB: 'rgba(255,255,255,0.13)',
   text: '#FFFFFF',
-  muted: 'rgba(255,255,255,0.65)',
-  grad: 'linear-gradient(160deg, #00D2FF 0%, #0086C8 55%, #005A8C 100%)',
-  gradDark: 'linear-gradient(160deg, #004D66 0%, #002D45 55%, #001830 100%)',
 };
-
-const features = [
-  { title: 'Livraison ultra-rapide', desc: 'Nos coursiers à moto sont proches de vous. Votre colis arrive en quelques minutes.' },
-  { title: 'Suivi en temps réel', desc: 'Suivez votre coursier sur la carte en direct, de la prise en charge jusqu\'à la livraison.' },
-  { title: 'Paiement simple', desc: 'Payez via Mobile Money ou en espèces. Simple et sécurisé.' },
-  { title: 'Coursiers vérifiés', desc: 'Chaque coursier est identifié et validé avant de rejoindre la plateforme DEM.' },
-  { title: 'Notifications instant', desc: 'Recevez des alertes à chaque étape de votre livraison.' },
-  { title: 'Couverture locale', desc: 'DEM couvre Dakar et ses environs, expansion en cours.' },
-];
-
-const clientSteps = [
-  { title: 'Créez votre commande', desc: 'Indiquez l\'adresse de départ et d\'arrivée directement sur la carte.' },
-  { title: 'Un coursier accepte', desc: 'Un coursier proche de vous accepte votre commande en quelques secondes.' },
-  { title: 'Suivez et recevez', desc: 'Suivez votre coursier en temps réel et recevez votre colis.' },
-];
-
-const driverSteps = [
-  { title: 'Inscrivez-vous', desc: 'Créez votre compte coursier avec vos informations et votre véhicule.' },
-  { title: 'Acceptez des courses', desc: 'Activez votre disponibilité et recevez des courses près de vous.' },
-  { title: 'Gagnez de l\'argent', desc: 'Effectuez les livraisons et recevez vos revenus directement.' },
-];
-
-const chefSteps = [
-  { title: 'Soumettez votre dossier', desc: 'Téléversez votre CNI et vos informations. Validation par notre équipe sous 24 à 48 h.' },
-  { title: 'Recrutez votre flotte', desc: 'Ajoutez vos coursiers depuis l\'app. Ils sont rattachés à votre compte et opérationnels immédiatement.' },
-  { title: 'Suivez et encaissez', desc: 'Tableau de bord en temps réel : courses, performances et commissions sur chaque livraison de votre flotte.' },
-];
 
 const galleryItems = [
   { 
@@ -77,38 +46,9 @@ const galleryItems = [
 ];
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState('client');
-  const stepsMap = { client: clientSteps, driver: driverSteps, chef: chefSteps };
-  const steps = stepsMap[activeTab] ?? clientSteps;
-
-  const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: C.dark, color: C.text, overflowX: 'clip' }}>
-      <style>{`
-        .fleet-btn:hover { border-color: rgba(0,210,255,0.7) !important; background: rgba(0,210,255,0.18) !important; }
-        .card-hover:hover { border-color: rgba(0,210,255,0.4) !important; transform: translateY(-3px); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,210,255,0.45) !important; }
-        .btn-secondary:hover { background: rgba(255,255,255,0.12) !important; }
-        .store-btn:hover { border-color: rgba(0,210,255,0.5) !important; }
-
-        @media (max-width: 768px) {
-          .hero-title { font-size: 2rem !important; }
-          .hero-stats { gap: 0 !important; display: grid !important; grid-template-columns: repeat(3,1fr) !important; width: 100% !important; }
-          .section-pad { padding: 64px 20px !important; }
-          .grid3 { grid-template-columns: 1fr !important; }
-          .steps-grid { grid-template-columns: 1fr !important; }
-          .store-btns { flex-direction: column !important; align-items: center !important; }
-          .download-box { padding: 36px 20px !important; }
-          .phone-mockup { display: none !important; }
-          .hero-inner { flex-direction: column !important; text-align: center !important; }
-          .hero-text { max-width: 100% !important; }
-          .hero-btns { justify-content: center !important; }
-        }
-      `}</style>
-
+      
       {/* ── HERO HOMEPAGE ── */}
       <HeroHomePage
         title="DEM LIVRAISON"
@@ -118,8 +58,6 @@ export default function Home() {
 
       {/* ── MISSION ── */}
       <Mission />
-
-      
 
       {/* ── DELIVERY JOURNEY ── */}
       <DeliveryJourney />
@@ -163,321 +101,33 @@ export default function Home() {
       {/* ── PARTNERS SECTION ── */}
       <PartnersSection />
 
-      {/* ── PRESENTATION / APERÇU ── 
-      <section data-header-theme="black" style={{
-        background: C.grad,
-        display: 'flex', alignItems: 'center',
-        padding: '80px 32px',
-        position: 'relative', overflow: 'hidden',
-      }}>
-        {/* Déco arrière-plan 
-        <div style={{ position: 'absolute', top: -100, right: -100, width: 500, height: 500, borderRadius: '50%', background: 'rgba(255,255,255,0.06)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: -150, left: -100, width: 400, height: 400, borderRadius: '50%', background: 'rgba(0,0,0,0.1)', pointerEvents: 'none' }} />
-
-        <div className="hero-inner" style={{ maxWidth: 1100, margin: '0 auto', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 48 }}>
-          {/* Texte 
-          <div className="hero-text" style={{ maxWidth: 560 }}>
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              background: 'rgba(255,255,255,0.15)', borderRadius: 100, padding: '6px 16px',
-              marginBottom: 24, fontSize: 12, fontWeight: 600, letterSpacing: 0.5,
-            }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#00FF88', display: 'inline-block' }} />
-              Disponible maintenant à Dakar
-            </div>
-
-            <h2 className="hero-title" style={{ fontSize: 'clamp(2rem, 5vw, 3.4rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: 18 }}>
-              Livraison express,<br />
-              <span style={{ color: 'rgba(255,255,255,0.85)' }}>partout au Sénégal</span>
-            </h2>
-
-            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.8)', marginBottom: 36, lineHeight: 1.7 }}>
-              DEM connecte clients et coursiers pour des livraisons rapides, fiables et traçables. Commandez en un instant, recevez en quelques minutes.
-            </p>
-
-            <div className="hero-btns" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 48 }}>
-              <button className="btn-primary" onClick={() => scrollTo('download')}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 10,
-                  background: '#fff', color: C.cyan2, border: 'none', borderRadius: 14,
-                  padding: '14px 28px', fontWeight: 800, fontSize: 15, cursor: 'pointer',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.2)', transition: 'all .2s',
-                }}>
-                <span>⬇️</span> Télécharger l'app
-              </button>
-              <button className="btn-secondary" onClick={() => scrollTo('how')}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 10,
-                  background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)',
-                  color: '#fff', borderRadius: 14,
-                  padding: '14px 28px', fontWeight: 700, fontSize: 15, cursor: 'pointer',
-                  transition: 'all .2s',
-                }}>
-                <span>▶</span> Comment ça marche
-              </button>
-            </div>
-
-            <div className="hero-stats" style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
-              {[['Rapide', 'Livraison en minutes'], ['Fiable', 'Coursiers vérifiés'], ['Local', 'Sénégal d\'abord']].map(([n, l]) => (
-                <div key={n} style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 22, fontWeight: 900, color: '#fff' }}>{n}</div>
-                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 2 }}>{l}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Mockup téléphone 
-          <div className="phone-mockup" style={{ flexShrink: 0, position: 'relative' }}>
-            <div style={{
-              width: 260, height: 480,
-              background: 'rgba(255,255,255,0.12)',
-              borderRadius: 36,
-              border: '2px solid rgba(255,255,255,0.25)',
-              backdropFilter: 'blur(10px)',
-              display: 'flex', flexDirection: 'column', alignItems: 'center',
-              padding: 16, gap: 12,
-              boxShadow: '0 32px 80px rgba(0,0,0,0.3)',
-              position: 'relative',
-            }}>
-              <div style={{ width: 60, height: 5, background: 'rgba(255,255,255,0.4)', borderRadius: 3 }} />
-              <img src="/logo.png" alt="DEM" style={{ width: 72, height: 72, borderRadius: 18, marginTop: 8 }} />
-              <div style={{ fontWeight: 800, fontSize: 18, color: '#fff' }}>DEM</div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>Delivery Express Mobility</div>
-              <div style={{ width: '100%', background: 'rgba(255,255,255,0.1)', borderRadius: 14, padding: '12px 14px', marginTop: 8 }}>
-                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginBottom: 6 }}>ADRESSE DE LIVRAISON</div>
-                <div style={{ fontSize: 12, fontWeight: 600 }}>Plateau, Dakar</div>
-              </div>
-              <div style={{ width: '100%', background: 'rgba(255,255,255,0.1)', borderRadius: 14, padding: '12px 14px' }}>
-                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginBottom: 6 }}>COURSIER EN ROUTE</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>🏍</div>
-                  <div>
-                    <div style={{ fontSize: 12, fontWeight: 600 }}>Mamadou D.</div>
-                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)' }}>⭐ 4.9 · 3 min</div>
-                  </div>
-                </div>
-              </div>
-              <div style={{
-                width: '100%', background: '#fff', borderRadius: 14, padding: '13px',
-                textAlign: 'center', fontWeight: 800, fontSize: 13, color: C.cyan2, marginTop: 'auto',
-              }}>
-                Suivre ma livraison →
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FEATURES ── *
-      <section id="features" data-header-theme="black" className="section-pad" style={{ padding: '96px 32px', background: C.gradDark }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div className="text-center mb-14">
-            <SectionHeading
-              title="Tout ce qu'il"
-              highlight="vous faut"
-              subtitle="Fonctionnalités"
-              titleColor="text-white"
-              highlightClassName="text-transparent bg-clip-text bg-gradient-to-r from-[#00D2FF] to-[#00E08C]"
-              scriptColor="text-[#00D2FF]"
-              titleSize="text-3xl md:text-5xl"
-              subtitleSize="text-xl md:text-2xl lg:text-3xl"
-            />
-            <p className="text-slate-400 mt-3 text-sm md:text-base max-w-lg mx-auto">Une expérience pensée pour le Sénégal, simple et efficace.</p>
-          </div>
-          <div className="grid3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: 18 }}>
-            {features.map(f => (
-              <div key={f.title} className="card-hover" style={{
-                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: 20, padding: 26, transition: 'all .25s',
-              }}>
-                <div style={{
-                  width: 50, height: 50, borderRadius: 14, background: 'rgba(0,210,255,0.12)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 22, marginBottom: 14,
-                }}>{f.icon}</div>
-                <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 8 }}>{f.title}</div>
-                <div style={{ color: C.muted, fontSize: 13, lineHeight: 1.65 }}>{f.desc}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* ── Chef de flotte highlight ── *
-          <div style={{ marginTop: 40, borderRadius: 24, overflow: 'hidden', border: '1px solid rgba(0,210,255,0.2)' }}>
-            <div style={{
-              background: 'rgba(0,210,255,0.06)',
-              padding: '36px 32px',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
-                <div style={{
-                  background: 'rgba(0,210,255,0.15)', border: '1px solid rgba(0,210,255,0.3)',
-                  borderRadius: 100, padding: '4px 14px',
-                  fontSize: 11, fontWeight: 700, letterSpacing: 1, color: C.cyan, textTransform: 'uppercase',
-                }}>Chef de flotte</div>
-                <h3 style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 800, color: '#fff', margin: 0 }}>
-                  Lancez votre propre activité de livraison
-                </h3>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
-                {[
-                  { icon: '👥', title: 'Gérez votre équipe', desc: 'Recrutez vos coursiers, suivez leur activité et gérez leur disponibilité depuis un seul endroit.' },
-                  { icon: '💰', title: 'Revenus sur votre flotte', desc: 'Percevez une commission automatique sur chaque course effectuée par vos coursiers.' },
-                  { icon: '📊', title: 'Tableau de bord dédié', desc: 'Statistiques en temps réel : courses, revenus, classement de vos coursiers.' },
-                  { icon: '🔗', title: 'Intégration complète', desc: 'Vos coursiers sont rattachés à vous dès l\'inscription — aucune configuration supplémentaire.' },
-                ].map(item => (
-                  <div key={item.title} style={{
-                    background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: '20px 18px',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                  }}>
-                    <div style={{ fontSize: 24, marginBottom: 10 }}>{item.icon}</div>
-                    <div style={{ fontWeight: 700, fontSize: 14, color: '#fff', marginBottom: 6 }}>{item.title}</div>
-                    <div style={{ color: C.muted, fontSize: 12, lineHeight: 1.6 }}>{item.desc}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ── *
-      <section id="how" data-header-theme="black" className="section-pad" style={{ padding: '96px 32px', background: C.grad, textAlign: 'center' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div className="mb-10">
-            <SectionHeading
-              title="Simple en"
-              highlight="3 étapes"
-              subtitle="Comment ça marche"
-              titleColor="text-white"
-              highlightClassName="text-white underline decoration-[#00D2FF] decoration-2 underline-offset-4"
-              scriptColor="text-white/90"
-              titleSize="text-3xl md:text-5xl"
-              subtitleSize="text-xl md:text-2xl lg:text-3xl"
-            />
-            <p className="text-white/80 text-sm md:text-base mt-3 max-w-lg mx-auto">Que vous soyez client ou coursier, DEM est fait pour vous.</p>
-          </div>
-
-          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 40, flexWrap: 'wrap' }}>
-            {[['client', 'Je suis client'], ['driver', 'Je suis coursier'], ['chef', 'Je suis chef de flotte']].map(([v, l]) => (
-              <button key={v} onClick={() => setActiveTab(v)} style={{
-                padding: '10px 24px', borderRadius: 100, fontWeight: 600, fontSize: 14, cursor: 'pointer',
-                border: activeTab === v ? '1px solid transparent' : '1px solid rgba(255,255,255,0.25)',
-                background: activeTab === v ? '#fff' : 'transparent',
-                color: activeTab === v ? C.cyan2 : 'rgba(255,255,255,0.75)',
-                transition: 'all .2s',
-              }}>{l}</button>
-            ))}
-          </div>
-
-          <div className="steps-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 18 }}>
-            {steps.map((s, i) => (
-              <div key={s.title} style={{
-                background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: 20, padding: '28px 24px', textAlign: 'left',
-              }}>
-                <div style={{
-                  width: 40, height: 40, borderRadius: 12, background: '#fff',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontWeight: 900, fontSize: 16, color: C.cyan2, marginBottom: 16,
-                }}>{i + 1}</div>
-                <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 6 }}>{s.title}</div>
-                <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: 13, lineHeight: 1.6 }}>{s.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CONTACT CTA SECTION (Watermark Background) ── */}
-      <ContactCTA
+      {/* ── DOWNLOAD APP CTA SECTION (Watermark DOWNLOAD) ── */}
+      <DownloadAppCTA
         theme="white"
+        watermark="DOWNLOAD"
+        subtitle="Application Mobile"
+        title="Votre livraison express au bout"
+        highlight="des doigts."
+        description="Téléchargez gratuitement l’application DEM sur iPhone et Android. Commandez en 30 secondes, suivez votre coursier en direct sur la carte et payez en toute sécurité."
+        id="download"
+      />
+
+      {/* ── CONTACT CTA SECTION (Watermark CONTACT) ── */}
+      <ContactCTA
+        theme="cyan-deep"
         watermark="CONTACT"
         subtitle="Contactez-nous"
         title="Faites le premier pas vers"
         highlight="l'excellence."
         description="Que vous soyez un particulier, un commerçant ou une entreprise, profitez du réseau de livraison le plus rapide et fiable de Dakar."
-        primaryBtnText="Télécharger l'application"
-        primaryBtnLink="#download"
-        primaryBtnIcon="download"
-        secondaryBtnText="Prendre contact"
-        secondaryBtnLink="mailto:contact@dem.sn"
+        primaryBtnText="Prendre contact"
+        primaryBtnLink="/contact"
+        primaryBtnIcon="arrow"
+        secondaryBtnText="Ouvrir un compte Pro"
+        secondaryBtnLink="/dem-pro"
+        secondaryBtnIcon="external"
       />
 
-      {/* ── DOWNLOAD ── */}
-      {/* <section id="download" data-header-theme="black" className="section-pad" style={{ padding: '96px 32px', background: C.gradDark }}>
-        <div className="download-box" style={{
-          maxWidth: 680, margin: '0 auto', textAlign: 'center',
-          background: 'rgba(0,210,255,0.08)', border: '1px solid rgba(0,210,255,0.2)',
-          borderRadius: 28, padding: '56px 32px',
-          display: 'flex', flexDirection: 'column', alignItems: 'center',
-        }}>
-          <img src="/logo.png" alt="DEM" style={{ width: 80, height: 80, borderRadius: 20, marginBottom: 20, display: 'block' }} />
-          <SectionHeading
-            title="Téléchargez"
-            highlight="DEM"
-            subtitle="Application mobile"
-            titleColor="text-white"
-            highlightClassName="text-transparent bg-clip-text bg-gradient-to-r from-[#00D2FF] to-[#00E08C]"
-            scriptColor="text-[#00D2FF]"
-            titleSize="text-3xl md:text-5xl"
-            subtitleSize="text-xl md:text-2xl lg:text-3xl"
-          />
-          <p style={{ color: C.muted, fontSize: 15, marginBottom: 36 }}>
-            Disponible sur iOS et Android.
-          </p>
-          <div className="store-btns" style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-            {/* Google Play *
-            <a
-              href="https://play.google.com/store/apps/details?id=sn.dem.demapp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="store-btn"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 12,
-                background: 'rgba(0,210,255,0.12)', border: '1px solid rgba(0,210,255,0.4)',
-                borderRadius: 14, padding: '12px 24px', cursor: 'pointer', transition: 'border-color .2s',
-                textDecoration: 'none',
-              }}
-            >
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                <path d="M3.18 1.07C2.76 1.3 2.5 1.75 2.5 2.3v19.4c0 .55.26 1 .68 1.23l.1.06 10.87-10.87v-.25L3.28 1.01l-.1.06z" fill="#4285F4" />
-                <path d="M17.77 15.73l-3.62-3.62v-.25l3.62-3.62.08.05 4.29 2.44c1.23.7 1.23 1.83 0 2.53l-4.29 2.44-.08.03z" fill="#FBBC05" />
-                <path d="M17.85 15.7L14.15 12 3.18 22.97c.4.43 1.07.48 1.82.05l12.85-7.32" fill="#EA4335" />
-                <path d="M17.85 8.3L5 .98C4.25.55 3.58.6 3.18 1.03L14.15 12l3.7-3.7z" fill="#34A853" />
-              </svg>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: 10, color: C.cyan, fontWeight: 700, letterSpacing: 0.5 }}>DISPONIBLE SUR</div>
-                <div style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginTop: 1 }}>Google Play</div>
-              </div>
-            </a>
-            {/* App Store *
-            <a
-              href="https://apps.apple.com/us/app/dem-livraison/id6764724342"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="store-btn"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 12,
-                background: 'rgba(0,210,255,0.12)', border: '1px solid rgba(0,210,255,0.4)',
-                borderRadius: 14, padding: '12px 24px', cursor: 'pointer', transition: 'border-color .2s',
-                textDecoration: 'none',
-              }}
-            >
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="white" style={{ flexShrink: 0 }}>
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-              </svg>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: 10, color: C.cyan, fontWeight: 700, letterSpacing: 0.5 }}>DISPONIBLE SUR</div>
-                <div style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginTop: 1 }}>App Store</div>
-              </div>
-            </a>
-          </div>
-          <p style={{ marginTop: 28, fontSize: 13, color: C.muted }}>
-            Vous êtes coursier ?{' '}
-            <a href="mailto:contact@dem.sn" style={{ color: C.cyan, fontWeight: 600 }}>Rejoignez la flotte →</a>
-          </p>
-        </div>
-      </section> */}
     </div>
   );
 }

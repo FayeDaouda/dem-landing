@@ -203,9 +203,6 @@ export default function ScrollExpand({
                             ref={titleRef}
                             className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pointer-events-none z-20"
                         >
-                            <span className="text-[10px] sm:text-xs font-mono font-bold tracking-[0.25em] text-cyan uppercase mb-3 bg-[#021520]/90 px-3 py-1 border border-cyan/40">
-                                Expérience DEM
-                            </span>
                             <h2 className="text-2xl sm:text-4xl md:text-5xl font-black uppercase text-white font-['DM_Sans',sans-serif] tracking-tight max-w-xl leading-tight">
                                 {title}
                             </h2>
@@ -216,9 +213,8 @@ export default function ScrollExpand({
                     {scrollHint && (
                         <div
                             ref={hintRef}
-                            className="absolute bottom-6 inset-x-0 flex items-center justify-center gap-2 text-center text-xs font-mono font-bold uppercase tracking-widest text-white/70 pointer-events-none z-20"
+                            className="absolute bottom-6 inset-x-0 flex items-center justify-center gap-2 text-center text-xs  font-bold uppercase tracking-widest text-white/70 pointer-events-none z-20"
                         >
-                            <span className="w-1.5 h-1.5 bg-cyan animate-pulse" />
                             <span>{scrollHint}</span>
                         </div>
                     )}

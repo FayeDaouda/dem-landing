@@ -1,11 +1,8 @@
-import { useState } from 'react';
-import { Check, Minus, Sparkles, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
 import MiniTitleWithBar from '../atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../atoms/SectionHeading.jsx';
 
 export default function PricingDemPro({ onSelectPlan }) {
-  const [billingPeriod, setBillingPeriod] = useState('weekly'); // 'weekly' | 'monthly'
-
   const handleSelect = (planKey) => {
     if (onSelectPlan) {
       onSelectPlan(planKey);
@@ -16,14 +13,14 @@ export default function PricingDemPro({ onSelectPlan }) {
     }
   };
 
-  // Données des 3 cartes d'offres
+  // Données des 3 cartes d'offres avec tarifs 2k, 3k, 6k et eyebrow en serif
   const plans = [
     {
       key: 'starter',
       name: 'DEM Pro Starter',
       tagline: 'Le tremplin',
-      priceWeekly: 2000,
-      priceMonthly: 8000,
+      priceK: '2k',
+      amountFCFA: '2 000 FCFA',
       badge: null,
       isFeatured: false,
       desc: 'Idéal pour digitaliser vos premières courses et gérer un petit catalogue.',
@@ -41,8 +38,8 @@ export default function PricingDemPro({ onSelectPlan }) {
       key: 'business',
       name: 'DEM Pro Business',
       tagline: 'Le best-seller',
-      priceWeekly: 3000,
-      priceMonthly: 12000,
+      priceK: '3k',
+      amountFCFA: '3 000 FCFA',
       badge: 'LE PLUS CHOISI',
       isFeatured: true,
       desc: 'Pensé pour être le choix évident : débloque la vente en ligne, la mini-boutique et l’encaissement Wallet.',
@@ -62,8 +59,8 @@ export default function PricingDemPro({ onSelectPlan }) {
       key: 'premium',
       name: 'DEM Pro Premium',
       tagline: 'L’offre complète',
-      priceWeekly: 6000,
-      priceMonthly: 24000,
+      priceK: '6k',
+      amountFCFA: '6 000 FCFA',
       badge: 'SUR-MESURE & API',
       isFeatured: false,
       desc: 'La puissance logistique maximale pour les marques à fort volume et l’intégration API directe.',
@@ -154,11 +151,11 @@ export default function PricingDemPro({ onSelectPlan }) {
     }
   ];
 
-  // Rendu intelligent de la cellule de comparaison
+  // Rendu de cellule sans police mono
   const renderCellContent = (value, isFeatured = false) => {
     if (value === false) {
       return (
-        <span className="text-slate-300 font-mono text-base font-bold select-none inline-block">
+        <span className="text-slate-300 text-lg font-bold select-none inline-block font-['DM_Sans',sans-serif]">
           —
         </span>
       );
@@ -175,27 +172,27 @@ export default function PricingDemPro({ onSelectPlan }) {
     }
     if (value === 'Grisé' || value === 'Privé') {
       return (
-        <span className="text-xs font-semibold text-slate-400 italic">
+        <span className="text-xs font-semibold text-slate-400 italic font-['Poppins',sans-serif]">
           {value}
         </span>
       );
     }
     if (value === 'Illimité') {
       return (
-        <span className="text-xs sm:text-sm font-black uppercase text-[#0086C8] tracking-wider font-mono">
+        <span className="text-xs sm:text-sm font-black uppercase text-[#0086C8] tracking-wider font-['DM_Sans',sans-serif]">
           Illimité
         </span>
       );
     }
     return (
-      <span className="text-xs sm:text-sm font-bold text-dark font-mono">
+      <span className="text-xs sm:text-sm font-bold text-dark font-['DM_Sans',sans-serif]">
         {value}
       </span>
     );
   };
 
   return (
-    <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white" id="tarifs">
+    <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white font-['DM_Sans',sans-serif]" id="tarifs">
       <div className="max-w-[1400px] mx-auto">
 
         {/* ── 1. EN-TÊTE PRINCIPAL ── */}
@@ -213,60 +210,27 @@ export default function PricingDemPro({ onSelectPlan }) {
             className="mt-4"
           />
           <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
-            DEM Pro passe en <strong>100% payant</strong>. Chaque palier lève les limites du précédent. L’offre du milieu — <strong>Business</strong> — est pensée pour être le choix évident : c’est elle qui débloque la vente en ligne et l’encaissement, le cœur de valeur de DEM Pro.
+            DEM Pro passe en <strong>100% payant</strong>. Chaque palier lève les limites du précédent. L’offre du milieu <strong>Business</strong> est pensée pour être le choix évident : c’est elle qui débloque la vente en ligne et l’encaissement, le cœur de valeur de DEM Pro.
           </p>
         </div>
 
-        {/* ── 2. RÈGLE COMMUNE À TOUTES LES OFFRES (CALLOUT AWWWARDS) ── */}
+        {/* ── 2. RÈGLE COMMUNE À TOUTES LES OFFRES ── */}
         <div className="mb-16 border border-black/10 bg-slate-50 relative overflow-hidden">
           <div className="absolute top-0 left-0 bottom-0 w-2 bg-cyan" />
-          <div className="p-6 md:p-8 pl-8 md:pl-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="max-w-3xl">
-              <span className="text-xs font-mono font-bold tracking-widest text-[#0086C8] uppercase block mb-1">
-                // TRANSPARENCE OPÉRATIONNELLE
-              </span>
-              <h3 className="text-lg md:text-xl font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
-                Règle commune à toutes les offres
-              </h3>
-              <p className="text-sm md:text-base text-slate-600 leading-relaxed m-0 font-['Poppins',sans-serif]">
-                Les <strong>100 FCFA de mise en relation</strong> restent facturés au client sur chaque course, quelle que soit l’offre. L’abonnement paie uniquement l’accès aux outils. Le coursier garde <strong>100% de sa course</strong>.
-              </p>
-            </div>
-
-            {/* Toggle Hebdomadaire / Mensuel */}
-            <div className="shrink-0 flex items-center gap-2 p-1.5 bg-white border border-black/10 self-start md:self-center">
-              <button
-                type="button"
-                onClick={() => setBillingPeriod('weekly')}
-                className={`px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider transition-colors cursor-pointer rounded-none ${
-                  billingPeriod === 'weekly'
-                    ? 'bg-dark text-white'
-                    : 'text-slate-600 hover:text-dark'
-                }`}
-              >
-                Par semaine
-              </button>
-              <button
-                type="button"
-                onClick={() => setBillingPeriod('monthly')}
-                className={`px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider transition-colors cursor-pointer rounded-none ${
-                  billingPeriod === 'monthly'
-                    ? 'bg-dark text-white'
-                    : 'text-slate-600 hover:text-dark'
-                }`}
-              >
-                Par mois
-              </button>
-            </div>
+          <div className="p-6 md:p-8 pl-8 md:pl-10">
+            <h3 className="text-lg md:text-xl font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
+              Règle commune à toutes les offres
+            </h3>
+            <p className="text-sm md:text-base text-slate-600 leading-relaxed m-0 font-['Poppins',sans-serif]">
+              Les <strong>100 FCFA de mise en relation</strong> restent facturés au client sur chaque course, quelle que soit l’offre. L’abonnement paie uniquement l’accès aux outils. Le coursier garde <strong>100% de sa course</strong>.
+            </p>
           </div>
         </div>
 
-        {/* ── 3. LES 3 CARTES DE PRICING (AWWWARDS SHARP GRID) ── */}
+        {/* ── 3. LES 3 CARTES DE PRICING (EYEBROW EN SERIF + 2K, 3K, 6K) ── */}
         <div className="grid grid-cols-1 lg:grid-cols-3 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-24">
           {plans.map((plan) => {
             const isFeatured = plan.isFeatured;
-            const price = billingPeriod === 'weekly' ? plan.priceWeekly : plan.priceMonthly;
-            const periodLabel = billingPeriod === 'weekly' ? 'F / semaine' : 'F / mois';
 
             return (
               <div
@@ -279,17 +243,17 @@ export default function PricingDemPro({ onSelectPlan }) {
               >
                 {/* Badge Featured */}
                 {isFeatured && (
-                  <div className="absolute top-0 right-0 bg-cyan text-dark text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 font-mono">
+                  <div className="absolute top-0 right-0 bg-cyan text-dark text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 font-['DM_Sans',sans-serif]">
                     ★ {plan.badge}
                   </div>
                 )}
 
                 <div>
-                  {/* Titre & Tagline */}
+                  {/* Titre & Eyebrow élégant en Serif Italique */}
                   <div className="mb-6">
                     <span
-                      className={`text-xs font-mono font-bold uppercase tracking-widest block mb-2 ${
-                        isFeatured ? 'text-cyan' : 'text-slate-500'
+                      className={`font-serif italic text-base lg:text-lg block mb-1.5 ${
+                        isFeatured ? 'text-cyan' : 'text-[#0086C8]'
                       }`}
                     >
                       {plan.tagline}
@@ -303,23 +267,32 @@ export default function PricingDemPro({ onSelectPlan }) {
                     </h3>
                   </div>
 
-                  {/* Prix Sharp */}
+                  {/* Prix en 2k, 3k, 6k */}
                   <div className="mb-6 pb-6 border-b border-black/10">
-                    <div className="flex items-baseline gap-2">
+                    <div className="flex items-baseline gap-2.5">
                       <span
-                        className={`text-4xl lg:text-5xl font-black font-['DM_Sans',sans-serif] tracking-tight ${
+                        className={`text-5xl lg:text-6xl font-black font-['DM_Sans',sans-serif] tracking-tight ${
                           isFeatured ? 'text-cyan' : 'text-dark'
                         }`}
                       >
-                        {price.toLocaleString('fr-FR')}
+                        {plan.priceK}
                       </span>
-                      <span
-                        className={`text-xs uppercase font-bold tracking-wider font-mono ${
-                          isFeatured ? 'text-white/70' : 'text-slate-500'
-                        }`}
-                      >
-                        {periodLabel}
-                      </span>
+                      <div className="flex flex-col">
+                        <span
+                          className={`text-xs uppercase font-extrabold tracking-wider font-['DM_Sans',sans-serif] ${
+                            isFeatured ? 'text-white' : 'text-dark'
+                          }`}
+                        >
+                          F / semaine
+                        </span>
+                        <span
+                          className={`text-[11px] font-medium font-['Poppins',sans-serif] ${
+                            isFeatured ? 'text-white/60' : 'text-slate-500'
+                          }`}
+                        >
+                          ({plan.amountFCFA})
+                        </span>
+                      </div>
                     </div>
                     <p
                       className={`text-xs mt-3 leading-relaxed m-0 font-['Poppins',sans-serif] ${
@@ -340,7 +313,7 @@ export default function PricingDemPro({ onSelectPlan }) {
                         }`}
                       >
                         <span
-                          className={`shrink-0 mt-0.5 font-mono font-bold ${
+                          className={`shrink-0 mt-0.5 font-bold ${
                             isFeatured ? 'text-cyan' : 'text-[#0086C8]'
                           }`}
                         >
@@ -372,15 +345,15 @@ export default function PricingDemPro({ onSelectPlan }) {
           })}
         </div>
 
-        {/* ── 4. TABLEAU COMPARATIF COMPLET (AWWWARDS MATRIX) ── */}
+        {/* ── 4. TABLEAU COMPARATIF COMPLET ── */}
         <div className="border border-black/10 bg-white">
           
           {/* En-tête du Tableau */}
           <div className="p-8 lg:p-12 border-b border-black/10 bg-slate-50">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#0086C8] block mb-1">
-                  // MATRICE COMPARATIVE
+                <span className="font-serif italic text-base text-[#0086C8] block mb-1">
+                  Matrice comparative complète
                 </span>
                 <h3 className="text-2xl md:text-3xl font-bold uppercase text-dark font-['DM_Sans',sans-serif]">
                   Tableau comparatif des offres
@@ -389,7 +362,7 @@ export default function PricingDemPro({ onSelectPlan }) {
                   Vue d’ensemble des trois offres, fonction par fonction.
                 </p>
               </div>
-              <div className="text-xs text-slate-500 font-mono font-medium">
+              <div className="text-xs text-slate-500 font-medium font-['Poppins',sans-serif]">
                 La colonne <span className="text-dark font-bold underline">Business</span> est mise en avant (« le plus choisi »)
               </div>
             </div>
@@ -406,14 +379,14 @@ export default function PricingDemPro({ onSelectPlan }) {
                     Fonctionnalité
                   </th>
                   <th className="py-5 px-6 font-bold text-xs uppercase tracking-wider text-center w-1/5 font-['DM_Sans',sans-serif]">
-                    Starter
+                    Starter (2k)
                   </th>
                   <th className="py-5 px-6 font-bold text-xs uppercase tracking-wider text-center w-1/5 bg-cyan text-dark font-['DM_Sans',sans-serif] relative">
-                    <span className="block font-black">Business</span>
-                    <span className="text-[10px] font-mono tracking-widest block font-normal">LE PLUS CHOISI</span>
+                    <span className="block font-black">Business (3k)</span>
+                    <span className="text-[10px] tracking-widest block font-bold uppercase">LE PLUS CHOISI</span>
                   </th>
                   <th className="py-5 px-6 font-bold text-xs uppercase tracking-wider text-center w-1/5 font-['DM_Sans',sans-serif]">
-                    Premium
+                    Premium (6k)
                   </th>
                 </tr>
               </thead>
@@ -426,7 +399,7 @@ export default function PricingDemPro({ onSelectPlan }) {
                     <tr className="bg-slate-100 border-t-2 border-b border-black/10">
                       <td
                         colSpan={4}
-                        className="py-3 px-6 font-mono font-bold text-xs tracking-widest uppercase text-[#0086C8] bg-slate-100"
+                        className="py-3 px-6 font-bold text-xs tracking-wider uppercase text-[#0086C8] bg-slate-100 font-['DM_Sans',sans-serif]"
                       >
                         {sec.category}
                       </td>
@@ -474,12 +447,12 @@ export default function PricingDemPro({ onSelectPlan }) {
                 <span>Inclus dans l’offre</span>
               </span>
               <span className="flex items-center gap-2">
-                <span className="text-slate-400 font-bold font-mono">—</span>
+                <span className="text-slate-400 font-bold text-base leading-none">—</span>
                 <span>Non inclus</span>
               </span>
             </div>
             <span className="text-slate-500 italic text-[11px]">
-              * Les tarifs s'entendent hors taxes. Facturation hebdomadaire ou mensuelle sans engagement de durée.
+              * Les tarifs s'entendent hors taxes. Facturation hebdomadaire sans engagement de durée.
             </span>
           </div>
 

@@ -82,7 +82,7 @@ export default function Footer() {
                                     Découvrir
                                 </span>
                                 <Link to="/" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Accueil</Link>
-                                <Link to="/la-maison" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">À propos</Link>
+                                <Link to="/a-propos" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">À propos</Link>
                                 <Link to="/services" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Services</Link>
                                 <a href="/#download" className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Télécharger</a>
                             </div>
@@ -92,9 +92,9 @@ export default function Footer() {
                                 <span className="text-[10px] tracking-[0.18em] uppercase text-white/50 font-sans font-semibold mb-0.5">
                                     Rejoindre
                                 </span>
-                                <Link to="/livreurs" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Devenir Coursier</Link>
-                                <Link to="/flotte" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Chef de Flotte</Link>
-                                <Link to="/entreprises" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Entreprises</Link>
+                                <Link to="/coursiers" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Devenir Coursier</Link>
+                                <Link to="/chef-de-flotte" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Chef de Flotte</Link>
+                                <Link to="/dem-pro" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Entreprises</Link>
                             </div>
 
                             {/* Colonne 3 : ÉCHANGER */}
@@ -173,9 +173,9 @@ export default function Footer() {
                         <span className="text-[10px] tracking-[0.18em] uppercase text-white/50 font-sans font-semibold">
                             Téléphone
                         </span>
-                        <span className="text-xs sm:text-sm font-sans font-medium text-white tracking-wide">
-                            +221 77 000 00 00 / +221 33 000 00 00
-                        </span>
+                        <a href="tel:+221784448524" className="text-xs sm:text-sm font-sans font-medium text-white tracking-wide hover:text-cyan transition-colors">
+                            +221 78 444 85 24
+                        </a>
                     </div>
 
                     {/* Siège Principal */}
@@ -184,7 +184,7 @@ export default function Footer() {
                             Siège Principal
                         </span>
                         <span className="text-xs sm:text-sm font-sans font-medium text-white tracking-wide uppercase">
-                            KM 2,5 BD DU CENTENAIRE · DAKAR, SÉNÉGAL
+                            SICAP MERMOZ · DAKAR, SÉNÉGAL
                         </span>
                     </div>
 

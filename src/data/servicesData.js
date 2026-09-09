@@ -64,28 +64,28 @@ export const servicesData = [
     img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&auto=format&fit=crop&q=85",
     miniTitleWithBar: "PARTENAIRES E-COMMERCE & MARCHANDS",
     linkText: "Ouvrir un compte marchand",
-    linkUrl: "/entreprises",
+    linkUrl: "/dem-pro",
     projects: [
       {
         id: "p4",
         title: "Boutiques Prêt-à-Porter & Mode",
         image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&auto=format&fit=crop&q=80",
         tags: ["Fashion", "COD Wave"],
-        link: "/entreprises"
+        link: "/dem-pro"
       },
       {
         id: "p5",
         title: "High-Tech & Électronique",
         image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=600&auto=format&fit=crop&q=80",
         tags: ["Tech", "Valeur déclarée"],
-        link: "/entreprises"
+        link: "/dem-pro"
       },
       {
         id: "p6",
         title: "Cosmétique & Parfumerie",
         image: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=600&auto=format&fit=crop&q=80",
         tags: ["Retail", "Same-Day"],
-        link: "/entreprises"
+        link: "/dem-pro"
       }
     ]
   },
@@ -109,28 +109,28 @@ export const servicesData = [
     img: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1920&auto=format&fit=crop&q=85",
     miniTitleWithBar: "DÉPLOIEMENTS FLOTTE & ENSEIGNES",
     linkText: "Contacter l'équipe Grands Comptes",
-    linkUrl: "/flotte",
+    linkUrl: "/chef-de-flotte",
     projects: [
       {
         id: "p7",
         title: "Chaînes de Restauration Rapide",
         image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&auto=format&fit=crop&q=80",
         tags: ["Flotte 10+ motos", "7j/7"],
-        link: "/flotte"
+        link: "/chef-de-flotte"
       },
       {
         id: "p8",
         title: "Réseaux Pharmaceutiques & Cliniques",
         image: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=600&auto=format&fit=crop&q=80",
         tags: ["Santé", "24/24"],
-        link: "/flotte"
+        link: "/chef-de-flotte"
       },
       {
         id: "p9",
         title: "Institutions & Sociétés Financières",
         image: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=600&auto=format&fit=crop&q=80",
         tags: ["Courrier Pro", "Accrédité"],
-        link: "/flotte"
+        link: "/chef-de-flotte"
       }
     ]
   }

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
@@ -43,31 +43,100 @@ const WAYPOINTS = [
   },
 ];
 
+function generatePathString(mainRect, m1Rect, m2Rect, m3Rect, r1Rect, r2Rect, r3Rect) {
+  const isDesktop = window.innerWidth >= 768;
+
+  const c1 = {
+    x: m1Rect.left - mainRect.left + m1Rect.width / 2,
+    y: m1Rect.top - mainRect.top + m1Rect.height / 2,
+  };
+  const c3 = {
+    x: m3Rect.left - mainRect.left + m3Rect.width / 2,
+    y: m3Rect.top - mainRect.top + m3Rect.height / 2,
+  };
+
+  const m2 = {
+    left: m2Rect.left - mainRect.left,
+    right: m2Rect.right - mainRect.left,
+    top: m2Rect.top - mainRect.top,
+    bottom: m2Rect.bottom - mainRect.top,
+  };
+
+  if (!isDesktop) {
+    const c2 = {
+      x: m2.left + m2Rect.width / 2,
+      y: m2.top + m2Rect.height / 2,
+    };
+    // Mobile : Courbe verticale fluide reliant directement les 3 cartes
+    return `M ${c1.x} ${c1.y} C ${c1.x} ${(c1.y + c2.y) / 2}, ${c2.x} ${(c1.y + c2.y) / 2}, ${c2.x} ${c2.y} C ${c2.x} ${(c2.y + c3.y) / 2}, ${c3.x} ${(c2.y + c3.y) / 2}, ${c3.x} ${c3.y}`;
+  }
+
+  // Desktop : Contournement précis sans chevauchement du texte ni découpe de la carte 2
+  // 1. Couloir supérieur (au-dessus de la carte 2 et en dessous de l'étape 1)
+  const corridor1Y = Math.min(
+    m2.top - 28,
+    (r1Rect.bottom - mainRect.top + r2Rect.top - mainRect.top) / 2
+  );
+
+  // 2. Couloir inférieur (en dessous de la carte 2 et au-dessus de l'étape 3)
+  const corridor2Y = Math.max(
+    m2.bottom + 28,
+    (r2Rect.bottom - mainRect.top + r3Rect.top - mainRect.top) / 2
+  );
+
+  // 3. Position X extérieure à droite de la carte 2 (marge nette de 45px pour ne jamais toucher la carte)
+  const outerRightX = Math.min(mainRect.width - 16, m2.right + 45);
+  const cornerRadius = 40;
+
+  return `
+    M ${c1.x} ${c1.y}
+    C ${c1.x} ${corridor1Y - 15}, ${c1.x + 40} ${corridor1Y}, ${c1.x + 100} ${corridor1Y}
+    L ${outerRightX - cornerRadius} ${corridor1Y}
+    C ${outerRightX - 10} ${corridor1Y}, ${outerRightX} ${corridor1Y + 10}, ${outerRightX} ${corridor1Y + cornerRadius}
+    L ${outerRightX} ${corridor2Y - cornerRadius}
+    C ${outerRightX} ${corridor2Y - 10}, ${outerRightX - 10} ${corridor2Y}, ${outerRightX - cornerRadius} ${corridor2Y}
+    L ${c3.x + 80} ${corridor2Y}
+    C ${c3.x + 20} ${corridor2Y}, ${c3.x} ${corridor2Y + 20}, ${c3.x} ${c3.y}
+  `.replace(/\s+/g, ' ').trim();
+}
+
 export default function DeliveryJourney() {
   const ctxRef = useRef(null);
+  const [pathData, setPathData] = useState('');
 
   const buildTimeline = useCallback(() => {
-    // Revert previous context
     if (ctxRef.current) ctxRef.current.revert();
 
+    const mainEl = document.querySelector('.dj-main');
+    const m1 = document.querySelector('.dj-marker-0');
+    const m2 = document.querySelector('.dj-marker-1');
+    const m3 = document.querySelector('.dj-marker-2');
+    const r1 = document.querySelector('.dj-row-0');
+    const r2 = document.querySelector('.dj-row-1');
+    const r3 = document.querySelector('.dj-row-2');
+    const box = document.querySelector('.dj-box');
+
+    if (!mainEl || !m1 || !m2 || !m3 || !r1 || !r2 || !r3 || !box) return;
+
+    const mainRect = mainEl.getBoundingClientRect();
+    const d = generatePathString(
+      mainRect,
+      m1.getBoundingClientRect(),
+      m2.getBoundingClientRect(),
+      m3.getBoundingClientRect(),
+      r1.getBoundingClientRect(),
+      r2.getBoundingClientRect(),
+      r3.getBoundingClientRect()
+    );
+
+    setPathData(d);
+
+    const track = document.getElementById('dj-track');
+    const trackBg = document.getElementById('dj-track-bg');
+    if (track) track.setAttribute('d', d);
+    if (trackBg) trackBg.setAttribute('d', d);
+
     ctxRef.current = gsap.context(() => {
-      const box = document.querySelector('.dj-box');
-      if (!box) return;
-
-      const boxRect = box.getBoundingClientRect();
-
-      // All waypoint containers except the starting one
-      const containers = gsap.utils.toArray('.dj-container:not(.dj-initial)');
-
-      const points = containers.map((container) => {
-        const marker = container.querySelector('.dj-marker') || container;
-        const r = marker.getBoundingClientRect();
-        return {
-          x: r.left + r.width / 2 - (boxRect.left + boxRect.width / 2),
-          y: r.top + r.height / 2 - (boxRect.top + boxRect.height / 2),
-        };
-      });
-
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: '.dj-main',
@@ -81,15 +150,17 @@ export default function DeliveryJourney() {
         duration: 1,
         ease: 'none',
         motionPath: {
-          path: points,
-          curviness: 1.2,
+          path: '#dj-track',
+          align: '#dj-track',
+          alignOrigin: [0.5, 0.5],
+          autoRotate: false,
         },
       });
     });
   }, []);
 
   useEffect(() => {
-    const timeout = setTimeout(buildTimeline, 150);
+    const timeout = setTimeout(buildTimeline, 200);
     window.addEventListener('resize', buildTimeline);
 
     return () => {
@@ -100,19 +171,8 @@ export default function DeliveryJourney() {
   }, [buildTimeline]);
 
   return (
-    <section className="relative w-full py-24 px-6 lg:px-16 overflow-hidden" style={{ background: '#021520' }}>
-      {/* Background grid */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          opacity: 0.1,
-          backgroundImage: `
-            linear-gradient(rgba(0,210,255,0.15) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,210,255,0.15) 1px, transparent 1px)
-          `,
-          backgroundSize: '80px 80px',
-        }}
-      />
+    <section className="relative w-full py-24 px-6 lg:px-16 overflow-hidden bg-cyan-deep">
+
 
       {/* Ambient background glow */}
       <div 
@@ -142,16 +202,75 @@ export default function DeliveryJourney() {
 
       {/* Main 2-Column Layout */}
       <div className="dj-main relative max-w-6xl mx-auto flex flex-col gap-24 md:gap-32 w-full">
+        {/* SVG Circuit Path Overlay */}
+        <svg
+          className="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-visible"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="dj-path-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#00D2FF" stopOpacity="0.85" />
+              <stop offset="50%" stopColor="#0086C8" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#00E08C" stopOpacity="0.9" />
+            </linearGradient>
+            <filter id="dj-glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+
+          {/* Halo lumineux arrière */}
+          <path
+            id="dj-track-bg"
+            d={pathData}
+            fill="none"
+            stroke="#00D2FF"
+            strokeWidth="6"
+            strokeOpacity="0.15"
+            filter="url(#dj-glow)"
+          />
+
+          {/* Ligne pointillée technologique */}
+          <path
+            id="dj-track"
+            d={pathData}
+            fill="none"
+            stroke="url(#dj-path-grad)"
+            strokeWidth="2.5"
+            strokeDasharray="8 6"
+            strokeLinecap="round"
+          />
+        </svg>
+
+        {/* The moving animated package */}
+        <div
+          className="dj-box absolute pointer-events-none"
+          style={{
+            width: 56,
+            height: 56,
+            top: 0,
+            left: 0,
+            background: 'linear-gradient(135deg, #00D2FF, #0086C8)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 0 30px rgba(0, 210, 255, 0.9), 0 0 60px rgba(0, 210, 255, 0.4)',
+            zIndex: 30,
+            border: '2px solid rgba(255, 255, 255, 0.9)',
+          }}
+        >
+          <Package size={28} className="text-[#021520]" strokeWidth={2.4} />
+        </div>
+
         {WAYPOINTS.map((wp, index) => {
           const { Icon } = wp;
-          const isStart = index === 0;
           const isEnd = index === WAYPOINTS.length - 1;
           const isEven = index % 2 === 0; // index 0 & 2 -> Waypoint Left | index 1 -> Waypoint Right
 
           return (
             <div
               key={wp.id}
-              className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-14 items-center w-full"
+              className={`dj-row-${index} grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-14 items-center w-full relative z-20`}
             >
               {/* Waypoint Column (Left for 01/03, Right for 02) */}
               <div
@@ -159,10 +278,10 @@ export default function DeliveryJourney() {
                   isEven ? 'md:justify-start md:order-1' : 'md:justify-end md:order-2'
                 }`}
               >
-                <div className={`dj-container relative ${isStart ? 'dj-initial' : ''}`}>
+                <div className="dj-container relative">
                   {/* Waypoint visual marker - NO ROUNDED */}
                   <div
-                    className="dj-marker flex flex-col items-center justify-center p-6 backdrop-blur-xl transition-all duration-300 group"
+                    className={`dj-marker dj-marker-${index} flex flex-col items-center justify-center p-6 backdrop-blur-xl transition-all duration-300 group`}
                     style={{
                       width: 170,
                       height: 170,
@@ -205,30 +324,6 @@ export default function DeliveryJourney() {
                       Étape {wp.step}
                     </span>
                   </div>
-
-                  {/* The moving animated package - NO ROUNDED */}
-                  {isStart && (
-                    <div
-                      className="dj-box absolute"
-                      style={{
-                        width: 64,
-                        height: 64,
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        background: '#00D2FF',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow:
-                          '0 0 35px rgba(0, 210, 255, 0.9), 0 0 70px rgba(0, 210, 255, 0.4)',
-                        zIndex: 50,
-                        border: '2px solid rgba(255, 255, 255, 0.8)',
-                      }}
-                    >
-                      <Package size={32} className="text-[#021520]" strokeWidth={2.4} />
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -241,7 +336,7 @@ export default function DeliveryJourney() {
                 <div className="w-full">
                   <div className="mb-2">
                     <span
-                      className={`inline-block font-mono text-xs font-bold uppercase tracking-widest ${
+                      className={`inline-block font-serif italic text-lg sm:text-xl md:text-2xl font-light tracking-wide ${
                         isEnd ? 'text-[#00E08C]' : 'text-[#00D2FF]'
                       }`}
                     >

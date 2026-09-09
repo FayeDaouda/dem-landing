@@ -2,15 +2,14 @@ import { useState } from 'react';
 import PageHeroSection from '../components/sections/PageHeroSection.jsx';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../components/atoms/SectionHeading.jsx';
+import DownloadAppCTA from '../components/sections/DownloadAppCTA.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
 
-export default function Flotte() {
+export default function ChefDeFlotte() {
   const [activeTab, setActiveTab] = useState('delegue');
   const [openFaq, setOpenFaq] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
   const [motosCount, setMotosCount] = useState(5);
   const [coursesPerDay, setCoursesPerDay] = useState(6);
-  const [formMotos, setFormMotos] = useState(5);
 
   // Modèle financier Chef de Flotte DEM : 1 500 FCFA par course / livraison
   const PRICE_PER_DELIVERY = 1500;
@@ -26,16 +25,10 @@ export default function Flotte() {
     setOpenFaq(openFaq === idx ? null : idx);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-
   const handleApplyFromSimulator = () => {
-    setFormMotos(motosCount);
-    const formElement = document.getElementById('enregistrer');
-    if (formElement) {
-      formElement.scrollIntoView({ behavior: 'smooth' });
+    const downloadElement = document.getElementById('download');
+    if (downloadElement) {
+      downloadElement.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -106,10 +99,10 @@ export default function Flotte() {
               <div>
                 {/* Header HUD Box */}
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-8 pb-6 border-b border-white/10">
-                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-cyan">
-                    // SIMULATEUR FLOTTE B2B
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-cyan">
+                    Simulateur Flotte B2B
                   </span>
-                  <span className="text-xs px-3 py-1 bg-cyan/15 border border-cyan/30 text-cyan font-bold uppercase tracking-wider font-mono">
+                  <span className="text-xs px-3 py-1 bg-cyan/15 border border-cyan/30 text-cyan font-bold uppercase tracking-wider font-['DM_Sans',sans-serif]">
                     Tarif DEM : 1 500 FCFA / livraison
                   </span>
                 </div>
@@ -340,8 +333,8 @@ export default function Flotte() {
             <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors">
               <div>
                 <div className="flex justify-between items-center mb-6">
-                  <span className="text-xs font-mono font-bold text-slate-500 uppercase tracking-widest">FORMULE A</span>
-                  <span className="text-xs px-2.5 py-1 bg-slate-100 text-dark font-bold uppercase tracking-wider">Flotte Autonome</span>
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2">Formule A</span>
+                  <span className="text-xs px-2.5 py-1 bg-slate-100 text-dark font-bold uppercase tracking-wider font-['DM_Sans',sans-serif]">Flotte Autonome</span>
                 </div>
                 <h3 className="text-2xl font-bold uppercase text-dark mb-4 font-['DM_Sans',sans-serif]">
                   Vous gérez vos conducteurs
@@ -372,7 +365,7 @@ export default function Flotte() {
 
               <div className="pt-10">
                 <a
-                  href="#enregistrer"
+                  href="#download"
                   className="block text-center uppercase tracking-wider text-xs font-bold py-3.5 border border-dark text-dark hover:bg-dark hover:text-white transition-colors"
                 >
                   Choisir cette formule
@@ -387,8 +380,8 @@ export default function Flotte() {
               </div>
               <div>
                 <div className="flex justify-between items-center mb-6">
-                  <span className="text-xs font-mono font-bold text-cyan uppercase tracking-widest">FORMULE B</span>
-                  <span className="text-xs px-2.5 py-1 bg-white/10 text-cyan font-bold uppercase tracking-wider">Gestion Clé en Main</span>
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-cyan">Formule B</span>
+                  <span className="text-xs px-2.5 py-1 bg-white/10 text-cyan font-bold uppercase tracking-wider font-['DM_Sans',sans-serif]">Gestion Clé en Main</span>
                 </div>
                 <h3 className="text-2xl font-bold uppercase text-white mb-4 font-['DM_Sans',sans-serif]">
                   DEM pilote vos conducteurs
@@ -419,7 +412,7 @@ export default function Flotte() {
 
               <div className="pt-10">
                 <a
-                  href="#enregistrer"
+                  href="#download"
                   className="block text-center uppercase tracking-wider text-xs font-bold py-3.5 bg-cyan text-dark hover:bg-white transition-colors"
                 >
                   Déployer en gestion déléguée
@@ -431,8 +424,8 @@ export default function Flotte() {
             <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors">
               <div>
                 <div className="flex justify-between items-center mb-6">
-                  <span className="text-xs font-mono font-bold text-slate-500 uppercase tracking-widest">FORMULE C</span>
-                  <span className="text-xs px-2.5 py-1 bg-slate-100 text-dark font-bold uppercase tracking-wider">Grands Investisseurs</span>
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2">Formule C</span>
+                  <span className="text-xs px-2.5 py-1 bg-slate-100 text-dark font-bold uppercase tracking-wider font-['DM_Sans',sans-serif]">Grands Investisseurs</span>
                 </div>
                 <h3 className="text-2xl font-bold uppercase text-dark mb-4 font-['DM_Sans',sans-serif]">
                   Location & Loyer Garanti
@@ -463,7 +456,7 @@ export default function Flotte() {
 
               <div className="pt-10">
                 <a
-                  href="#enregistrer"
+                  href="#download"
                   className="block text-center uppercase tracking-wider text-xs font-bold py-3.5 border border-dark text-dark hover:bg-dark hover:text-white transition-colors"
                 >
                   Demander un contrat investisseur
@@ -500,7 +493,9 @@ export default function Flotte() {
             {/* Bloc 1 : Télématique & Traçabilité */}
             <div className="md:col-span-8 p-8 lg:p-12 bg-white border border-black/10 flex flex-col justify-between">
               <div>
-                <span className="text-xs font-mono font-bold text-cyan-2 uppercase tracking-widest block mb-4">/01 · TÉLÉMÉTRIE LIVE</span>
+                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2 mb-4 block">
+                  /01 · Télémétrie Live
+                </span>
                 <h3 className="text-2xl lg:text-3xl font-bold uppercase text-dark mb-4 font-['DM_Sans',sans-serif]">
                   Géolocalisation & Geofencing temps réel
                 </h3>
@@ -528,7 +523,9 @@ export default function Flotte() {
             {/* Bloc 2 : Reversements Automatisés */}
             <div className="md:col-span-4 p-8 lg:p-10 bg-dark text-white border border-black/10 flex flex-col justify-between">
               <div>
-                <span className="text-xs font-mono font-bold text-cyan uppercase tracking-widest block mb-4">/02 · FINANCE & COD</span>
+                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan mb-4 block">
+                  /02 · Finance & COD
+                </span>
                 <h3 className="text-xl font-bold uppercase text-white mb-3 font-['DM_Sans',sans-serif]">
                   Reversements Hebdomadaires Automatiques
                 </h3>
@@ -546,7 +543,9 @@ export default function Flotte() {
             {/* Bloc 3 : Gestion KYC Chauffeurs */}
             <div className="md:col-span-4 p-8 lg:p-10 bg-white border border-black/10 flex flex-col justify-between">
               <div>
-                <span className="text-xs font-mono font-bold text-cyan-2 uppercase tracking-widest block mb-4">/03 · CONFORMITÉ</span>
+                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2 mb-4 block">
+                  /03 · Conformité
+                </span>
                 <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif]">
                   Vérification KYC & Permis
                 </h3>
@@ -563,7 +562,9 @@ export default function Flotte() {
             {/* Bloc 4 : Maintenance & Partenariats */}
             <div className="md:col-span-8 p-8 lg:p-12 bg-white border border-black/10 flex flex-col justify-between">
               <div>
-                <span className="text-xs font-mono font-bold text-cyan-2 uppercase tracking-widest block mb-4">/04 · ÉCOSYSTÈME</span>
+                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2 mb-4 block">
+                  /04 · Écosystème
+                </span>
                 <h3 className="text-2xl lg:text-3xl font-bold uppercase text-dark mb-4 font-['DM_Sans',sans-serif]">
                   Accords d'Entretien & Tarifs Pièces Négociés
                 </h3>
@@ -585,25 +586,26 @@ export default function Flotte() {
       </section>
 
       {/* ── 5. QUESTIONS FRÉQUENTES DES INVESTISSEURS ── */}
-      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white">
+      <section className="py-20 lg:py-32 px-6 lg:px-16 border-t border-b border-white/10 bg-cyan-deep text-white">
         <div className="max-w-[1000px] mx-auto">
           
           <div className="mb-14 text-center">
-            <MiniTitleWithBar content="FAQ INVESTISSEURS" />
+            {/* <MiniTitleWithBar content="FAQ INVESTISSEURS" /> */}
             <SectionHeading
               align="center"
               title="Tout ce que vous devez savoir"
               highlight="avant d'engager votre flotte"
               subtitle="Questions & Modalités"
-              titleColor="text-dark"
-              highlightColor="var(--color-cyan-2, #0086C8)"
-              scriptColor="text-cyan-2"
+              titleColor="text-white"
+              highlightColor="var(--cyan, #00D2FF)"
+              highlightClassName="text-[#00D2FF]"
+              scriptColor="text-[#00D2FF]"
               titleSize="text-3xl md:text-5xl lg:text-6xl"
               className="mt-4"
             />
           </div>
 
-          <div className="border border-black/10 divide-y divide-black/10">
+          <div className="border border-white/15 divide-y divide-white/10 bg-black/10 backdrop-blur-sm">
             {[
               {
                 q: "Quels types de motos sont acceptés sur la plateforme DEM ?",
@@ -622,20 +624,20 @@ export default function Flotte() {
                 a: "Les coursiers versent les fonds encaissés quotidiennement via nos points relais sécurisés ou par code OTP Wave. Vous disposez d'un relevé en temps réel de chaque encaissement sur votre cockpit gestionnaire."
               }
             ].map((faq, idx) => (
-              <div key={idx} className="p-6 lg:p-8 bg-white hover:bg-slate-50 transition-colors">
+              <div key={idx} className="p-6 lg:p-8 bg-white/[0.03] hover:bg-white/[0.07] transition-colors">
                 <button
                   onClick={() => toggleFaq(idx)}
                   className="w-full flex justify-between items-center text-left cursor-pointer gap-4"
                 >
-                  <span className="text-base lg:text-lg font-bold uppercase text-dark font-['DM_Sans',sans-serif]">
+                  <span className="text-base lg:text-lg font-bold uppercase text-white font-['DM_Sans',sans-serif]">
                     {faq.q}
                   </span>
-                  <span className="text-xl font-mono text-cyan-2 font-bold shrink-0">
+                  <span className="text-xl font-mono text-[#00D2FF] font-bold shrink-0">
                     {openFaq === idx ? "—" : "+"}
                   </span>
                 </button>
                 {openFaq === idx && (
-                  <p className="mt-4 text-sm text-slate-600 leading-relaxed m-0 font-['Poppins',sans-serif] pt-4 border-t border-slate-100">
+                  <p className="mt-4 text-sm md:text-base text-slate-200 leading-relaxed m-0 font-['Poppins',sans-serif] pt-4 border-t border-white/10">
                     {faq.a}
                   </p>
                 )}
@@ -646,165 +648,34 @@ export default function Flotte() {
         </div>
       </section>
 
-      {/* ── 6. FORMULAIRE D'AUDIT & ENREGISTREMENT FLOTTE ── */}
-      <section className="py-20 lg:py-32 px-6 lg:px-16 bg-slate-50 border-b border-black/10" id="enregistrer">
-        <div className="max-w-[1000px] mx-auto">
-          
-          <div className="text-center mb-16">
-            <MiniTitleWithBar content="DOSSIER DE CANDIDATURE" />
-            <SectionHeading
-              align="center"
-              title="Enregistrez votre parc"
-              highlight="auprès de DEM"
-              subtitle="Agrément Partenaire Flotte"
-              titleColor="text-dark"
-              highlightColor="var(--color-cyan-2, #0086C8)"
-              scriptColor="text-cyan-2"
-              titleSize="text-3xl md:text-5xl lg:text-6xl"
-              className="mt-4"
-            />
-            <p className="mt-4 text-base text-slate-600 max-w-xl mx-auto font-['Poppins',sans-serif]">
-              Remplissez les caractéristiques de votre parc. Un conseiller B2B prendra contact avec vous sous 24h pour organiser l'audit technique.
-            </p>
-          </div>
-
-          <div className="border border-black/10 bg-white p-8 sm:p-12 lg:p-16">
-            {submitted ? (
-              <div className="p-10 bg-dark text-white text-center border border-cyan">
-                <span className="text-xs font-bold uppercase tracking-widest text-cyan block mb-2 font-['Raleway',sans-serif]">
-                  DOSSIER TRANS MIS AVEC SUCCÈS
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-bold uppercase text-white mb-4 font-['DM_Sans',sans-serif]">
-                  Votre demande d'agrément flotte a été enregistrée
-                </h3>
-                <p className="text-sm text-white/80 max-w-md mx-auto leading-relaxed font-['Poppins',sans-serif] mb-6">
-                  Notre département Partenariats B2B étudie votre dossier et vous contactera sous 24h pour finaliser la convention d'exploitation.
-                </p>
-                <button
-                  onClick={() => setSubmitted(false)}
-                  className="inline-block uppercase tracking-wider text-xs font-bold px-6 py-3 border border-cyan text-cyan hover:bg-cyan hover:text-dark transition-colors duration-250 cursor-pointer rounded-none"
-                >
-                  Soumettre un autre parc
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-8">
-                
-                {/* Ligne 1 : Nom ou Société & Téléphone */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Nom du Gestionnaire ou Raison Sociale *
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="Ex: Ousmane Ba (Ba Logistics SARL)"
-                      className="w-full px-4 py-3.5 bg-slate-50 border border-black/15 text-dark placeholder-slate-400 focus:outline-none focus:border-cyan-2 text-sm rounded-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Numéro Téléphone / WhatsApp Pro *
-                    </label>
-                    <input
-                      required
-                      type="tel"
-                      placeholder="Ex: +221 77 000 00 00"
-                      className="w-full px-4 py-3.5 bg-slate-50 border border-black/15 text-dark placeholder-slate-400 focus:outline-none focus:border-cyan-2 text-sm rounded-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Ligne 2 : Nombre de motos & Formule choisie */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Nombre de motos à intégrer *
-                    </label>
-                    <input
-                      required
-                      type="number"
-                      min="1"
-                      value={formMotos}
-                      onChange={(e) => setFormMotos(Number(e.target.value))}
-                      placeholder="Ex: 5"
-                      className="w-full px-4 py-3.5 bg-slate-50 border border-black/15 text-dark placeholder-slate-400 focus:outline-none focus:border-cyan-2 text-sm rounded-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Formule de gestion souhaitée *
-                    </label>
-                    <select
-                      value={activeTab}
-                      onChange={(e) => setActiveTab(e.target.value)}
-                      className="w-full px-4 py-3.5 bg-slate-50 border border-black/15 text-dark focus:outline-none focus:border-cyan-2 text-sm rounded-none"
-                    >
-                      <option value="delegue">Formule B · Gestion Clé en Main DEM (Recommandé)</option>
-                      <option value="autonome">Formule A · Gestion Autonome (J'ai mes chauffeurs)</option>
-                      <option value="location">Formule C · Location & Loyer Garanti</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Ligne 3 : Email & Zone de stationnement */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Email professionnel
-                    </label>
-                    <input
-                      type="email"
-                      placeholder="Ex: direction@balogistics.sn"
-                      className="w-full px-4 py-3.5 bg-slate-50 border border-black/15 text-dark placeholder-slate-400 focus:outline-none focus:border-cyan-2 text-sm rounded-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Zone de garage / base d'opération
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Ex: Plateau, Maristes, Almadies, Pikine..."
-                      className="w-full px-4 py-3.5 bg-slate-50 border border-black/15 text-dark placeholder-slate-400 focus:outline-none focus:border-cyan-2 text-sm rounded-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Bouton de Soumission Sharp */}
-                <div className="pt-4">
-                  <button
-                    type="submit"
-                    className="w-full py-4 uppercase font-bold tracking-widest text-xs sm:text-sm bg-dark text-white hover:bg-cyan-2 hover:text-white transition-all duration-250 cursor-pointer border border-dark rounded-none"
-                  >
-                    Valider ma demande d'agrément flotte →
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── 8. SECTION ENGAGEMENT & IMPACT CHEF DE FLOTTE (PARAMÉTRABLE) ── */}
-      <ContactCTA
+      {/* ── 6. SECTION TÉLÉCHARGEMENT & ONBOARDING CHEF DE FLOTTE ── */}
+      <DownloadAppCTA
         theme="white"
+        watermark="FLOTTE"
+        subtitle="Application Gestionnaire de Parc"
+        title="Enregistrez votre parc auprès de"
+        highlight="DEM dès aujourd'hui."
+        description="Téléchargez gratuitement l’application DEM sur iOS ou Android. Créez votre compte, sélectionnez le rôle « Chef de flotte » et connectez vos motos en direct pour superviser vos gains."
+        bullets={[
+          "Sélectionnez le profil « Chef de flotte » à l'ouverture de l'application",
+          "Ajout et supervision télématique de l'ensemble de votre parc",
+          "Attribution automatisée des courses aux conducteurs de votre flotte",
+          "Reversements hebdomadaires automatiques sécurisés par Wave & OM"
+        ]}
+        id="download"
+      />
+
+      {/* ── 7. SECTION ENGAGEMENT & IMPACT CHEF DE FLOTTE ── */}
+      <ContactCTA
+        theme="cyan-deep"
         watermark="FLOTTE"
         subtitle="Partenariat d'excellence"
         title="Optimisez chaque kilomètre"
         highlight="vers un rendement garanti."
         description="Que vous possédiez 1 moto ou un parc de 50 véhicules, DEM met à votre disposition sa technologie télématique de pointe, son flux continu de courses B2B et ses reversements hebdomadaires 100% garantis."
-        primaryBtnText="Simuler mes gains mensuels"
-        primaryBtnLink="#simulateur"
-        primaryBtnIcon="arrow"
-        secondaryBtnText="Enregistrer mon parc"
-        secondaryBtnLink="#enregistrer"
-        secondaryBtnIcon="phone"
+        primaryBtnText="Télécharger l'App DEM"
+        primaryBtnLink="#download"
+        primaryBtnIcon="download"
       />
 
     </div>

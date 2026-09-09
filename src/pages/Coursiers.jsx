@@ -4,16 +4,15 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PageHeroSection from '../components/sections/PageHeroSection.jsx';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../components/atoms/SectionHeading.jsx';
+import DownloadAppCTA from '../components/sections/DownloadAppCTA.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
 import useIsDesktop from '../hooks/useIsDesktop.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Livreurs() {
+export default function Coursiers() {
   const isDesktop = useIsDesktop();
   const [coursesPerDay, setCoursesPerDay] = useState(14);
-  const [hasMotorbike, setHasMotorbike] = useState('yes');
-  const [submitted, setSubmitted] = useState(false);
 
   // Estimation financière DEM : ~1 200 FCFA net moyen par course
   const estimatedDaily = coursesPerDay * 1200;
@@ -21,7 +20,6 @@ export default function Livreurs() {
   const estimatedMonthly = coursesPerDay * 1200 * 26;
 
   const sectionPillarsRef = useRef(null);
-  const formSectionRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -49,11 +47,6 @@ export default function Livreurs() {
 
     return () => ctx.revert();
   }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
 
   return (
     <div className="w-full bg-white text-dark min-h-screen font-['DM_Sans',sans-serif] selection:bg-cyan selection:text-dark">
@@ -208,7 +201,7 @@ export default function Livreurs() {
                 }
               ].map((pil, idx) => (
                 <div key={idx} className="p-8 lg:p-10 flex flex-col justify-between bg-white border-b border-black/10 hover:bg-slate-50 transition-colors">
-                  <span className="text-xs font-mono font-bold text-cyan-2 mb-6 block">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2 mb-6 block">
                     /{pil.code}
                   </span>
                   <div>
@@ -251,27 +244,27 @@ export default function Livreurs() {
             {[
               {
                 step: "ÉTAPE 01",
-                title: "Candidature en ligne",
-                desc: "Remplissez le formulaire ci-dessous avec vos informations personnelles et votre zone d'activité préférée."
+                title: "Téléchargez l'application",
+                desc: "Installez l'application DEM sur votre smartphone iOS ou Android et sélectionnez le profil « Livreur » à l'inscription."
               },
               {
                 step: "ÉTAPE 02",
                 title: "Vérification des pièces",
-                desc: "Notre équipe vérifie votre pièce d'identité, permis de conduire et papiers du véhicule sous 24 heures."
+                desc: "Téléversez vos justificatifs (CNI, permis moto et documents du véhicule) directement dans l'application sous 24h."
               },
               {
                 step: "ÉTAPE 03",
-                title: "Session d'accueil & App",
-                desc: "Bénéficiez d'une formation rapide à l'application DEM, aux règles de sécurité routière et recevez votre équipement."
+                title: "Validation & Équipement",
+                desc: "Votre compte est validé rapidement. Récupérez votre caisson isotherme sécurisé et votre équipement pro au siège."
               },
               {
                 step: "ÉTAPE 04",
-                title: "Première livraison",
-                desc: "Activez votre compte, commencez à accepter vos premières courses et encaissez vos premiers revenus."
+                title: "Prenez la route",
+                desc: "Passez votre statut en ligne, recevez vos premières courses géolocalisées et encaissez vos revenus chaque semaine."
               }
             ].map((st, i) => (
               <div key={i} className="awwwards-card p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors">
-                <span className="text-xs uppercase tracking-widest font-mono font-bold text-cyan-2 mb-8 block">
+                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2 mb-6 block">
                   {st.step}
                 </span>
                 <div>
@@ -289,158 +282,34 @@ export default function Livreurs() {
         </div>
       </section>
 
-      {/* ── 5. FORMULAIRE DE CANDIDATURE AWWWARDS (NO GRADIENT, NO ROUNDED) ── */}
-      <section ref={formSectionRef} className="py-20 lg:py-32 px-6 lg:px-16 bg-white" id="postuler">
-        <div className="max-w-[1000px] mx-auto">
-          
-          <div className="text-center mb-16">
-            <MiniTitleWithBar content="POSTULER MAINTENANT" />
-            <SectionHeading
-              align="center"
-              title="Rejoignez la flotte"
-              highlight="DEM dès aujourd'hui"
-              subtitle="Dossier d'inscription"
-              titleColor="text-dark"
-              highlightColor="var(--color-cyan-2, #0086C8)"
-              scriptColor="text-cyan-2"
-              titleSize="text-3xl md:text-5xl lg:text-6xl"
-              className="mt-4"
-            />
-            <p className="mt-4 text-base text-slate-600 max-w-xl mx-auto font-['Poppins',sans-serif]">
-              Complétez les informations requises. Notre responsable recrutement prendra contact avec vous dans un délai de 24h.
-            </p>
-          </div>
-
-          <div className="border border-black/10 bg-slate-50 p-8 sm:p-12 lg:p-16">
-            {submitted ? (
-              <div className="p-10 bg-dark text-white text-center border border-cyan">
-                <span className="text-xs font-bold uppercase tracking-widest text-cyan block mb-2 font-['Raleway',sans-serif]">
-                  CONFIRMATION D'ENVOI
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-bold uppercase text-white mb-4 font-['DM_Sans',sans-serif]">
-                  Votre candidature a été transmise avec succès !
-                </h3>
-                <p className="text-sm text-white/80 max-w-md mx-auto leading-relaxed font-['Poppins',sans-serif] mb-6">
-                  Merci de votre intérêt pour DEM. Un responsable de flotte vous contactera par téléphone ou WhatsApp dans les prochaines heures pour planifier votre session d'intégration.
-                </p>
-                <button
-                  onClick={() => setSubmitted(false)}
-                  className="inline-block uppercase tracking-wider text-xs font-bold px-6 py-3 border border-cyan text-cyan hover:bg-cyan hover:text-dark transition-colors duration-250 cursor-pointer rounded-none"
-                >
-                  Envoyer une autre demande
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-8">
-                
-                {/* Ligne 1 : Nom & Téléphone */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Nom et Prénom *
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="Ex: Babacar Ndiaye"
-                      className="w-full px-4 py-3.5 bg-white border border-black/15 text-dark placeholder-slate-400 focus:outline-none focus:border-cyan-2 text-sm rounded-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Numéro Téléphone / WhatsApp *
-                    </label>
-                    <input
-                      required
-                      type="tel"
-                      placeholder="Ex: +221 77 000 00 00"
-                      className="w-full px-4 py-3.5 bg-white border border-black/15 text-dark placeholder-slate-400 focus:outline-none focus:border-cyan-2 text-sm rounded-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Ligne 2 : Zone de résidence & Moto */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Quartier ou Commune de résidence *
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="Ex: Parcelles Assainies, Plateau, Pikine..."
-                      className="w-full px-4 py-3.5 bg-white border border-black/15 text-dark placeholder-slate-400 focus:outline-none focus:border-cyan-2 text-sm rounded-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Possédez-vous une moto ? *
-                    </label>
-                    <select
-                      value={hasMotorbike}
-                      onChange={(e) => setHasMotorbike(e.target.value)}
-                      className="w-full px-4 py-3.5 bg-white border border-black/15 text-dark focus:outline-none focus:border-cyan-2 text-sm rounded-none"
-                    >
-                      <option value="yes">Oui, je possède ma propre moto</option>
-                      <option value="no">Non, je recherche une mise à disposition / location</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Ligne 3 : Disponibilité & Permis */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Type de Permis / Pièce
-                    </label>
-                    <select className="w-full px-4 py-3.5 bg-white border border-black/15 text-dark focus:outline-none focus:border-cyan-2 text-sm rounded-none">
-                      <option value="permis-a">Permis Moto (Catégorie A)</option>
-                      <option value="cni-only">CNI Sénégalaise / CEDEAO valide</option>
-                      <option value="autre">En cours d'obtention</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-dark mb-2 font-['Raleway',sans-serif]">
-                      Disponibilité souhaitée
-                    </label>
-                    <select className="w-full px-4 py-3.5 bg-white border border-black/15 text-dark focus:outline-none focus:border-cyan-2 text-sm rounded-none">
-                      <option value="full-time">Temps plein (6 jours / semaine)</option>
-                      <option value="part-time">Temps partiel (Matin ou Soir)</option>
-                      <option value="weekend">Week-end uniquement</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Bouton de Soumission Sharp */}
-                <div className="pt-4">
-                  <button
-                    type="submit"
-                    className="w-full py-4 uppercase font-bold tracking-widest text-xs sm:text-sm bg-dark text-white hover:bg-cyan-2 hover:text-white transition-all duration-250 cursor-pointer border border-dark rounded-none"
-                  >
-                    Transmettre ma candidature →
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-
-        </div>
-      </section>
+      {/* ── 5. SECTION TÉLÉCHARGEMENT & ONBOARDING LIVREUR ── */}
+      <DownloadAppCTA
+        theme="white"
+        watermark="LIVREUR"
+        subtitle="Inscription Simplifiée"
+        title="Rejoignez les coursiers de"
+        highlight="DEM dès aujourd'hui."
+        description="Téléchargez l'application DEM, sélectionnez l'option « Livreur » lors de la création de votre compte et transmettez vos documents en 2 minutes pour commencer à rouler."
+        bullets={[
+          "Sélectionnez le profil « Livreur » à l'ouverture de l'application",
+          "Validation express de votre dossier en moins de 24 heures",
+          "Équipement de livraison & caisson fournis par DEM",
+          "Paiements hebdomadaires garantis par Wave & Orange Money"
+        ]}
+        id="download"
+      />
 
       {/* ── 6. INFO / CTA PERSONNALISÉ COURSIERS ── */}
-      <ContactCTA
+      {/* <ContactCTA
         theme="dark"
         watermark="COURSIERS"
         title="Prêt à prendre la route et"
         highlight="encaisser chaque semaine ?"
         subtitle="Rejoignez la flotte DEM"
-        description="Téléchargez l'application coursier DEM ou déposez votre dossier au siège pour commencer vos premières missions dès aujourd'hui."
-        primaryBtnText="Postuler en ligne"
-        primaryBtnLink="#postuler"
-        primaryBtnIcon="arrow"
+        description="Téléchargez dès maintenant l'application DEM sur votre smartphone, choisissez le statut Livreur et débutez vos premières courses à Dakar."
+        primaryBtnText="Télécharger l'App"
+        primaryBtnLink="#download"
+        primaryBtnIcon="download"
         secondaryBtnText="Contacter l'équipe Recrutement"
         secondaryBtnLink="mailto:contact@dem.sn"
         bullets={[
@@ -448,7 +317,7 @@ export default function Livreurs() {
           "Assurance & assistance 7j/7",
           "Caisson & équipement fournis"
         ]}
-      />
+      /> */}
 
     </div>
   );

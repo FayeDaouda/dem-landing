@@ -118,9 +118,10 @@ const sections = [
   {
     title: '13. Contact',
     content: (
-      <ul style={{ paddingLeft: 20 }}>
+      <ul style={{ paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
         <li>E-mail : <a href="mailto:support@dem.sn" style={{ color: C.cyan }}>support@dem.sn</a></li>
-        <li>Adresse : Dakar, Sénégal</li>
+        <li>Téléphone / WhatsApp : <a href="tel:+221784448524" style={{ color: C.cyan }}>+221 78 444 85 24</a></li>
+        <li>Adresse : Sicap Mermoz, Dakar, Sénégal</li>
       </ul>
     ),
   },

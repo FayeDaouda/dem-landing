@@ -82,7 +82,7 @@ export default function Header() {
                     {/* --- GAUCHE (Desktop uniquement) --- */}
                     <div className="hidden lg:flex flex-1 h-full items-center justify-start border-r border-[var(--header-border,rgba(0,210,255,0.25))]">
                         <HeaderLink 
-                            to="/la-maison" 
+                            to="/a-propos" 
                             label="À propos" 
                         />
                         <HeaderLink 
@@ -90,7 +90,7 @@ export default function Header() {
                             label="Services" 
                         />
                         <HeaderLink 
-                            to="/livreurs" 
+                            to="/coursiers" 
                             label="Devenir Coursier" 
                         />
                     </div>
@@ -126,8 +126,8 @@ export default function Header() {
 
                     {/* --- DROITE (Desktop uniquement) --- */}
                     <div className="hidden lg:flex flex-1 h-full items-center justify-end border-l border-[var(--header-border,rgba(0,210,255,0.25))]">
-                        <HeaderLink to="/entreprises" label="DEM PRO" hoverLabel="Pour les entreprises" />
-                        <HeaderLink to="/flotte" label="Chef de Flotte" hoverLabel="Nos partenaires" />
+                        <HeaderLink to="/dem-pro" label="DEM PRO" hoverLabel="Pour les entreprises" />
+                        <HeaderLink to="/chef-de-flotte" label="Chef de Flotte" hoverLabel="Nos partenaires" />
                         <HeaderLink to="/contact" label="Contact" />
                     </div>
 
@@ -161,11 +161,11 @@ export default function Header() {
                 displaySocials={true}
                 items={[
                     { label: 'Accueil', ariaLabel: 'Accueil', link: '/' },
-                    { label: 'À propos', ariaLabel: 'À propos', link: '/la-maison' },
+                    { label: 'À propos', ariaLabel: 'À propos', link: '/a-propos' },
                     { label: 'Services', ariaLabel: 'Services', link: '/services' },
-                    { label: 'Devenir Coursier', ariaLabel: 'Devenir Coursier', link: '/livreurs' },
-                    { label: 'Pour les entreprises', ariaLabel: 'Pour les entreprises', link: '/entreprises' },
-                    { label: 'Chef de Flotte', ariaLabel: 'Chef de Flotte', link: '/flotte' },
+                    { label: 'Devenir Coursier', ariaLabel: 'Devenir Coursier', link: '/coursiers' },
+                    { label: 'Pour les entreprises', ariaLabel: 'Pour les entreprises', link: '/dem-pro' },
+                    { label: 'Chef de Flotte', ariaLabel: 'Chef de Flotte', link: '/chef-de-flotte' },
                     { label: 'Contact', ariaLabel: 'Contact', link: '/contact' },
                 ]}
             />

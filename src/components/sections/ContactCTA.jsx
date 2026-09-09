@@ -59,7 +59,8 @@ export default function ContactCTA({
   id,
   children,
 }) {
-  const isLight = theme === 'white' || theme === 'light' || theme === 'slate';
+  const isCyanDeep = theme === 'cyan-deep';
+  const isLight = (theme === 'white' || theme === 'light' || theme === 'slate') && !isCyanDeep;
   const isSlate = theme === 'slate';
   const isCenter = align === 'center';
 
@@ -125,6 +126,12 @@ export default function ContactCTA({
     descClass = 'text-slate-600';
     defaultHighlightColor = 'var(--color-cyan-2, #0086C8)';
     scriptColor = 'text-[#0086C8]';
+  } else if (isCyanDeep) {
+    bgClass = 'bg-cyan-deep text-white border-white/[0.08]';
+    watermarkClass = 'text-white/[0.03]';
+    descClass = 'text-slate-200';
+    defaultHighlightColor = 'var(--cyan, #00D2FF)';
+    scriptColor = 'text-[#00D2FF]';
   } else if (!isLight) {
     bgClass = 'bg-[#021520] text-white border-white/[0.08]';
     watermarkClass = 'text-white/[0.03]';
