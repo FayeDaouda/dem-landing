@@ -62,7 +62,7 @@ export default function Coursiers() {
       <section className="border-t border-b border-black/10 bg-dark text-white">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
           {[
-            { num: "< 45m", label: "Délai moyen par livraison", sub: "Optimisation des trajets via GPS" },
+            { num: "~ 20 min", label: "Délai moyen par course", sub: "Optimisation des trajets via GPS" },
             { num: "100%", label: "Reversement hebdomadaire", sub: "Paiement direct Wave / OM" },
             { num: "7j / 7", label: "Flexibilité des créneaux", sub: "Roulez selon votre emploi du temps" },
             { num: "500+", label: "Courses opérées par jour", sub: "Flux de commandes continu garanti" }
@@ -111,7 +111,7 @@ export default function Coursiers() {
                 <div className="flex justify-between items-end mb-8">
                   <div>
                     <span className="text-xs font-bold uppercase tracking-widest text-cyan font-['Raleway',sans-serif] block mb-1">
-                      Volume d'activité
+                      Volume d'activité · ~20 min en moyenne / course
                     </span>
                     <h3 className="text-2xl font-bold text-white">Courses quotidiennes</h3>
                   </div>
@@ -162,7 +162,7 @@ export default function Coursiers() {
                       <span className="text-xs uppercase tracking-widest text-cyan font-bold block font-['Raleway',sans-serif]">
                         Revenu net estimé / mois
                       </span>
-                      <small className="text-[10px] text-white/60">Base indicative de 26 jours</small>
+                      <small className="text-[10px] text-white/60">Base indicative de 26 jours · ~20 min / course</small>
                     </div>
                     <span className="text-2xl lg:text-4xl font-black text-cyan font-['DM_Sans',sans-serif]">
                       {estimatedMonthly.toLocaleString('fr-FR')} FCFA
@@ -172,7 +172,7 @@ export default function Coursiers() {
               </div>
 
               <p className="text-[11px] text-white/40 mt-8 m-0 uppercase tracking-wider font-['Raleway',sans-serif]">
-                * Données estimatives basées sur le tarif moyen des courses DEM à Dakar. Les gains varient selon vos plages horaires et le nombre de missions accomplies.
+                * Données estimatives basées sur un délai moyen de 20 minutes par course et le tarif moyen des livraisons DEM à Dakar. Les gains varient selon vos plages horaires et le nombre de missions accomplies.
               </p>
             </div>
 
@@ -284,7 +284,7 @@ export default function Coursiers() {
 
       {/* ── 5. SECTION TÉLÉCHARGEMENT & ONBOARDING LIVREUR ── */}
       <DownloadAppCTA
-        theme="white"
+        theme="cyan-deep"
         watermark="LIVREUR"
         subtitle="Inscription Simplifiée"
         title="Rejoignez les coursiers de"

@@ -9,6 +9,7 @@ import DownloadAppCTA from '../components/sections/DownloadAppCTA.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
 import CircularGallery from '../components/atoms/CircularGallery.jsx';
 import SectionHeading from '../components/atoms/SectionHeading.jsx';
+import imgMission from '../../public/mission.png'
 
 const C = {
   cyan: '#00D2FF',
@@ -51,22 +52,22 @@ export default function Home() {
       
       {/* ── HERO HOMEPAGE ── */}
       <HeroHomePage
-        title="DEM LIVRAISON"
-        subtitle="Livraison express à moto partout au Sénégal"
-        image="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=1920&auto=format&fit=crop&q=85"
+        title="DEM"
+        subtitle="Livraison express partout à Dakar"
+        image={imgMission}
       />
-
-      {/* ── MISSION ── */}
-      <Mission />
 
       {/* ── DELIVERY JOURNEY ── */}
       <DeliveryJourney />
+
+      {/* ── MISSION ── */}
+      <Mission />
 
       {/* ── HORIZONTAL GALLERY ── */}
       <HorizontalGallery theme="white" />
 
       {/* ── SCROLL EXPAND SHOWCASE ── */}
-      <ScrollExpandSection />
+      {/* <ScrollExpandSection /> */}
 
       {/* ── VISUAL GALLERY SHOWCASE ── */}
       <section className="relative w-full py-20 px-4 overflow-hidden border-t border-b border-slate-200" style={{ background: '#FFFFFF' }}>

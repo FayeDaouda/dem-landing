@@ -12,16 +12,36 @@ export default function DownloadAppCTA({
   bullets = [],
   id = 'download',
 }) {
-  const isLight = theme === 'white';
+  const isCyanDeep = theme === 'cyan-deep';
+  const isLight = theme === 'white' || theme === 'light';
+
+  let bgClass = 'bg-white text-dark border-slate-200';
+  let watermarkClass = 'text-slate-900/[0.04]';
+  let descClass = 'text-slate-600';
+  let highlightColor = 'var(--color-cyan-2, #0086C8)';
+  let highlightClassName = 'text-[#0086C8]';
+  let scriptColor = 'text-[#0086C8]';
+
+  if (isCyanDeep) {
+    bgClass = 'bg-cyan-deep text-white border-white/[0.08]';
+    watermarkClass = 'text-white/[0.03]';
+    descClass = 'text-slate-200';
+    highlightColor = 'var(--cyan, #00D2FF)';
+    highlightClassName = 'text-[#00D2FF]';
+    scriptColor = 'text-[#00D2FF]';
+  } else if (!isLight) {
+    bgClass = 'bg-[#021520] text-white border-white/[0.08]';
+    watermarkClass = 'text-white/[0.03]';
+    descClass = 'text-slate-300';
+    highlightColor = 'var(--cyan, #00D2FF)';
+    highlightClassName = 'text-[#00D2FF]';
+    scriptColor = 'text-[#00D2FF]';
+  }
 
   return (
     <section
       id={id}
-      className={`relative w-full py-20 md:py-32 px-6 overflow-hidden border-t font-['DM_Sans',sans-serif] ${
-        isLight
-          ? 'bg-white text-dark border-slate-200'
-          : 'bg-[#021520] text-white border-white/[0.08]'
-      }`}
+      className={`relative w-full py-20 md:py-32 px-6 overflow-hidden border-t font-['DM_Sans',sans-serif] ${bgClass}`}
     >
       {/* ── 1. FILIGRANE GÉANT EN ARRIÈRE-PLAN ── */}
       <div
@@ -29,9 +49,7 @@ export default function DownloadAppCTA({
         aria-hidden="true"
       >
         <span
-          className={`font-black text-[17vw] leading-none uppercase tracking-tighter whitespace-nowrap font-['DM_Sans',sans-serif] ${
-            isLight ? 'text-slate-900/[0.04]' : 'text-white/[0.03]'
-          }`}
+          className={`font-black text-[17vw] leading-none uppercase tracking-tighter whitespace-nowrap font-['DM_Sans',sans-serif] ${watermarkClass}`}
         >
           {watermark}
         </span>
@@ -47,16 +65,16 @@ export default function DownloadAppCTA({
           highlight={highlight}
           subtitle={subtitle}
           titleColor={isLight ? 'text-dark' : 'text-white'}
-          highlightColor="var(--color-cyan-2, #0086C8)"
-          highlightClassName={isLight ? 'text-[#0086C8]' : 'text-[#00D2FF]'}
-          scriptColor="text-[#0086C8]"
+          highlightColor={highlightColor}
+          highlightClassName={highlightClassName}
+          scriptColor={scriptColor}
           titleSize="text-3xl md:text-5xl lg:text-6xl"
           subtitleSize="text-xl md:text-2xl lg:text-3xl"
           className="mb-6"
         />
 
         {/* Description */}
-        <p className="text-slate-600 text-base md:text-lg max-w-2xl leading-relaxed mb-6 font-['Poppins',sans-serif]">
+        <p className={`${descClass} text-base md:text-lg max-w-2xl leading-relaxed mb-6 font-['Poppins',sans-serif]`}>
           {description}
         </p>
 
@@ -67,9 +85,17 @@ export default function DownloadAppCTA({
               {bullets.map((text, idx) => (
                 <div
                   key={idx}
-                  className="flex items-start gap-3 p-3.5 border bg-slate-50/90 border-slate-200 hover:bg-slate-100/90 text-dark transition-colors"
+                  className={`flex items-start gap-3 p-3.5 border transition-colors ${
+                    isLight
+                      ? 'bg-slate-50/90 border-slate-200 hover:bg-slate-100/90 text-dark'
+                      : 'bg-white/[0.03] border-white/10 hover:bg-white/[0.06] text-white/90'
+                  }`}
                 >
-                  <span className="shrink-0 mt-0.5 p-1 text-[#0086C8] bg-cyan/15">
+                  <span
+                    className={`shrink-0 mt-0.5 p-1 ${
+                      isLight ? 'text-[#0086C8] bg-cyan/15' : 'text-cyan bg-cyan/20'
+                    }`}
+                  >
                     <Check size={14} strokeWidth={3} />
                   </span>
                   <span className="text-xs sm:text-sm font-medium font-['Poppins',sans-serif] leading-snug">
@@ -89,7 +115,11 @@ export default function DownloadAppCTA({
             href="https://apps.apple.com/us/app/dem-livraison/id6764724342"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center justify-between gap-4 px-7 py-4 min-w-[220px] bg-[#021520] text-white hover:bg-[#0086C8] transition-all duration-300 rounded-none border border-[#021520] shadow-sm cursor-pointer"
+            className={`group inline-flex items-center justify-between gap-4 px-7 py-4 min-w-[220px] transition-all duration-300 rounded-none border shadow-sm cursor-pointer ${
+              isLight
+                ? 'bg-[#021520] text-white hover:bg-[#0086C8] border-[#021520]'
+                : 'bg-white/[0.06] text-white hover:bg-[#0086C8] hover:text-white border-white/20'
+            }`}
           >
             <div className="flex items-center gap-3.5">
               <svg className="w-6 h-6 fill-current shrink-0 text-white" viewBox="0 0 24 24">
@@ -99,7 +129,7 @@ export default function DownloadAppCTA({
                 <span className="text-[10px] uppercase font-bold tracking-widest text-white/70 font-['Raleway',sans-serif]">
                   Disponible sur
                 </span>
-                <span className="text-sm  text-white/70 font-black tracking-tight font-['DM_Sans',sans-serif]">
+                <span className="text-sm text-white font-black tracking-tight font-['DM_Sans',sans-serif]">
                   App Store
                 </span>
               </div>
@@ -112,14 +142,14 @@ export default function DownloadAppCTA({
             href="https://play.google.com/store/apps/details?id=sn.dem.demapp"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center justify-between gap-4 px-7 py-4 min-w-[220px] bg-[#00D2FF] text-[#021520] hover:bg-[#0086C8] hover:text-white hover:border-[#0086C8] transition-all duration-300 rounded-none border border-[#00D2FF] shadow-sm cursor-pointer"
+            className="group inline-flex items-center justify-between gap-4 px-7 py-4 min-w-[220px] bg-[#00D2FF] text-[#021520] hover:bg-white hover:text-[#021520] hover:border-white transition-all duration-300 rounded-none border border-[#00D2FF] shadow-sm cursor-pointer"
           >
             <div className="flex items-center gap-3.5">
-              <svg className="w-6 h-6 fill-current shrink-0 text-[#021520] group-hover:text-white transition-colors" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 fill-current shrink-0 text-[#021520] transition-colors" viewBox="0 0 24 24">
                 <path d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.61-.951V2.765c.137-.36.357-.69.609-.951zm11.597 11.597l2.368 2.368-12.78 7.378 10.412-9.746zm0-2.822L4.794.843l12.78 7.379-2.368 2.367zm1.414 1.411l3.774 2.18c1.07.618 1.07 1.626 0 2.244l-3.774 2.18-2.122-2.122 2.122-2.482z" />
               </svg>
               <div className="flex flex-col text-left leading-tight">
-                <span className="text-[10px] uppercase font-bold tracking-widest text-[#021520]/70 group-hover:text-white/70 font-['Raleway',sans-serif] transition-colors">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-[#021520]/70 font-['Raleway',sans-serif] transition-colors">
                   Disponible sur
                 </span>
                 <span className="text-sm font-black tracking-tight font-['DM_Sans',sans-serif]">
@@ -127,7 +157,7 @@ export default function DownloadAppCTA({
                 </span>
               </div>
             </div>
-            <ArrowRight size={16} className="text-[#021520] group-hover:text-white group-hover:translate-x-1 transition-all shrink-0" />
+            <ArrowRight size={16} className="text-[#021520] group-hover:translate-x-1 transition-all shrink-0" />
           </a>
 
         </div>

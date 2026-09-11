@@ -82,17 +82,21 @@ export default function Header() {
                     {/* --- GAUCHE (Desktop uniquement) --- */}
                     <div className="hidden lg:flex flex-1 h-full items-center justify-start border-r border-[var(--header-border,rgba(0,210,255,0.25))]">
                         <HeaderLink 
-                            to="/a-propos" 
-                            label="À propos" 
+                            to="/notre-histoire" 
+                            label="Notre Histoire" 
                         />
                         <HeaderLink 
                             to="/services" 
-                            label="Services" 
+                            label="Nos Services" 
                         />
                         <HeaderLink 
+                            to="/services" 
+                            label="Actualités" 
+                        />
+                        {/* <HeaderLink 
                             to="/coursiers" 
                             label="Devenir Coursier" 
-                        />
+                        /> */}
                     </div>
 
                     {/* --- LOGO CENTRE (Aggressive Cockpit HUD Box) --- */}
@@ -161,7 +165,7 @@ export default function Header() {
                 displaySocials={true}
                 items={[
                     { label: 'Accueil', ariaLabel: 'Accueil', link: '/' },
-                    { label: 'À propos', ariaLabel: 'À propos', link: '/a-propos' },
+                    { label: 'Notre Histoire', ariaLabel: 'Notre Histoire', link: '/notre-histoire' },
                     { label: 'Services', ariaLabel: 'Services', link: '/services' },
                     { label: 'Devenir Coursier', ariaLabel: 'Devenir Coursier', link: '/coursiers' },
                     { label: 'Pour les entreprises', ariaLabel: 'Pour les entreprises', link: '/dem-pro' },

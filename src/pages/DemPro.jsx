@@ -15,7 +15,7 @@ export default function DemPro() {
       {/* ── 1. HERO SECTION AWWWARDS ── */}
       <PageHeroSection
         contentMiniBar="SOLUTIONS E-COMMERCE & GRANDS COMPTES"
-        firstTitle="Propulsez la logistique de votre marque."
+        firstTitle="Propulsez la logistique de votre business plus facilement."
         secondTitle="Livraison Same-Day, reversement COD sous 24h et intégration e-commerce fluide partout à Dakar."
       />
 
@@ -45,78 +45,197 @@ export default function DemPro() {
         </div>
       </section>
 
-      {/* ── 3. LES 3 PILIERS B2B & E-COMMERCE ── */}
+
+      {/* ── 3. AVANTAGES DEM PRO : CE QUE VOUS GAGNEZ ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white">
         <div className="max-w-[1400px] mx-auto">
           
           <div className="mb-16">
-            <MiniTitleWithBar content="SERVICES MARCHANDS & RETAIL" />
+            <MiniTitleWithBar content="CE QUE VOUS GAGNEZ AVEC DEM PRO" />
             <SectionHeading
               align="left"
-              title="Une chaîne de livraison"
-              highlight="pensée pour convertir"
-              subtitle="Performance commerciale"
+              title="Transformez votre logistique en"
+              highlight="accélérateur de ventes"
+              subtitle="Avantages Business & E-commerce"
               titleColor="text-dark"
               highlightColor="var(--color-cyan-2, #0086C8)"
               scriptColor="text-cyan-2"
               titleSize="text-3xl md:text-5xl lg:text-6xl"
               className="mt-4"
             />
+            <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
+              Passer à un compte <strong>DEM Pro</strong>, c’est libérer votre business des contraintes de livraison, sécuriser vos encaissements et offrir à vos clients une expérience d’achat moderne et digne des plus grandes marques.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white">
+          {/* Grille des 6 Avantages Clés Awwwards (Sharp & Minimaliste) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-black/10 divide-y md:divide-y-0 divide-black/10 bg-white">
             
-            {/* Pilier 1 */}
-            <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+            {/* Avantage 1 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between border-b md:border-r border-black/10 hover:bg-slate-50 transition-colors group">
               <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2 mb-4 block">
-                  /01 · Expédition Ultra-Rapide
-                </span>
-                <h3 className="text-2xl font-bold uppercase text-dark mb-4 font-['DM_Sans',sans-serif]">
-                  Livraison Same-Day & Créneaux Précis
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /01 · Gain de temps
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    Zéro appel
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  Expéditions groupées & programmées
                 </h3>
                 <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
-                  Vos commandes enregistrées avant midi sont livrées l'après-midi même. Vos clients choisissent leur créneau de livraison et suivent leur coursier en temps réel.
+                  Fini la perte de temps à négocier chaque course au téléphone. Enregistrez jusqu’à 8 livraisons simultanées ou planifiez vos envois plusieurs jours à l'avance en un clic.
                 </p>
               </div>
-              <div className="pt-6 border-t border-slate-100 text-xs text-cyan-dark font-bold uppercase tracking-wider font-['DM_Sans',sans-serif]">
-                Ramassage groupé en boutique
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  +3h gagnées par jour
+                </span>
               </div>
             </div>
 
-            {/* Pilier 2 */}
-            <div className="p-8 lg:p-12 flex flex-col justify-between bg-dark text-white">
+            {/* Avantage 2 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between border-b lg:border-r border-black/10 hover:bg-slate-50 transition-colors group">
               <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan mb-4 block">
-                  /02 · Gestion du Cash on Delivery
-                </span>
-                <h3 className="text-2xl font-bold uppercase text-white mb-4 font-['DM_Sans',sans-serif]">
-                  Encaissement Sécurisé & Reversement 24h
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /02 · Trésorerie
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    24h chrono
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  Encaissement COD & Reversement 24h
                 </h3>
-                <p className="text-sm text-white/80 leading-relaxed mb-6 font-['Poppins',sans-serif]">
-                  Nous collectons le paiement à la livraison (Espèces, Wave ou Orange Money) et vous reversons l'intégralité des montants sous 24h ouvrées avec rapport détaillé.
+                <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
+                  Nos livreurs encaissent vos fonds à la livraison (Espèces, Wave ou OM). L’argent est crédité sur votre Wallet DEM Pro et reversé sous 24h ouvrées sur votre compte.
                 </p>
               </div>
-              <div className="pt-6 border-t border-white/10 text-xs text-cyan font-bold uppercase tracking-wider font-['DM_Sans',sans-serif]">
-                Rapprochement comptable 100%
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  0 risque d'impayé
+                </span>
               </div>
             </div>
 
-            {/* Pilier 3 */}
-            <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+            {/* Avantage 3 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between border-b border-black/10 hover:bg-slate-50 transition-colors group">
               <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2 mb-4 block">
-                  /03 · Plugins & API E-Commerce
-                </span>
-                <h3 className="text-2xl font-bold uppercase text-dark mb-4 font-['DM_Sans',sans-serif]">
-                  Intégration Shopify & WooCommerce
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /03 · Vente en ligne
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    Mini-Boutique
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  Lien de commande & Catalogue digital
                 </h3>
                 <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
-                  Connectez votre boutique en ligne à l'API DEM pour générer automatiquement vos étiquettes de colis, planifier les courses et notifier vos acheteurs.
+                  Créez vos catalogues produits avec prix et stocks. Partagez votre lien de commande sur Instagram, TikTok ou WhatsApp pour que vos clients achètent en toute autonomie.
                 </p>
               </div>
-              <div className="pt-6 border-t border-slate-100 text-xs text-cyan-dark font-bold uppercase tracking-wider font-['DM_Sans',sans-serif]">
-                Documentation API & Sandbox
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  +40% de conversion
+                </span>
+              </div>
+            </div>
+
+            {/* Avantage 4 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between border-b md:border-b-0 md:border-r border-black/10 hover:bg-slate-50 transition-colors group">
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /04 · Crédibilité
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    Image de marque
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  Factures automatiques & NINEA
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
+                  Émettez automatiquement après chaque vente des factures professionnelles avec votre logo et vos mentions légales pour rassurer vos clients et simplifier votre comptabilité.
+                </p>
+              </div>
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  Comptabilité simplifiée
+                </span>
+              </div>
+            </div>
+
+            {/* Avantage 5 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between border-b md:border-b-0 lg:border-r border-black/10 hover:bg-slate-50 transition-colors group">
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /05 · Sécurité & Suivi
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    Live GPS & OTP
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  Traçabilité temps réel & Preuve OTP
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
+                  Offrez à vos acheteurs un lien de suivi en direct sur la carte. La livraison est validée par code de sécurité ou signature, éliminant les contestations et litiges.
+                </p>
+              </div>
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  -30% de retours colis
+                </span>
+              </div>
+            </div>
+
+            {/* Avantage 6 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors group">
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /06 · Croissance
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    CRM & Analytics
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  CRM Clients & Rapports d'activité
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
+                  Identifiez vos meilleurs clients, suivez la courbe de vos ventes par semaine et exportez facilement vos données (CSV/PDF) pour piloter votre croissance avec précision.
+                </p>
+              </div>
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  Fidélisation maximale
+                </span>
               </div>
             </div>
 

@@ -35,7 +35,7 @@ export default function HeroHomePage({
                 {/* Left Column: Typographic Monumental Title */}
                 <div className="flex flex-col items-start gap-3 max-w-3xl">
                     <span className="font-serif italic text-cyan text-2xl sm:text-3xl md:text-4xl tracking-wide font-light -mb-1 block">
-                        Application de livraison
+                        Application
                     </span>
 
                     <h1
@@ -63,7 +63,7 @@ export default function HeroHomePage({
                             <SectionHeading
                                 title="Télécharger"
                                 highlight="l'App"
-                                subtitle="Application Client & Pro"
+                                subtitle="Application"
                                 align="left"
                                 reverse={true}
                                 rotate="-1deg"

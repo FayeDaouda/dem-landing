@@ -12,7 +12,7 @@ const Mission = ({
         <section className={`w-full py-24 px-6 lg:px-12 transition-colors duration-300 ${
             isDark ? 'bg-[#021520] text-white' : 'bg-white text-[#021520]'
         } ${className}`}>
-            <div className="max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-6 items-start">
+            <div className="max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 items-start">
                 
                 {/* 1. Titre & Badge Visuel */}
                 <div className="col-span-1 flex flex-col justify-between">
@@ -28,18 +28,7 @@ const Mission = ({
                     </div>
                 </div>
 
-                {/* 2. Sub-label */}
-                <div className="col-span-1 md:pt-3">
-                    <p className={`font-sans text-xs md:text-sm font-semibold tracking-wider uppercase leading-relaxed ${
-                        isDark ? 'text-white/60' : 'text-[#021520]/60'
-                    }`}>
-                        À Propos de<br />
-                        <span className={isDark ? 'text-white' : 'text-[#021520]'}>Delivery Express</span><br />
-                        Mobility
-                    </p>
-                </div>
-
-                {/* 3. Main Text */}
+                {/* 2. Main Text */}
                 <div className="col-span-1 md:col-span-2">
                     <HorizontalCurtainReveal curtainColor={curtainBg}>
                         <p className="font-sans text-2xl md:text-3xl lg:text-[38px] leading-[1.3] tracking-tight font-medium">

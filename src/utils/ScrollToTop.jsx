@@ -3,8 +3,9 @@ import { useLocation } from "react-router-dom";
 
 export const PAGE_TITLES = {
   "/": "DEM — Delivery Express Mobility | Livraison express à Dakar",
-  "/a-propos": "À Propos — Notre Histoire & Vision | DEM",
-  "/la-maison": "À Propos — Notre Histoire & Vision | DEM",
+  "/notre-histoire": "Notre Histoire & Vision | DEM",
+  "/a-propos": "Notre Histoire & Vision | DEM",
+  "/la-maison": "Notre Histoire & Vision | DEM",
   "/services": "Nos Services de Livraison — Express, Colis & Repas | DEM",
   "/coursiers": "Devenir Coursier Partenaire — Rejoignez l'équipe | DEM",
   "/livreurs": "Devenir Coursier Partenaire — Rejoignez l'équipe | DEM",

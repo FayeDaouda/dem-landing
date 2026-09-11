@@ -6,7 +6,7 @@ import ScrollToTop from './utils/ScrollToTop.jsx'
 import Header from './components/layout/Header.jsx'
 import Footer from './components/layout/Footer.jsx'
 import Home from './pages/Home.jsx'
-import APropos from './pages/APropos.jsx'
+import NotreHistoire from './pages/NotreHistoire.jsx'
 import Services from './pages/Services.jsx'
 import Coursiers from './pages/Coursiers.jsx'
 import DemPro from './pages/DemPro.jsx'
@@ -25,8 +25,9 @@ createRoot(document.getElementById('root')).render(
       <main className="min-h-screen">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/a-propos" element={<APropos />} />
-          <Route path="/la-maison" element={<APropos />} />
+          <Route path="/notre-histoire" element={<NotreHistoire />} />
+          <Route path="/a-propos" element={<NotreHistoire />} />
+          <Route path="/la-maison" element={<NotreHistoire />} />
           <Route path="/services" element={<Services />} />
           <Route path="/coursiers" element={<Coursiers />} />
           <Route path="/livreurs" element={<Coursiers />} />

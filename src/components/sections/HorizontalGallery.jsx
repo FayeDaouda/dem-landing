@@ -126,16 +126,13 @@ export const HorizontalGallery = ({ services = DEFAULT_DEM_SERVICES, theme = 'da
           </p>
           <a 
             href="#download" 
-            className={`inline-flex items-center gap-3 px-6 py-3 font-bold text-sm tracking-wide uppercase transition-all duration-300 ${
+            className={`inline-flex items-center gap-3 px-6 py-3 font-bold text-sm tracking-wide uppercase transition-all duration-300 text-white ${
               isLight
-                ? 'text-white bg-[#021520] hover:bg-[#0086C8] shadow-lg'
+                ? ' bg-[#021520] hover:bg-[#0086C8] shadow-lg'
                 : 'text-white bg-[#00D2FF]/10 border border-[#00D2FF]/30 hover:bg-[#00D2FF]/20 shadow-[0_0_20px_rgba(0,210,255,0.15)]'
             }`}
           >
-            <span>Télécharger l'application</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
+            <span className='text-white'>Télécharger l'application</span>
           </a>
         </div>
 
