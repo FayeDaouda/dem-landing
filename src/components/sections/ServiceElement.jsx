@@ -5,6 +5,7 @@ import { SplitText } from "../../utils/SplitText.js";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MiniTitleWithBar from "../atoms/MiniTitleWithBar.jsx";
 import CarouselParallax from "./CarouselParallax.jsx";
+import CoursierSimulator from "../atoms/CoursierSimulator.jsx";
 import useIsDesktop from "../../hooks/useIsDesktop.js";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,7 +22,9 @@ export default function ServiceElement({
     miniTitleWithBar,
     linkText,
     linkUrl,
-    projects
+    projects,
+    hasSimulator,
+    simulator
 }) {
     const isDesktop = useIsDesktop();
     const [spacerHeight, setSpacerHeight] = useState(0);
@@ -292,6 +295,17 @@ export default function ServiceElement({
                     )}
                 </div>
             </div>
+
+            {/* Simulateur interactif de gains (pour le service coursiers) */}
+            {(hasSimulator || id === "coursiers-dem") && (
+                <div className={`mt-8 ${paddingClass}`}>
+                    <CoursierSimulator
+                        ratePerDelivery={simulator?.ratePerDelivery || 1200}
+                        title="Simulateur de revenus coursier DEM"
+                        subtitle="Ajustez le curseur selon le nombre de livraisons par jour pour projeter vos revenus réels"
+                    />
+                </div>
+            )}
 
             {/* Projects / Carousel Section (conservé en commentaire pour réactivation à la demande) */}
             {/* {

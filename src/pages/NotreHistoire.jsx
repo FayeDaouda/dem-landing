@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../components/atoms/SectionHeading.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
+import EditorialStorySection from '../components/sections/EditorialStorySection.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -67,11 +68,11 @@ export default function NotreHistoire() {
         <div className="max-w-[1400px] mx-auto relative z-10">
           
           {/* Header Bar Magazine */}
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 pb-6 mb-12 text-xs uppercase tracking-[0.25em] font-semibold text-white/60 font-['DM_Sans',sans-serif]">
+          {/* <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 pb-6 mb-12 text-xs uppercase tracking-[0.25em] font-semibold text-white/60 font-['DM_Sans',sans-serif]">
             <span>REVUE OFFICIELLE DEM · VOL. 01</span>
             <span className="text-[#00D2FF]">DAKAR, SÉNÉGAL</span>
             <span>CHRONIQUES DE LA MOBILITÉ URBAINE</span>
-          </div>
+          </div> */}
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
             <div className="lg:col-span-8">
@@ -90,7 +91,7 @@ export default function NotreHistoire() {
               <p className="text-base sm:text-lg text-white/80 leading-relaxed font-['Poppins',sans-serif] m-0">
                 L’histoire de DEM (Delivery Express Mobility) est celle d'un refus : le refus de la résignation face aux embouteillages, aux retards chroniques et à la précarité de la logistique du dernier kilomètre à Dakar.
               </p>
-              <div className="mt-8 flex items-center gap-4 text-xs tracking-widest uppercase font-bold text-[#00D2FF]">
+              {/* <div className="mt-8 flex items-center gap-4 text-xs tracking-widest uppercase font-bold text-[#00D2FF]">
                 <span>01. CONSTAT</span>
                 <span>·</span>
                 <span>02. VISION</span>
@@ -98,7 +99,7 @@ export default function NotreHistoire() {
                 <span>03. MISSION</span>
                 <span>·</span>
                 <span>04. VALEURS</span>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -106,222 +107,224 @@ export default function NotreHistoire() {
       </section>
 
 
-      {/* ── 2. PARTIE 01 : LE CONSTAT (SECTION AVEC IMAGES EN PARALLAXE DÉBORDANTE) ── */}
-      <section className="relative py-24 lg:py-36 px-6 lg:px-16 border-b border-black/10 bg-white" id="constat">
-        <div className="max-w-[1400px] mx-auto">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            
-            {/* Colonne Gauche : L'Analyse & Le Texte Éditorial */}
-            <div className="lg:col-span-6 magazine-reveal flex flex-col justify-between">
-              <div>
-                <MiniTitleWithBar content="01 · L'ÉTAT DES LIEUX" />
-                
-                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#021520] tracking-tight leading-none mt-4 mb-6">
-                  Le constat d'un système <br />
-                  <span className="font-serif italic font-normal text-[#0086C8] lowercase">à bout de souffle.</span>
-                </h2>
+      {/* ── 2. PARTIE 01 : LE CONSTAT (COMPOSANT ÉDITORIAL AVEC IMAGES EN PARALLAXE ÉTAGÉE) ── */}
+      <EditorialStorySection
+        id="constat"
+        theme="light"
+        imagePosition="right"
+        chapterNumber="01 · L'ÉTAT DES LIEUX"
+        title="Le constat d'un système"
+        highlight="à bout de souffle."
+        paragraphs={[
+          "Dakar est l'une des métropoles les plus dynamiques d'Afrique de l'Ouest. Ses commerçants innovent, ses créateurs vendent sur les réseaux sociaux et sa population consomme à toute allure. Pourtant, un goulet d'étranglement persistait : la livraison du dernier kilomètre.",
+          "Pour les e-commerçants et les boutiques physiques, chaque expédition était une loterie. Pour les coursiers, les conditions étaient rudes, sans couverture, sans matériel adapté et sans visibilité sur leurs revenus.",
+          "Il ne manquait pas de motos à Dakar : il manquait une technologie intelligente, une organisation rigoureuse et une considération humaine pour relier ces maillons."
+        ]}
+        quote="« Perte de colis, livreurs introuvables au téléphone, délais aléatoires de plus de 4 heures et encaissements en espèces non sécurisés... Le commerce dakarois méritait mieux. »"
+        metrics={[
+          { value: "+4h", label: "Délai moyen antérieur sans DEM" },
+          { value: "35%", label: "Taux d'échec ou d'annulation" }
+        ]}
+        mainImage={{
+          src: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=900&auto=format&fit=crop&q=85",
+          alt: "Circulation et logistique Dakar",
+          speed: "0.1",
+          direction: "up",
+          aspect: "aspect-[4/5]",
+          tag: "FIG. 01 — DAKAR EXPRESS"
+        }}
+        secondaryImage={{
+          src: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&auto=format&fit=crop&q=85",
+          alt: "Coursier DEM sur le terrain",
+          speed: "0.25",
+          direction: "up",
+          aspect: "aspect-[3/4]",
+          subtitle: "Terrain & Réalité",
+          title: "Le défi de la ponctualité"
+        }}
+        floatingBadge={{
+          tag: "POINT D'INFLEXION",
+          text: "Passer du désordre à la synchronisation temps réel.",
+          speed: "0.18",
+          direction: "down"
+        }}
+      />
 
-                <div className="space-y-6 text-base sm:text-lg text-slate-700 leading-relaxed font-['Poppins',sans-serif] mt-8">
-                  <p>
-                    Dakar est l'une des métropoles les plus dynamiques d'Afrique de l'Ouest. Ses commerçants innovent, ses créateurs vendent sur les réseaux sociaux et sa population consomme à toute allure. Pourtant, un goulet d'étranglement persistait : <strong>la livraison du dernier kilomètre</strong>.
-                  </p>
-                  
-                  {/* Citation Éditoriale Encadrée */}
-                  <blockquote className="p-6 bg-slate-50 border-l-4 border-[#0086C8] my-8 font-serif italic text-xl sm:text-2xl text-[#021520] leading-snug">
-                    « Perte de colis, livreurs introuvables au téléphone, délais aléatoires de plus de 4 heures et encaissements en espèces non sécurisés... Le commerce dakarois méritait mieux. »
-                  </blockquote>
+      {/* ── 3. PARTIE 02 : LA VISION (COMPOSANT ÉDITORIAL EN THÈME SOMBRE & DISPOSITION INVERSÉE) ── */}
+      <EditorialStorySection
+        id="vision"
+        theme="dark"
+        imagePosition="left"
+        chapterNumber="02 · Le Futur de la Logistique"
+        title="Bâtir l'autoroute"
+        highlight="numérique du dernier kilomètre."
+        paragraphs={[
+          "Notre vision dépasse la simple livraison à moto. Nous construisons le système d'exploitation de la mobilité commerciale en Afrique de l'Ouest.",
+          "Un réseau où chaque commerce, de la boutique de quartier au grand compte e-commerce, dispose de la même puissance d'expédition que les géants mondiaux : dispatch instantané, intégration API directe, encaissement dématérialisé et transparence totale à chaque coin de rue."
+        ]}
+        pillars={[
+          { number: "01.", title: "Fluidité Urbaine", desc: "Algorithmes de routage intelligents contournant les points de congestion." },
+          { number: "02.", title: "Inclusion Financière", desc: "Digitalisation intégrale des flux Cash on Delivery via Wave & Orange Money." },
+          { number: "03.", title: "Expansion Régionale", desc: "Un modèle réplicable pensé pour les grandes capitales d'Afrique de l'Ouest." }
+        ]}
+        mainImage={{
+          src: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85",
+          alt: "Technologie et vision DEM",
+          speed: "0.12",
+          direction: "up",
+          aspect: "aspect-[16/11]",
+          tag: "HORIZON TECH · TEMPS RÉEL",
+          grayscale: false
+        }}
+        secondaryImage={{
+          src: "https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?w=800&auto=format&fit=crop&q=85",
+          alt: "Supervision télématique",
+          speed: "0.22",
+          direction: "down",
+          aspect: "aspect-square",
+          subtitle: "100% Connecté",
+          title: "Flotte connectée par GPS"
+        }}
+      />
 
-                  <p>
-                    Pour les e-commerçants et les boutiques physiques, chaque expédition était une loterie. Pour les coursiers, les conditions étaient rudes, sans couverture, sans matériel adapté et sans visibilité sur leurs revenus.
-                  </p>
-                  <p className="font-semibold text-[#021520]">
-                    Il ne manquait pas de motos à Dakar : il manquait une technologie intelligente, une organisation rigoureuse et une considération humaine pour relier ces maillons.
-                  </p>
-                </div>
+      {/* ── 4. PARTIE 03 : LA TECHNOLOGIE (MOTEUR DE DISPATCH & GÉOGUIDAGE LOCAL) ── */}
+      <EditorialStorySection
+        id="technologie"
+        theme="light"
+        imagePosition="right"
+        chapterNumber="03 · LE MOTEUR TECHNOLOGIQUE"
+        title="Une plateforme conçue"
+        highlight="pour la réalité du terrain dakarois."
+        paragraphs={[
+          "Loin des logiciels importés inadaptés aux spécificités de l'adressage local, DEM a développé sa propre pile logicielle de géocodage contextuel et d'optimisation d'itinéraires.",
+          "Notre moteur prend en compte les repères visuels dakarois, contourne en direct les goulots d'étranglement de la VDN, de la corniche ou de l'autoroute à péage, et connecte instantanément chaque colis au motocycliste le mieux positionné.",
+          "Chaque course bénéficie d'un suivi au mètre près sur carte interactive et d'un contrôle strict de la remise par code de sécurité OTP unique."
+        ]}
+        quote="« La technologie n'a de valeur que si elle résout les frictions du monde réel. À Dakar, chaque minute économisée dans le trafic est une victoire pour le commerce. »"
+        metrics={[
+          { value: "-25%", label: "Temps de trajet moyen réduit" },
+          { value: "99.4%", label: "Taux de livraison avec succès OTP" }
+        ]}
+        mainImage={{
+          src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=85",
+          alt: "Supervision télématique et dispatch intelligent",
+          speed: "0.1",
+          direction: "up",
+          aspect: "aspect-[4/5]",
+          tag: "FIG. 03 — DISPATCH INTELLIGENT"
+        }}
+        secondaryImage={{
+          src: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800&auto=format&fit=crop&q=85",
+          alt: "Coursier connecté en direct",
+          speed: "0.25",
+          direction: "up",
+          aspect: "aspect-[3/4]",
+          subtitle: "Temps Réel",
+          title: "Assignation en moins de 10 min"
+        }}
+        floatingBadge={{
+          tag: "ALGORITHME LOCAL",
+          text: "Prise en compte dynamique du trafic et des repères dakarois.",
+          speed: "0.18",
+          direction: "down"
+        }}
+      />
 
-                {/* Métriques du Constat */}
-                <div className="grid grid-cols-2 gap-4 pt-10 border-t border-black/10 mt-10">
-                  <div className="p-5 border border-black/10 bg-slate-50">
-                    <span className="font-['DM_Sans',sans-serif] text-3xl sm:text-4xl font-black text-[#0086C8] block mb-1">
-                      +4h
-                    </span>
-                    <span className="text-xs uppercase tracking-wider font-bold text-slate-600 block">
-                      Délai moyen antérieur sans DEM
-                    </span>
-                  </div>
-                  <div className="p-5 border border-black/10 bg-slate-50">
-                    <span className="font-['DM_Sans',sans-serif] text-3xl sm:text-4xl font-black text-[#0086C8] block mb-1">
-                      35%
-                    </span>
-                    <span className="text-xs uppercase tracking-wider font-bold text-slate-600 block">
-                      Taux d'échec ou d'annulation
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* ── 5. PARTIE 04 : L'HUMAIN AU GUIDON (VALORISATION ET SÉCURITÉ DES COURSIERS) ── */}
+      <EditorialStorySection
+        id="humain"
+        theme="dark"
+        imagePosition="left"
+        chapterNumber="04 · L'HUMAIN D'ABORD"
+        title="Redonner toute sa fierté"
+        highlight="au métier de coursier urbain."
+        paragraphs={[
+          "Chez DEM, nous sommes convaincus qu'il ne peut y avoir de service client d'élite sans une considération absolue pour ceux qui sillonnent la ville par tous les temps.",
+          "Nos livreurs ne sont pas de simples identifiants sur un écran. Ce sont des partenaires valorisés, dotés d'équipements de sécurité certifiés, formés aux exigences du relationnel client et protégés par une couverture d'assistance.",
+          "Chaque semaine, l'intégralité de leurs gains et pourboires est versée avec une rigueur absolue sur Wave ou Orange Money, sans aucuns frais occultes."
+        ]}
+        quote="« Un coursier respecté, équipé et équitablement rémunéré est le plus bel ambassadeur qu'une marque puisse envoyer chez ses clients. »"
+        metrics={[
+          { value: "100%", label: "Gains reversés chaque semaine" },
+          { value: "4.9/5", label: "Satisfaction moyenne des coursiers" }
+        ]}
+        mainImage={{
+          src: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85",
+          alt: "Coursier DEM sur le terrain",
+          speed: "0.12",
+          direction: "up",
+          aspect: "aspect-[16/11]",
+          tag: "FIG. 04 — HÉROS DU QUOTIDIEN",
+          grayscale: false
+        }}
+        secondaryImage={{
+          src: "https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?w=800&auto=format&fit=crop&q=85",
+          alt: "Équipement professionnel certifié",
+          speed: "0.22",
+          direction: "down",
+          aspect: "aspect-square",
+          subtitle: "Dignité & Sécurité",
+          title: "Équipements pro & Caissons étanches"
+        }}
+        floatingBadge={{
+          tag: "ENGAGEMENT SOCIAL",
+          text: "Assurance accident, dotation complète et écoute 7j/7.",
+          speed: "0.18",
+          direction: "down",
+          bg: "bg-[#0086C8]",
+          textColor: "text-white"
+        }}
+      />
 
-            {/* Colonne Droite : Composition d'Images en Parallaxe Étagée (Débordant vers le bas) */}
-            <div className="lg:col-span-6 relative mt-12 lg:mt-0 pb-16 lg:pb-32">
-              <div className="relative w-full">
-                
-                {/* Image 1 : Grande image principale (Le trafic / La ville) */}
-                <div 
-                  className="parallax-item relative z-10 w-full aspect-[4/5] bg-slate-200 border border-black/10 shadow-2xl overflow-hidden"
-                  data-speed="0.1"
-                  data-direction="up"
-                >
-                  <img 
-                    src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=900&auto=format&fit=crop&q=85" 
-                    alt="Circulation et logistique Dakar"
-                    className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-700"
-                  />
-                  <div className="absolute top-4 left-4 bg-[#021520] text-white text-[10px] font-mono tracking-widest uppercase px-3 py-1.5">
-                    FIG. 01 — DAKAR EXPRESS
-                  </div>
-                </div>
+      {/* ── 6. PARTIE 05 : L'HORIZON RÉGIONAL (EXPANSION OUEST-AFRICAINE) ── */}
+      <EditorialStorySection
+        id="expansion"
+        theme="light"
+        imagePosition="right"
+        chapterNumber="05 · L'HORIZON RÉGIONAL"
+        title="Du Sénégal aux capitales"
+        highlight="majeures d'Afrique de l'Ouest."
+        paragraphs={[
+          "Dakar est notre berceau et notre laboratoire d'excellence. Mais les défis que nous avons relevés ici résonnent avec la même urgence dans toute la sous-région.",
+          "De la presqu'île dakaroise aux grands carrefours commerciaux ouest-africains, notre infrastructure a été conçue pour se déployer rapidement et offrir aux marques une expérience de livraison transfrontalière unifiée.",
+          "Notre feuille de route vise à connecter commerçants et consommateurs avec les mêmes standards d'instantanéité, de sécurité COD et de transparence technologique."
+        ]}
+        pillars={[
+          { number: "01.", title: "Dakar & Pôles Économiques", desc: "Couverture totale de Dakar, Diamniadio, Thiès, Mbour et la Petite-Côte." },
+          { number: "02.", title: "Hubs Sous-Régionaux", desc: "Déploiement progressif des corridors logistiques vers Abidjan, Bamako et Conakry." },
+          { number: "03.", title: "Standardisation B2B", desc: "API unique pour interconnecter les géants du e-commerce et de la distribution panafricaine." }
+        ]}
+        mainImage={{
+          src: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900&auto=format&fit=crop&q=85",
+          alt: "Entrepôt et infrastructure logistique DEM",
+          speed: "0.1",
+          direction: "up",
+          aspect: "aspect-[4/5]",
+          tag: "FIG. 05 — SCALE & EXPANSION"
+        }}
+        secondaryImage={{
+          src: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&auto=format&fit=crop&q=85",
+          alt: "Flotte en expansion",
+          speed: "0.25",
+          direction: "up",
+          aspect: "aspect-[3/4]",
+          subtitle: "Réseau Ouest-Africain",
+          title: "Le hub logistique unifié"
+        }}
+        floatingBadge={{
+          tag: "HORIZON SCALE",
+          text: "Connecter les métropoles africaines en un clic.",
+          speed: "0.18",
+          direction: "down"
+        }}
+      />
 
-                {/* Image 2 : Image décalée en superposition inférieure droite (pousse à scroller vers le bas) */}
-                <div 
-                  className="parallax-item absolute -bottom-20 right-[-10px] sm:-right-8 w-3/4 sm:w-2/3 aspect-[3/4] bg-[#021520] border-4 border-white shadow-2xl z-20 overflow-hidden"
-                  data-speed="0.25"
-                  data-direction="up"
-                >
-                  <img 
-                    src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&auto=format&fit=crop&q=85" 
-                    alt="Coursier DEM sur le terrain"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/90 to-transparent text-white">
-                    <span className="font-serif italic text-xs text-[#00D2FF] block mb-0.5">Terrain & Réalité</span>
-                    <span className="text-xs font-bold uppercase tracking-wider block">Le défi de la ponctualité</span>
-                  </div>
-                </div>
-
-                {/* Cartouche d'accroche flottant */}
-                <div 
-                  className="parallax-item absolute top-1/3 -left-6 sm:-left-10 bg-[#00D2FF] text-[#021520] p-4 sm:p-6 shadow-xl z-30 max-w-[220px] border border-black/10"
-                  data-speed="0.18"
-                  data-direction="down"
-                >
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest block mb-1">
-                    POINT D'INFLEXION
-                  </span>
-                  <p className="text-xs font-black uppercase leading-tight m-0 font-['DM_Sans',sans-serif]">
-                    Passer du désordre à la synchronisation temps réel.
-                  </p>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-
-      {/* ── 3. PARTIE 02 : LA VISION (INFRASTRUCTURE & HORIZON) ── */}
-      <section className="relative py-24 lg:py-36 px-6 lg:px-16 border-b border-white/10 bg-[#021520] text-white overflow-hidden" id="vision">
-        {/* Halo cyan décoratif */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00D2FF]/5 blur-[120px] rounded-full pointer-events-none" />
-
-        <div className="max-w-[1400px] mx-auto relative z-10">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            
-            {/* Colonne Gauche : Composition Visuelle Parallaxe Inverse */}
-            <div className="lg:col-span-6 order-2 lg:order-1 relative pb-16 lg:pb-24">
-              <div className="relative w-full">
-                
-                {/* Image Principale Vision */}
-                <div 
-                  className="parallax-item relative z-10 w-full aspect-[16/11] bg-black border border-white/15 shadow-2xl overflow-hidden"
-                  data-speed="0.12"
-                  data-direction="up"
-                >
-                  <img 
-                    src="https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85" 
-                    alt="Technologie et vision DEM"
-                    className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
-                  />
-                  <div className="absolute top-4 left-4 bg-cyan text-[#021520] text-[10px] font-mono tracking-widest uppercase px-3 py-1 font-bold">
-                    HORIZON TECH · TEMPS RÉEL
-                  </div>
-                </div>
-
-                {/* Deuxième image décalée qui mord sur le bas */}
-                <div 
-                  className="parallax-item absolute -bottom-16 -left-4 sm:-left-8 w-2/3 aspect-square bg-[#0086C8] border-4 border-[#021520] shadow-2xl z-20 overflow-hidden"
-                  data-speed="0.22"
-                  data-direction="down"
-                >
-                  <img 
-                    src="https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?w=800&auto=format&fit=crop&q=85" 
-                    alt="Supervision télématique"
-                    className="w-full h-full object-cover mix-blend-multiply opacity-80"
-                  />
-                  <div className="absolute inset-0 p-6 flex flex-col justify-end bg-gradient-to-t from-[#021520] via-transparent to-transparent">
-                    <span className="text-3xl font-black text-[#00D2FF] font-['DM_Sans',sans-serif]">100%</span>
-                    <span className="text-xs uppercase tracking-wider text-white font-bold">Flotte connectée par GPS</span>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            {/* Colonne Droite : Texte Vision */}
-            <div className="lg:col-span-6 order-1 lg:order-2 magazine-reveal">
-              <span className="font-serif italic text-lg sm:text-xl font-light text-[#00D2FF] block mb-2">
-                02 · Le Futur de la Logistique
-              </span>
-              
-              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-none text-white mb-6">
-                Bâtir l'autoroute <br />
-                <span className="font-serif italic font-normal text-[#00D2FF] lowercase">numérique du dernier kilomètre.</span>
-              </h2>
-
-              <div className="space-y-6 text-base sm:text-lg text-white/80 leading-relaxed font-['Poppins',sans-serif] mt-8">
-                <p>
-                  Notre vision dépasse la simple livraison à moto. Nous construisons le <strong>système d'exploitation de la mobilité commerciale</strong> en Afrique de l'Ouest.
-                </p>
-                <p>
-                  Un réseau où chaque commerce, de la boutique de quartier au grand compte e-commerce, dispose de la même puissance d'expédition que les géants mondiaux : dispatch instantané, intégration API directe, encaissement dématérialisé et transparence totale à chaque coin de rue.
-                </p>
-              </div>
-
-              {/* 3 Piliers de la Vision */}
-              <div className="space-y-4 pt-8 border-t border-white/10 mt-8">
-                {[
-                  { title: "Fluidité Urbaine", desc: "Algorithmes de routage intelligents contournant les points de congestion." },
-                  { title: "Inclusion Financière", desc: "Digitalisation intégrale des flux Cash on Delivery via Wave & Orange Money." },
-                  { title: "Expansion Régionale", desc: "Un modèle réplicable pensé pour les grandes capitales d'Afrique de l'Ouest." }
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-4 p-4 bg-white/[0.03] border border-white/10">
-                    <span className="font-serif italic text-lg text-[#00D2FF]">0{i+1}.</span>
-                    <div>
-                      <h4 className="text-sm font-bold uppercase text-white font-['DM_Sans',sans-serif]">{item.title}</h4>
-                      <p className="text-xs text-white/60 m-0 font-['Poppins',sans-serif]">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-
-      {/* ── 4. PARTIE 03 : NOTRE MISSION (ENGAGEMENT & IMPACT CONCRET) ── */}
+      {/* ── 7. PARTIE 06 : NOTRE MISSION (ENGAGEMENT & IMPACT CONCRET) ── */}
       <section className="py-24 lg:py-36 px-6 lg:px-16 border-b border-black/10 bg-slate-50" id="mission">
         <div className="max-w-[1400px] mx-auto">
           
           <div className="mb-16 magazine-reveal">
-            <MiniTitleWithBar content="03 · NOTRE RAISON D'ÊTRE" />
+            <MiniTitleWithBar content="06 · NOTRE RAISON D'ÊTRE" />
             <SectionHeading
               align="left"
               title="Une mission claire :"
@@ -398,12 +401,12 @@ export default function NotreHistoire() {
       </section>
 
 
-      {/* ── 5. PARTIE 04 : NOS VALEURS (LE MANIFESTE EN 4 PRINCIPES) ── */}
+      {/* ── 8. PARTIE 07 : NOS VALEURS (LE MANIFESTE EN 4 PRINCIPES) ── */}
       <section className="py-24 lg:py-36 px-6 lg:px-16 border-b border-black/10 bg-white" id="valeurs">
         <div className="max-w-[1400px] mx-auto">
           
           <div className="mb-16 magazine-reveal">
-            <MiniTitleWithBar content="04 · NOTRE ADN" />
+            <MiniTitleWithBar content="07 · NOTRE ADN" />
             <SectionHeading
               align="left"
               title="Quatre valeurs non négociables"
