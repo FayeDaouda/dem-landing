@@ -9,7 +9,7 @@ import DownloadAppCTA from '../components/sections/DownloadAppCTA.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
 import CircularGallery from '../components/atoms/CircularGallery.jsx';
 import SectionHeading from '../components/atoms/SectionHeading.jsx';
-import imgMission from '../../public/mission.png'
+import imgMission from '../assets/mission.png'
 
 const C = {
   cyan: '#00D2FF',
