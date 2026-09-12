@@ -84,6 +84,7 @@ export default function Footer() {
                                 <Link to="/" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Accueil</Link>
                                 <Link to="/notre-histoire" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Notre Histoire</Link>
                                 <Link to="/services" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Services</Link>
+                                <Link to="/actualites" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Actualités</Link>
                                 <a href="/#download" className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Télécharger</a>
                             </div>
 

@@ -4,22 +4,83 @@ import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../components/atoms/SectionHeading.jsx';
 import DownloadAppCTA from '../components/sections/DownloadAppCTA.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
+import { 
+  ShieldCheck, 
+  TrendingUp, 
+  Coins, 
+  Clock, 
+  Layers, 
+  Percent, 
+  ArrowRight, 
+  Check, 
+  Sliders, 
+  FileText, 
+  CheckCircle2, 
+  HelpCircle,
+  Zap,
+  Lock,
+  ChevronDown
+} from 'lucide-react';
 
 export default function ChefDeFlotte() {
-  const [activeTab, setActiveTab] = useState('delegue');
+  // Simulateur d'exploitation Chef de Flotte Externe
+  const [motosCount, setMotosCount] = useState(5); // 3 à 10 motos éligibles
+  const [selectedOffer, setSelectedOffer] = useState('month'); // '5days', '20days', 'month'
+  const [activeScenario, setActiveScenario] = useState('reference'); // 'reference' (14 500 F/j) ou 'prudent' (6 000 F/j)
   const [openFaq, setOpenFaq] = useState(null);
-  const [motosCount, setMotosCount] = useState(5);
 
-  // Modèle financier Chef de Flotte DEM : 1 500 FCFA en moyenne par livraison
-  const PRICE_PER_DELIVERY = 1500;
-  const COURSES_PER_DAY = 6; // Standard 6 courses / jour par moto
-  const WORKING_DAYS_MONTH = 26; // Base standard 26 jours ouvrés par mois
+  // Définition des 3 offres officielles de Pass Prépayé
+  const OFFERS = {
+    '5days': {
+      name: 'Forfait 5 jours',
+      days: 5,
+      pricePerDay: 1900,
+      totalPerCourier: 9500,
+      badge: 'Flexibilité maximale',
+      role: 'Engagement court, idéal pour tester ou ajuster',
+      savingsVsMarket: '-31%'
+    },
+    '20days': {
+      name: 'Forfait 20 jours',
+      days: 20,
+      pricePerDay: 1400,
+      totalPerCourier: 28000,
+      badge: 'Le plus équilibré',
+      role: 'Engagement moyen, prix/jour fortement réduit',
+      savingsVsMarket: '-49%'
+    },
+    'month': {
+      name: 'Forfait 1 mois (30j)',
+      days: 30,
+      pricePerDay: 1300,
+      totalPerCourier: 39000,
+      badge: 'Rentabilité maximale',
+      role: 'Engagement long, tarif le plus bas du marché',
+      savingsVsMarket: '-53%'
+    }
+  };
 
-  const totalCoursesDaily = motosCount * COURSES_PER_DAY;
-  const estimatedDaily = totalCoursesDaily * PRICE_PER_DELIVERY;
-  const estimatedWeekly = estimatedDaily * 6;
-  const estimatedMonthly = estimatedDaily * WORKING_DAYS_MONTH;
-  const estimatedPerMotoMonthly = COURSES_PER_DAY * PRICE_PER_DELIVERY * WORKING_DAYS_MONTH;
+  const currentOffer = OFFERS[selectedOffer];
+
+  // Calculs économiques
+  // Scénario Référence : 14 500 FCFA/jour/coursier (moyenne observée à Dakar)
+  // Scénario Prudent : 3 courses/jour à 2 000 FCFA sur 20 jours (soit 6 000 FCFA/jour/coursier)
+  const activeDays = currentOffer.days;
+  const caPerDayPerCourier = activeScenario === 'reference' ? 14500 : 6000;
+  
+  // Si scénario prudent, calcul sur 20 jours effectifs même en forfait mensuel
+  const effectiveWorkingDays = activeScenario === 'prudent' ? Math.min(activeDays, 20) : activeDays;
+  
+  const totalFleetCA = motosCount * caPerDayPerCourier * effectiveWorkingDays;
+  const totalPassCost = motosCount * currentOffer.totalPerCourier;
+  const netRemainingForChef = totalFleetCA - totalPassCost;
+  const passSharePercent = Math.round((totalPassCost / totalFleetCA) * 100);
+  const chefKeepsPercent = 100 - passSharePercent;
+
+  // Estimation mise en relation (100 FCFA / course payé par le client, versé à DEM)
+  // Hypothèse : 6 courses / jour / coursier sur 26 jours = 156 courses / mois = 15 600 FCFA / coursier
+  const estimatedCoursesPerMonth = motosCount * 156;
+  const estimatedMiseEnRelation = estimatedCoursesPerMonth * 100;
 
   const toggleFaq = (idx) => {
     setOpenFaq(openFaq === idx ? null : idx);
@@ -32,246 +93,47 @@ export default function ChefDeFlotte() {
     }
   };
 
+  // Tableau officiel de projection du revenu Pass par flotte / mois (Page 5 du dossier)
+  const PROJECTION_TABLE = [
+    { count: 3, pass5: 28500, pass20: 84000, passMonth: 117000, miseRel: 46800 },
+    { count: 4, pass5: 38000, pass20: 112000, passMonth: 156000, miseRel: 62400 },
+    { count: 5, pass5: 47500, pass20: 140000, passMonth: 195000, miseRel: 78000 },
+    { count: 6, pass5: 57000, pass20: 168000, passMonth: 234000, miseRel: 93600 },
+    { count: 7, pass5: 66500, pass20: 196000, passMonth: 273000, miseRel: 109200 },
+    { count: 8, pass5: 76000, pass20: 224000, passMonth: 312000, miseRel: 124800 },
+    { count: 9, pass5: 85500, pass20: 252000, passMonth: 351000, miseRel: 140400 },
+    { count: 10, pass5: 95000, pass20: 280000, passMonth: 390000, miseRel: 156000 },
+  ];
+
   return (
     <div className="w-full bg-white text-dark min-h-screen font-['DM_Sans',sans-serif] selection:bg-cyan selection:text-dark">
       
-      {/* ── 1. HERO SECTION ── */}
+      {/* ── 1. HERO SECTION AWWWARDS ── */}
       <PageHeroSection
-        contentMiniBar="INFRASTRUCTURE & GESTIONNAIRES DE PARC"
-        firstTitle="Gérez votre flotte autrement."
-        secondTitle="Une suite technologique B2B complète pour superviser vos coursiers, sécuriser vos actifs et automatiser vos encaissements à Dakar."
+        contentMiniBar="PROGRAMME PARTENAIRES · CHEF DE FLOTTE EXTERNE"
+        firstTitle="Monétisez et supervisez votre flotte sur le réseau DEM."
+        secondTitle="Apportez vos motos (3 à 10 deux-roues), branchez-les sur notre plateforme, gardez 100% de la liberté de gestion interne et bénéficiez d'un forfait maîtrisé sans commission sur les courses."
       />
 
-      {/* ── 2. SECTION SIMULATEUR DE RENDEMENT FLOTTE (AVANT LES ARGUMENTS) ── */}
-      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white" id="simulateur">
-        <div className="max-w-[1400px] mx-auto">
-          
-          <div className="mb-16">
-            <MiniTitleWithBar content="SIMULATEUR DE RENTABILITÉ FLOTTE" />
-            <SectionHeading
-              align="left"
-              title="Estimez les revenus"
-              highlight="de votre parc deux-roues"
-              subtitle="Transparence & Modèle Économique DEM"
-              titleColor="text-dark"
-              highlightColor="var(--color-cyan-2, #0086C8)"
-              scriptColor="text-cyan-2"
-              titleSize="text-3xl md:text-5xl lg:text-6xl"
-              className="mt-4"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 border border-black/10">
-            
-            {/* Colonne Gauche : Le Calculateur Dynamique Sharp */}
-            <div className="lg:col-span-7 p-8 lg:p-14 bg-dark text-white flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10">
-              <div>
-                {/* Header HUD Box */}
-                <div className="flex flex-wrap items-center justify-between gap-3 mb-8 pb-6 border-b border-white/10">
-                  <span className="font-serif italic text-lg sm:text-xl font-light text-cyan">
-                    Simulateur Flotte B2B
-                  </span>
-                  <span className="text-xs px-3 py-1 bg-cyan/15 border border-cyan/30 text-cyan font-bold uppercase tracking-wider font-['DM_Sans',sans-serif]">
-                    1 500 FCFA moyen / livraison · ~20 min / course
-                  </span>
-                </div>
-
-                {/* Contrôle 1 : Nombre de motos */}
-                <div className="mb-8">
-                  <div className="flex justify-between items-end mb-4">
-                    <div>
-                      <span className="text-xs font-bold uppercase tracking-widest text-cyan font-['Raleway',sans-serif] block mb-1">
-                        Taille du parc
-                      </span>
-                      <h3 className="text-xl sm:text-2xl font-bold text-white">Nombre de motos</h3>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-cyan font-['DM_Sans',sans-serif]">
-                        {motosCount}
-                      </span>
-                      <span className="text-xs text-white/60 block font-mono">
-                        {motosCount > 1 ? 'motos en exploitation' : 'moto en exploitation'}
-                      </span>
-                    </div>
-                  </div>
-
-                  <input
-                    type="range"
-                    min="1"
-                    max="50"
-                    value={motosCount}
-                    onChange={(e) => setMotosCount(Number(e.target.value))}
-                    className="w-full accent-cyan cursor-pointer h-2 bg-white/20 rounded-none"
-                  />
-
-                  {/* Sélecteurs rapides de parc */}
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {[1, 3, 5, 10, 15, 20, 30, 50].map((preset) => (
-                      <button
-                        key={preset}
-                        type="button"
-                        onClick={() => setMotosCount(preset)}
-                        className={`text-[11px] font-mono font-bold px-2.5 py-1 transition-colors cursor-pointer border ${
-                          motosCount === preset
-                            ? 'bg-cyan text-dark border-cyan'
-                            : 'bg-white/5 text-white/70 border-white/15 hover:border-cyan hover:text-white'
-                        }`}
-                      >
-                        {preset} {preset > 1 ? 'motos' : 'moto'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Grille des gains financiers */}
-                <div className="space-y-3 pt-6 border-t border-white/10">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="p-4 bg-white/[0.04] border border-white/10 flex flex-col justify-between">
-                      <span className="text-[11px] uppercase tracking-widest text-white/70 font-['Raleway',sans-serif] block mb-1">
-                        Volume total / jour
-                      </span>
-                      <span className="text-lg font-bold text-white font-mono">
-                        {totalCoursesDaily} courses / j
-                      </span>
-                      <span className="text-[10px] text-white/50 block font-mono mt-1">
-                        (6 courses / moto / jour)
-                      </span>
-                    </div>
-
-                    <div className="p-4 bg-white/[0.04] border border-white/10 flex flex-col justify-between">
-                      <span className="text-[11px] uppercase tracking-widest text-white/70 font-['Raleway',sans-serif] block mb-1">
-                        Revenu brut estimé / jour
-                      </span>
-                      <span className="text-lg font-bold text-white font-mono">
-                        {estimatedDaily.toLocaleString('fr-FR')} FCFA
-                      </span>
-                      <span className="text-[10px] text-white/50 block font-mono mt-1">
-                        (1 500 FCFA moyen / course)
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between items-center p-4 bg-white/[0.04] border border-white/10">
-                    <div>
-                      <span className="text-xs uppercase tracking-widest text-white/70 font-['Raleway',sans-serif] block">
-                        Revenu estimé / semaine (6j)
-                      </span>
-                      <small className="text-[10px] text-white/50">{motosCount} moto{motosCount > 1 ? 's' : ''} en exploitation</small>
-                    </div>
-                    <span className="text-xl font-bold text-white font-mono">
-                      {estimatedWeekly.toLocaleString('fr-FR')} FCFA
-                    </span>
-                  </div>
-
-                  {/* Bloc Mis en Avant (Highlight Cyan Awwwards) */}
-                  <div className="p-6 bg-cyan/15 border border-cyan/40">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div>
-                        <span className="text-xs uppercase tracking-widest text-cyan font-bold block font-['Raleway',sans-serif]">
-                          Revenu mensuel estimé de la flotte
-                        </span>
-                        <small className="text-[11px] text-white/70">
-                          Base de 26 jours ouvrés · 1 500 FCFA moyen / course
-                        </small>
-                      </div>
-                      <div className="text-left sm:text-right">
-                        <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-cyan font-['DM_Sans',sans-serif] block">
-                          {estimatedMonthly.toLocaleString('fr-FR')} FCFA
-                        </span>
-                        <span className="text-[11px] text-white/80 font-mono">
-                          soit ~{estimatedPerMotoMonthly.toLocaleString('fr-FR')} FCFA / moto / mois
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bouton d'action direct */}
-                <div className="pt-8">
-                  <button
-                    type="button"
-                    onClick={handleApplyFromSimulator}
-                    className="w-full py-4 uppercase font-bold tracking-widest text-xs sm:text-sm bg-cyan text-dark hover:bg-white transition-all duration-250 cursor-pointer border border-cyan rounded-none"
-                  >
-                    Enregistrer ma flotte de {motosCount} moto{motosCount > 1 ? 's' : ''} →
-                  </button>
-                </div>
-              </div>
-
-              <p className="text-[11px] text-white/40 mt-8 m-0 uppercase tracking-wider font-['Raleway',sans-serif]">
-                * Données estimatives calculées sur la base de 20 minutes en moyenne par course et 1 500 FCFA TTC en moyenne par livraison réalisée à Dakar. Relevé consolidé et virement hebdomadaire automatisé sur compte bancaire ou Wave/OM pro.
-              </p>
-            </div>
-
-            {/* Colonne Droite : Les 4 Piliers Chef de Flotte (Sharp Awwwards Cards) */}
-            <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 divide-y sm:divide-y-0 lg:divide-y divide-black/10 bg-slate-50">
-              {[
-                {
-                  code: "01",
-                  title: "Reversements Hebdomadaires",
-                  desc: "Commissions virées chaque lundi matin sur votre compte bancaire, Wave ou Orange Money pro, avec un relevé financier détaillé."
-                },
-                {
-                  code: "02",
-                  title: "Volume B2B Garanti",
-                  desc: "Accès prioritaire aux commandes des e-commerces, enseignes de distribution et pharmacies partenaires à fort trafic à Dakar."
-                },
-                {
-                  code: "03",
-                  title: "Télématique & GPS 24/7",
-                  desc: "Supervision live complète : géolocalisation continue, alertes d'arrêts anormaux et historique de navigation certifié."
-                },
-                {
-                  code: "04",
-                  title: "Accords Maintenance & Pièces",
-                  desc: "Jusqu'à -20% de remise négociée sur les vidanges, pneumatiques et révisions auprès de notre réseau de garages agréés."
-                }
-              ].map((pil, idx) => (
-                <div key={idx} className="p-8 lg:p-10 flex flex-col justify-between bg-white border-b border-black/10 hover:bg-slate-50 transition-colors">
-                  <span className="text-xs font-mono font-bold text-cyan-2 mb-4 block">
-                    /{pil.code}
-                  </span>
-                  <div>
-                    <h4 className="text-base font-bold uppercase tracking-wider text-dark mb-2 font-['DM_Sans',sans-serif]">
-                      {pil.title}
-                    </h4>
-                    <p className="text-sm text-slate-600 leading-relaxed m-0 font-['Poppins',sans-serif]">
-                      {pil.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── 3. COCKPIT TÉLÉMATIQUE EN DIRECT (HERO METRICS BAR / ARGUMENTS) ── */}
+      {/* ── 2. BANDEAU DE MÉTRIQUES B2B & PRINCIPES CLÉS (SHARP HUD) ── */}
       <section className="border-t border-b border-black/10 bg-dark text-white">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
           {[
-            { tag: "DISPATCH INTELLIGENT", title: "Flux Continu de Courses", stat: "< 10 min", desc: "Attribution automatique de missions vers les commerces et e-boutiques à fort volume." },
-            { tag: "SÉCURITÉ MATÉRIELLE", title: "Supervision GPS Active", stat: "24/7", desc: "Suivi télématique en direct, géolocalisation continue et historique certifié des trajets." },
-            { tag: "MODÈLE FINANCIER", title: "Rendement Moyen / Moto", stat: "~234 000 F", desc: "Règlement automatisé des commissions par virement chaque lundi matin." },
-            { tag: "ACCOMPAGNEMENT B2B", title: "Gestionnaire Attitré", stat: "100% Dédié", desc: "Un interlocuteur unique pour la gestion opérationnelle et le suivi administratif." }
+            { num: "0%", label: "Commission sur les courses", sub: "Principe intangible : vos coursiers gardent 100% de leurs revenus" },
+            { num: "-53%", label: "Écart vs commissions marché", sub: "1 300 F/j chez DEM contre ~2 755 F/j sur le marché à 19%" },
+            { num: "3 à 10", label: "Motos par flotte externe", sub: "Règle 1:1 (1 moto = 1 coursier). Extension soumise à validation DEM" },
+            { num: "100%", label: "Prépayé & Zéro impayé", sub: "Le chef achète son pass d'avance. Trésorerie saine et autonomie totale" }
           ].map((item, idx) => (
             <div key={idx} className="p-8 lg:p-10 flex flex-col justify-between hover:bg-white/[0.02] transition-colors">
+              <span className="font-['DM_Sans',sans-serif] font-black text-4xl lg:text-5xl text-cyan mb-3 block">
+                {item.num}
+              </span>
               <div>
-                <span className="text-[10px] font-mono font-bold tracking-widest text-cyan uppercase block mb-2">
-                  {item.tag}
-                </span>
-                <h3 className="text-base font-bold text-white uppercase tracking-wider mb-3">
-                  {item.title}
+                <h3 className="uppercase text-xs font-bold tracking-widest text-white mb-1 font-['Raleway',sans-serif]">
+                  {item.label}
                 </h3>
-              </div>
-              <div className="pt-6 border-t border-white/10 mt-6">
-                <span className="text-3xl font-black text-cyan font-['DM_Sans',sans-serif] block mb-1">
-                  {item.stat}
-                </span>
                 <p className="text-xs text-white/60 leading-relaxed m-0">
-                  {item.desc}
+                  {item.sub}
                 </p>
               </div>
             </div>
@@ -279,17 +141,17 @@ export default function ChefDeFlotte() {
         </div>
       </section>
 
-      {/* ── 4. PROFILS & MODÈLES DE COLLABORATION (AVEC MOTO ET SANS MOTO) ── */}
-      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white">
+      {/* ── 3. LE MODÈLE EN UN COUP D'ŒIL & LES 3 OFFRES DE PASS ── */}
+      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white" id="offres">
         <div className="max-w-[1400px] mx-auto">
           
           <div className="mb-16">
-            <MiniTitleWithBar content="PROFILS & MODÈLES DE COLLABORATION" />
+            <MiniTitleWithBar content="TARIFICATION & OFFRES DE PASS" />
             <SectionHeading
               align="left"
-              title="Deux profils pour collaborer"
-              highlight="avec le réseau DEM"
-              subtitle="Avec ou Sans Moto"
+              title="Trois forfaits indépendants"
+              highlight="adaptés à votre trésorerie"
+              subtitle="Ce que DEM encaisse · Zéro commission cachée"
               titleColor="text-dark"
               highlightColor="var(--color-cyan-2, #0086C8)"
               scriptColor="text-cyan-2"
@@ -297,128 +159,622 @@ export default function ChefDeFlotte() {
               className="mt-4"
             />
             <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
-              Que vous soyez propriétaire d’un parc de deux-roues ou gestionnaire d’équipe opérationnelle, DEM vous offre une infrastructure clé en main pour générer des revenus réguliers chaque semaine à Dakar.
+              Le chef de flotte externe achète son crédit de pass à l'avance pour ses coursiers inscrits. Ses coursiers roulent sur ce crédit ; à épuisement, le chef recharge avec l'offre de son choix. <strong>Chaque offre est un forfait complet</strong> : pas de rallonge ni de jours à l'unité.
             </p>
           </div>
 
-          {/* Grille 2 Profils Sharp Awwwards (Avec Moto vs Sans Moto) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white">
+          {/* Grille des 3 Cartes Offres Awwwards Sharp */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-12">
             
-            {/* Profil 1 : CHEF DE FLOTTE AVEC MOTO */}
-            <div className="p-8 lg:p-14 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+            {/* Offre 1 : Forfait 5 jours */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors">
               <div>
                 <div className="flex justify-between items-center mb-6">
-                  <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2">
-                    Profil 01 · Propriétaire & Investisseur
+                  <span className="font-serif italic text-base text-[#0086C8]">
+                    Engagement Court
                   </span>
-                  <span className="text-[11px] px-3 py-1 bg-cyan/15 text-[#0086C8] font-bold uppercase tracking-wider font-['DM_Sans',sans-serif]">
-                    Avec Moto(s)
+                  <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-slate-100 text-slate-700">
+                    5 jours
                   </span>
                 </div>
-
-                <h3 className="text-2xl lg:text-3xl font-bold uppercase text-dark mb-4 font-['DM_Sans',sans-serif]">
-                  Chef de flotte avec moto
+                
+                <h3 className="text-2xl font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
+                  Forfait 5 jours
                 </h3>
-                <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-8 font-['Poppins',sans-serif]">
-                  Vous possédez une ou plusieurs motos à Dakar. Enregistrez votre parc sur DEM pour accéder à notre flux continu de courses B2B et rentabiliser vos véhicules au quotidien.
+                <p className="text-xs text-slate-500 mb-6 font-['Poppins',sans-serif]">
+                  Idéal pour démarrer, tester la réactivité de ses équipes ou piloter avec une trésorerie très courte.
                 </p>
 
-                <ul className="space-y-3.5 pt-6 border-t border-slate-100 text-xs sm:text-sm text-dark font-medium font-['Poppins',sans-serif]">
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-2 font-bold mt-0.5">✓</span>
-                    <span><strong>Mise en exploitation immédiate</strong> de votre parc sur le réseau DEM</span>
+                <div className="py-6 border-t border-b border-black/10 mb-6 space-y-2">
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs uppercase tracking-wider text-slate-500 font-bold">Prix / jour :</span>
+                    <span className="text-xl font-bold text-dark font-mono">1 900 FCFA</span>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs uppercase tracking-wider text-[#0086C8] font-bold">Total / coursier :</span>
+                    <span className="text-2xl font-black text-dark font-['DM_Sans',sans-serif]">9 500 FCFA</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[11px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5">
+                      -31% vs commission marché (19%)
+                    </span>
+                  </div>
+                </div>
+
+                <ul className="space-y-3 text-xs text-slate-700 font-['Poppins',sans-serif]">
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
+                    <span>Facturation par coursier inscrit (1 moto = 1 coursier)</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-2 font-bold mt-0.5">✓</span>
-                    <span><strong>Choix du mode d'opération :</strong> roulez avec vos propres livreurs ou laissez DEM recruter</span>
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
+                    <span>Accès complet au cockpit télématique DEM</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-2 font-bold mt-0.5">✓</span>
-                    <span><strong>Revenus par course :</strong> ~1 500 FCFA moyen par livraison réalisée</span>
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
+                    <span>Tee-shirts officiels DEM inclus pour vos livreurs</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-2 font-bold mt-0.5">✓</span>
-                    <span><strong>Cockpit télématique :</strong> géolocalisation GPS et suivi des trajets 24/7</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-2 font-bold mt-0.5">✓</span>
-                    <span><strong>Accords entretien :</strong> jusqu'à -20% sur les révisions en ateliers partenaires</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-2 font-bold mt-0.5">✓</span>
-                    <span><strong>Reversements garantis :</strong> paiement chaque lundi par Wave, OM ou banque</span>
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
+                    <span>Crédit prépayé : zéro risque d'impayé</span>
                   </li>
                 </ul>
               </div>
 
-              <div className="pt-10">
-                <a
-                  href="#download"
-                  className="block text-center uppercase tracking-widest text-xs font-bold py-4 border border-dark text-dark hover:bg-dark hover:text-white transition-colors"
+              <div className="pt-8">
+                <button
+                  type="button"
+                  onClick={() => { setSelectedOffer('5days'); handleApplyFromSimulator(); }}
+                  className="w-full py-3.5 uppercase font-bold tracking-widest text-xs border border-dark text-dark hover:bg-dark hover:text-white transition-colors cursor-pointer"
                 >
-                  Inscrire mes motos →
-                </a>
+                  Choisir le 5 jours →
+                </button>
               </div>
             </div>
 
-            {/* Profil 2 : CHEF DE FLOTTE SANS MOTO */}
-            <div className="p-8 lg:p-14 flex flex-col justify-between bg-dark text-white relative">
-              <div className="absolute top-0 right-0 bg-cyan text-dark text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 font-['DM_Sans',sans-serif]">
-                ACCÈS SANS CAPITAL
-              </div>
+            {/* Offre 2 : Forfait 20 jours */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors bg-slate-50/50">
               <div>
                 <div className="flex justify-between items-center mb-6">
-                  <span className="font-serif italic text-lg sm:text-xl font-light text-cyan">
-                    Profil 02 · Manager & Superviseur
+                  <span className="font-serif italic text-base text-[#0086C8]">
+                    Engagement Moyen
                   </span>
-                  <span className="text-[11px] px-3 py-1 bg-white/10 text-cyan font-bold uppercase tracking-wider font-['DM_Sans',sans-serif]">
-                    Sans Moto
+                  <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/20 text-[#0086C8]">
+                    20 jours
                   </span>
                 </div>
-
-                <h3 className="text-2xl lg:text-3xl font-bold uppercase text-white mb-4 font-['DM_Sans',sans-serif]">
-                  Chef de flotte sans moto
+                
+                <h3 className="text-2xl font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
+                  Forfait 20 jours
                 </h3>
-                <p className="text-sm sm:text-base text-white/80 leading-relaxed mb-8 font-['Poppins',sans-serif]">
-                  Vous n'avez pas de motos mais possédez des compétences en gestion humaine et logistique. Fédérez, encadrez et supervisez une équipe de coursiers pour percevoir des commissions sur chaque course.
+                <p className="text-xs text-slate-500 mb-6 font-['Poppins',sans-serif]">
+                  Le compromis équilibré : couverture sur un cycle de travail standard avec un coût journalier nettement allégé.
                 </p>
 
-                <ul className="space-y-3.5 pt-6 border-t border-white/10 text-xs sm:text-sm text-white/90 font-medium font-['Poppins',sans-serif]">
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan font-bold mt-0.5">✓</span>
-                    <span><strong>Zéro investissement matériel :</strong> démarrez immédiatement sans acheter de moto</span>
+                <div className="py-6 border-t border-b border-black/10 mb-6 space-y-2">
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs uppercase tracking-wider text-slate-500 font-bold">Prix / jour :</span>
+                    <span className="text-xl font-bold text-dark font-mono">1 400 FCFA</span>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs uppercase tracking-wider text-[#0086C8] font-bold">Total / coursier :</span>
+                    <span className="text-2xl font-black text-dark font-['DM_Sans',sans-serif]">28 000 FCFA</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[11px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5">
+                      -49% vs commission marché (19%)
+                    </span>
+                  </div>
+                </div>
+
+                <ul className="space-y-3 text-xs text-slate-700 font-['Poppins',sans-serif]">
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
+                    <span>Facturation par coursier inscrit (1 moto = 1 coursier)</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan font-bold mt-0.5">✓</span>
-                    <span><strong>Management d'équipe :</strong> supervisez des coursiers disposant de leurs propres motos</span>
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
+                    <span>Accès complet au cockpit télématique DEM</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan font-bold mt-0.5">✓</span>
-                    <span><strong>Commissions récurrentes :</strong> touchez un pourcentage sur chaque course de votre équipe</span>
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
+                    <span>Tee-shirts officiels DEM inclus pour vos livreurs</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan font-bold mt-0.5">✓</span>
-                    <span><strong>Outils de supervision :</strong> gestion des plannings, attribution de zones et scores qualité</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan font-bold mt-0.5">✓</span>
-                    <span><strong>Accompagnement DEM :</strong> formation managériale et support opérationnel dédié</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan font-bold mt-0.5">✓</span>
-                    <span><strong>Gains hebdomadaires :</strong> virement automatique des commissions chaque semaine</span>
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
+                    <span>Économie de 500 F/jour par rapport au pass 5j</span>
                   </li>
                 </ul>
               </div>
 
-              <div className="pt-10">
-                <a
-                  href="#download"
-                  className="block text-center uppercase tracking-widest text-xs font-bold py-4 bg-cyan text-dark hover:bg-white transition-colors"
+              <div className="pt-8">
+                <button
+                  type="button"
+                  onClick={() => { setSelectedOffer('20days'); handleApplyFromSimulator(); }}
+                  className="w-full py-3.5 uppercase font-bold tracking-widest text-xs border border-[#0086C8] bg-[#0086C8] text-white hover:bg-dark hover:border-dark transition-colors cursor-pointer"
                 >
-                  Devenir chef d'équipe sans moto →
-                </a>
+                  Choisir le 20 jours →
+                </button>
               </div>
+            </div>
+
+            {/* Offre 3 : Forfait 1 mois (30 jours) */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between bg-dark text-white relative">
+              <div className="absolute top-0 right-0 bg-cyan text-dark text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 font-['DM_Sans',sans-serif]">
+                PRIX / JOUR MINI
+              </div>
+
+              <div>
+                <div className="flex justify-between items-center mb-6">
+                  <span className="font-serif italic text-base text-cyan">
+                    Engagement Long
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-white/10 text-cyan">
+                    30 jours
+                  </span>
+                </div>
+                
+                <h3 className="text-2xl font-bold uppercase text-white mb-2 font-['DM_Sans',sans-serif]">
+                  Forfait 1 mois (30 j)
+                </h3>
+                <p className="text-xs text-white/70 mb-6 font-['Poppins',sans-serif]">
+                  La rentabilité maximale. Le tarif journalier le plus bas pour exploiter sa flotte sur un mois plein.
+                </p>
+
+                <div className="py-6 border-t border-b border-white/10 mb-6 space-y-2">
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs uppercase tracking-wider text-white/60 font-bold">Prix / jour :</span>
+                    <span className="text-xl font-bold text-cyan font-mono">1 300 FCFA</span>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs uppercase tracking-wider text-cyan font-bold">Total / coursier :</span>
+                    <span className="text-2xl font-black text-white font-['DM_Sans',sans-serif]">39 000 FCFA</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[11px] font-mono text-cyan font-bold bg-white/10 px-2 py-0.5">
+                      -53% vs commission marché (19%)
+                    </span>
+                  </div>
+                </div>
+
+                <ul className="space-y-3 text-xs text-white/90 font-['Poppins',sans-serif]">
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-cyan shrink-0 mt-0.5" />
+                    <span>Facturation par coursier inscrit (1 moto = 1 coursier)</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-cyan shrink-0 mt-0.5" />
+                    <span>Accès complet au cockpit télématique DEM</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-cyan shrink-0 mt-0.5" />
+                    <span>Tee-shirts officiels DEM inclus pour vos livreurs</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check size={15} className="text-cyan shrink-0 mt-0.5" />
+                    <span>Seulement 9% du chiffre d'affaires généré</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="pt-8">
+                <button
+                  type="button"
+                  onClick={() => { setSelectedOffer('month'); handleApplyFromSimulator(); }}
+                  className="w-full py-3.5 uppercase font-bold tracking-widest text-xs bg-cyan text-dark hover:bg-white transition-colors cursor-pointer border border-cyan"
+                >
+                  Choisir le 1 mois →
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Bandeau d'explication : Mise en relation & Principe Intangible */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-slate-50">
+            <div className="lg:col-span-4 p-6 lg:p-8 flex flex-col justify-between">
+              <div>
+                <span className="text-[11px] font-mono font-bold text-[#0086C8] uppercase block mb-1">
+                  Mise en relation automatique
+                </span>
+                <h4 className="text-lg font-bold text-dark uppercase font-['DM_Sans',sans-serif] mb-2">
+                  100 FCFA / course
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed font-['Poppins',sans-serif] m-0">
+                  Ajoutée automatiquement au prix de chaque livraison et prélevée à la source par DEM. Revenu variable selon le volume de courses. <strong>Aucune action du chef, aucune ponction sur le coursier.</strong>
+                </p>
+              </div>
+            </div>
+
+            <div className="lg:col-span-8 p-6 lg:p-8 bg-cyan/10 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 text-dark mb-2">
+                  <ShieldCheck size={18} className="text-[#0086C8]" />
+                  <span className="text-xs font-bold uppercase tracking-widest font-['Raleway',sans-serif]">
+                    Principe intangible non-négociable
+                  </span>
+                </div>
+                <h4 className="text-lg font-bold text-dark uppercase font-['DM_Sans',sans-serif] mb-2">
+                  Les coursiers gardent 100% de leurs courses
+                </h4>
+                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-['Poppins',sans-serif] m-0">
+                  Les 100 FCFA de mise en relation sont un ajout au prix côté client, <strong>jamais une ponction sur le gain du coursier</strong>. DEM ne prend aucune commission en pourcentage. Le chef de flotte reste entièrement libre de sa gestion interne (versement fixe ou salaire avec ses coursiers).
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 4. POSITIONNEMENT FACE AU MARCHÉ (BENCHMARK COMMISSION 19%) ── */}
+      <section className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-slate-50">
+        <div className="max-w-[1400px] mx-auto">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-5">
+              <MiniTitleWithBar content="AVANTAGE COMPÉTITIF ÉCRASANT" />
+              <SectionHeading
+                align="left"
+                title="Pourquoi DEM bat"
+                highlight="les modèles à commission"
+                subtitle="Comparatif Face au Marché"
+                titleColor="text-dark"
+                highlightColor="var(--color-cyan-2, #0086C8)"
+                scriptColor="text-cyan-2"
+                titleSize="text-3xl md:text-5xl"
+                className="mt-4"
+              />
+              <p className="mt-6 text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
+                Le marché de l'intermédiation prend en moyenne <strong>19% de commission sur chaque course</strong>. Pour un coursier qui réalise 14 500 FCFA/jour, cela représente <strong>2 755 FCFA/jour prélevés</strong> (14 500 × 19%).
+              </p>
+              <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
+                Les trois offres DEM se situent toutes largement sous ce seuil — et surtout, <strong>DEM ne prend rien sur les courses supplémentaires réalisées</strong>. Plus votre flotte roule, plus votre marge grandit.
+              </p>
+            </div>
+
+            <div className="lg:col-span-7">
+              <div className="border border-black/10 bg-white shadow-sm">
+                <div className="p-6 border-b border-black/10 bg-dark text-white flex justify-between items-center">
+                  <span className="text-xs uppercase font-bold tracking-wider font-['Raleway',sans-serif]">
+                    Modèle / Offre
+                  </span>
+                  <div className="flex gap-8 text-right text-xs uppercase font-bold tracking-wider font-['Raleway',sans-serif]">
+                    <span>Coût / jour / coursier</span>
+                    <span className="w-24">Écart vs marché</span>
+                  </div>
+                </div>
+
+                <div className="divide-y divide-black/10 text-xs sm:text-sm">
+                  <div className="p-5 flex justify-between items-center bg-slate-100/70">
+                    <div>
+                      <span className="font-bold text-dark block">Marché classique</span>
+                      <span className="text-xs text-slate-500">Commission de 19% sur le CA journalier</span>
+                    </div>
+                    <div className="flex gap-8 items-center text-right font-mono">
+                      <span className="font-bold text-slate-800">2 755 FCFA</span>
+                      <span className="w-24 text-slate-400 font-sans font-bold">—</span>
+                    </div>
+                  </div>
+
+                  <div className="p-5 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                    <div>
+                      <span className="font-bold text-dark block">DEM — Forfait 5 jours</span>
+                      <span className="text-xs text-slate-500">1 900 FCFA / jour</span>
+                    </div>
+                    <div className="flex gap-8 items-center text-right font-mono">
+                      <span className="font-bold text-dark">1 900 FCFA</span>
+                      <span className="w-24 text-emerald-600 font-bold bg-emerald-50 px-2 py-1 text-xs font-sans">
+                        −31%
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-5 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                    <div>
+                      <span className="font-bold text-dark block">DEM — Forfait 20 jours</span>
+                      <span className="text-xs text-slate-500">1 400 FCFA / jour</span>
+                    </div>
+                    <div className="flex gap-8 items-center text-right font-mono">
+                      <span className="font-bold text-dark">1 400 FCFA</span>
+                      <span className="w-24 text-emerald-600 font-bold bg-emerald-50 px-2 py-1 text-xs font-sans">
+                        −49%
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-5 flex justify-between items-center bg-cyan/10 font-medium">
+                    <div>
+                      <span className="font-bold text-dark block">DEM — Forfait 1 mois (30 j)</span>
+                      <span className="text-xs text-slate-600">1 300 FCFA / jour · Meilleur taux</span>
+                    </div>
+                    <div className="flex gap-8 items-center text-right font-mono">
+                      <span className="font-black text-dark text-base">1 300 FCFA</span>
+                      <span className="w-24 text-emerald-700 font-black bg-emerald-100 px-2 py-1 text-xs font-sans">
+                        −53%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-slate-50 border-t border-black/10 text-[11px] text-slate-500 font-['Poppins',sans-serif]">
+                  * Calcul basé sur un chiffre d'affaires moyen de 14 500 FCFA par coursier et par jour constaté sur le marché de la livraison express à Dakar.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 5. SIMULATEUR DYNAMIQUE DE RENTABILITÉ FLOTTE (OFFICIEL DOSSIER) ── */}
+      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white" id="simulateur">
+        <div className="max-w-[1400px] mx-auto">
+          
+          <div className="mb-16">
+            <MiniTitleWithBar content="SIMULATEUR DE RENTABILITÉ FLOTTE" />
+            <SectionHeading
+              align="left"
+              title="Calculez précisément les gains"
+              highlight="et la part conservée par votre flotte"
+              subtitle="Transparence Totale · Données Dossier Interne"
+              titleColor="text-dark"
+              highlightColor="var(--color-cyan-2, #0086C8)"
+              scriptColor="text-cyan-2"
+              titleSize="text-3xl md:text-5xl lg:text-6xl"
+              className="mt-4"
+            />
+            <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
+              Le principe est simple : <strong>ce que votre flotte génère vs ce que vous payez à DEM</strong>. Vous constatez immédiatement le reste à charge minimal et la marge disponible pour rémunérer vos coursiers, l'entretien et votre bénéfice.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 bg-white shadow-sm">
+            
+            {/* Colonne Gauche : Commandes & Paramètres */}
+            <div className="lg:col-span-6 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-black/10 flex flex-col justify-between">
+              <div>
+                
+                {/* Sélecteur 1 : Nombre de motos (3 à 10) */}
+                <div className="mb-8">
+                  <div className="flex justify-between items-end mb-4">
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-1">
+                        Éligibilité Chef de Flotte
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-bold text-dark font-['DM_Sans',sans-serif]">
+                        Nombre de motos (coursiers)
+                      </h3>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-3xl sm:text-4xl font-black text-dark font-['DM_Sans',sans-serif]">
+                        {motosCount}
+                      </span>
+                      <span className="text-xs text-slate-500 block font-mono">
+                        {motosCount > 1 ? 'motos inscrites' : 'moto inscrite'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <input
+                    type="range"
+                    min="3"
+                    max="10"
+                    value={motosCount}
+                    onChange={(e) => setMotosCount(Number(e.target.value))}
+                    className="w-full accent-[#0086C8] cursor-pointer h-2 bg-slate-200 rounded-none"
+                  />
+
+                  {/* Boutons rapides 3 à 10 */}
+                  <div className="flex flex-wrap gap-1.5 mt-3">
+                    {[3, 4, 5, 6, 7, 8, 9, 10].map((count) => (
+                      <button
+                        key={count}
+                        type="button"
+                        onClick={() => setMotosCount(count)}
+                        className={`text-xs font-mono font-bold px-3 py-1.5 transition-colors cursor-pointer border ${
+                          motosCount === count
+                            ? 'bg-[#0086C8] text-white border-[#0086C8]'
+                            : 'bg-slate-50 text-slate-700 border-black/10 hover:border-[#0086C8]'
+                        }`}
+                      >
+                        {count}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-2 italic font-['Poppins',sans-serif]">
+                    * Éligibilité standard : 3 à 10 motos. Au-delà de 10 motos, extension soumise à validation préalable de la direction DEM.
+                  </p>
+                </div>
+
+                {/* Sélecteur 2 : Choix du Pass */}
+                <div className="mb-8 pt-6 border-t border-black/10">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-3">
+                    Offre de Pass DEM choisie
+                  </span>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { key: '5days', label: '5 jours', price: '9 500 F', sub: '1 900 F/j' },
+                      { key: '20days', label: '20 jours', price: '28 000 F', sub: '1 400 F/j' },
+                      { key: 'month', label: '1 mois (30j)', price: '39 000 F', sub: '1 300 F/j' }
+                    ].map((plan) => (
+                      <button
+                        key={plan.key}
+                        type="button"
+                        onClick={() => setSelectedOffer(plan.key)}
+                        className={`p-3 text-left border transition-all cursor-pointer ${
+                          selectedOffer === plan.key
+                            ? 'bg-dark text-white border-dark'
+                            : 'bg-white text-dark border-black/10 hover:bg-slate-50'
+                        }`}
+                      >
+                        <span className="text-xs font-bold uppercase block">{plan.label}</span>
+                        <span className={`text-sm font-bold font-mono block ${selectedOffer === plan.key ? 'text-cyan' : 'text-[#0086C8]'}`}>
+                          {plan.price}
+                        </span>
+                        <span className="text-[10px] opacity-70 block">{plan.sub}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Sélecteur 3 : Scénario d'activité (Référence vs Prudent) */}
+                <div className="pt-6 border-t border-black/10">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-3">
+                    Scénario de Chiffre d'Affaires
+                  </span>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setActiveScenario('reference')}
+                      className={`p-3 text-left border transition-all cursor-pointer ${
+                        activeScenario === 'reference'
+                          ? 'border-emerald-600 bg-emerald-50/70 text-emerald-950'
+                          : 'border-black/10 bg-white text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-bold uppercase">Scénario Référence</span>
+                        {activeScenario === 'reference' && <Check size={14} className="text-emerald-600" />}
+                      </div>
+                      <span className="text-xs text-slate-600 block">14 500 FCFA / jour / coursier (~6-8 courses/j)</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setActiveScenario('prudent')}
+                      className={`p-3 text-left border transition-all cursor-pointer ${
+                        activeScenario === 'prudent'
+                          ? 'border-amber-600 bg-amber-50/70 text-amber-950'
+                          : 'border-black/10 bg-white text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-bold uppercase">Scénario Prudent</span>
+                        {activeScenario === 'prudent' && <Check size={14} className="text-amber-600" />}
+                      </div>
+                      <span className="text-xs text-slate-600 block">3 courses/jour à 2 000 F (sur 20 jours)</span>
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              <div className="pt-8 mt-8 border-t border-black/10">
+                <div className="flex items-center gap-2 text-slate-500 text-xs font-['Poppins',sans-serif]">
+                  <Lock size={14} className="text-[#0086C8]" />
+                  <span>Crédit prépayé : le chef achète d'avance, aucun découvert possible.</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Colonne Droite : Bilan Financier & Restant Chef (HUD Sombre) */}
+            <div className="lg:col-span-6 p-8 lg:p-12 bg-dark text-white flex flex-col justify-between">
+              <div>
+                
+                <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
+                  <span className="font-serif italic text-lg text-cyan">
+                    Bilan d'exploitation flotte
+                  </span>
+                  <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 bg-white/10 text-white font-mono">
+                    {motosCount} motos · {currentOffer.name}
+                  </span>
+                </div>
+
+                {/* 3 Blocs de Décomposition du Dossier */}
+                <div className="space-y-4">
+                  
+                  {/* CA Brut de la Flotte */}
+                  <div className="p-4 bg-white/[0.04] border border-white/10 flex justify-between items-center">
+                    <div>
+                      <span className="text-xs uppercase tracking-wider text-white/70 font-['Raleway',sans-serif] block">
+                        CA généré par la flotte
+                      </span>
+                      <small className="text-[10px] text-white/50">
+                        {motosCount} coursiers × {caPerDayPerCourier.toLocaleString('fr-FR')} F × {effectiveWorkingDays} jours
+                      </small>
+                    </div>
+                    <span className="text-xl lg:text-2xl font-bold text-white font-mono">
+                      {totalFleetCA.toLocaleString('fr-FR')} FCFA
+                    </span>
+                  </div>
+
+                  {/* Coût Pass DEM */}
+                  <div className="p-4 bg-red-500/10 border border-red-500/30 flex justify-between items-center">
+                    <div>
+                      <span className="text-xs uppercase tracking-wider text-red-200 font-['Raleway',sans-serif] block">
+                        Coût Pass DEM (prépayé)
+                      </span>
+                      <small className="text-[10px] text-red-300/80">
+                        {motosCount} coursiers × {currentOffer.totalPerCourier.toLocaleString('fr-FR')} FCFA
+                      </small>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xl lg:text-2xl font-bold text-red-400 font-mono">
+                        − {totalPassCost.toLocaleString('fr-FR')} FCFA
+                      </span>
+                      <span className="text-[10px] text-red-300 block font-mono">
+                        ne pèse que {passSharePercent}% du CA
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Reste Net Chef de Flotte (Grande Boîte Cyan) */}
+                  <div className="p-6 bg-cyan/15 border border-cyan/40">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div>
+                        <span className="text-xs uppercase tracking-widest text-cyan font-bold block font-['Raleway',sans-serif]">
+                          Reste au chef de flotte
+                        </span>
+                        <small className="text-[11px] text-white/70 block">
+                          Pour payer vos coursiers, l'entretien et votre marge
+                        </small>
+                        <span className="inline-block mt-2 text-xs font-mono font-bold text-dark bg-cyan px-2.5 py-0.5">
+                          Vous conservez {chefKeepsPercent}% du CA !
+                        </span>
+                      </div>
+                      <div className="text-left sm:text-right">
+                        <span className="text-3xl lg:text-4xl font-black text-cyan font-['DM_Sans',sans-serif] block">
+                          {netRemainingForChef.toLocaleString('fr-FR')} FCFA
+                        </span>
+                        <span className="text-xs text-white/70 font-mono">
+                          soit ~{Math.round(netRemainingForChef / motosCount).toLocaleString('fr-FR')} FCFA / moto
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Estimation complémentaire : Mise en relation client (Page 5 dossier) */}
+                  <div className="p-4 bg-white/[0.02] border border-white/5 flex justify-between items-center text-xs">
+                    <div>
+                      <span className="text-white/60 block font-['Raleway',sans-serif] uppercase text-[10px] tracking-wider">
+                        Mise en relation collectée par DEM (estimée) :
+                      </span>
+                      <span className="text-[11px] text-white/40">
+                        100 F × {estimatedCoursesPerMonth.toLocaleString('fr-FR')} courses/mois (payé par le client, 0 F ponctionné sur vous)
+                      </span>
+                    </div>
+                    <span className="font-mono text-white/70 font-bold">
+                      ~{estimatedMiseEnRelation.toLocaleString('fr-FR')} FCFA
+                    </span>
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* Bouton d'action direct */}
+              <div className="pt-8 mt-8 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={handleApplyFromSimulator}
+                  className="w-full py-4 uppercase font-bold tracking-widest text-xs sm:text-sm bg-cyan text-dark hover:bg-white transition-all duration-250 cursor-pointer border border-cyan rounded-none flex items-center justify-center gap-2"
+                >
+                  <span>Brancher ma flotte de {motosCount} moto{motosCount > 1 ? 's' : ''} sur DEM</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+
             </div>
 
           </div>
@@ -426,17 +782,184 @@ export default function ChefDeFlotte() {
         </div>
       </section>
 
-      {/* ── 4. BENTO DE CAPACITÉS TÉLÉMATIQUES & SÉCURITÉ ── */}
+      {/* ── 6. PROJECTION OFFICIELLE PAR TAILLE DE FLOTTE (TABLEAU DOSSIER PAGE 5) ── */}
+      <section className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-white">
+        <div className="max-w-[1400px] mx-auto">
+          
+          <div className="mb-14">
+            <MiniTitleWithBar content="PROJECTION COMPLÈTE 3 À 10 COURSIERS" />
+            <SectionHeading
+              align="left"
+              title="Tableau de revenu pass"
+              highlight="par taille de flotte"
+              subtitle="Revenu ferme garanti & encaissé d'avance"
+              titleColor="text-dark"
+              highlightColor="var(--color-cyan-2, #0086C8)"
+              scriptColor="text-cyan-2"
+              titleSize="text-3xl md:text-5xl"
+              className="mt-4"
+            />
+            <p className="mt-4 text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
+              Relevé officiel du dossier interne. Une flotte pleine (10 coursiers) coûte à l'achat du pass entre 95 000 FCFA (tous en 5j) et 390 000 FCFA/mois (tous en 1 mois) — garanti, encaissé d'avance et sans commission variable imprévue.
+            </p>
+          </div>
+
+          <div className="border border-black/10 overflow-x-auto bg-white">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-dark text-white border-b border-black/10 text-xs uppercase font-['Raleway',sans-serif] tracking-wider">
+                  <th className="p-4 lg:p-5 font-bold">Motos / Coursiers</th>
+                  <th className="p-4 lg:p-5 font-bold">Tous en 5 jours (9 500 F)</th>
+                  <th className="p-4 lg:p-5 font-bold">Tous en 20 jours (28 000 F)</th>
+                  <th className="p-4 lg:p-5 font-bold bg-[#0086C8] text-white">Tous en 1 mois (39 000 F)</th>
+                  <th className="p-4 lg:p-5 font-bold text-slate-300">Mise en relation est. (100 F/c)</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-black/10 text-xs sm:text-sm font-mono">
+                {PROJECTION_TABLE.map((row) => (
+                  <tr 
+                    key={row.count}
+                    className={`hover:bg-slate-50 transition-colors ${
+                      motosCount === row.count ? 'bg-cyan/10 font-bold' : ''
+                    }`}
+                  >
+                    <td className="p-4 lg:p-5 font-sans font-bold text-dark flex items-center gap-2">
+                      <span>{row.count} motos</span>
+                      {motosCount === row.count && (
+                        <span className="text-[10px] font-sans font-bold uppercase px-2 py-0.5 bg-[#0086C8] text-white">
+                          Sélection
+                        </span>
+                      )}
+                    </td>
+                    <td className="p-4 lg:p-5 text-slate-700">
+                      {row.pass5.toLocaleString('fr-FR')} FCFA
+                    </td>
+                    <td className="p-4 lg:p-5 text-slate-700">
+                      {row.pass20.toLocaleString('fr-FR')} FCFA
+                    </td>
+                    <td className="p-4 lg:p-5 font-bold text-[#0086C8] bg-cyan/5">
+                      {row.passMonth.toLocaleString('fr-FR')} FCFA
+                    </td>
+                    <td className="p-4 lg:p-5 text-slate-500 font-sans text-xs">
+                      +{row.miseRel.toLocaleString('fr-FR')} FCFA (payé client)
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 7. RÈGLES D'EXPLOITATION & GARDE-FOUS (DOSSIER PAGES 8 & 9) ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-slate-50">
         <div className="max-w-[1400px] mx-auto">
           
           <div className="mb-16">
-            <MiniTitleWithBar content="FONCTIONNALITÉS LOGICIELLES" />
+            <MiniTitleWithBar content="CADRE CONTRACTUEL & RÈGLES D'EXPLOITATION" />
+            <SectionHeading
+              align="left"
+              title="Les 8 règles fondamentales"
+              highlight="du partenariat Chef de Flotte"
+              subtitle="Transparence · Rigueur opérationnelle"
+              titleColor="text-dark"
+              highlightColor="var(--color-cyan-2, #0086C8)"
+              scriptColor="text-cyan-2"
+              titleSize="text-3xl md:text-5xl lg:text-6xl"
+              className="mt-4"
+            />
+            <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
+              Une collaboration saine repose sur des frontières nettes. DEM assure l'infrastructure, le flux de courses et la télématique ; vous assurez l'exploitation de vos motos et le management de vos équipes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-black/10 divide-y md:divide-y-0 md:divide-x divide-black/10 bg-white">
+            {[
+              {
+                num: "01",
+                title: "Éligibilité & Parc",
+                rule: "3 à 10 motos",
+                desc: "En dessous de 3 motos : pas de statut chef de flotte. Au-delà de 10 motos : extension soumise à validation préalable de DEM."
+              },
+              {
+                num: "02",
+                title: "Règle 1:1",
+                rule: "1 moto = 1 coursier",
+                desc: "Chaque moto est attribuée à un seul coursier. Le nombre de coursiers inscrits égale toujours exactement le nombre de motos."
+              },
+              {
+                num: "03",
+                title: "Prépayé Strict",
+                rule: "Zéro impayé",
+                desc: "Le chef achète son crédit de pass avant que ses coursiers roulent. Pas de découvert, pas de service à crédit, recharge libre."
+              },
+              {
+                num: "04",
+                title: "Frontière DEM / Chef",
+                rule: "Autonomie managériale",
+                desc: "DEM fournit la plateforme et les outils. Le chef gère sa flotte et son mode de rémunération (versement fixe ou salaire). DEM ne s'en mêle pas."
+              },
+              {
+                num: "05",
+                title: "Principe Intangible",
+                rule: "100% pour les coursiers",
+                desc: "Les coursiers gardent l'intégralité de leurs gains de courses. Les 100 FCFA de mise en relation sont réglés par le client, jamais ponctionnés."
+              },
+              {
+                num: "06",
+                title: "Pièces Obligatoires",
+                rule: "Dossier certifié",
+                desc: "Moto : CMC/carte grise, assurance, photo avec plaque visible. Coursier : permis de conduire recto-verso, selfie de validation."
+              },
+              {
+                num: "07",
+                title: "Inclus dans le Pass",
+                rule: "Cockpit + Tee-shirts",
+                desc: "Accès complet aux outils et application de gestion + tee-shirts DEM fournis pour vos livreurs. Zéro surcoût d'onboarding."
+              },
+              {
+                num: "08",
+                title: "Résiliation Souple",
+                rule: "Préavis 2 semaines",
+                desc: "Contrat résiliable à tout moment par l'une ou l'autre des parties, sous réserve d'un préavis formel de 2 semaines."
+              }
+            ].map((ruleItem, idx) => (
+              <div key={idx} className="p-8 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+                <div>
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="font-mono text-xs font-bold text-[#0086C8]">
+                      /{ruleItem.num}
+                    </span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 bg-slate-100 text-slate-700">
+                      {ruleItem.rule}
+                    </span>
+                  </div>
+                  <h4 className="text-base font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
+                    {ruleItem.title}
+                  </h4>
+                  <p className="text-xs text-slate-600 leading-relaxed font-['Poppins',sans-serif] m-0">
+                    {ruleItem.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 8. COCKPIT LOGICIEL & TECHNOLOGIE FLOTTE (CE QUE DEM MET À DISPOSITION) ── */}
+      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white">
+        <div className="max-w-[1400px] mx-auto">
+          
+          <div className="mb-16">
+            <MiniTitleWithBar content="FONCTIONNALITÉS LOGICIELLES INCLUSES" />
             <SectionHeading
               align="left"
               title="Ce que vous permet"
               highlight="le cockpit DEM Flotte"
-              subtitle="Technologie embarquée"
+              subtitle="Technologie embarquée · Sans frais supplémentaires"
               titleColor="text-dark"
               highlightColor="var(--color-cyan-2, #0086C8)"
               scriptColor="text-cyan-2"
@@ -447,17 +970,17 @@ export default function ChefDeFlotte() {
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             
-            {/* Bloc 1 : Télématique & Traçabilité */}
+            {/* Bloc 1 : Télémétrie Live */}
             <div className="md:col-span-8 p-8 lg:p-12 bg-white border border-black/10 flex flex-col justify-between">
               <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2 mb-4 block">
+                <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] mb-4 block">
                   /01 · Télémétrie Live
                 </span>
                 <h3 className="text-2xl lg:text-3xl font-bold uppercase text-dark mb-4 font-['DM_Sans',sans-serif]">
                   Géolocalisation & Geofencing temps réel
                 </h3>
                 <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-2xl font-['Poppins',sans-serif]">
-                  Visualisez chaque moto sur la carte interactive de Dakar. Configurez des alertes de zones, analysez les trajets empruntés et surveillez les temps d'arrêt pour une utilisation optimale de vos actifs.
+                  Visualisez chaque moto de votre parc sur la carte interactive de Dakar. Configurez des alertes de zones, analysez les trajets empruntés et surveillez les temps d'arrêt pour une utilisation optimale de vos actifs.
                 </p>
               </div>
 
@@ -477,49 +1000,49 @@ export default function ChefDeFlotte() {
               </div>
             </div>
 
-            {/* Bloc 2 : Reversements Automatisés */}
+            {/* Bloc 2 : Gestion des Pass & Consommation */}
             <div className="md:col-span-4 p-8 lg:p-10 bg-dark text-white border border-black/10 flex flex-col justify-between">
               <div>
                 <span className="font-serif italic text-lg sm:text-xl font-light text-cyan mb-4 block">
-                  /02 · Finance & COD
+                  /02 · Gestion des Pass
                 </span>
                 <h3 className="text-xl font-bold uppercase text-white mb-3 font-['DM_Sans',sans-serif]">
-                  Reversements Hebdomadaires Automatiques
+                  Recharge Prépayée & Consommation Directe
                 </h3>
                 <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-['Poppins',sans-serif]">
-                  Toutes les commissions générées par votre flotte sont calculées automatiquement et virées chaque semaine sur votre compte bancaire, Wave ou Orange Money pro.
+                  Rechargez en un clic les pass de vos livreurs par Wave ou Orange Money. Suivez en temps réel les jours restants pour chaque coursier et réapprovisionnez sans coupure de service.
                 </p>
               </div>
 
               <div className="p-4 bg-white/[0.04] border border-white/10 mt-6">
-                <span className="text-[11px] uppercase tracking-widest text-cyan font-bold block mb-1">Fréquence de règlement</span>
-                <span className="text-base font-bold text-white">Chaque Lundi avant 12h00</span>
+                <span className="text-[11px] uppercase tracking-widest text-cyan font-bold block mb-1">Modes de recharge</span>
+                <span className="text-base font-bold text-white">Wave Pro · OM Pro · Virement</span>
               </div>
             </div>
 
-            {/* Bloc 3 : Gestion KYC Chauffeurs */}
+            {/* Bloc 3 : Dispatch & Attribution */}
             <div className="md:col-span-4 p-8 lg:p-10 bg-white border border-black/10 flex flex-col justify-between">
               <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2 mb-4 block">
-                  /03 · Conformité
+                <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] mb-4 block">
+                  /03 · Dispatch
                 </span>
                 <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif]">
-                  Vérification KYC & Permis
+                  Flux Continu de Courses B2B
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-                  Chaque coursier rattaché à votre compte fait l'objet d'un audit administratif préalable : permis de conduire vérifié, extrait de casier judiciaire et validation d'expérience.
+                  Vos livreurs ont accès aux commandes des entreprises et marchands DEM Pro de Dakar : alimentation, mode, documents urgents et e-commerce sans temps mort.
                 </p>
               </div>
 
               <div className="pt-4 border-t border-slate-100 mt-4">
-                <span className="text-xs font-bold text-cyan-2 uppercase tracking-wider font-mono">100% Conducteurs Contrôlés</span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase tracking-wider font-mono">Algorithme d'attribution optimisé</span>
               </div>
             </div>
 
-            {/* Bloc 4 : Maintenance & Partenariats */}
+            {/* Bloc 4 : Accords Garage & Remises Flotte */}
             <div className="md:col-span-8 p-8 lg:p-12 bg-white border border-black/10 flex flex-col justify-between">
               <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan-2 mb-4 block">
+                <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] mb-4 block">
                   /04 · Écosystème
                 </span>
                 <h3 className="text-2xl lg:text-3xl font-bold uppercase text-dark mb-4 font-['DM_Sans',sans-serif]">
@@ -542,17 +1065,16 @@ export default function ChefDeFlotte() {
         </div>
       </section>
 
-      {/* ── 5. QUESTIONS FRÉQUENTES DES INVESTISSEURS ── */}
+      {/* ── 9. QUESTIONS FRÉQUENTES CHEF DE FLOTTE ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-t border-b border-white/10 bg-cyan-deep text-white">
         <div className="max-w-[1000px] mx-auto">
           
           <div className="mb-14 text-center">
-            {/* <MiniTitleWithBar content="FAQ INVESTISSEURS" /> */}
             <SectionHeading
               align="center"
               title="Tout ce que vous devez savoir"
-              highlight="avant d'engager votre flotte"
-              subtitle="Questions & Modalités"
+              highlight="sur le statut Chef de Flotte Externe"
+              subtitle="Questions & Modalités Pratiques"
               titleColor="text-white"
               highlightColor="var(--cyan, #00D2FF)"
               highlightClassName="text-[#00D2FF]"
@@ -565,24 +1087,28 @@ export default function ChefDeFlotte() {
           <div className="border border-white/15 divide-y divide-white/10 bg-black/10 backdrop-blur-sm">
             {[
               {
-                q: "Puis-je devenir Chef de flotte si je ne possède pas de moto ?",
-                a: "Oui, absolument ! Le profil « Chef de flotte Sans Moto » est pensé pour les managers d'équipe. Vous fédérez et supervisez un réseau de coursiers disposant de leurs propres motos, et vous percevez des commissions récurrentes sur l'ensemble de leurs courses livrées."
+                q: "Combien de motos puis-je inscrire au démarrage ?",
+                a: "Le statut de Chef de flotte externe est accessible pour les parcs comptant entre 3 et 10 motos. Chaque moto est rattachée à un coursier (règle 1:1). Au-delà de 10 motos, toute extension est soumise à validation formelle de l'équipe DEM."
               },
               {
-                q: "Quels types de motos sont acceptés sur la plateforme DEM ?",
-                a: "Nous acceptons les motos de 110cc à 150cc en bon état mécanique (type Haojue, Yamaha YB/Crux, Bajaj Boxer, TVS HLX). Les véhicules doivent être équipés d'un caisson de transport ou d'un support adapté."
+                q: "Comment fonctionne le système de pass prépayé ?",
+                a: "Vous achetez à l'avance le forfait de votre choix (5 jours, 20 jours ou 1 mois/30 jours) pour vos coursiers. Vos livreurs roulent sur ce crédit de jours. À épuisement, vous rechargez librement avec l'offre adaptée à votre trésorerie. Zéro découvert, zéro impayé."
               },
               {
-                q: "Comment se déroule la contractualisation avec DEM ?",
-                a: "Une convention de partenariat B2B est établie précisant votre statut (avec ou sans moto), le nombre de coursiers ou véhicules rattachés et les modalités de reversement hebdomadaire des commissions."
+                q: "DEM prend-il une commission sur les courses de mes livreurs ?",
+                a: "Non, absolument aucune ! C'est un principe intangible chez DEM : les coursiers gardent 100% de leurs courses. Les 100 FCFA de mise en relation sont ajoutés au prix payé par le client final, jamais prélevés sur les gains du coursier ou de votre flotte."
               },
               {
-                q: "Quel est le délai de mise en service après dépôt du dossier ?",
-                a: "Dès validation des pièces justificatives (cartes grises, assurances, permis ou CNI), votre compte Chef de flotte est activé et vos équipes sont opérationnelles en moins de 48 heures."
+                q: "Comment suis-je rémunéré en tant que chef de flotte ?",
+                a: "DEM ne vous verse pas de salaire directement : vous vous rémunérez selon votre organisation interne (versement fixe journalier convenu avec vos coursiers ou salaire mensuel). DEM n'interfère pas dans votre relation financière interne avec vos livreurs."
               },
               {
-                q: "Comment sont sécurisées les recettes Cash on Delivery (COD) ?",
-                a: "Les coursiers versent les fonds encaissés quotidiennement via nos points relais sécurisés ou par code OTP Wave. Vous disposez d'un relevé en temps réel de chaque encaissement sur votre cockpit gestionnaire."
+                q: "Quelles sont les pièces obligatoires à fournir ?",
+                a: "Pour chaque moto : certificat de mise en circulation (carte grise), attestation d'assurance en cours de validité et photo de la moto avec plaque visible. Pour chaque coursier : permis de conduire recto-verso et selfie de confirmation."
+              },
+              {
+                q: "Puis-je changer d'offre de pass d'un cycle à l'autre ?",
+                a: "Oui, totalement. Les 3 offres (5 jours, 20 jours, 30 jours) sont indépendantes. Vous pouvez par exemple prendre une offre 5 jours au démarrage pour évaluer vos équipes, puis basculer sur l'offre 30 jours pour maximiser votre marge à 1 300 F/jour."
               }
             ].map((faq, idx) => (
               <div key={idx} className="p-6 lg:p-8 bg-white/[0.03] hover:bg-white/[0.07] transition-colors">
@@ -609,31 +1135,31 @@ export default function ChefDeFlotte() {
         </div>
       </section>
 
-      {/* ── 6. SECTION TÉLÉCHARGEMENT & ONBOARDING CHEF DE FLOTTE ── */}
+      {/* ── 10. SECTION TÉLÉCHARGEMENT & ONBOARDING CHEF DE FLOTTE ── */}
       <DownloadAppCTA
         theme="white"
         watermark="FLOTTE"
-        subtitle="Application Gestionnaire de Parc"
-        title="Enregistrez votre parc auprès de"
-        highlight="DEM dès aujourd'hui."
-        description="Téléchargez gratuitement l’application DEM sur iOS ou Android. Créez votre compte, sélectionnez le rôle « Chef de flotte » et connectez vos motos en direct pour superviser vos gains."
+        subtitle="Application Gestionnaire de Parc Externe"
+        title="Enregistrez votre parc de motos"
+        highlight="sur le réseau DEM."
+        description="Téléchargez l’application DEM sur iOS ou Android. Sélectionnez le profil « Chef de flotte », téléversez les pièces de vos véhicules et de vos coursiers (3 à 10 motos), et activez vos pass prépayés pour commencer à rouler."
         bullets={[
-          "Sélectionnez le profil « Chef de flotte » à l'ouverture de l'application",
-          "Ajout et supervision télématique de l'ensemble de votre parc",
-          "Attribution automatisée des courses aux conducteurs de votre flotte",
-          "Reversements hebdomadaires automatiques sécurisés par Wave & OM"
+          "Sélectionnez le profil « Chef de flotte » lors de l'inscription",
+          "Validation des pièces justificatives de votre flotte sous 48h",
+          "Achat de vos pass prépayés (5j, 20j ou 30j) par Wave ou Orange Money",
+          "Dotation tee-shirts DEM offerte et activation immédiate des coursiers"
         ]}
         id="download"
       />
 
-      {/* ── 7. SECTION ENGAGEMENT & IMPACT CHEF DE FLOTTE ── */}
+      {/* ── 11. SECTION ENGAGEMENT & IMPACT CHEF DE FLOTTE ── */}
       <ContactCTA
         theme="cyan-deep"
         watermark="FLOTTE"
         subtitle="Partenariat d'excellence"
-        title="Optimisez chaque kilomètre"
-        highlight="vers un rendement garanti."
-        description="Que vous possédiez 1 moto ou un parc de 50 véhicules, DEM met à votre disposition sa technologie télématique de pointe, son flux continu de courses B2B et ses reversements hebdomadaires 100% garantis."
+        title="Développez la rentabilité de votre parc"
+        highlight="sans commission imprévue."
+        description="Connectez vos motos sur une infrastructure technologique robuste, offrez à vos coursiers un volume continu de commandes e-commerce à Dakar et conservez jusqu'à 91% du chiffre d'affaires généré."
         primaryBtnText="Télécharger l'App DEM"
         primaryBtnLink="#download"
         primaryBtnIcon="download"

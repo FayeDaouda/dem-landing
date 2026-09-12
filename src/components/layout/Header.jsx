@@ -90,7 +90,7 @@ export default function Header() {
                             label="Nos Services" 
                         />
                         <HeaderLink 
-                            to="/services" 
+                            to="/actualites" 
                             label="Actualités" 
                         />
                         {/* <HeaderLink 
@@ -100,8 +100,8 @@ export default function Header() {
                     </div>
 
                     {/* --- LOGO CENTRE (Aggressive Cockpit HUD Box) --- */}
-                    <NavLink
-                        to="/"
+                        <NavLink
+                            to="/"
                         className="group flex h-full flex-1 lg:flex-none lg:w-[300px] shrink-0 items-center justify-center overflow-hidden cursor-pointer relative px-6 lg:border-r lg:border-l border-[var(--header-border,rgba(0,210,255,0.25))] hover:bg-white/[0.04] transition-colors"
                         style={{ backgroundColor: 'transparent' }}
                     >
@@ -118,15 +118,15 @@ export default function Header() {
                             />
                             <span className="font-black text-sm md:text-base uppercase font-['DM_Sans',sans-serif]" style={{ color: 'var(--header-text, inherit)' }}>
                                 DEM
-                            </span>
-                        </div>
+                                </span>
+                            </div>
                         <p
                             className="absolute w-full px-4 translate-y-[250%] text-center text-xs font-black tracking-[0.25em] text-cyan transition-transform duration-500 uppercase group-hover:translate-y-0"
                             style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
                         >
                             Service de qualité
                         </p>
-                    </NavLink>
+                        </NavLink>
 
                     {/* --- DROITE (Desktop uniquement) --- */}
                     <div className="hidden lg:flex flex-1 h-full items-center justify-end border-l border-[var(--header-border,rgba(0,210,255,0.25))]">
@@ -167,6 +167,7 @@ export default function Header() {
                     { label: 'Accueil', ariaLabel: 'Accueil', link: '/' },
                     { label: 'Notre Histoire', ariaLabel: 'Notre Histoire', link: '/notre-histoire' },
                     { label: 'Services', ariaLabel: 'Services', link: '/services' },
+                    { label: 'Actualités', ariaLabel: 'Actualités', link: '/actualites' },
                     { label: 'Devenir Coursier', ariaLabel: 'Devenir Coursier', link: '/coursiers' },
                     { label: 'Pour les entreprises', ariaLabel: 'Pour les entreprises', link: '/dem-pro' },
                     { label: 'Chef de Flotte', ariaLabel: 'Chef de Flotte', link: '/chef-de-flotte' },

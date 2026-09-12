@@ -7,30 +7,34 @@ export default function PricingDemPro({ onSelectPlan }) {
     if (onSelectPlan) {
       onSelectPlan(planKey);
     }
-    const formEl = document.getElementById('demande-pro');
+    const formEl = document.getElementById('demande-pro') || document.getElementById('download');
     if (formEl) {
       formEl.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  // Données des 3 cartes d'offres avec tarifs 2k, 3k, 6k et eyebrow en serif
+  // Données des 3 cartes d'offres officielles DEM Pro
   const plans = [
     {
       key: 'starter',
       name: 'DEM Pro Starter',
       tagline: 'Le tremplin',
-      priceK: '2k',
-      amountFCFA: '2 000 FCFA',
-      badge: null,
+      priceK: '2 000',
+      priceUnit: 'FCFA / semaine',
+      badge: 'PRODUIT D\'APPEL',
       isFeatured: false,
-      desc: 'Idéal pour digitaliser vos premières courses et gérer un petit catalogue.',
+      desc: 'Pour démarrer, organiser ses courses et son catalogue privé.',
       highlights: [
-        'Courses simples & groupées (3 max)',
-        '1 Catalogue, jusqu’à 3 produits',
-        'Suivi GPS en temps réel & historique',
-        'Gestion de stock intégrée',
-        'Infos entreprise & conformité NINEA',
-        'Support standard 7j/7'
+        'Course Simple + Groupée (3 max simultanées)',
+        'Course Programmée (2 max en même temps)',
+        '1 seul catalogue, 3 produits maximum',
+        'Gestion de stock activable sur chaque produit',
+        'Catalogue privé (visible par le Pro uniquement)',
+        'Suivi par statut + historique + recherche',
+        'Compte solo (1 utilisateur) · 2 adresses favorites',
+        'Facturation : infos entreprise + conformité NINEA',
+        'Support standard (appel / WhatsApp / email) + mode nuit',
+        'Vente en ligne, Wallet & Analytics non inclus (grisés)'
       ],
       ctaText: 'Choisir Starter',
     },
@@ -38,20 +42,23 @@ export default function PricingDemPro({ onSelectPlan }) {
       key: 'business',
       name: 'DEM Pro Business',
       tagline: 'Le best-seller',
-      priceK: '3k',
-      amountFCFA: '3 000 FCFA',
+      priceK: '3 000',
+      priceUnit: 'FCFA / semaine',
       badge: 'LE PLUS CHOISI',
       isFeatured: true,
-      desc: 'Pensé pour être le choix évident : débloque la vente en ligne, la mini-boutique et l’encaissement Wallet.',
+      desc: 'Vendre en ligne, encaisser, analyser. Tout ce qu’un commerçant sérieux veut vraiment.',
       highlights: [
-        'Courses simultanées & programmées (8 max)',
-        '8 Catalogues, jusqu’à 50 produits publics',
-        'Lien de commande (mini-boutique customisable)',
-        'Paiement en ligne & Wallet DEM Pro',
+        'Courses groupées (8 max) & programmées (8 max)',
+        'Jusqu’à 8 catalogues / 50 produits (publics & partageables)',
+        'Lien de commande = mini-boutique customisable (logo + fond)',
+        'Paiement en ligne par le client & Wallet DEM Pro',
         'Plafond de retrait de 100 000 FCFA / semaine',
-        'Facturation automatique avec votre logo',
-        'CRM clients & Analytics sur 3 mois',
-        'Support prioritaire dédié'
+        'Commandes reçues dans une boîte de réception dédiée',
+        '3 vues débloquées : Ventes / Livraisons / Activité (3 mois)',
+        'Export comptable CSV + PDF en un clic',
+        'Mes clients : historique, contact, fidélisation, meilleur client',
+        'Factures automatiques après vente avec votre logo',
+        '3 personnes sur le compte · 10 adresses · Support prioritaire'
       ],
       ctaText: 'Choisir Business',
     },
@@ -59,20 +66,23 @@ export default function PricingDemPro({ onSelectPlan }) {
       key: 'premium',
       name: 'DEM Pro Premium',
       tagline: 'L’offre complète',
-      priceK: '6k',
-      amountFCFA: '6 000 FCFA',
-      badge: 'SUR-MESURE & API',
+      priceK: '6 000',
+      priceUnit: 'FCFA / semaine',
+      badge: 'VOLUME ILLIMITÉ & API',
       isFeatured: false,
-      desc: 'La puissance logistique maximale pour les marques à fort volume et l’intégration API directe.',
+      desc: 'Volume illimité, API, service dédié. Pour les gros vendeurs et ceux qui ont déjà un site.',
       highlights: [
-        'Courses groupées & programmées illimitées',
-        'Catalogues & produits illimités',
-        'API DEM directe (Shopify, WooCommerce, site web)',
-        'Plafond de retrait de 350 000 FCFA / semaine',
-        'Facturation groupée par lot',
-        'Account manager dédié & Priorité coursier',
-        'Analytics approfondis sur 6 mois',
-        '5 Utilisateurs par compte'
+        'Course Simple, Groupée & Programmée 100% illimitées',
+        'Catalogues illimités & produits illimités',
+        'Exclusif Premium : API DEM pour brancher votre boutique / site',
+        'Lien de commande customisable (logo + image de fond)',
+        'Paiement en ligne & Wallet (retraits 350 000 FCFA / semaine)',
+        'Boîte de réception des commandes reçues',
+        'Filtres jusqu’à 6 mois : Ventes / Livraisons / Activité',
+        'Export CSV + PDF & facturation groupée par lot',
+        'Mes clients : fidélisation et meilleur client',
+        '5 personnes sur le compte · Adresses favorites illimitées',
+        'Support premium, Account manager dédié & Priorité coursier'
       ],
       ctaText: 'Choisir Premium',
     }
@@ -84,74 +94,73 @@ export default function PricingDemPro({ onSelectPlan }) {
       category: 'LIVRAISONS',
       rows: [
         { name: 'Course Simple', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
-        { name: 'Course Groupée (simultanées)', starter: '3 max', business: '8 max', premium: 'Illimité' },
-        { name: 'Course Programmée (simultanées)', starter: '2 max', business: '8 max', premium: 'Illimité' },
-        { name: 'Suivi + historique + recherche', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
+        { name: 'Course Groupée (simultanées)', starter: '3 max en même temps', business: '8 max en même temps', premium: 'Illimitée' },
+        { name: 'Course Programmée (simultanées)', starter: '2 max en même temps', business: '8 max en même temps', premium: 'Illimitée' },
+        { name: 'Suivi par statut + historique + recherche', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
       ]
     },
     {
       category: 'CATALOGUE PRODUITS',
       rows: [
-        { name: 'Catalogues', starter: '1', business: '8 max', premium: 'Illimité' },
-        { name: 'Produits', starter: '3 max', business: '50 max', premium: 'Illimité' },
-        { name: 'Gestion de stock', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
-        { name: 'Catalogue partageable (public)', starter: 'Privé', business: 'Inclus', premium: 'Inclus' },
+        { name: 'Nombre de catalogues', starter: '1 seul catalogue', business: 'Jusqu’à 8 catalogues', premium: 'Illimité' },
+        { name: 'Nombre de produits', starter: '3 produits max', business: '50 produits max', premium: 'Illimité' },
+        { name: 'Gestion de stock activable', starter: 'Inclus (par produit)', business: 'Inclus (par produit)', premium: 'Inclus (par produit)' },
+        { name: 'Visibilité catalogue', starter: 'Privé (visible Pro uniquement)', business: 'Public (partageable)', premium: 'Public (partageable)' },
       ]
     },
     {
-      category: 'VENTE EN LIGNE',
+      category: 'VENTE EN LIGNE — LE CŒUR DE L\'OFFRE',
       rows: [
-        { name: 'Lien de commande (mini-boutique)', starter: false, business: 'Inclus', premium: 'Inclus' },
-        { name: 'Lien customisable (logo + fond)', starter: false, business: 'Inclus', premium: 'Inclus' },
+        { name: 'Lien de commande (mini-boutique sans app)', starter: false, business: 'Inclus', premium: 'Inclus' },
+        { name: 'Lien customisable (logo + image de fond)', starter: false, business: 'Inclus', premium: 'Inclus' },
         { name: 'Paiement en ligne par le client', starter: false, business: 'Inclus', premium: 'Inclus' },
-        { name: 'Wallet DEM Pro (encaissement)', starter: false, business: 'Inclus', premium: 'Inclus' },
-        { name: 'Plafond de retrait', starter: false, business: '100 000 F/sem', premium: '350 000 F/sem' },
-        { name: 'Commandes reçues', starter: false, business: 'Inclus', premium: 'Inclus' },
+        { name: 'Wallet DEM Pro (solde, historique, retraits)', starter: false, business: '100 000 F / semaine', premium: '350 000 F / semaine' },
+        { name: 'Boîte de réception des commandes reçues', starter: false, business: 'Inclus', premium: 'Inclus' },
       ]
     },
     {
-      category: 'CONNEXION EXTERNE',
+      category: 'CONNEXION EXTERNE — EXCLUSIF PREMIUM',
       rows: [
-        { name: 'API DEM (brancher son propre site)', starter: false, business: false, premium: 'Inclus' },
+        { name: 'API DEM (brancher son propre site / e-shop)', starter: false, business: false, premium: 'Inclus (Clé API dédiée)' },
+        { name: 'Création automatique de course par commande site', starter: false, business: false, premium: 'Inclus' },
       ]
     },
     {
       category: 'FINANCES / ANALYTICS',
       rows: [
-        { name: 'Filtres période', starter: 'Jour · Semaine', business: '3 mois', premium: '6 mois' },
-        { name: 'Vues Ventes / Livraisons / Activité', starter: 'Grisé', business: 'Inclus', premium: 'Inclus' },
-        { name: 'Export CSV + PDF', starter: 'Grisé', business: 'Inclus', premium: 'Inclus' },
+        { name: 'Filtres de période disponibles', starter: 'Jour et Semaine uniquement', business: 'Jour / Semaine / Mois / 3 mois', premium: 'Jour / Sem / Mois / 3 mois / 6 mois' },
+        { name: 'Vues débloquées (Ventes / Livraisons / Activité)', starter: 'Grisé (popup upgrade)', business: 'Inclus (taux réussite, courbes)', premium: 'Inclus (analytics complets)' },
+        { name: 'Export comptable CSV + PDF', starter: 'Grisé (popup upgrade)', business: 'Inclus', premium: 'Inclus' },
       ]
     },
     {
       category: 'CLIENTS / CRM',
       rows: [
-        { name: 'Mes clients (historique, fidélisation)', starter: false, business: 'Inclus', premium: 'Inclus' },
-        { name: 'Meilleur client + courbes', starter: false, business: 'Inclus', premium: 'Inclus' },
+        { name: 'Mes clients (historique, contact)', starter: false, business: 'Inclus', premium: 'Inclus' },
+        { name: 'Meilleur client, fidélisation & courbes', starter: false, business: 'Inclus', premium: 'Inclus' },
       ]
     },
     {
       category: 'FACTURATION',
       rows: [
-        { name: 'Factures avec logo (après vente)', starter: false, business: 'Inclus', premium: 'Inclus' },
-        { name: 'Facturation groupée / par lot', starter: false, business: false, premium: 'Inclus' },
-        { name: 'Infos entreprise + NINEA', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
+        { name: 'Factures générées après chaque vente (avec logo)', starter: false, business: 'Inclus', premium: 'Inclus' },
+        { name: 'Facturation groupée / par lot (gros volumes)', starter: false, business: false, premium: 'Inclus' },
+        { name: 'Infos entreprise + conformité NINEA', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
       ]
     },
     {
       category: 'UTILISATEURS & SERVICE',
       rows: [
-        { name: 'Utilisateurs par compte', starter: '1', business: '3', premium: '5' },
-        { name: 'Adresses favorites', starter: '2 max', business: '10 max', premium: 'Illimité' },
-        { name: 'Code promo', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
-        { name: 'Support', starter: 'Standard', business: 'Prioritaire', premium: 'Premium' },
+        { name: 'Nombre d’utilisateurs sur le compte', starter: '1 seul (compte solo)', business: '3 personnes', premium: '5 personnes' },
+        { name: 'Adresses favorites enregistrées', starter: '2 maximum', business: '10 maximum', premium: 'Illimité' },
+        { name: 'Code promo activable', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
+        { name: 'Niveau de support client', starter: 'Standard (Appel/WhatsApp/Email) + nuit', business: 'Support prioritaire', premium: 'Support premium' },
         { name: 'Account manager dédié', starter: false, business: false, premium: 'Inclus' },
-        { name: 'Priorité coursier (heures de pointe)', starter: false, business: false, premium: 'Inclus' },
+        { name: 'Priorité coursier aux heures de pointe', starter: false, business: false, premium: 'Inclus' },
       ]
     }
   ];
 
-  // Rendu de cellule sans police mono
   const renderCellContent = (value, isFeatured = false) => {
     if (value === false) {
       return (
@@ -170,22 +179,29 @@ export default function PricingDemPro({ onSelectPlan }) {
         </span>
       );
     }
-    if (value === 'Grisé' || value === 'Privé') {
+    if (typeof value === 'string' && value.startsWith('Grisé')) {
       return (
-        <span className="text-xs font-semibold text-slate-400 italic font-['Poppins',sans-serif]">
+        <span className="text-[11px] font-semibold text-slate-400 italic font-['Poppins',sans-serif]">
           {value}
         </span>
       );
     }
-    if (value === 'Illimité') {
+    if (typeof value === 'string' && value.startsWith('Privé')) {
+      return (
+        <span className="text-xs font-semibold text-slate-500 font-['Poppins',sans-serif]">
+          {value}
+        </span>
+      );
+    }
+    if (value === 'Illimité' || value === 'Illimitée') {
       return (
         <span className="text-xs sm:text-sm font-black uppercase text-[#0086C8] tracking-wider font-['DM_Sans',sans-serif]">
-          Illimité
+          {value}
         </span>
       );
     }
     return (
-      <span className="text-xs sm:text-sm font-bold text-dark font-['DM_Sans',sans-serif]">
+      <span className={`text-xs sm:text-sm font-bold ${isFeatured ? 'text-[#0086C8]' : 'text-dark'} font-['DM_Sans',sans-serif]`}>
         {value}
       </span>
     );
@@ -197,12 +213,12 @@ export default function PricingDemPro({ onSelectPlan }) {
 
         {/* ── 1. EN-TÊTE PRINCIPAL ── */}
         <div className="mb-16">
-          <MiniTitleWithBar content="LE PRINCIPE TARIFAIRE" />
+          <MiniTitleWithBar content="LE PRINCIPE TARIFAIRE DEM PRO" />
           <SectionHeading
             align="left"
             title="Trois offres construites"
             highlight="en escalier"
-            subtitle="Transparence & Rentabilité"
+            subtitle="Transparence, E-commerce & Rentabilité"
             titleColor="text-dark"
             highlightColor="var(--color-cyan-2, #0086C8)"
             scriptColor="text-cyan-2"
@@ -210,7 +226,7 @@ export default function PricingDemPro({ onSelectPlan }) {
             className="mt-4"
           />
           <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
-            DEM Pro passe en <strong>100% payant</strong>. Chaque palier lève les limites du précédent. L’offre du milieu <strong>Business</strong> est pensée pour être le choix évident : c’est elle qui débloque la vente en ligne et l’encaissement, le cœur de valeur de DEM Pro.
+            DEM Pro fonctionne sur un modèle <strong>100% transparent et rentable</strong>. Chaque palier lève les limites du précédent. L’offre <strong>Business</strong> est pensée pour être le choix évident : c’est elle qui débloque la vente en ligne, le lien de commande et l’encaissement Wallet, le cœur de valeur de DEM Pro.
           </p>
         </div>
 
@@ -222,12 +238,12 @@ export default function PricingDemPro({ onSelectPlan }) {
               Règle commune à toutes les offres
             </h3>
             <p className="text-sm md:text-base text-slate-600 leading-relaxed m-0 font-['Poppins',sans-serif]">
-              Les <strong>100 FCFA de mise en relation</strong> restent facturés au client sur chaque course, quelle que soit l’offre. L’abonnement paie uniquement l’accès aux outils. Le coursier garde <strong>100% de sa course</strong>.
+              Les <strong>100 FCFA de mise en relation</strong> restent facturés au client sur chaque course, quelle que soit l’offre. L’abonnement paie uniquement l’accès aux outils professionnels. Le coursier garde <strong>100% de sa course</strong>.
             </p>
           </div>
         </div>
 
-        {/* ── 3. LES 3 CARTES DE PRICING (EYEBROW EN SERIF + 2K, 3K, 6K) ── */}
+        {/* ── 3. LES 3 CARTES DE PRICING OFFICIELLES ── */}
         <div className="grid grid-cols-1 lg:grid-cols-3 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-24">
           {plans.map((plan) => {
             const isFeatured = plan.isFeatured;
@@ -242,9 +258,11 @@ export default function PricingDemPro({ onSelectPlan }) {
                 }`}
               >
                 {/* Badge Featured */}
-                {isFeatured && (
-                  <div className="absolute top-0 right-0 bg-cyan text-dark text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 font-['DM_Sans',sans-serif]">
-                    ★ {plan.badge}
+                {plan.badge && (
+                  <div className={`absolute top-0 right-0 text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 font-['DM_Sans',sans-serif] ${
+                    isFeatured ? 'bg-cyan text-dark' : 'bg-slate-100 text-slate-700 border-l border-b border-black/10'
+                  }`}>
+                    {isFeatured ? `★ ${plan.badge}` : plan.badge}
                   </div>
                 )}
 
@@ -267,32 +285,23 @@ export default function PricingDemPro({ onSelectPlan }) {
                     </h3>
                   </div>
 
-                  {/* Prix en 2k, 3k, 6k */}
+                  {/* Prix en FCFA / semaine */}
                   <div className="mb-6 pb-6 border-b border-black/10">
-                    <div className="flex items-baseline gap-2.5">
+                    <div className="flex items-baseline gap-2">
                       <span
-                        className={`text-5xl lg:text-6xl font-black font-['DM_Sans',sans-serif] tracking-tight ${
+                        className={`text-4xl lg:text-5xl font-black font-['DM_Sans',sans-serif] tracking-tight ${
                           isFeatured ? 'text-cyan' : 'text-dark'
                         }`}
                       >
                         {plan.priceK}
                       </span>
-                      <div className="flex flex-col">
-                        <span
-                          className={`text-xs uppercase font-extrabold tracking-wider font-['DM_Sans',sans-serif] ${
-                            isFeatured ? 'text-white' : 'text-dark'
-                          }`}
-                        >
-                          F / semaine
-                        </span>
-                        <span
-                          className={`text-[11px] font-medium font-['Poppins',sans-serif] ${
-                            isFeatured ? 'text-white/60' : 'text-slate-500'
-                          }`}
-                        >
-                          ({plan.amountFCFA})
-                        </span>
-                      </div>
+                      <span
+                        className={`text-xs uppercase font-extrabold tracking-wider font-['DM_Sans',sans-serif] ${
+                          isFeatured ? 'text-white' : 'text-slate-600'
+                        }`}
+                      >
+                        {plan.priceUnit}
+                      </span>
                     </div>
                     <p
                       className={`text-xs mt-3 leading-relaxed m-0 font-['Poppins',sans-serif] ${
@@ -303,8 +312,8 @@ export default function PricingDemPro({ onSelectPlan }) {
                     </p>
                   </div>
 
-                  {/* Liste des points clés */}
-                  <ul className="space-y-3.5 mb-8">
+                  {/* Liste des points clés de l'offre */}
+                  <ul className="space-y-3 mb-8">
                     {plan.highlights.map((h, i) => (
                       <li
                         key={i}
@@ -345,8 +354,202 @@ export default function PricingDemPro({ onSelectPlan }) {
           })}
         </div>
 
-        {/* ── 4. TABLEAU COMPARATIF COMPLET ── */}
-        <div className="border border-black/10 bg-white">
+        {/* ── 4. AVANTAGES DEM PRO : CE QUE VOUS GAGNEZ AVEC DEM PRO ── */}
+        <div className="mb-28" id="avantages-pro">
+          <div className="mb-16">
+            <MiniTitleWithBar content="CE QUE VOUS GAGNEZ AVEC DEM PRO" />
+            <SectionHeading
+              align="left"
+              title="Transformez votre logistique en"
+              highlight="accélérateur de ventes"
+              subtitle="Avantages Business & E-commerce"
+              titleColor="text-dark"
+              highlightColor="var(--color-cyan-2, #0086C8)"
+              scriptColor="text-cyan-2"
+              titleSize="text-3xl md:text-5xl lg:text-6xl"
+              className="mt-4"
+            />
+            <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
+              Passer à un compte <strong>DEM Pro</strong>, c’est libérer votre business des contraintes de livraison, sécuriser vos encaissements et offrir à vos clients une expérience d’achat moderne et digne des plus grandes marques.
+            </p>
+          </div>
+
+          {/* Grille des 6 Avantages Clés Awwwards (Sharp & Minimaliste) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-black/10 divide-y md:divide-y-0 divide-black/10 bg-white">
+            
+            {/* Avantage 1 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between border-b md:border-r border-black/10 hover:bg-slate-50 transition-colors group">
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /01 · Gain de temps
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    Zéro appel
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  Expéditions groupées & programmées
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
+                  Fini la perte de temps à négocier chaque course au téléphone. Enregistrez jusqu’à 8 livraisons simultanées ou planifiez vos envois plusieurs jours à l'avance en un clic.
+                </p>
+              </div>
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  +3h gagnées par jour
+                </span>
+              </div>
+            </div>
+
+            {/* Avantage 2 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between border-b lg:border-r border-black/10 hover:bg-slate-50 transition-colors group">
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /02 · Trésorerie
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    24h chrono
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  Encaissement COD & Reversement 24h
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
+                  Nos livreurs encaissent vos fonds à la livraison (Espèces, Wave ou OM). L’argent est crédité sur votre Wallet DEM Pro et reversé sous 24h ouvrées sur votre compte.
+                </p>
+              </div>
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  0 risque d'impayé
+                </span>
+              </div>
+            </div>
+
+            {/* Avantage 3 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between border-b border-black/10 hover:bg-slate-50 transition-colors group">
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /03 · Vente en ligne
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    Mini-Boutique
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  Lien de commande & Catalogue digital
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
+                  Créez vos catalogues produits avec prix et stocks. Partagez votre lien de commande sur Instagram, TikTok ou WhatsApp pour que vos clients achètent en toute autonomie.
+                </p>
+              </div>
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  +40% de conversion
+                </span>
+              </div>
+            </div>
+
+            {/* Avantage 4 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between border-b md:border-b-0 md:border-r border-black/10 hover:bg-slate-50 transition-colors group">
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /04 · Crédibilité
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    Image de marque
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  Factures automatiques & NINEA
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
+                  Émettez automatiquement après chaque vente des factures professionnelles avec votre logo et vos mentions légales pour rassurer vos clients et simplifier votre comptabilité.
+                </p>
+              </div>
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  Comptabilité simplifiée
+                </span>
+              </div>
+            </div>
+
+            {/* Avantage 5 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between border-b md:border-b-0 lg:border-r border-black/10 hover:bg-slate-50 transition-colors group">
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /05 · Sécurité & Suivi
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    Live GPS & OTP
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  Traçabilité temps réel & Preuve OTP
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
+                  Offrez à vos acheteurs un lien de suivi en direct sur la carte. La livraison est validée par code de sécurité ou signature, éliminant les contestations et litiges.
+                </p>
+              </div>
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  -30% de retours colis
+                </span>
+              </div>
+            </div>
+
+            {/* Avantage 6 */}
+            <div className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors group">
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8]">
+                    /06 · Croissance
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
+                    CRM & Analytics
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
+                  CRM Clients & Rapports d'activité
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-6 font-['Poppins',sans-serif]">
+                  Identifiez vos meilleurs clients, suivez la courbe de vos ventes par semaine et exportez facilement vos données (CSV/PDF) pour piloter votre croissance avec précision.
+                </p>
+              </div>
+              <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
+                  Bénéfice direct :
+                </span>
+                <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  Fidélisation maximale
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* ── 5. TABLEAU COMPARATIF COMPLET (MATRICE DÉTAILLÉE) ── */}
+        <div className="border border-black/10 bg-white mb-28">
           
           {/* En-tête du Tableau */}
           <div className="p-8 lg:p-12 border-b border-black/10 bg-slate-50">
@@ -356,13 +559,13 @@ export default function PricingDemPro({ onSelectPlan }) {
                   Matrice comparative complète
                 </span>
                 <h3 className="text-2xl md:text-3xl font-bold uppercase text-dark font-['DM_Sans',sans-serif]">
-                  Tableau comparatif des offres
+                  Tableau comparatif des offres DEM Pro
                 </h3>
                 <p className="text-sm text-slate-600 mt-1 mb-0 font-['Poppins',sans-serif]">
                   Vue d’ensemble des trois offres, fonction par fonction.
                 </p>
               </div>
-              <div className="text-xs text-slate-500 font-medium font-['Poppins',sans-serif]">
+              <div className="text-xs text-slate-600 font-medium font-['Poppins',sans-serif]">
                 La colonne <span className="text-dark font-bold underline">Business</span> est mise en avant (« le plus choisi »)
               </div>
             </div>
@@ -370,7 +573,7 @@ export default function PricingDemPro({ onSelectPlan }) {
 
           {/* Table Container Responsive */}
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[700px]">
+            <table className="w-full text-left border-collapse min-w-[760px]">
               
               {/* Header Columns */}
               <thead>
@@ -379,14 +582,14 @@ export default function PricingDemPro({ onSelectPlan }) {
                     Fonctionnalité
                   </th>
                   <th className="py-5 px-6 font-bold text-xs uppercase tracking-wider text-center w-1/5 font-['DM_Sans',sans-serif]">
-                    Starter (2k)
+                    Starter (2 000 F)
                   </th>
                   <th className="py-5 px-6 font-bold text-xs uppercase tracking-wider text-center w-1/5 bg-cyan text-dark font-['DM_Sans',sans-serif] relative">
-                    <span className="block font-black">Business (3k)</span>
+                    <span className="block font-black">Business (3 000 F)</span>
                     <span className="text-[10px] tracking-widest block font-bold uppercase">LE PLUS CHOISI</span>
                   </th>
                   <th className="py-5 px-6 font-bold text-xs uppercase tracking-wider text-center w-1/5 font-['DM_Sans',sans-serif]">
-                    Premium (6k)
+                    Premium (6 000 F)
                   </th>
                 </tr>
               </thead>
@@ -399,7 +602,7 @@ export default function PricingDemPro({ onSelectPlan }) {
                     <tr className="bg-slate-100 border-t-2 border-b border-black/10">
                       <td
                         colSpan={4}
-                        className="py-3 px-6 font-bold text-xs tracking-wider uppercase text-[#0086C8] bg-slate-100 font-['DM_Sans',sans-serif]"
+                        className="py-3.5 px-6 font-bold text-xs tracking-wider uppercase text-[#0086C8] bg-slate-100 font-['DM_Sans',sans-serif]"
                       >
                         {sec.category}
                       </td>
@@ -422,7 +625,7 @@ export default function PricingDemPro({ onSelectPlan }) {
                         </td>
 
                         {/* Business Value (Highlighted Column) */}
-                        <td className="py-4 px-6 text-center bg-cyan/[0.03]">
+                        <td className="py-4 px-6 text-center bg-cyan/[0.04]">
                           {renderCellContent(row.business, true)}
                         </td>
 
@@ -452,8 +655,115 @@ export default function PricingDemPro({ onSelectPlan }) {
               </span>
             </div>
             <span className="text-slate-500 italic text-[11px]">
-              * Les tarifs s'entendent hors taxes. Facturation hebdomadaire sans engagement de durée.
+              * Les tarifs s'entendent en FCFA TTC. Facturation hebdomadaire sans engagement.
             </span>
+          </div>
+
+        </div>
+
+
+        {/* ── 5. SECTION STRATÉGIQUE : LA MÉCANIQUE D'ANCRAGE ── */}
+        <div className="border border-black/10 bg-slate-50 p-8 sm:p-12 lg:p-16">
+          <div className="max-w-4xl mb-12">
+            <MiniTitleWithBar content="STRATÉGIE & VALEUR CLIENT" />
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase text-dark tracking-tight leading-tight mt-3 mb-4">
+              La mécanique d'ancrage : <br />
+              <span className="font-serif italic font-normal text-[#0086C8] lowercase">
+                pourquoi le Business est conçu pour être le plus vendu.
+              </span>
+            </h3>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif] m-0">
+              Chaque palier tarifaire DEM Pro a été méticuleusement calibré pour guider le commerçant vers la formule qui transforme réellement son activité, sans friction psychologique.
+            </p>
+          </div>
+
+          {/* Les 4 Piliers d'Ancrage */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            {[
+              {
+                num: "01",
+                title: "Le Starter frustre juste ce qu'il faut",
+                desc: "Les vues analytics, l'export et la vente en ligne sont visibles mais grisés. À chaque tap sur une fonction bloquée, un popup propose de passer en Business. Le Pro voit exactement ce qu'il rate."
+              },
+              {
+                num: "02",
+                title: "Le Business débloque LA valeur",
+                desc: "Le passage Starter → Business fait basculer d'un simple carnet de produits privé à une vraie boutique en ligne avec encaissement. C'est le saut le plus spectaculaire des trois — donc le plus facile à vendre."
+              },
+              {
+                num: "03",
+                title: "Le Premium rend le Business évident",
+                desc: "Le Premium n'ajoute que du volume (illimité), du service (account manager, priorité coursier) et l'API. Pour un commerçant standard, ces avantages ne justifient pas le surcoût : il se rabat naturellement sur le Business."
+              },
+              {
+                num: "04",
+                title: "Résultat : L'effet d'aspiration",
+                desc: "Le milieu aspire la majorité des souscriptions. Le Starter capte les petits budgets et sert de produit d'appel ; le Premium ancre le prix vers le haut et capte les gros comptes."
+              }
+            ].map((item, idx) => (
+              <div key={idx} className="p-6 sm:p-8 bg-white border border-black/10 flex flex-col justify-between hover:border-[#0086C8] transition-colors">
+                <div>
+                  <span className="font-serif italic text-2xl font-light text-[#0086C8] block mb-3">
+                    /{item.num}
+                  </span>
+                  <h4 className="text-lg font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
+                    {item.title}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif] m-0">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Grille de synthèse d'ancrage */}
+          <div className="border border-black/10 bg-white p-6 sm:p-8">
+            <h4 className="text-sm font-bold uppercase tracking-widest text-[#0086C8] mb-4 font-['DM_Sans',sans-serif]">
+              Synthèse de la grille tarifaire & Positionnement
+            </h4>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-black/10 border border-black/10">
+              <div className="p-5">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 block mb-1">
+                  DEM Pro Starter
+                </span>
+                <span className="text-xl font-black text-dark block mb-1">
+                  2 000 FCFA <span className="text-xs font-normal text-slate-500">/ sem</span>
+                </span>
+                <p className="text-xs text-slate-600 m-0 leading-relaxed">
+                  Produit d'appel, accessible à tous pour démarrer sans risque.
+                </p>
+              </div>
+
+              <div className="p-5 bg-cyan/10">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#0086C8] font-bold block mb-1">
+                  DEM Pro Business (Cible)
+                </span>
+                <span className="text-xl font-black text-dark block mb-1">
+                  3 000 FCFA <span className="text-xs font-normal text-slate-500">/ sem</span>
+                </span>
+                <p className="text-xs text-slate-700 m-0 leading-relaxed font-semibold">
+                  Le meilleur rapport — seulement +1 000 F pour débloquer toute la vente en ligne.
+                </p>
+              </div>
+
+              <div className="p-5">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 block mb-1">
+                  DEM Pro Premium
+                </span>
+                <span className="text-xl font-black text-dark block mb-1">
+                  6 000 FCFA <span className="text-xs font-normal text-slate-500">/ sem</span>
+                </span>
+                <p className="text-xs text-slate-600 m-0 leading-relaxed">
+                  Ancre haute, gros comptes ayant besoin de l'API et du volume illimité.
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-4 m-0 leading-relaxed italic font-['Poppins',sans-serif]">
+              * Logique d’ancrage : le Business (3 000 F) n’est que 1 000 F au-dessus du Starter mais débloque toute la vente en ligne — l’écart de prix paraît dérisoire face au gain. Le Premium (6 000 F) est au double du Business : assez haut pour ancrer le prix vers le haut et rendre le Business évident, sans décourager les gros comptes qui ont besoin de l’API et du volume illimité.
+            </p>
           </div>
 
         </div>

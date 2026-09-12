@@ -12,6 +12,7 @@ import Coursiers from './pages/Coursiers.jsx'
 import DemPro from './pages/DemPro.jsx'
 import ChefDeFlotte from './pages/ChefDeFlotte.jsx'
 import Contact from './pages/Contact.jsx'
+import Actualites from './pages/Actualites.jsx'
 import Privacy from './Privacy.jsx'
 import Terms from './Terms.jsx'
 import DeleteAccount from './DeleteAccount.jsx'
@@ -29,6 +30,8 @@ createRoot(document.getElementById('root')).render(
           <Route path="/a-propos" element={<NotreHistoire />} />
           <Route path="/la-maison" element={<NotreHistoire />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/actualites" element={<Actualites />} />
+          <Route path="/news" element={<Actualites />} />
           <Route path="/coursiers" element={<Coursiers />} />
           <Route path="/livreurs" element={<Coursiers />} />
           <Route path="/dem-pro" element={<DemPro />} />

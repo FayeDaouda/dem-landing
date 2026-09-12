@@ -59,20 +59,20 @@ export default function NotreHistoire() {
     <div ref={containerRef} className="w-full bg-white text-[#021520] min-h-screen font-['DM_Sans',sans-serif] selection:bg-[#00D2FF] selection:text-[#021520] overflow-x-clip">
       
       {/* ── 1. EN-TÊTE ÉDITORIAL MAGAZINE (COVER HERO) ── */}
-      <section className="relative w-full bg-[#021520] text-white pt-32 pb-24 lg:pt-40 lg:pb-36 px-6 lg:px-16 border-b border-white/10 overflow-hidden">
-        {/* Lignes de repères éditoriales en arrière-plan */}
+      {/* <section className="relative w-full bg-[#021520] text-white pt-32 pb-24 lg:pt-40 lg:pb-36 px-6 lg:px-16 border-b border-white/10 overflow-hidden">
+        {/* Lignes de repères éditoriales en arrière-plan *
         <div className="absolute inset-0 opacity-[0.04] pointer-events-none grid grid-cols-6 divide-x divide-white">
           <div /><div /><div /><div /><div /><div />
         </div>
 
         <div className="max-w-[1400px] mx-auto relative z-10">
           
-          {/* Header Bar Magazine */}
+          {/* Header Bar Magazine *
           {/* <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 pb-6 mb-12 text-xs uppercase tracking-[0.25em] font-semibold text-white/60 font-['DM_Sans',sans-serif]">
             <span>REVUE OFFICIELLE DEM · VOL. 01</span>
             <span className="text-[#00D2FF]">DAKAR, SÉNÉGAL</span>
             <span>CHRONIQUES DE LA MOBILITÉ URBAINE</span>
-          </div> */}
+          </div> *
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
             <div className="lg:col-span-8">
@@ -99,12 +99,12 @@ export default function NotreHistoire() {
                 <span>03. MISSION</span>
                 <span>·</span>
                 <span>04. VALEURS</span>
-              </div> */}
+              </div> 
             </div>
           </div>
 
         </div>
-      </section>
+      </section> */}
 
 
       {/* ── 2. PARTIE 01 : LE CONSTAT (COMPOSANT ÉDITORIAL AVEC IMAGES EN PARALLAXE ÉTAGÉE) ── */}
