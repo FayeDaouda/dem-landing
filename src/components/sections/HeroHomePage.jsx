@@ -15,7 +15,7 @@ export default function HeroHomePage({
         <div
             id="hero"
             data-header-theme="white"
-            className="w-full relative overflow-hidden text-white min-h-screen lg:h-screen bg-[#021520] flex flex-col justify-end"
+            className="w-full relative z-20 overflow-hidden text-white min-h-screen lg:h-screen bg-[#021520] flex flex-col justify-end"
         >
             {/* Background Image */}
             <img

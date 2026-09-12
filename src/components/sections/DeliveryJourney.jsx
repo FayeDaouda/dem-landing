@@ -2,105 +2,305 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
-import { Package, User, Truck, Home, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 import SectionHeading from '../atoms/SectionHeading.jsx';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
+/**
+ * LivreurTopDown — Vue aérienne (top-down) détaillée d'une moto électrique DEM
+ * avec son coursier au guidon (casque profilé, blouson avec logo DEM,
+ * guidon, caisson de livraison avec logo DEM et jauge batterie, feu stop LED).
+ */
+function LivreurTopDown({ size = 95 }) {
+  return (
+    <svg
+      width={size}
+      height={size * 1.5}
+      viewBox="0 0 120 180"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ display: 'block', overflow: 'visible' }}
+    >
+      <defs>
+        {/* Faisceau lumineux avant projeté sur la route */}
+        <linearGradient id="beam-grad-hero" x1="0.5" y1="1" x2="0.5" y2="0">
+          <stop offset="0%" stopColor="#00D2FF" stopOpacity="0.6" />
+          <stop offset="60%" stopColor="#00D2FF" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="#00D2FF" stopOpacity="0" />
+        </linearGradient>
+
+        {/* Dégradé carrosserie moto DEM */}
+        <linearGradient id="moto-body-hero" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#0b283e" />
+          <stop offset="50%" stopColor="#041724" />
+          <stop offset="100%" stopColor="#020d14" />
+        </linearGradient>
+
+        {/* Dégradé blouson coursier */}
+        <linearGradient id="rider-jacket-hero" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0e4361" />
+          <stop offset="100%" stopColor="#051f2e" />
+        </linearGradient>
+
+        {/* Dégradé casque */}
+        <radialGradient id="helmet-grad-hero" cx="50%" cy="40%" r="55%">
+          <stop offset="0%" stopColor="#1e5270" />
+          <stop offset="70%" stopColor="#071d2b" />
+          <stop offset="100%" stopColor="#020e16" />
+        </radialGradient>
+
+        {/* Ombre portée réaliste sous la moto */}
+        <filter id="bike-shadow-hero" x="-40%" y="-30%" width="180%" height="160%">
+          <feDropShadow dx="0" dy="12" stdDeviation="14" floodColor="#000000" floodOpacity="0.85" />
+        </filter>
+
+        {/* Glow cyan pour les LED */}
+        <filter id="led-glow-hero" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      {/* Faisceau de phare projeté sur la route */}
+      <polygon
+        points="60,35 5,-20 115,-20"
+        fill="url(#beam-grad-hero)"
+        style={{ pointerEvents: 'none' }}
+      />
+
+      <g filter="url(#bike-shadow-hero)">
+        {/* ================= ROUE AVANT ================= */}
+        <rect x="54" y="16" width="12" height="30" rx="6" fill="#080d12" stroke="#1c2b36" strokeWidth="1.5" />
+        <line x1="60" y1="20" x2="60" y2="42" stroke="#00D2FF" strokeWidth="1.5" opacity="0.6" strokeDasharray="3 2" />
+
+        {/* Garde-boue avant */}
+        <path d="M52 28 C52 22, 68 22, 68 28 L66 40 C66 40, 54 40, 54 40 Z" fill="#00D2FF" opacity="0.85" />
+
+        {/* Fourche avant */}
+        <line x1="48" y1="36" x2="55" y2="44" stroke="#486577" strokeWidth="3" strokeLinecap="round" />
+        <line x1="72" y1="36" x2="65" y2="44" stroke="#486577" strokeWidth="3" strokeLinecap="round" />
+
+        {/* ================= GUIDON & RÉTROVISEURS ================= */}
+        <path d="M28 44 Q60 48 92 44" stroke="#162834" strokeWidth="5" strokeLinecap="round" fill="none" />
+        <path d="M28 44 Q60 48 92 44" stroke="#00D2FF" strokeWidth="1.2" strokeLinecap="round" fill="none" opacity="0.9" />
+
+        {/* Poignées */}
+        <rect x="22" y="41" width="10" height="6" rx="2" fill="#02080c" stroke="#00D2FF" strokeWidth="1" />
+        <rect x="88" y="41" width="10" height="6" rx="2" fill="#02080c" stroke="#00D2FF" strokeWidth="1" />
+
+        {/* Rétroviseurs */}
+        <rect x="16" y="36" width="7" height="4" rx="1.5" fill="#0086C8" stroke="#00D2FF" strokeWidth="0.8" />
+        <line x1="23" y1="39" x2="26" y2="43" stroke="#486577" strokeWidth="1.5" />
+        <rect x="97" y="36" width="7" height="4" rx="1.5" fill="#0086C8" stroke="#00D2FF" strokeWidth="0.8" />
+        <line x1="97" y1="39" x2="94" y2="43" stroke="#486577" strokeWidth="1.5" />
+
+        {/* Phare LED central avant */}
+        <ellipse cx="60" cy="38" rx="8" ry="3.2" fill="#FFFFFF" filter="url(#led-glow-hero)" />
+        <ellipse cx="60" cy="38" rx="5" ry="1.8" fill="#00D2FF" />
+
+        {/* ================= CHÂSSIS & CARÉNAGE MOTO ================= */}
+        <path
+          d="M48 46 L72 46 L76 90 L68 140 L52 140 L44 90 Z"
+          fill="url(#moto-body-hero)"
+          stroke="#00D2FF"
+          strokeWidth="1.2"
+          strokeOpacity="0.5"
+        />
+
+        {/* Accents racing cyan */}
+        <path d="M46 54 L44 80 L48 84 L50 56 Z" fill="#00D2FF" opacity="0.85" />
+        <path d="M74 54 L76 80 L72 84 L70 56 Z" fill="#00D2FF" opacity="0.85" />
+
+        {/* Repose-pieds */}
+        <rect x="38" y="85" width="6" height="12" rx="2" fill="#0e1f2b" stroke="#00D2FF" strokeWidth="0.8" />
+        <rect x="76" y="85" width="6" height="12" rx="2" fill="#0e1f2b" stroke="#00D2FF" strokeWidth="0.8" />
+
+        {/* ================= COURSIER (PILOTE) ================= */}
+        {/* Bras gauche */}
+        <path
+          d="M42 74 C34 70, 26 58, 28 46"
+          stroke="url(#rider-jacket-hero)"
+          strokeWidth="9"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <path d="M36 66 C32 60, 28 54, 29 48" stroke="#00D2FF" strokeWidth="2" fill="none" opacity="0.95" />
+
+        {/* Bras droit */}
+        <path
+          d="M78 74 C86 70, 94 58, 92 46"
+          stroke="url(#rider-jacket-hero)"
+          strokeWidth="9"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <path d="M84 66 C88 60, 92 54, 91 48" stroke="#00D2FF" strokeWidth="2" fill="none" opacity="0.95" />
+
+        {/* Gants noirs au guidon */}
+        <ellipse cx="28" cy="44" rx="4.5" ry="4.5" fill="#07151e" stroke="#00D2FF" strokeWidth="0.8" />
+        <ellipse cx="92" cy="44" rx="4.5" ry="4.5" fill="#07151e" stroke="#00D2FF" strokeWidth="0.8" />
+
+        {/* Épaules et buste du coursier */}
+        <ellipse cx="60" cy="80" rx="22" ry="16" fill="url(#rider-jacket-hero)" stroke="#00D2FF" strokeWidth="0.8" strokeOpacity="0.4" />
+        <ellipse cx="43" cy="78" rx="3.5" ry="6" fill="#00D2FF" opacity="0.85" />
+        <ellipse cx="77" cy="78" rx="3.5" ry="6" fill="#00D2FF" opacity="0.85" />
+
+        {/* Dos du blouson avec logo DEM */}
+        <text
+          x="60"
+          y="94"
+          textAnchor="middle"
+          fill="#FFFFFF"
+          fontSize="7.5"
+          fontWeight="900"
+          fontFamily="system-ui, -apple-system, sans-serif"
+          letterSpacing="1.5"
+          opacity="0.9"
+        >
+          DEM
+        </text>
+
+        {/* Casque du coursier */}
+        <ellipse cx="60" cy="67" rx="14" ry="16" fill="url(#helmet-grad-hero)" stroke="#00D2FF" strokeWidth="1.2" />
+
+        {/* Visière profilée avant */}
+        <path
+          d="M50 56 Q60 51 70 56 Q60 59 50 56"
+          fill="#00D2FF"
+          filter="url(#led-glow-hero)"
+          opacity="0.95"
+        />
+
+        {/* Bande racing centrale */}
+        <path d="M58 52 L62 52 L62 82 L58 82 Z" fill="#00D2FF" opacity="0.8" />
+        <path d="M59.5 52 L60.5 52 L60.5 82 L59.5 82 Z" fill="#FFFFFF" opacity="0.95" />
+
+        {/* ================= CAISSON DE LIVRAISON ARRIÈRE ================= */}
+        <rect
+          x="40"
+          y="105"
+          width="40"
+          height="34"
+          rx="5"
+          fill="#051926"
+          stroke="#00D2FF"
+          strokeWidth="1.5"
+        />
+        <rect
+          x="43"
+          y="108"
+          width="34"
+          height="28"
+          rx="3"
+          fill="#020e17"
+          stroke="rgba(0,210,255,0.3)"
+          strokeWidth="1"
+        />
+        <text
+          x="60"
+          y="123"
+          textAnchor="middle"
+          fill="#00D2FF"
+          fontSize="10"
+          fontWeight="900"
+          fontFamily="system-ui, -apple-system, sans-serif"
+          letterSpacing="1"
+        >
+          DEM
+        </text>
+        <rect x="49" y="128" width="22" height="3.5" rx="1.5" fill="#000000" stroke="rgba(0,224,140,0.5)" strokeWidth="0.6" />
+        <rect x="50" y="129" width="16" height="1.5" rx="0.7" fill="#00E08C" />
+
+        {/* ================= ROUE ARRIÈRE & FEU STOP ================= */}
+        <rect x="54" y="142" width="12" height="28" rx="6" fill="#080d12" stroke="#1c2b36" strokeWidth="1.5" />
+        <line x1="60" y1="145" x2="60" y2="166" stroke="#486577" strokeWidth="1.5" strokeDasharray="3 2" />
+        <rect x="52" y="140" width="16" height="3" rx="1.5" fill="#FF334B" filter="url(#led-glow-hero)" />
+      </g>
+    </svg>
+  );
+}
+
 const WAYPOINTS = [
   {
-    id: 'start',
+    id: 'client',
     step: '01',
-    label: 'Expéditeur',
-    tag: 'Étape 01 · Prise de commande',
-    titleMain: 'Création &',
-    titleHighlight: 'Prise en Charge',
-    desc: "L'expéditeur indique l'adresse de départ et d'arrivée sur l'application. La course est diffusée immédiatement aux coursiers les plus proches pour une affectation ultra-rapide.",
-    features: ['Géolocalisation précise', 'Colis sécurisé', 'Attribution en < 30s'],
-    Icon: User,
+    label: 'Le Client',
+    icon: '📍',
+    tag: 'Étape 01 · Prise en charge & Collecte',
+    titleMain: 'Le coursier récupère',
+    titleHighlight: 'votre colis',
+    desc: "En quelques secondes sur l'application DEM, la commande est validée. Le coursier le plus proche en patrouille est instantanément assigné et file à l'adresse de départ pour la collecte immédiate.",
+    features: ['Attribution en direct', 'Collecte express < 15 min', 'Vérification du colis'],
+    color: '#00D2FF',
+    isLast: false,
+    markerOnRight: true,
   },
   {
-    id: 'livreur',
+    id: 'destinataire',
     step: '02',
-    label: 'Coursier DEM',
-    tag: 'Étape 02 · En transit',
-    titleMain: 'Acheminement',
-    titleHighlight: 'Express',
-    desc: 'Le coursier récupère le paquet et se met en route. Vous suivez chaque mètre de sa progression en temps réel sur la carte interactive avec heure d’arrivée estimée.',
-    features: ['Suivi GPS en direct', 'Itinéraire optimisé', 'Notification instantanée'],
-    Icon: Truck,
-  },
-  {
-    id: 'arrive',
-    step: '03',
-    label: 'Destinataire',
-    tag: 'Étape 03 · Destination finale',
-    titleMain: 'Remise en',
-    titleHighlight: 'Main Propre',
-    desc: 'Arrivée à destination dans un délai record. Remise sécurisée au destinataire avec validation instantanée et signature numérique sur votre smartphone.',
-    features: ['Confirmation sécurisée', 'Notation du service', 'Reçu instantané'],
-    Icon: Home,
+    label: 'Le Destinataire',
+    icon: '🏠',
+    tag: 'Étape 02 · Acheminement & Remise sécurisée',
+    titleMain: 'Livraison confirmée',
+    titleHighlight: 'par code OTP',
+    desc: "Le coursier DEM achemine le colis jusqu'au destinataire via l'itinéraire le plus rapide. Arrivé à destination, la remise en main propre est sécurisée par code OTP confidentiel.",
+    features: ['Suivi GPS live toutes les 5s', 'Validation OTP sécurisée', 'Reçu numérique instantané'],
+    color: '#00E08C',
+    isLast: true,
+    markerOnRight: false,
   },
 ];
 
-function generatePathString(mainRect, m1Rect, m2Rect, m3Rect, r1Rect, r2Rect, r3Rect) {
+function generatePathString(sectionRect, mainRect, m0Rect, m1Rect, r0Rect, r1Rect) {
   const isDesktop = window.innerWidth >= 768;
 
+  // Distance entre le haut de .dj-main et le haut de <section>
+  const mainOffsetFromSectionTop = mainRect.top - sectionRect.top;
+
+  // c0 : Point de départ caché DANS la hero section (au-dessus du bord supérieur de DeliveryJourney)
+  const startY = -mainOffsetFromSectionTop - (isDesktop ? 270 : 190);
+
+  // X de c0 : aligné avec le marqueur Client (m0Rect)
+  const startX = m0Rect.left - mainRect.left + m0Rect.width / 2;
+
+  const c0 = {
+    x: startX,
+    y: startY,
+  };
+
+  // c1 : Le Client (sur la droite en row 0)
   const c1 = {
+    x: m0Rect.left - mainRect.left + m0Rect.width / 2,
+    y: m0Rect.top - mainRect.top + m0Rect.height / 2,
+  };
+
+  // c2 : Le Destinataire (sur la gauche en row 1)
+  const c2 = {
     x: m1Rect.left - mainRect.left + m1Rect.width / 2,
     y: m1Rect.top - mainRect.top + m1Rect.height / 2,
   };
-  const c3 = {
-    x: m3Rect.left - mainRect.left + m3Rect.width / 2,
-    y: m3Rect.top - mainRect.top + m3Rect.height / 2,
-  };
-
-  const m2 = {
-    left: m2Rect.left - mainRect.left,
-    right: m2Rect.right - mainRect.left,
-    top: m2Rect.top - mainRect.top,
-    bottom: m2Rect.bottom - mainRect.top,
-  };
 
   if (!isDesktop) {
-    const c2 = {
-      x: m2.left + m2Rect.width / 2,
-      y: m2.top + m2Rect.height / 2,
-    };
-    // Mobile : Courbe verticale fluide reliant directement les 3 cartes
-    return `M ${c1.x} ${c1.y} C ${c1.x} ${(c1.y + c2.y) / 2}, ${c2.x} ${(c1.y + c2.y) / 2}, ${c2.x} ${c2.y} C ${c2.x} ${(c2.y + c3.y) / 2}, ${c3.x} ${(c2.y + c3.y) / 2}, ${c3.x} ${c3.y}`;
+    return `M ${c0.x} ${c0.y} L ${c0.x} 0 C ${c0.x} ${c1.y / 2}, ${c1.x} ${c1.y / 2}, ${c1.x} ${c1.y} C ${c1.x} ${(c1.y + c2.y) / 2}, ${c2.x} ${(c1.y + c2.y) / 2}, ${c2.x} ${c2.y}`;
   }
 
-  // Desktop : Contournement précis sans chevauchement du texte ni découpe de la carte 2
-  // 1. Couloir supérieur (au-dessus de la carte 2 et en dessous de l'étape 1)
-  const corridor1Y = Math.min(
-    m2.top - 28,
-    (r1Rect.bottom - mainRect.top + r2Rect.top - mainRect.top) / 2
-  );
+  // Corridor entre Row 0 (Client) et Row 1 (Destinataire)
+  const corridorY = (r0Rect.bottom - mainRect.top + r1Rect.top - mainRect.top) / 2;
 
-  // 2. Couloir inférieur (en dessous de la carte 2 et au-dessus de l'étape 3)
-  const corridor2Y = Math.max(
-    m2.bottom + 28,
-    (r2Rect.bottom - mainRect.top + r3Rect.top - mainRect.top) / 2
-  );
-
-  // 3. Position X extérieure à droite de la carte 2 (marge nette de 45px pour ne jamais toucher la carte)
-  const outerRightX = Math.min(mainRect.width - 16, m2.right + 45);
-  const cornerRadius = 40;
-
+  // Tracé fluide :
   return `
-    M ${c1.x} ${c1.y}
-    C ${c1.x} ${corridor1Y - 15}, ${c1.x + 40} ${corridor1Y}, ${c1.x + 100} ${corridor1Y}
-    L ${outerRightX - cornerRadius} ${corridor1Y}
-    C ${outerRightX - 10} ${corridor1Y}, ${outerRightX} ${corridor1Y + 10}, ${outerRightX} ${corridor1Y + cornerRadius}
-    L ${outerRightX} ${corridor2Y - cornerRadius}
-    C ${outerRightX} ${corridor2Y - 10}, ${outerRightX - 10} ${corridor2Y}, ${outerRightX - cornerRadius} ${corridor2Y}
-    L ${c3.x + 80} ${corridor2Y}
-    C ${c3.x + 20} ${corridor2Y}, ${c3.x} ${corridor2Y + 20}, ${c3.x} ${c3.y}
+    M ${c0.x} ${c0.y}
+    L ${c0.x} ${-mainOffsetFromSectionTop + 40}
+    C ${c0.x} ${c1.y - 120}, ${c1.x} ${c1.y - 70}, ${c1.x} ${c1.y}
+    C ${c1.x} ${c1.y + 60}, ${c1.x - 40} ${corridorY}, ${c1.x - 120} ${corridorY}
+    L ${c2.x + 120} ${corridorY}
+    C ${c2.x + 40} ${corridorY}, ${c2.x} ${corridorY + 50}, ${c2.x} ${c2.y}
   `.replace(/\s+/g, ' ').trim();
 }
 
 export default function DeliveryJourney() {
+  const sectionRef = useRef(null);
   const ctxRef = useRef(null);
   const [pathData, setPathData] = useState('');
 
@@ -108,27 +308,23 @@ export default function DeliveryJourney() {
     if (ctxRef.current) ctxRef.current.revert();
 
     const mainEl = document.querySelector('.dj-main');
-    const m1 = document.querySelector('.dj-marker-0');
-    const m2 = document.querySelector('.dj-marker-1');
-    const m3 = document.querySelector('.dj-marker-2');
-    const r1 = document.querySelector('.dj-row-0');
-    const r2 = document.querySelector('.dj-row-1');
-    const r3 = document.querySelector('.dj-row-2');
+    const m0 = document.querySelector('.dj-marker-0');
+    const m1 = document.querySelector('.dj-marker-1');
+    const r0 = document.querySelector('.dj-row-0');
+    const r1 = document.querySelector('.dj-row-1');
     const box = document.querySelector('.dj-box');
 
-    if (!mainEl || !m1 || !m2 || !m3 || !r1 || !r2 || !r3 || !box) return;
+    if (!sectionRef.current || !mainEl || !m0 || !m1 || !r0 || !r1 || !box) return;
 
+    const sectionRect = sectionRef.current.getBoundingClientRect();
     const mainRect = mainEl.getBoundingClientRect();
-    const d = generatePathString(
-      mainRect,
-      m1.getBoundingClientRect(),
-      m2.getBoundingClientRect(),
-      m3.getBoundingClientRect(),
-      r1.getBoundingClientRect(),
-      r2.getBoundingClientRect(),
-      r3.getBoundingClientRect()
-    );
 
+    const m0Bounds = m0.getBoundingClientRect();
+    const m1Bounds = m1.getBoundingClientRect();
+    const r0Bounds = r0.getBoundingClientRect();
+    const r1Bounds = r1.getBoundingClientRect();
+
+    const d = generatePathString(sectionRect, mainRect, m0Bounds, m1Bounds, r0Bounds, r1Bounds);
     setPathData(d);
 
     const track = document.getElementById('dj-track');
@@ -136,31 +332,91 @@ export default function DeliveryJourney() {
     if (track) track.setAttribute('d', d);
     if (trackBg) trackBg.setAttribute('d', d);
 
+    // Calcul précis du ratio de parcours jusqu'au Client (c1)
+    const c1Pos = {
+      x: m0Bounds.left - mainRect.left + m0Bounds.width / 2,
+      y: m0Bounds.top - mainRect.top + m0Bounds.height / 2,
+    };
+
+    let fractionC1 = 0.35;
+    if (track && track.getTotalLength) {
+      const totalLen = track.getTotalLength();
+      let minDist = Infinity;
+      let closestLen = 0;
+      for (let i = 0; i <= 200; i++) {
+        const len = (i / 200) * totalLen;
+        const pt = track.getPointAtLength(len);
+        const dist = Math.hypot(pt.x - c1Pos.x, pt.y - c1Pos.y);
+        if (dist < minDist) {
+          minDist = dist;
+          closestLen = len;
+        }
+      }
+      fractionC1 = closestLen / totalLen;
+    }
+
     ctxRef.current = gsap.context(() => {
+      // Timeline calée exactement sur le défilement de l'utilisateur
+      // scrub: 0.6 garantit une réponse immédiate et souple au scroll
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: '.dj-main',
-          start: 'top 70%',
-          end: 'bottom 75%',
-          scrub: 1.2,
+          trigger: sectionRef.current,
+          start: 'top 75%',
+          end: 'bottom 80%',
+          scrub: 0.6,
         },
       });
 
+      // Étape 1 (45% du scroll vertical) :
+      // La moto sort de la Hero, descend la route en haut à droite et arrive pile au Client (Row 0)
       tl.to('.dj-box', {
-        duration: 1,
-        ease: 'none',
+        duration: 0.45,
+        ease: 'power1.inOut',
         motionPath: {
           path: '#dj-track',
           align: '#dj-track',
-          alignOrigin: [0.5, 0.5],
-          autoRotate: false,
+          alignOrigin: [0.5, 0.35],
+          autoRotate: 90,
+          start: 0,
+          end: fractionC1,
         },
       });
-    });
+
+      // Feedback visuel à l'arrivée au Client (collecte)
+      tl.to('.dj-marker-0', {
+        scale: 1.04,
+        boxShadow: '0 0 35px rgba(0,210,255,0.45)',
+        duration: 0.05,
+        yoyo: true,
+        repeat: 1,
+      }, '-=0.05');
+
+      // Étape 2 (55% du scroll vertical) :
+      // La moto repart du Client, traverse le couloir Dakar et arrive au Destinataire (Row 1)
+      tl.to('.dj-box', {
+        duration: 0.55,
+        ease: 'power1.out',
+        motionPath: {
+          path: '#dj-track',
+          align: '#dj-track',
+          alignOrigin: [0.5, 0.35],
+          autoRotate: 90,
+          start: fractionC1,
+          end: 1,
+        },
+      });
+
+      // Validation finale au Destinataire
+      tl.to('.dj-marker-1', {
+        scale: 1.05,
+        boxShadow: '0 0 40px rgba(0,224,140,0.5)',
+        duration: 0.06,
+      }, '-=0.06');
+    }, sectionRef);
   }, []);
 
   useEffect(() => {
-    const timeout = setTimeout(buildTimeline, 200);
+    const timeout = setTimeout(buildTimeline, 250);
     window.addEventListener('resize', buildTimeline);
 
     return () => {
@@ -171,24 +427,35 @@ export default function DeliveryJourney() {
   }, [buildTimeline]);
 
   return (
-    <section className="relative w-full py-24 px-6 lg:px-16 overflow-hidden bg-cyan-deep">
-
-
-      {/* Ambient background glow */}
-      <div 
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[700px] pointer-events-none"
+    <section
+      ref={sectionRef}
+      className="relative z-10 w-full py-24 px-6 lg:px-16 bg-cyan-deep"
+      style={{ overflow: 'visible' }}
+    >
+      {/* Ambient background glow central */}
+      <div
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[700px] pointer-events-none z-0"
         style={{
           background: 'radial-gradient(circle, rgba(0,210,255,0.06) 0%, rgba(2,21,32,0) 70%)',
           filter: 'blur(60px)',
         }}
       />
 
+      {/* Texture grille / coordonnées GPS */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.03] z-0"
+        style={{
+          backgroundImage:
+            'repeating-linear-gradient(0deg, #00D2FF 0px, #00D2FF 1px, transparent 1px, transparent 60px), repeating-linear-gradient(90deg, #00D2FF 0px, #00D2FF 1px, transparent 1px, transparent 60px)',
+        }}
+      />
+
       {/* Main Header */}
-      <div className="relative z-10 max-w-4xl mx-auto text-center mb-24">
+      <div className="relative z-10 max-w-4xl mx-auto text-center mb-20">
         <SectionHeading
-          title="Le parcours de votre"
-          highlight="colis"
-          subtitle="Suivi en direct"
+          title="La course de votre"
+          highlight="coursier DEM"
+          subtitle="Vue du ciel · Suivi en direct"
           titleColor="text-white"
           highlightClassName="text-[#00D2FF]"
           scriptColor="text-[#00D2FF]"
@@ -196,22 +463,23 @@ export default function DeliveryJourney() {
           subtitleSize="text-2xl md:text-3xl lg:text-4xl"
         />
         <p className="text-slate-400 mt-4 max-w-lg mx-auto text-sm md:text-base leading-relaxed">
-          De la commande à la remise en main propre, suivez chaque étape en toute transparence.
+          En patrouille dans Dakar — votre coursier se déplace vers le client pour la collecte, puis file livrer le destinataire.
         </p>
       </div>
 
-      {/* Main 2-Column Layout */}
-      <div className="dj-main relative max-w-6xl mx-auto flex flex-col gap-24 md:gap-32 w-full">
-        {/* SVG Circuit Path Overlay */}
+      {/* Main Layout */}
+      <div className="dj-main relative max-w-6xl mx-auto flex flex-col gap-28 md:gap-36 w-full z-10">
+
+        {/* SVG Circuit Path Overlay (s'étend au-delà du haut pour aller sous la hero section) */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-visible"
           aria-hidden="true"
         >
           <defs>
             <linearGradient id="dj-path-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#00D2FF" stopOpacity="0.85" />
+              <stop offset="0%" stopColor="#00D2FF" stopOpacity="0.9" />
               <stop offset="50%" stopColor="#0086C8" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#00E08C" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#00E08C" stopOpacity="0.95" />
             </linearGradient>
             <filter id="dj-glow" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="4" result="blur" />
@@ -219,103 +487,93 @@ export default function DeliveryJourney() {
             </filter>
           </defs>
 
-          {/* Halo lumineux arrière */}
-          <path
-            id="dj-track-bg"
-            d={pathData}
-            fill="none"
-            stroke="#00D2FF"
-            strokeWidth="6"
-            strokeOpacity="0.15"
-            filter="url(#dj-glow)"
-          />
-
-          {/* Ligne pointillée technologique */}
+          {/* Tracé invisible (sert de guide de trajectoire GSAP pour la moto) */}
           <path
             id="dj-track"
             d={pathData}
             fill="none"
-            stroke="url(#dj-path-grad)"
-            strokeWidth="2.5"
-            strokeDasharray="8 6"
-            strokeLinecap="round"
+            stroke="none"
+            opacity="0"
           />
         </svg>
 
-        {/* The moving animated package */}
+        {/* LE LIVREUR QUI SORT DE LA HERO SECTION ET PARCOURT LA ROUTE (FORMAT AGRANDI) */}
         <div
           className="dj-box absolute pointer-events-none"
           style={{
-            width: 56,
-            height: 56,
+            width: 145,
+            height: 218,
             top: 0,
             left: 0,
-            background: 'linear-gradient(135deg, #00D2FF, #0086C8)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 30px rgba(0, 210, 255, 0.9), 0 0 60px rgba(0, 210, 255, 0.4)',
-            zIndex: 30,
-            border: '2px solid rgba(255, 255, 255, 0.9)',
+            zIndex: 35,
+            transformOrigin: 'center 35%',
+            filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.9)) drop-shadow(0 0 32px rgba(0,210,255,0.6))',
           }}
         >
-          <Package size={28} className="text-[#021520]" strokeWidth={2.4} />
+          <LivreurTopDown size={145} />
         </div>
 
         {WAYPOINTS.map((wp, index) => {
-          const { Icon } = wp;
-          const isEnd = index === WAYPOINTS.length - 1;
-          const isEven = index % 2 === 0; // index 0 & 2 -> Waypoint Left | index 1 -> Waypoint Right
+          const isEnd = wp.isLast;
+          const isMarkerRight = wp.markerOnRight;
 
           return (
             <div
               key={wp.id}
               className={`dj-row-${index} grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-14 items-center w-full relative z-20`}
             >
-              {/* Waypoint Column (Left for 01/03, Right for 02) */}
+              {/* Colonne Marqueur */}
               <div
                 className={`md:col-span-4 flex justify-center ${
-                  isEven ? 'md:justify-start md:order-1' : 'md:justify-end md:order-2'
+                  isMarkerRight ? 'md:justify-end md:order-2' : 'md:justify-start md:order-1'
                 }`}
               >
                 <div className="dj-container relative">
-                  {/* Waypoint visual marker - NO ROUNDED */}
+                  {/* Radar ping animé */}
                   <div
-                    className={`dj-marker dj-marker-${index} flex flex-col items-center justify-center p-6 backdrop-blur-xl transition-all duration-300 group`}
+                    className="absolute inset-0 animate-ping rounded-none pointer-events-none"
+                    style={{
+                      background: 'transparent',
+                      border: `1px solid ${wp.color}`,
+                      opacity: 0.25,
+                      animationDuration: '2.5s',
+                    }}
+                  />
+
+                  {/* Marqueur principal */}
+                  <div
+                    className={`dj-marker dj-marker-${index} flex flex-col items-center justify-center p-6 transition-all duration-300 group shadow-2xl backdrop-blur-md`}
                     style={{
                       width: 170,
                       height: 170,
-                      background: 'rgba(10, 34, 51, 0.85)',
-                      border: isEnd
-                        ? '2px dashed rgba(0, 224, 140, 0.6)'
-                        : '2px dashed rgba(0, 210, 255, 0.4)',
+                      background: 'rgba(10, 34, 51, 0.92)',
+                      border: `2px dashed ${isEnd ? 'rgba(0, 224, 140, 0.6)' : 'rgba(0, 210, 255, 0.4)'}`,
                     }}
                   >
                     <div
                       className="flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110"
                       style={{
-                        width: 60,
-                        height: 60,
+                        width: 64,
+                        height: 64,
                         background: isEnd
-                          ? 'rgba(0, 224, 140, 0.15)'
-                          : 'rgba(0, 210, 255, 0.12)',
-                        border: isEnd
-                          ? '1px solid rgba(0, 224, 140, 0.4)'
-                          : '1px solid rgba(0, 210, 255, 0.3)',
+                          ? 'rgba(0, 224, 140, 0.12)'
+                          : 'rgba(0, 210, 255, 0.1)',
+                        border: `1px solid ${isEnd ? 'rgba(0, 224, 140, 0.4)' : 'rgba(0, 210, 255, 0.3)'}`,
                         boxShadow: isEnd
-                          ? '0 0 20px rgba(0,224,140,0.25)'
-                          : '0 0 20px rgba(0,210,255,0.2)',
+                          ? '0 0 20px rgba(0,224,140,0.3)'
+                          : '0 0 20px rgba(0,210,255,0.25)',
+                        fontSize: '2rem',
+                        lineHeight: 1,
                       }}
                     >
-                      <Icon
-                        size={30}
-                        style={{
-                          color: isEnd ? '#00E08C' : '#00D2FF',
-                        }}
-                      />
+                      {wp.icon}
                     </div>
+
                     <span
-                      className="text-sm font-bold tracking-wide uppercase"
+                      className="text-sm font-bold tracking-wide uppercase text-center"
                       style={{ color: isEnd ? '#00E08C' : '#FFFFFF' }}
                     >
                       {wp.label}
@@ -327,10 +585,10 @@ export default function DeliveryJourney() {
                 </div>
               </div>
 
-              {/* Description Column (Right for 01/03, Left for 02) */}
+              {/* Colonne Description */}
               <div
                 className={`md:col-span-8 flex flex-col justify-center ${
-                  isEven ? 'md:order-2' : 'md:order-1'
+                  isMarkerRight ? 'md:order-1' : 'md:order-2'
                 }`}
               >
                 <div className="w-full">
@@ -355,7 +613,7 @@ export default function DeliveryJourney() {
                     {wp.desc}
                   </p>
 
-                  {/* Key Features / Bullet points - NO ROUNDED */}
+                  {/* Badges / Points clés */}
                   <div className="flex flex-wrap gap-3">
                     {wp.features.map((feat) => (
                       <span
