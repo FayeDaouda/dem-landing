@@ -12,7 +12,7 @@ export default function DeleteAccount() {
       {/* Header */}
       <div style={{
         background: 'linear-gradient(160deg, #00D2FF 0%, #0086C8 55%, #005A8C 100%)',
-        padding: '48px 24px 40px', textAlign: 'center',
+        padding: '120px 24px 48px', textAlign: 'center',
       }}>
         <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 24, textDecoration: 'none' }}>
           <img src="/logo.png" alt="DEM" style={{ width: 40, height: 40, borderRadius: 10 }} />

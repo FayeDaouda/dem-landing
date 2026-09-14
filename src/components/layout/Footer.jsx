@@ -211,7 +211,7 @@ export default function Footer() {
                             Confidentialité
                         </Link>
                         <Link to="/delete-account" onClick={scrollToTop} className="hover:text-white transition-colors">
-                            Cookies & Données
+                            Suppression de compte
                         </Link>
                     </div>
                 </div>

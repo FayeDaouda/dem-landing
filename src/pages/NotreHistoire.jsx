@@ -18,7 +18,7 @@ export default function NotreHistoire() {
       parallaxItems.forEach((item) => {
         const speed = parseFloat(item.getAttribute('data-speed') || '0.15');
         const direction = item.getAttribute('data-direction') === 'down' ? 1 : -1;
-        
+
         gsap.to(item, {
           y: direction * (window.innerHeight * speed),
           ease: 'none',
@@ -30,26 +30,6 @@ export default function NotreHistoire() {
           },
         });
       });
-
-      // Révélation en fondu des titres et paragraphes éditoriaux
-      const fadeElements = document.querySelectorAll('.magazine-reveal');
-      fadeElements.forEach((el) => {
-        gsap.fromTo(
-          el,
-          { opacity: 0, y: 40 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
-      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -57,7 +37,7 @@ export default function NotreHistoire() {
 
   return (
     <div ref={containerRef} className="w-full bg-white text-[#021520] min-h-screen font-['DM_Sans',sans-serif] selection:bg-[#00D2FF] selection:text-[#021520] overflow-x-clip">
-      
+
       {/* ── 1. EN-TÊTE ÉDITORIAL MAGAZINE (COVER HERO) ── */}
       {/* <section className="relative w-full bg-[#021520] text-white pt-32 pb-24 lg:pt-40 lg:pb-36 px-6 lg:px-16 border-b border-white/10 overflow-hidden">
         {/* Lignes de repères éditoriales en arrière-plan *
@@ -322,7 +302,7 @@ export default function NotreHistoire() {
       {/* ── 7. PARTIE 06 : NOTRE MISSION (ENGAGEMENT & IMPACT CONCRET) ── */}
       <section className="py-24 lg:py-36 px-6 lg:px-16 border-b border-black/10 bg-slate-50" id="mission">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="mb-16 magazine-reveal">
             <MiniTitleWithBar content="06 · NOTRE RAISON D'ÊTRE" />
             <SectionHeading
@@ -340,7 +320,7 @@ export default function NotreHistoire() {
 
           {/* Grille 3 Piliers de la Mission (Style Carte Magazine) */}
           <div className="grid grid-cols-1 md:grid-cols-3 border border-black/10 divide-y md:divide-y-0 md:divide-x divide-black/10 bg-white">
-            
+
             {/* Mission 1 */}
             <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors group">
               <div>
@@ -404,7 +384,7 @@ export default function NotreHistoire() {
       {/* ── 8. PARTIE 07 : NOS VALEURS (LE MANIFESTE EN 4 PRINCIPES) ── */}
       <section className="py-24 lg:py-36 px-6 lg:px-16 border-b border-black/10 bg-white" id="valeurs">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="mb-16 magazine-reveal">
             <MiniTitleWithBar content="07 · NOTRE ADN" />
             <SectionHeading
@@ -480,7 +460,7 @@ export default function NotreHistoire() {
       {/* ── 6. MANIFESTE ÉDITORIAL & CHIFFRES CLÉS ── */}
       <section className="py-24 lg:py-36 px-6 lg:px-16 bg-[#021520] text-white border-b border-white/10 relative overflow-hidden">
         <div className="max-w-[1200px] mx-auto text-center magazine-reveal relative z-10">
-          
+
           <span className="font-serif italic text-2xl sm:text-3xl text-[#00D2FF] block mb-4">
             Le Manifeste DEM
           </span>

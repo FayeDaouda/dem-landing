@@ -17,31 +17,7 @@ export default function DemPro() {
         secondTitle="Livraison Same-Day, reversement COD sous 24h et intégration e-commerce fluide partout à Dakar."
       />
 
-      {/* ── 2. BANDEAU DE MÉTRIQUES B2B (NO GRADIENT, NO ROUNDED) ── */}
-      <section className="border-t border-b border-black/10 bg-dark text-white">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
-          {[
-            { num: "< 2h", label: "Délai moyen Same-Day", sub: "Expédition et remise le jour même à vos clients" },
-            { num: "24h", label: "Reversement COD garanti", sub: "Collecte des fonds et virement direct Wave / OM" },
-            { num: "100%", label: "Traçabilité & Preuve OTP", sub: "Signature numérique et code de validation" },
-            { num: "-30%", label: "Taux de retour colis", sub: "Grâce aux notifications SMS et au géoguidage" }
-          ].map((item, idx) => (
-            <div key={idx} className="p-8 lg:p-10 flex flex-col justify-between hover:bg-white/[0.02] transition-colors">
-              <span className="font-['DM_Sans',sans-serif] font-black text-4xl lg:text-5xl text-cyan mb-3 block">
-                {item.num}
-              </span>
-              <div>
-                <h3 className="uppercase text-xs font-bold tracking-widest text-white mb-1 font-['Raleway',sans-serif]">
-                  {item.label}
-                </h3>
-                <p className="text-xs text-white/60 leading-relaxed m-0">
-                  {item.sub}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+
 
       {/* ── 3. TARIFICATION, AVANTAGES & TABLEAU COMPARATIF DEM PRO (AWWWARDS) ── */}
       <PricingDemPro onSelectPlan={(plan) => setSelectedPlan(plan)} />

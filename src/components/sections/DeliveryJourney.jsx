@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, User, Check } from 'lucide-react';
 import SectionHeading from '../atoms/SectionHeading.jsx';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -224,28 +224,22 @@ function LivreurTopDown({ size = 95 }) {
 const WAYPOINTS = [
   {
     id: 'client',
-    step: '01',
-    label: 'Le Client',
-    icon: '📍',
-    tag: 'Étape 01 · Prise en charge & Collecte',
+    label: 'Expéditeur',
+    tag: 'Prise en charge & Collecte',
     titleMain: 'Le coursier récupère',
     titleHighlight: 'votre colis',
     desc: "En quelques secondes sur l'application DEM, la commande est validée. Le coursier le plus proche en patrouille est instantanément assigné et file à l'adresse de départ pour la collecte immédiate.",
-    features: ['Attribution en direct', 'Collecte express < 15 min', 'Vérification du colis'],
     color: '#00D2FF',
     isLast: false,
     markerOnRight: true,
   },
   {
     id: 'destinataire',
-    step: '02',
-    label: 'Le Destinataire',
-    icon: '🏠',
-    tag: 'Étape 02 · Acheminement & Remise sécurisée',
+    label: 'Destinataire',
+    tag: 'Acheminement & Remise sécurisée',
     titleMain: 'Livraison confirmée',
     titleHighlight: 'par code OTP',
     desc: "Le coursier DEM achemine le colis jusqu'au destinataire via l'itinéraire le plus rapide. Arrivé à destination, la remise en main propre est sécurisée par code OTP confidentiel.",
-    features: ['Suivi GPS live toutes les 5s', 'Validation OTP sécurisée', 'Reçu numérique instantané'],
     color: '#00E08C',
     isLast: true,
     markerOnRight: false,
@@ -382,10 +376,10 @@ export default function DeliveryJourney() {
         },
       });
 
-      // Feedback visuel à l'arrivée au Client (collecte)
-      tl.to('.dj-marker-0', {
-        scale: 1.04,
-        boxShadow: '0 0 35px rgba(0,210,255,0.45)',
+      // Feedback visuel circulaire à l'arrivée au Client (collecte)
+      tl.to('.dj-icon-avatar-0', {
+        scale: 1.12,
+        boxShadow: '0 0 40px rgba(0,210,255,0.7)',
         duration: 0.05,
         yoyo: true,
         repeat: 1,
@@ -406,11 +400,18 @@ export default function DeliveryJourney() {
         },
       });
 
-      // Validation finale au Destinataire
-      tl.to('.dj-marker-1', {
-        scale: 1.05,
-        boxShadow: '0 0 40px rgba(0,224,140,0.5)',
+      // Validation finale circulaire au Destinataire : pulsation de l'avatar et apparition du badge check
+      tl.to('.dj-icon-avatar-1', {
+        scale: 1.12,
+        boxShadow: '0 0 45px rgba(0,224,140,0.8)',
         duration: 0.06,
+      }, '-=0.06');
+
+      tl.to('.dj-check-badge', {
+        scale: 1,
+        opacity: 1,
+        duration: 0.08,
+        ease: 'back.out(2.5)',
       }, '-=0.06');
     }, sectionRef);
   }, []);
@@ -442,13 +443,13 @@ export default function DeliveryJourney() {
       />
 
       {/* Texture grille / coordonnées GPS */}
-      <div
+      {/* <div
         className="absolute inset-0 pointer-events-none opacity-[0.03] z-0"
         style={{
           backgroundImage:
             'repeating-linear-gradient(0deg, #00D2FF 0px, #00D2FF 1px, transparent 1px, transparent 60px), repeating-linear-gradient(90deg, #00D2FF 0px, #00D2FF 1px, transparent 1px, transparent 60px)',
         }}
-      />
+      /> */}
 
       {/* Main Header */}
       <div className="relative z-10 max-w-4xl mx-auto text-center mb-20">
@@ -523,7 +524,7 @@ export default function DeliveryJourney() {
           return (
             <div
               key={wp.id}
-              className={`dj-row-${index} grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-14 items-center w-full relative z-20`}
+              className={`dj-row-${index} grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-14 items-center w-full relative z-40`}
             >
               {/* Colonne Marqueur */}
               <div
@@ -531,55 +532,55 @@ export default function DeliveryJourney() {
                   isMarkerRight ? 'md:justify-end md:order-2' : 'md:justify-start md:order-1'
                 }`}
               >
-                <div className="dj-container relative">
-                  {/* Radar ping animé */}
+                <div className="dj-container relative z-40">
+                  {/* Marqueur principal (100% circulaire, aucun fond carré) */}
                   <div
-                    className="absolute inset-0 animate-ping rounded-none pointer-events-none"
-                    style={{
-                      background: 'transparent',
-                      border: `1px solid ${wp.color}`,
-                      opacity: 0.25,
-                      animationDuration: '2.5s',
-                    }}
-                  />
-
-                  {/* Marqueur principal */}
-                  <div
-                    className={`dj-marker dj-marker-${index} flex flex-col items-center justify-center p-6 transition-all duration-300 group shadow-2xl backdrop-blur-md`}
-                    style={{
-                      width: 170,
-                      height: 170,
-                      background: 'rgba(10, 34, 51, 0.92)',
-                      border: `2px dashed ${isEnd ? 'rgba(0, 224, 140, 0.6)' : 'rgba(0, 210, 255, 0.4)'}`,
-                    }}
+                    className={`dj-marker dj-marker-${index} flex flex-col items-center justify-center transition-all duration-300 group bg-transparent`}
                   >
-                    <div
-                      className="flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110"
-                      style={{
-                        width: 64,
-                        height: 64,
-                        background: isEnd
-                          ? 'rgba(0, 224, 140, 0.12)'
-                          : 'rgba(0, 210, 255, 0.1)',
-                        border: `1px solid ${isEnd ? 'rgba(0, 224, 140, 0.4)' : 'rgba(0, 210, 255, 0.3)'}`,
-                        boxShadow: isEnd
-                          ? '0 0 20px rgba(0,224,140,0.3)'
-                          : '0 0 20px rgba(0,210,255,0.25)',
-                        fontSize: '2rem',
-                        lineHeight: 1,
-                      }}
-                    >
-                      {wp.icon}
+                    {/* Grande Icône Personne avec Onde Radar Circulaire & Halo */}
+                    <div className="relative mb-3 flex items-center justify-center">
+                      {/* Onde Circulaire (Radar Ping en cercle) */}
+                      <div
+                        className="absolute -inset-2 rounded-full animate-ping pointer-events-none"
+                        style={{
+                          background: 'transparent',
+                          border: `2px solid ${wp.color}`,
+                          opacity: 0.35,
+                          animationDuration: '2.5s',
+                        }}
+                      />
+
+                      <div
+                        className={`dj-icon-avatar-${index} w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center transition-all duration-300 shadow-2xl relative z-10`}
+                        style={{
+                          background: isEnd ? 'rgba(0, 224, 140, 0.12)' : 'rgba(0, 210, 255, 0.12)',
+                          border: `2px solid ${isEnd ? 'rgba(0, 224, 140, 0.6)' : 'rgba(0, 210, 255, 0.6)'}`,
+                          boxShadow: isEnd ? '0 0 35px rgba(0, 224, 140, 0.25)' : '0 0 35px rgba(0, 210, 255, 0.25)',
+                          color: isEnd ? '#00E08C' : '#00D2FF',
+                        }}
+                      >
+                        <User className="w-10 h-10 sm:w-12 sm:h-12" />
+                      </div>
+
+                      {/* Grand Badge Check au premier plan (au-dessus de la moto, non superposé) */}
+                      {isEnd && (
+                        <div
+                          className="dj-check-badge absolute -bottom-2 -right-2 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#00E08C] text-[#021520] flex items-center justify-center shadow-[0_0_25px_rgba(0,224,140,0.85)] border-3 border-[#021520]"
+                          style={{
+                            transform: 'scale(0)',
+                            opacity: 0,
+                          }}
+                        >
+                          <Check className="w-6 h-6 sm:w-7 sm:h-7 stroke-[3.5]" />
+                        </div>
+                      )}
                     </div>
 
                     <span
-                      className="text-sm font-bold tracking-wide uppercase text-center"
+                      className="text-sm font-black tracking-wider uppercase text-center"
                       style={{ color: isEnd ? '#00E08C' : '#FFFFFF' }}
                     >
                       {wp.label}
-                    </span>
-                    <span className="text-[11px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">
-                      Étape {wp.step}
                     </span>
                   </div>
                 </div>
@@ -613,18 +614,6 @@ export default function DeliveryJourney() {
                     {wp.desc}
                   </p>
 
-                  {/* Badges / Points clés */}
-                  <div className="flex flex-wrap gap-3">
-                    {wp.features.map((feat) => (
-                      <span
-                        key={feat}
-                        className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold text-slate-200 bg-white/[0.03] border border-white/10"
-                      >
-                        <CheckCircle2 size={14} className={isEnd ? 'text-[#00E08C]' : 'text-[#00D2FF]'} />
-                        {feat}
-                      </span>
-                    ))}
-                  </div>
                 </div>
               </div>
             </div>
