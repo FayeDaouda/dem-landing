@@ -86,16 +86,15 @@ export const HorizontalGallery = ({ services = DEFAULT_DEM_SERVICES, theme = 'da
   }, { scope: containerRef, dependencies: [services] });
 
   return (
-    <section 
-      ref={containerRef} 
-      className={`min-h-screen md:h-screen overflow-hidden relative px-6 md:px-0 py-16 md:py-0 border-t border-b transition-colors duration-300 ${
-        isLight 
-          ? 'bg-white text-[#021520] border-slate-200' 
+    <section
+      ref={containerRef}
+      className={`min-h-screen md:h-screen overflow-hidden relative px-6 md:px-0 py-16 md:py-0 border-t border-b transition-colors duration-300 ${isLight
+          ? 'bg-white text-[#021520] border-slate-200'
           : 'bg-[#021520] text-white border-white/[0.06]'
-      }`}
+        }`}
     >
       {/* Grille décorative en arrière-plan */}
-      <div 
+      <div
         className={`absolute inset-0 pointer-events-none ${isLight ? 'opacity-40' : 'opacity-10'}`}
         style={{
           backgroundImage: isLight
@@ -124,13 +123,12 @@ export const HorizontalGallery = ({ services = DEFAULT_DEM_SERVICES, theme = 'da
           <p className={`${isLight ? 'text-slate-600' : 'text-slate-400'} mb-8 text-base md:text-lg leading-relaxed`}>
             Une technologie de pointe combinée à un réseau humain rigoureux pour délivrer l'excellence logistique au Sénégal.
           </p>
-          <a 
-            href="#download" 
-            className={`inline-flex items-center gap-3 px-6 py-3 font-bold text-sm tracking-wide uppercase transition-all duration-300 text-white ${
-              isLight
+          <a
+            href="#download"
+            className={`inline-flex items-center gap-3 px-6 py-3 font-bold text-sm tracking-wide uppercase transition-all duration-300 text-white ${isLight
                 ? ' bg-[#021520] hover:bg-[#0086C8] shadow-lg'
                 : 'text-white bg-[#00D2FF]/10 border border-[#00D2FF]/30 hover:bg-[#00D2FF]/20 shadow-[0_0_20px_rgba(0,210,255,0.15)]'
-            }`}
+              }`}
           >
             <span className='text-white'>Télécharger l'application</span>
           </a>
@@ -144,21 +142,19 @@ export const HorizontalGallery = ({ services = DEFAULT_DEM_SERVICES, theme = 'da
             style={{ transformOrigin: "bottom center" }}
           >
             {/* Typographie verticale sur la gauche */}
-            <div 
-              className={`absolute bottom-10 -rotate-180 [writing-mode:vertical-rl] text-[6rem] font-black uppercase tracking-tighter select-none hidden md:block ${
-                isLight ? 'text-slate-900/[0.05]' : 'text-white/[0.04]'
-              }`}
+            <div
+              className={`absolute bottom-10 -rotate-180 [writing-mode:vertical-rl] text-[6rem] font-black uppercase tracking-tighter select-none hidden md:block ${isLight ? 'text-slate-900/[0.05]' : 'text-white/[0.04]'
+                }`}
             >
               DEM 0{index + 1}
             </div>
 
             {/* Carte */}
-            <div 
-              className={`relative w-full h-full z-10 overflow-hidden md:mr-12 block transition-all duration-500 ${
-                isLight 
-                  ? 'border border-slate-200 bg-[#021520] shadow-2xl hover:border-[#0086C8]/60' 
+            <div
+              className={`relative w-full h-full z-10 overflow-hidden md:mr-12 block transition-all duration-500 ${isLight
+                  ? 'border border-slate-200 bg-[#021520] shadow-2xl hover:border-[#0086C8]/60'
                   : 'border border-white/10 bg-[#0A2233]/70 backdrop-blur-md hover:border-[#00D2FF]/50'
-              }`}
+                }`}
             >
               <img
                 src={zone.image}
@@ -171,7 +167,7 @@ export const HorizontalGallery = ({ services = DEFAULT_DEM_SERVICES, theme = 'da
                   <div className="py-1 px-3 uppercase text-[11px] font-bold tracking-wider text-[#00D2FF] bg-[#00D2FF]/10 border border-[#00D2FF]/30">
                     <span>{zone.subtitle}</span>
                   </div>
-                  
+
                   <div className="py-1 px-3 bg-white/[0.08] backdrop-blur-sm border border-white/10">
                     <span className="text-xs font-mono text-[#00E08C] font-bold">
                       {zone.badge}

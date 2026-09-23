@@ -20,36 +20,36 @@ const C = {
 };
 
 const galleryItems = [
-  { 
-    image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=900&auto=format&fit=crop&q=85', 
-    text: '< 45 min · Point à point' 
+  {
+    image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=900&auto=format&fit=crop&q=85',
+    text: '< 45 min · Point à point'
   },
-  { 
-    image: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85', 
-    text: '100% · Traçabilité GPS' 
+  {
+    image: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85',
+    text: '100% · Traçabilité GPS'
   },
-  { 
-    image: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85', 
-    text: 'Impact · Revenus dignes' 
+  {
+    image: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85',
+    text: 'Impact · Revenus dignes'
   },
-  { 
-    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900&auto=format&fit=crop&q=85', 
-    text: '< 45 min · Enlèvement Express' 
+  {
+    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900&auto=format&fit=crop&q=85',
+    text: '< 45 min · Enlèvement Express'
   },
-  { 
-    image: 'https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?w=900&auto=format&fit=crop&q=85', 
-    text: '100% · Suivi direct 7j/7' 
+  {
+    image: 'https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?w=900&auto=format&fit=crop&q=85',
+    text: '100% · Suivi direct 7j/7'
   },
-  { 
-    image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=900&auto=format&fit=crop&q=85', 
-    text: 'Impact · Flotte valorisée' 
+  {
+    image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=900&auto=format&fit=crop&q=85',
+    text: 'Impact · Flotte valorisée'
   },
 ];
 
 export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: C.dark, color: C.text, overflowX: 'clip' }}>
-      
+
       {/* ── HERO HOMEPAGE ── */}
       <HeroHomePage
         title="DEM"

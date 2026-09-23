@@ -2,19 +2,92 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
-import SectionHeading from '../components/atoms/SectionHeading.jsx';
-import ContactCTA from '../components/sections/ContactCTA.jsx';
-import EditorialStorySection from '../components/sections/EditorialStorySection.jsx';
+import SolutionPoint from '../components/sections/SolutionPoint.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const SOLUTION_POINTS = [
+  {
+    number: "01",
+    category: "Algorithme & Cartographie",
+    title: "Dispatch Intelligent & Routage Contextuel Dakarois",
+    description: "Loin des logiciels importés inopérants sans numérotation de rue, le moteur DEM intègre les repères visuels dakarois et contourne dynamiquement les goulots d'étranglement de la VDN, de la Corniche et de l'autoroute.",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=85",
+    imageAlt: "Dispatch intelligent et carte interactive"
+  },
+  {
+    number: "02",
+    category: "Paiement & Confiance",
+    title: "Sécurisation Cash on Delivery & Traçabilité OTP",
+    description: "Finies les disparitions d'espèces et les contestations de livraison. Chaque colis remis fait l'objet d'une confirmation par code OTP sécurisé. Les sommes collectées sont automatiquement reversées sur vos comptes Wave ou Orange Money sous 24h.",
+    image: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=900&auto=format&fit=crop&q=85",
+    imageAlt: "Sécurisation Cash on Delivery Wave Orange Money"
+  },
+  {
+    number: "03",
+    category: "L'Humain au Guidon",
+    title: "Flotte Professionnalisée & Équipements Normés",
+    description: "Nos coursiers sont les ambassadeurs de votre marque auprès de vos clients finaux. Ils disposent d'équipements de protection complets, de caissons isothermes étanches, d'une formation rigoureuse et d'une rémunération hebdomadaire garantie et transparente.",
+    image: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85",
+    imageAlt: "Coursier professionnel équipé DEM"
+  },
+  {
+    number: "04",
+    category: "Outils Entreprises",
+    title: "Portail DEM Pro & Intégration E-Commerce",
+    description: "Un espace unique pour piloter l'ensemble de vos expéditions : déclenchement de courses groupées en quelques clics, partage du lien de suivi GPS au client final, tarification dégressive transparente et facturation mensuelle simplifiée.",
+    image: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85",
+    imageAlt: "Portail Marchand et intégration API"
+  }
+];
 
 export default function NotreHistoire() {
   const containerRef = useRef(null);
 
   useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
     const ctx = gsap.context(() => {
-      // Effet Parallaxe fluide sur les éléments marqués data-speed
-      const parallaxItems = document.querySelectorAll('.parallax-item');
+      // ── RIDEAU HORIZONTAL SUR LES IMAGES PRINCIPALES ──
+      const curtainWrappers = el.querySelectorAll('.h-curtain-wrapper');
+      curtainWrappers.forEach((wrapper) => {
+        const curtain = wrapper.querySelector('.h-curtain-panel');
+        const img = wrapper.querySelector('.h-curtain-img');
+        const isLeft = wrapper.getAttribute('data-curtain-origin') === 'left';
+
+        if (curtain) {
+          gsap.to(curtain, {
+            scaleX: 0,
+            transformOrigin: isLeft ? 'left' : 'right',
+            duration: 1.15,
+            ease: 'power4.inOut',
+            scrollTrigger: {
+              trigger: wrapper,
+              start: 'top 85%',
+            },
+          });
+        }
+
+        if (img) {
+          gsap.fromTo(
+            img,
+            { scale: 1.15 },
+            {
+              scale: 1,
+              duration: 1.25,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: wrapper,
+                start: 'top 85%',
+              },
+            }
+          );
+        }
+      });
+
+      // ── PARALLAXE FLUIDE SUR LES ÉLÉMENTS MARQUÉS .parallax-item ──
+      const parallaxItems = el.querySelectorAll('.parallax-item');
       parallaxItems.forEach((item) => {
         const speed = parseFloat(item.getAttribute('data-speed') || '0.15');
         const direction = item.getAttribute('data-direction') === 'down' ? 1 : -1;
@@ -36,420 +109,327 @@ export default function NotreHistoire() {
   }, []);
 
   return (
-    <div ref={containerRef} className="w-full bg-white text-[#021520] min-h-screen font-['DM_Sans',sans-serif] selection:bg-[#00D2FF] selection:text-[#021520] overflow-x-clip">
+    <div
+      ref={containerRef}
+      className="w-full bg-white text-[#021520] min-h-screen font-['DM_Sans',sans-serif] selection:bg-[#00D2FF] selection:text-[#021520] overflow-x-clip"
+    >
 
-      {/* ── 1. EN-TÊTE ÉDITORIAL MAGAZINE (COVER HERO) ── */}
-      {/* <section className="relative w-full bg-[#021520] text-white pt-32 pb-24 lg:pt-40 lg:pb-36 px-6 lg:px-16 border-b border-white/10 overflow-hidden">
-        {/* Lignes de repères éditoriales en arrière-plan *
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none grid grid-cols-6 divide-x divide-white">
-          <div /><div /><div /><div /><div /><div />
-        </div>
-
-        <div className="max-w-[1400px] mx-auto relative z-10">
-          
-          {/* Header Bar Magazine *
-          {/* <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 pb-6 mb-12 text-xs uppercase tracking-[0.25em] font-semibold text-white/60 font-['DM_Sans',sans-serif]">
-            <span>REVUE OFFICIELLE DEM · VOL. 01</span>
-            <span className="text-[#00D2FF]">DAKAR, SÉNÉGAL</span>
-            <span>CHRONIQUES DE LA MOBILITÉ URBAINE</span>
-          </div> *
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
-            <div className="lg:col-span-8">
-              <span className="font-serif italic text-2xl sm:text-3xl lg:text-4xl text-[#00D2FF] block mb-4 font-light">
-                La Genèse & Le Mouvement
-              </span>
-              <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black uppercase tracking-tight leading-[0.95] text-white">
-                RÉINVENTER LE POULS <br />
-                <span className="text-transparent" style={{ WebkitTextStroke: '1.5px #FFFFFF' }}>
-                  DE LA VILLE.
-                </span>
-              </h1>
-            </div>
-
-            <div className="lg:col-span-4 border-l lg:border-l border-white/15 pl-0 lg:pl-8 pt-4 lg:pt-0">
-              <p className="text-base sm:text-lg text-white/80 leading-relaxed font-['Poppins',sans-serif] m-0">
-                L’histoire de DEM (Delivery Express Mobility) est celle d'un refus : le refus de la résignation face aux embouteillages, aux retards chroniques et à la précarité de la logistique du dernier kilomètre à Dakar.
-              </p>
-              {/* <div className="mt-8 flex items-center gap-4 text-xs tracking-widest uppercase font-bold text-[#00D2FF]">
-                <span>01. CONSTAT</span>
-                <span>·</span>
-                <span>02. VISION</span>
-                <span>·</span>
-                <span>03. MISSION</span>
-                <span>·</span>
-                <span>04. VALEURS</span>
-              </div> 
-            </div>
-          </div>
-
-        </div>
-      </section> */}
-
-
-      {/* ── 2. PARTIE 01 : LE CONSTAT (COMPOSANT ÉDITORIAL AVEC IMAGES EN PARALLAXE ÉTAGÉE) ── */}
-      <EditorialStorySection
+      {/* ══════════════════════════════════════════════════════════════════════
+          BLOC 1 — LE CONSTAT
+      ══════════════════════════════════════════════════════════════════════ */}
+      <section
         id="constat"
-        theme="light"
-        imagePosition="right"
-        chapterNumber="01 · L'ÉTAT DES LIEUX"
-        title="Le constat d'un système"
-        highlight="à bout de souffle."
-        paragraphs={[
-          "Dakar est l'une des métropoles les plus dynamiques d'Afrique de l'Ouest. Ses commerçants innovent, ses créateurs vendent sur les réseaux sociaux et sa population consomme à toute allure. Pourtant, un goulet d'étranglement persistait : la livraison du dernier kilomètre.",
-          "Pour les e-commerçants et les boutiques physiques, chaque expédition était une loterie. Pour les coursiers, les conditions étaient rudes, sans couverture, sans matériel adapté et sans visibilité sur leurs revenus.",
-          "Il ne manquait pas de motos à Dakar : il manquait une technologie intelligente, une organisation rigoureuse et une considération humaine pour relier ces maillons."
-        ]}
-        quote="« Perte de colis, livreurs introuvables au téléphone, délais aléatoires de plus de 4 heures et encaissements en espèces non sécurisés... Le commerce dakarois méritait mieux. »"
-        metrics={[
-          { value: "+4h", label: "Délai moyen antérieur sans DEM" },
-          { value: "35%", label: "Taux d'échec ou d'annulation" }
-        ]}
-        mainImage={{
-          src: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=900&auto=format&fit=crop&q=85",
-          alt: "Circulation et logistique Dakar",
-          speed: "0.1",
-          direction: "up",
-          aspect: "aspect-[4/5]",
-          tag: "FIG. 01 — DAKAR EXPRESS"
-        }}
-        secondaryImage={{
-          src: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&auto=format&fit=crop&q=85",
-          alt: "Coursier DEM sur le terrain",
-          speed: "0.25",
-          direction: "up",
-          aspect: "aspect-[3/4]",
-          subtitle: "Terrain & Réalité",
-          title: "Le défi de la ponctualité"
-        }}
-        floatingBadge={{
-          tag: "POINT D'INFLEXION",
-          text: "Passer du désordre à la synchronisation temps réel.",
-          speed: "0.18",
-          direction: "down"
-        }}
-      />
-
-      {/* ── 3. PARTIE 02 : LA VISION (COMPOSANT ÉDITORIAL EN THÈME SOMBRE & DISPOSITION INVERSÉE) ── */}
-      <EditorialStorySection
-        id="vision"
-        theme="dark"
-        imagePosition="left"
-        chapterNumber="02 · Le Futur de la Logistique"
-        title="Bâtir l'autoroute"
-        highlight="numérique du dernier kilomètre."
-        paragraphs={[
-          "Notre vision dépasse la simple livraison à moto. Nous construisons le système d'exploitation de la mobilité commerciale en Afrique de l'Ouest.",
-          "Un réseau où chaque commerce, de la boutique de quartier au grand compte e-commerce, dispose de la même puissance d'expédition que les géants mondiaux : dispatch instantané, intégration API directe, encaissement dématérialisé et transparence totale à chaque coin de rue."
-        ]}
-        pillars={[
-          { number: "01.", title: "Fluidité Urbaine", desc: "Algorithmes de routage intelligents contournant les points de congestion." },
-          { number: "02.", title: "Inclusion Financière", desc: "Digitalisation intégrale des flux Cash on Delivery via Wave & Orange Money." },
-          { number: "03.", title: "Expansion Régionale", desc: "Un modèle réplicable pensé pour les grandes capitales d'Afrique de l'Ouest." }
-        ]}
-        mainImage={{
-          src: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85",
-          alt: "Technologie et vision DEM",
-          speed: "0.12",
-          direction: "up",
-          aspect: "aspect-[16/11]",
-          tag: "HORIZON TECH · TEMPS RÉEL",
-          grayscale: false
-        }}
-        secondaryImage={{
-          src: "https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?w=800&auto=format&fit=crop&q=85",
-          alt: "Supervision télématique",
-          speed: "0.22",
-          direction: "down",
-          aspect: "aspect-square",
-          subtitle: "100% Connecté",
-          title: "Flotte connectée par GPS"
-        }}
-      />
-
-      {/* ── 4. PARTIE 03 : LA TECHNOLOGIE (MOTEUR DE DISPATCH & GÉOGUIDAGE LOCAL) ── */}
-      <EditorialStorySection
-        id="technologie"
-        theme="light"
-        imagePosition="right"
-        chapterNumber="03 · LE MOTEUR TECHNOLOGIQUE"
-        title="Une plateforme conçue"
-        highlight="pour la réalité du terrain dakarois."
-        paragraphs={[
-          "Loin des logiciels importés inadaptés aux spécificités de l'adressage local, DEM a développé sa propre pile logicielle de géocodage contextuel et d'optimisation d'itinéraires.",
-          "Notre moteur prend en compte les repères visuels dakarois, contourne en direct les goulots d'étranglement de la VDN, de la corniche ou de l'autoroute à péage, et connecte instantanément chaque colis au motocycliste le mieux positionné.",
-          "Chaque course bénéficie d'un suivi au mètre près sur carte interactive et d'un contrôle strict de la remise par code de sécurité OTP unique."
-        ]}
-        quote="« La technologie n'a de valeur que si elle résout les frictions du monde réel. À Dakar, chaque minute économisée dans le trafic est une victoire pour le commerce. »"
-        metrics={[
-          { value: "-25%", label: "Temps de trajet moyen réduit" },
-          { value: "99.4%", label: "Taux de livraison avec succès OTP" }
-        ]}
-        mainImage={{
-          src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=85",
-          alt: "Supervision télématique et dispatch intelligent",
-          speed: "0.1",
-          direction: "up",
-          aspect: "aspect-[4/5]",
-          tag: "FIG. 03 — DISPATCH INTELLIGENT"
-        }}
-        secondaryImage={{
-          src: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800&auto=format&fit=crop&q=85",
-          alt: "Coursier connecté en direct",
-          speed: "0.25",
-          direction: "up",
-          aspect: "aspect-[3/4]",
-          subtitle: "Temps Réel",
-          title: "Assignation en moins de 10 min"
-        }}
-        floatingBadge={{
-          tag: "ALGORITHME LOCAL",
-          text: "Prise en compte dynamique du trafic et des repères dakarois.",
-          speed: "0.18",
-          direction: "down"
-        }}
-      />
-
-      {/* ── 5. PARTIE 04 : L'HUMAIN AU GUIDON (VALORISATION ET SÉCURITÉ DES COURSIERS) ── */}
-      <EditorialStorySection
-        id="humain"
-        theme="dark"
-        imagePosition="left"
-        chapterNumber="04 · L'HUMAIN D'ABORD"
-        title="Redonner toute sa fierté"
-        highlight="au métier de coursier urbain."
-        paragraphs={[
-          "Chez DEM, nous sommes convaincus qu'il ne peut y avoir de service client d'élite sans une considération absolue pour ceux qui sillonnent la ville par tous les temps.",
-          "Nos livreurs ne sont pas de simples identifiants sur un écran. Ce sont des partenaires valorisés, dotés d'équipements de sécurité certifiés, formés aux exigences du relationnel client et protégés par une couverture d'assistance.",
-          "Chaque semaine, l'intégralité de leurs gains et pourboires est versée avec une rigueur absolue sur Wave ou Orange Money, sans aucuns frais occultes."
-        ]}
-        quote="« Un coursier respecté, équipé et équitablement rémunéré est le plus bel ambassadeur qu'une marque puisse envoyer chez ses clients. »"
-        metrics={[
-          { value: "100%", label: "Gains reversés chaque semaine" },
-          { value: "4.9/5", label: "Satisfaction moyenne des coursiers" }
-        ]}
-        mainImage={{
-          src: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85",
-          alt: "Coursier DEM sur le terrain",
-          speed: "0.12",
-          direction: "up",
-          aspect: "aspect-[16/11]",
-          tag: "FIG. 04 — HÉROS DU QUOTIDIEN",
-          grayscale: false
-        }}
-        secondaryImage={{
-          src: "https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?w=800&auto=format&fit=crop&q=85",
-          alt: "Équipement professionnel certifié",
-          speed: "0.22",
-          direction: "down",
-          aspect: "aspect-square",
-          subtitle: "Dignité & Sécurité",
-          title: "Équipements pro & Caissons étanches"
-        }}
-        floatingBadge={{
-          tag: "ENGAGEMENT SOCIAL",
-          text: "Assurance accident, dotation complète et écoute 7j/7.",
-          speed: "0.18",
-          direction: "down",
-          bg: "bg-[#0086C8]",
-          textColor: "text-white"
-        }}
-      />
-
-      {/* ── 6. PARTIE 05 : L'HORIZON RÉGIONAL (EXPANSION OUEST-AFRICAINE) ── */}
-      <EditorialStorySection
-        id="expansion"
-        theme="light"
-        imagePosition="right"
-        chapterNumber="05 · L'HORIZON RÉGIONAL"
-        title="Du Sénégal aux capitales"
-        highlight="majeures d'Afrique de l'Ouest."
-        paragraphs={[
-          "Dakar est notre berceau et notre laboratoire d'excellence. Mais les défis que nous avons relevés ici résonnent avec la même urgence dans toute la sous-région.",
-          "De la presqu'île dakaroise aux grands carrefours commerciaux ouest-africains, notre infrastructure a été conçue pour se déployer rapidement et offrir aux marques une expérience de livraison transfrontalière unifiée.",
-          "Notre feuille de route vise à connecter commerçants et consommateurs avec les mêmes standards d'instantanéité, de sécurité COD et de transparence technologique."
-        ]}
-        pillars={[
-          { number: "01.", title: "Dakar & Pôles Économiques", desc: "Couverture totale de Dakar, Diamniadio, Thiès, Mbour et la Petite-Côte." },
-          { number: "02.", title: "Hubs Sous-Régionaux", desc: "Déploiement progressif des corridors logistiques vers Abidjan, Bamako et Conakry." },
-          { number: "03.", title: "Standardisation B2B", desc: "API unique pour interconnecter les géants du e-commerce et de la distribution panafricaine." }
-        ]}
-        mainImage={{
-          src: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900&auto=format&fit=crop&q=85",
-          alt: "Entrepôt et infrastructure logistique DEM",
-          speed: "0.1",
-          direction: "up",
-          aspect: "aspect-[4/5]",
-          tag: "FIG. 05 — SCALE & EXPANSION"
-        }}
-        secondaryImage={{
-          src: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&auto=format&fit=crop&q=85",
-          alt: "Flotte en expansion",
-          speed: "0.25",
-          direction: "up",
-          aspect: "aspect-[3/4]",
-          subtitle: "Réseau Ouest-Africain",
-          title: "Le hub logistique unifié"
-        }}
-        floatingBadge={{
-          tag: "HORIZON SCALE",
-          text: "Connecter les métropoles africaines en un clic.",
-          speed: "0.18",
-          direction: "down"
-        }}
-      />
-
-      {/* ── 7. PARTIE 06 : NOTRE MISSION (ENGAGEMENT & IMPACT CONCRET) ── */}
-      <section className="py-24 lg:py-36 px-6 lg:px-16 border-b border-black/10 bg-slate-50" id="mission">
+        data-header-theme="white"
+        className="relative w-full pt-32 pb-24 lg:pt-40 lg:pb-32 px-6 lg:px-16 border-b border-black/10 bg-[#FAFCFD]"
+      >
         <div className="max-w-[1400px] mx-auto">
 
-          <div className="mb-16 magazine-reveal">
-            <MiniTitleWithBar content="06 · NOTRE RAISON D'ÊTRE" />
-            <SectionHeading
-              align="left"
-              title="Une mission claire :"
-              highlight="servir ceux qui font avancer la ville"
-              subtitle="Ce qui nous anime chaque matin"
-              titleColor="text-dark"
-              highlightColor="var(--color-cyan-2, #0086C8)"
-              scriptColor="text-cyan-2"
-              titleSize="text-3xl md:text-5xl lg:text-6xl"
-              className="mt-4"
-            />
-          </div>
+          {/* Layout 2 colonnes : titre + texte à gauche / image à droite */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
 
-          {/* Grille 3 Piliers de la Mission (Style Carte Magazine) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 border border-black/10 divide-y md:divide-y-0 md:divide-x divide-black/10 bg-white">
+            {/* Colonne Gauche : Titre + Texte constat DEM */}
+            <div className="lg:col-span-6 space-y-6">
+              <MiniTitleWithBar content="01 · LE CONSTAT" color="cyan-2" />
 
-            {/* Mission 1 */}
-            <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors group">
-              <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] mb-6 block">
-                  /01 · Pour les Marchands
-                </span>
-                <h3 className="text-2xl font-bold uppercase text-[#021520] mb-4 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
-                  Accélérer vos ventes sans friction
-                </h3>
-                <p className="text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-                  Permettre à chaque entrepreneur de livrer ses clients en <strong>moins de 20 à 45 minutes</strong>, avec un reversement des fonds sous 24h et une image de marque irréprochable.
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#021520] leading-[1.05]">
+                LE CONSTAT D'UN SYSTÈME DE MOBILITÉ URBAINE <br className="hidden sm:inline" />
+                <span className="text-[#0086C8]">NON STRUCTURÉ</span>
+              </h1>
+
+              <div className="space-y-4 text-base sm:text-lg text-slate-700 font-['Poppins',sans-serif] leading-relaxed pt-2">
+                <p>
+                  Dakar figure parmi les métropoles les plus bouillonnantes d'Afrique de l'Ouest. Ses commerçants créent, ses boutiques vendent sur les réseaux sociaux et sa population consomme à toute allure. Pourtant, un blocage structurel persistait : <strong>l'absence totale d'organisation de la mobilité du dernier kilomètre</strong>.
                 </p>
-              </div>
-              <div className="pt-8 border-t border-slate-100 mt-8 text-xs font-bold uppercase tracking-wider text-[#0086C8]">
-                Livraison Same-Day & Créneaux garantis
+                <p>
+                  Pour les commerçants, chaque envoi était une loterie. Absence d'adressage standardisé, retards chroniques de plusieurs heures, coursiers informels introuvables au téléphone et litiges récurrents sur les encaissements en espèces : le commerce dakarois subissait une perte massive de confiance et de chiffre d'affaires.
+                </p>
+                <p>
+                  Il ne manquait pas de motos à Dakar : il manquait un cadre technologique rigoureux, une infrastructure de paiement sécurisée et une considération humaine pour relier ces maillons essentiels de la ville.
+                </p>
               </div>
             </div>
 
-            {/* Mission 2 */}
-            <div className="p-8 lg:p-12 flex flex-col justify-between bg-[#021520] text-white">
-              <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-[#00D2FF] mb-6 block">
-                  /02 · Pour les Coursiers
-                </span>
-                <h3 className="text-2xl font-bold uppercase text-white mb-4 font-['DM_Sans',sans-serif]">
-                  Dignité, sécurité & revenus justes
-                </h3>
-                <p className="text-sm text-white/80 leading-relaxed font-['Poppins',sans-serif]">
-                  Valoriser le métier de coursier avec des équipements de protection, une couverture d'assistance et des paiements hebdomadaires garantis sans aucun frais caché.
-                </p>
-              </div>
-              <div className="pt-8 border-t border-white/10 mt-8 text-xs font-bold uppercase tracking-wider text-[#00D2FF]">
-                100% des gains reversés chaque semaine
-              </div>
-            </div>
+            {/* Colonne Droite : Image illustrant le constat avec parallaxe étagée */}
+            <div className="lg:col-span-6 relative mt-8 lg:mt-0 pb-16 sm:pb-24">
+              <div className="relative w-full">
 
-            {/* Mission 3 */}
-            <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors group">
-              <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] mb-6 block">
-                  /03 · Pour les Clients
-                </span>
-                <h3 className="text-2xl font-bold uppercase text-[#021520] mb-4 font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
-                  Une confiance totale à chaque colis
-                </h3>
-                <p className="text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-                  Offrir au consommateur final le suivi GPS en direct de sa commande, la validation sécurisée par code OTP et un accueil chaleureux et professionnel.
-                </p>
-              </div>
-              <div className="pt-8 border-t border-slate-100 mt-8 text-xs font-bold uppercase tracking-wider text-[#0086C8]">
-                Suivi transparent 7j/7
-              </div>
-            </div>
+                {/* Image Principale avec rideau */}
+                <div
+                  className="parallax-item relative z-10 w-full aspect-[4/5] bg-slate-200 border border-black/10 shadow-2xl overflow-hidden h-curtain-wrapper"
+                  data-speed="0.1"
+                  data-direction="up"
+                  data-curtain-origin="right"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=1000&auto=format&fit=crop&q=85"
+                    alt="Circulation et logistique Dakar"
+                    className="h-curtain-img w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-700 will-change-transform"
+                  />
+                  <div className="h-curtain-panel absolute inset-0 z-20 pointer-events-none bg-[#0086C8]" />
+                  <div className="absolute top-4 left-4 z-30 bg-[#021520]/90 backdrop-blur-md px-3 py-1 text-[10px] font-mono uppercase tracking-widest text-white border border-white/20">
+                    FIG. 01 — RÉALITÉ URBAINE
+                  </div>
+                </div>
 
-          </div>
-
-        </div>
-      </section>
-
-
-      {/* ── 8. PARTIE 07 : NOS VALEURS (LE MANIFESTE EN 4 PRINCIPES) ── */}
-      <section className="py-24 lg:py-36 px-6 lg:px-16 border-b border-black/10 bg-white" id="valeurs">
-        <div className="max-w-[1400px] mx-auto">
-
-          <div className="mb-16 magazine-reveal">
-            <MiniTitleWithBar content="07 · NOTRE ADN" />
-            <SectionHeading
-              align="left"
-              title="Quatre valeurs non négociables"
-              highlight="qui guident nos choix"
-              subtitle="L'éthique opérationnelle DEM"
-              titleColor="text-dark"
-              highlightColor="var(--color-cyan-2, #0086C8)"
-              scriptColor="text-cyan-2"
-              titleSize="text-3xl md:text-5xl lg:text-6xl"
-              className="mt-4"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-black/10 divide-y md:divide-y-0 md:divide-x divide-black/10 bg-white">
-            {[
-              {
-                num: "01",
-                name: "Excellence & Ponctualité",
-                desc: "Chaque minute compte. Nous mesurons nos trajets au décimètre et respectons nos promesses horaires avec une discipline d'horloger.",
-                tag: "Précision"
-              },
-              {
-                num: "02",
-                name: "Transparence & Intégrité",
-                desc: "Traçabilité GPS en temps réel, zéro frais dissimulés et reversement rigoureux du Cash on Delivery sous 24 heures chrono.",
-                tag: "Confiance"
-              },
-              {
-                num: "03",
-                name: "Impact Humain & Dignité",
-                desc: "Derrière chaque guidon, un travailleur digne. Nous investissons dans la sécurité, la formation continue et l'écoute de nos coursiers.",
-                tag: "Respect"
-              },
-              {
-                num: "04",
-                name: "Innovation Continue",
-                desc: "Nous développons nos propres outils technologiques adaptés aux réalités du terrain sénégalais et aux usages locaux.",
-                tag: "Technologie"
-              }
-            ].map((val, idx) => (
-              <div key={idx} className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors">
-                <div>
-                  <div className="flex justify-between items-center mb-6">
-                    <span className="font-serif italic text-2xl font-light text-[#0086C8]">
-                      /{val.num}
+                {/* Image Secondaire Superposée en Parallaxe */}
+                <div
+                  className="parallax-item absolute -bottom-12 right-0 sm:-right-6 w-2/3 aspect-[3/4] bg-[#021520] border-4 border-white shadow-2xl z-20 overflow-hidden"
+                  data-speed="0.25"
+                  data-direction="up"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&auto=format&fit=crop&q=85"
+                    alt="Le défi de la mobilité sur le terrain"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/90 to-transparent text-white z-30">
+                    <span className="font-serif italic text-xs block mb-0.5 text-[#00D2FF]">
+                      Terrain & Réalité
                     </span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
-                      {val.tag}
+                    <span className="text-xs font-bold uppercase tracking-wider block">
+                      Le défi de la synchronisation
                     </span>
                   </div>
+                </div>
 
-                  <h3 className="text-xl font-bold uppercase text-[#021520] mb-3 font-['DM_Sans',sans-serif]">
-                    {val.name}
-                  </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-                    {val.desc}
+                {/* Badge Flottant en Parallaxe */}
+                <div
+                  className="parallax-item absolute top-1/4 -left-2 sm:-left-8 bg-[#00D2FF] text-[#021520] p-4 sm:p-6 shadow-xl z-30 max-w-[220px] border border-black/10"
+                  data-speed="0.18"
+                  data-direction="down"
+                >
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest block mb-1">
+                    ÉTAT DES LIEUX
+                  </span>
+                  <p className="text-xs font-black uppercase leading-tight m-0 font-['DM_Sans',sans-serif]">
+                    Passer de l'anarchie urbaine à la synchronisation en temps réel.
                   </p>
                 </div>
 
-                <div className="pt-6 border-t border-slate-100 mt-6 text-xs font-bold text-[#021520] uppercase tracking-wider">
-                  Valeur fondamentale
+              </div>
+            </div>
+
+          </div>
+
+          {/* En bas du bloc : 3 à 4 témoignages ressortis de l'étude de marché */}
+          <div className="mt-2 pt-8 border-t border-black/10">
+            <div className="mb-5">
+              <span className="text-xs uppercase tracking-widest font-bold text-[#0086C8] block mb-2">
+                Enquête de Terrain · Dakar
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-black uppercase text-[#021520] tracking-tight">
+                Témoignages ressortis de l'étude de marché
+              </h3>
+            </div>
+
+            {/* Grille des 4 témoignages (zéro arrondi, bordures nettes style magazine) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-black/10 divide-y md:divide-y-0 md:divide-x divide-black/10 bg-white">
+
+              {/* Témoignage 1 */}
+              <div className="p-8 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+                <div>
+                  <div className="text-xs font-mono uppercase tracking-widest text-[#0086C8] mb-4">
+                    /01 · E-Commerce
+                  </div>
+                  <blockquote className="font-serif italic text-base sm:text-lg text-slate-800 leading-snug mb-6">
+                    « Avant DEM, chaque livraison était une angoisse. Les coursiers ne répondaient plus, arrivaient avec 4 heures de retard, et les clientes finissaient par annuler la commande. »
+                  </blockquote>
+                </div>
+                <div className="pt-4 border-t border-slate-200">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Aïssatou N.</div>
+                  <div className="text-[11px] text-slate-500 font-['Poppins',sans-serif]">Boutique Mode & Cosmétiques, Almadies</div>
                 </div>
               </div>
+
+              {/* Témoignage 2 */}
+              <div className="p-8 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+                <div>
+                  <div className="text-xs font-mono uppercase tracking-widest text-[#0086C8] mb-4">
+                    /02 · Restauration
+                  </div>
+                  <blockquote className="font-serif italic text-base sm:text-lg text-slate-800 leading-snug mb-6">
+                    « Livrer des repas chauds à Dakar tenait du miracle. Sans caisson étanche ni localisation précise, la nourriture arrivait froide et le client refusait d'encaisser. »
+                  </blockquote>
+                </div>
+                <div className="pt-4 border-t border-slate-200">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Mamadou D.</div>
+                  <div className="text-[11px] text-slate-500 font-['Poppins',sans-serif]">Gérant d'enseigne, Plateau</div>
+                </div>
+              </div>
+
+              {/* Témoignage 3 */}
+              <div className="p-8 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+                <div>
+                  <div className="text-xs font-mono uppercase tracking-widest text-[#0086C8] mb-4">
+                    /03 · Consommateur
+                  </div>
+                  <blockquote className="font-serif italic text-base sm:text-lg text-slate-800 leading-snug mb-6">
+                    « Le livreur qui m'appelle 5 fois pour demander "vous êtes vers où ?", qui n'a pas la monnaie sur 10 000 FCFA et qui se pointe quand je suis déjà repartie... C'était invivable. »
+                  </blockquote>
+                </div>
+                <div className="pt-4 border-t border-slate-200">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Yacine S.</div>
+                  <div className="text-[11px] text-slate-500 font-['Poppins',sans-serif]">Acheteuse active, Mermoz</div>
+                </div>
+              </div>
+
+              {/* Témoignage 4 */}
+              <div className="p-8 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+                <div>
+                  <div className="text-xs font-mono uppercase tracking-widest text-[#0086C8] mb-4">
+                    /04 · Coursier
+                  </div>
+                  <blockquote className="font-serif italic text-base sm:text-lg text-slate-800 leading-snug mb-6">
+                    « On roulait 12 heures par jour sans contrat, sans équipement de pluie ni casque sécurisé, à négocier chaque course sans garantie d'être payé en fin de semaine. »
+                  </blockquote>
+                </div>
+                <div className="pt-4 border-t border-slate-200">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Ibrahima T.</div>
+                  <div className="text-[11px] text-slate-500 font-['Poppins',sans-serif]">Coursier Moto (ex-informel)</div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Ligne de statistiques du Bloc 1 */}
+            <div className="mt-8 border border-black/10 bg-[#021520] text-white">
+              <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
+
+                <div className="p-8 lg:p-10 flex flex-col justify-center text-left">
+                  <span className="font-['DM_Sans',sans-serif] text-4xl sm:text-6xl font-black text-[#00D2FF] block mb-2 tracking-tight">
+                    +4h
+                  </span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-white/80 block">
+                    Délai moyen antérieur sans DEM
+                  </span>
+                </div>
+
+                <div className="p-8 lg:p-10 flex flex-col justify-center text-left">
+                  <span className="font-['DM_Sans',sans-serif] text-4xl sm:text-6xl font-black text-white block mb-2 tracking-tight">
+                    &lt; 25%
+                  </span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-white/80 block">
+                    Taux de satisfaction inférieur à 25%
+                  </span>
+                </div>
+
+                <div className="p-8 lg:p-10 flex flex-col justify-center text-left">
+                  <span className="font-['DM_Sans',sans-serif] text-4xl sm:text-6xl font-black text-[#0086C8] block mb-2 tracking-tight">
+                    35%
+                  </span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-white/80 block">
+                    Taux moyen d'échec ou d'annulation
+                  </span>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          BLOC 2 — NOTRE VISION, NOTRE AMBITION, NOS ACTIONS
+      ══════════════════════════════════════════════════════════════════════ */}
+      <section
+        id="vision-ambition-actions"
+        data-header-theme="white"
+        className="w-full py-24 lg:py-36 px-6 lg:px-16 bg-white border-b border-black/10"
+      >
+        <div className="max-w-[1400px] mx-auto">
+
+          {/* Petit texte de récap */}
+          <div className="max-w-3xl mb-16">
+            <MiniTitleWithBar content="02 · NOTRE CAP STRATÉGIQUE" color="cyan-2" />
+
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#021520] tracking-tight leading-[1.08] mt-4 mb-6">
+              Notre Vision, notre ambition, nos actions
+            </h2>
+
+            <p className="text-base sm:text-lg text-slate-700 font-['Poppins',sans-serif] leading-relaxed">
+              Face à la faillite d'un modèle artisanal et fragmenté, DEM a été créé avec une mission claire : transformer la mobilité urbaine dakaroise en une infrastructure technologique fiable, prédictible et humaine. Notre cap s'articule autour de trois piliers fondamentaux.
+            </p>
+          </div>
+
+          {/* 3 points : Vision / Ambition / Actions */}
+          <div className="grid grid-cols-1 md:grid-cols-3 border border-black/10 divide-y md:divide-y-0 md:divide-x divide-black/10 bg-white">
+
+            {/* 1 pour la Vision */}
+            <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+              <div>
+                <span className="font-serif italic text-2xl font-light text-[#0086C8] mb-6 block">
+                  /01 · Notre Vision
+                </span>
+                <p className="text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
+                  Bâtir le système d'exploitation de la mobilité commerciale en Afrique de l'Ouest. Un écosystème où chaque commerçant, de la créatrice indépendante au grand compte de distribution, dispose instantanément de la puissance logistique des leaders mondiaux.
+                </p>
+              </div>
+            </div>
+
+            {/* 1 pour l'Ambition */}
+            <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+              <div>
+                <span className="font-serif italic text-2xl font-light text-[#0086C8] mb-6 block">
+                  /02 · Notre Ambition
+                </span>
+                <p className="text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
+                  Devenir le réflexe incontournable de la livraison Same-Day à Dakar et dans la sous-région, avec un standard de 99,4% de réussite, des délais garantis de 20 à 45 minutes et une digitalisation absolue de tous les flux financiers.
+                </p>
+              </div>
+            </div>
+
+            {/* 1 pour les Actions */}
+            <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+              <div>
+                <span className="font-serif italic text-2xl font-light text-[#0086C8] mb-6 block">
+                  /03 · Nos Actions
+                </span>
+                <p className="text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
+                  Développer des algorithmes contextuels adaptés à la réalité dakaroise, équiper et valoriser nos motocyclistes, garantir des reversements Cash on Delivery sous 24h via Wave et Orange Money, et connecter les marchands par API directe.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          BLOC 3 — LA SOLUTION DEM (ALTERNANCE GAUCHE / DROITE STRICTE)
+      ══════════════════════════════════════════════════════════════════════ */}
+      <section
+        id="solution-dem"
+        data-header-theme="white"
+        className="w-full py-24 lg:py-36 px-6 lg:px-16 bg-[#FAFCFD] border-b border-black/10"
+      >
+        <div className="max-w-[1400px] mx-auto">
+
+          {/* Grand titre affiché : LA SOLUTION DEM */}
+          <div className="max-w-3xl mb-24 lg:mb-32">
+            <MiniTitleWithBar content="03 · NOTRE RÉPONSE TECHNOLOGIQUE & OPÉRATIONNELLE" color="cyan-2" />
+            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black uppercase text-[#021520] tracking-tight leading-none mt-4">
+              LA SOLUTION <span className="text-[#0086C8]">DEM</span>
+            </h2>
+          </div>
+
+          {/* 3 à 4 points max, chacun avec illustration, en alternance gauche/droite */}
+          <div className="space-y-16 lg:space-y-24">
+            {SOLUTION_POINTS.map((point, index) => (
+              <SolutionPoint
+                key={point.number}
+                number={point.number}
+                category={point.category}
+                title={point.title}
+                description={point.description}
+                image={point.image}
+                imageAlt={point.imageAlt}
+                isReversed={index % 2 !== 0}
+              />
             ))}
           </div>
 
@@ -457,62 +437,104 @@ export default function NotreHistoire() {
       </section>
 
 
-      {/* ── 6. MANIFESTE ÉDITORIAL & CHIFFRES CLÉS ── */}
-      <section className="py-24 lg:py-36 px-6 lg:px-16 bg-[#021520] text-white border-b border-white/10 relative overflow-hidden">
-        <div className="max-w-[1200px] mx-auto text-center magazine-reveal relative z-10">
+      {/* ══════════════════════════════════════════════════════════════════════
+          BLOC 4 — LE POTENTIEL DE LA MOBILITÉ URBAINE À DAKAR
+      ══════════════════════════════════════════════════════════════════════ */}
+      <section
+        id="potentiel-dakar"
+        data-header-theme="black"
+        className="w-full py-24 lg:py-36 px-6 lg:px-16 bg-[#021520] text-white border-b border-white/10 relative overflow-hidden"
+      >
 
-          <span className="font-serif italic text-2xl sm:text-3xl text-[#00D2FF] block mb-4">
-            Le Manifeste DEM
-          </span>
+        <div className="max-w-[1400px] mx-auto relative z-10">
 
-          <blockquote className="text-2xl sm:text-4xl lg:text-5xl font-serif italic text-white leading-tight mb-12">
-            « Nous ne faisons pas que transporter des colis d'un point A à un point B. <br className="hidden sm:inline" />
-            <span className="text-[#00D2FF] font-sans font-black uppercase not-italic block my-3 text-xl sm:text-3xl lg:text-4xl">
-              Nous synchronisons le commerce et la vie d'une métropole.
-            </span>
-            Avec vitesse, rigueur et respect. »
+          <div className="max-w-3xl mb-16">
+            <MiniTitleWithBar content="04 · PERSPECTIVES & DÉVELOPPEMENT" color="cyan-glow" />
+
+            <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight text-white leading-[1.05] mt-4 mb-6">
+              Le potentiel de la mobilité <br className="hidden sm:inline" />
+              <span className="text-[#00D2FF]">urbaine à Dakar</span>
+            </h2>
+
+            <p className="text-base sm:text-lg text-white/80 font-['Poppins',sans-serif] leading-relaxed">
+              Dakar concentre près de 25% de la population nationale et 80% des activités économiques du Sénégal sur une presqu'île exiguë de 550 km². Cette configuration géographique unique fait de la mobilité urbaine le défi central et le principal levier de compétitivité de la métropole.
+            </p>
+          </div>
+
+          {/* Grille des 3 dimensions du potentiel à Dakar (bordures nettes, sans arrondi) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 border border-white/10 divide-y md:divide-y-0 md:divide-x divide-white/10 bg-white/[0.02]">
+
+            <div className="p-8 lg:p-12 flex flex-col justify-between">
+              <div>
+                <span className="font-serif italic text-xl text-[#00D2FF] block mb-4">
+                  01 · Saturation & Géographie
+                </span>
+                <h3 className="text-xl font-bold uppercase text-white mb-4">
+                  La Presqu'île en entonnoir
+                </h3>
+                <p className="text-sm text-white/70 font-['Poppins',sans-serif] leading-relaxed mb-6">
+                  Avec des axes routiers majeurs régulièrement saturés, le transport deux-roues structuré et synchronisé est la seule solution capable de garantir des flux rapides et constants entre le Plateau, les Almadies, la banlieue et Diamniadio.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-8 lg:p-12 flex flex-col justify-between">
+              <div>
+                <span className="font-serif italic text-xl text-[#00D2FF] block mb-4">
+                  02 · Commerce Numérique
+                </span>
+                <h3 className="text-xl font-bold uppercase text-white mb-4">
+                  L'explosion du Social Commerce
+                </h3>
+                <p className="text-sm text-white/70 font-['Poppins',sans-serif] leading-relaxed mb-6">
+                  Des milliers de commerces indépendants réalisent l'essentiel de leurs ventes via WhatsApp, Instagram et TikTok. Ce commerce informel dynamique exige une logistique instantanée pour transformer les intentions d'achat en ventes livrées.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-8 lg:p-12 flex flex-col justify-between">
+              <div>
+                <span className="font-serif italic text-xl text-[#00D2FF] block mb-4">
+                  03 · Fintech & Inclusion
+                </span>
+                <h3 className="text-xl font-bold uppercase text-white mb-4">
+                  L'interconnexion Mobile Money
+                </h3>
+                <p className="text-sm text-white/70 font-['Poppins',sans-serif] leading-relaxed mb-6">
+                  La généralisation des paiements mobiles (Wave, Orange Money) permet pour la première fois de synchroniser le déplacement physique du colis et le transfert instantané de valeur, éliminant les frictions d'espèces.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          BLOC 5 — CLÔTURE (UNE PHRASE MARKETING EN GUISE D'ACCROCHE FINALE)
+      ══════════════════════════════════════════════════════════════════════ */}
+      <section
+        id="cloture"
+        data-header-theme="black"
+        className="w-full py-28 lg:py-44 px-6 lg:px-16 bg-[#010D14] text-white border-t border-white/10 relative overflow-hidden"
+      >
+        <div className="max-w-[1200px] mx-auto text-center relative z-10">
+
+          <blockquote className="text-3xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight leading-[1.05] text-white max-w-5xl mx-auto">
+            « Nous ne déplaçons pas seulement des colis : <br className="hidden sm:inline" />
+            <span className="text-[#00D2FF]">
+              nous synchronisons
+            </span>{' '}
+            le pouls économique <br className="hidden sm:inline" />
+            et humain de <span className="text-transparent" style={{ WebkitTextStroke: '1.5px #FFFFFF' }}>Dakar.</span> »
           </blockquote>
 
-          <div className="w-16 h-[2px] bg-[#00D2FF] mx-auto mb-16" />
-
-          {/* Bandeau de chiffres */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-white/10">
-            {[
-              { num: "~20 min", label: "Délai moyen par course à Dakar" },
-              { num: "24h", label: "Reversement COD garanti Wave / OM" },
-              { num: "100%", label: "Traçabilité GPS & Code OTP" },
-              { num: "500+", label: "Courses opérées chaque jour" }
-            ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <span className="font-['DM_Sans',sans-serif] text-3xl sm:text-5xl font-black text-[#00D2FF] block mb-2">
-                  {stat.num}
-                </span>
-                <span className="text-xs uppercase tracking-widest text-white/60 font-semibold block">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </div>
+          <div className="w-16 h-[2px] bg-[#00D2FF] mx-auto mt-12" />
 
         </div>
       </section>
-
-
-      {/* ── 7. CTA CONTACT & REJOINDRE L'AVENTURE ── */}
-      <ContactCTA
-        theme="cyan-deep"
-        watermark="HISTOIRE"
-        subtitle="Écrivons la suite ensemble"
-        title="Rejoignez la nouvelle ère de"
-        highlight="la logistique sénégalaise."
-        description="Que vous soyez un marchand souhaitant accélérer ses livraisons, un coursier cherchant des revenus dignes ou un investisseur de flotte, DEM est votre partenaire de référence."
-        primaryBtnText="Découvrir nos solutions Pro"
-        primaryBtnLink="/dem-pro"
-        primaryBtnIcon="arrow"
-        secondaryBtnText="Devenir Coursier"
-        secondaryBtnLink="/coursiers"
-        secondaryBtnIcon="external"
-      />
 
     </div>
   );

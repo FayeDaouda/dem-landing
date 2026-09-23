@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
 const C = {
-  cyan:  '#00D2FF',
+  cyan: '#00D2FF',
   cyan2: '#0086C8',
-  teal:  '#00897B',
-  dark:  '#021520',
-  card:  'rgba(255,255,255,0.08)',
+  teal: '#00897B',
+  dark: '#021520',
+  card: 'rgba(255,255,255,0.08)',
   cardB: 'rgba(255,255,255,0.13)',
-  text:  '#FFFFFF',
+  text: '#FFFFFF',
   muted: 'rgba(255,255,255,0.65)',
-  grad:  'linear-gradient(160deg, #00D2FF 0%, #0086C8 55%, #005A8C 100%)',
+  grad: 'linear-gradient(160deg, #00D2FF 0%, #0086C8 55%, #005A8C 100%)',
   gradDark: 'linear-gradient(160deg, #004D66 0%, #002D45 55%, #001830 100%)',
 }
 
@@ -258,7 +258,7 @@ export default function App() {
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 15, marginBottom: 40 }}>Que vous soyez client ou coursier, DEM est fait pour vous.</p>
 
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 40, flexWrap: 'wrap' }}>
-            {[['client','Je suis client'],['driver','Je suis coursier'],['chef','Je suis chef de flotte']].map(([v,l]) => (
+            {[['client', 'Je suis client'], ['driver', 'Je suis coursier'], ['chef', 'Je suis chef de flotte']].map(([v, l]) => (
               <button key={v} onClick={() => setActiveTab(v)} style={{
                 padding: '10px 24px', borderRadius: 100, fontWeight: 600, fontSize: 14, cursor: 'pointer',
                 border: activeTab === v ? '1px solid transparent' : '1px solid rgba(255,255,255,0.25)',
@@ -321,10 +321,10 @@ export default function App() {
               }}
             >
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                <path d="M3.18 1.07C2.76 1.3 2.5 1.75 2.5 2.3v19.4c0 .55.26 1 .68 1.23l.1.06 10.87-10.87v-.25L3.28 1.01l-.1.06z" fill="#4285F4"/>
-                <path d="M17.77 15.73l-3.62-3.62v-.25l3.62-3.62.08.05 4.29 2.44c1.23.7 1.23 1.83 0 2.53l-4.29 2.44-.08.03z" fill="#FBBC05"/>
-                <path d="M17.85 15.7L14.15 12 3.18 22.97c.4.43 1.07.48 1.82.05l12.85-7.32" fill="#EA4335"/>
-                <path d="M17.85 8.3L5 .98C4.25.55 3.58.6 3.18 1.03L14.15 12l3.7-3.7z" fill="#34A853"/>
+                <path d="M3.18 1.07C2.76 1.3 2.5 1.75 2.5 2.3v19.4c0 .55.26 1 .68 1.23l.1.06 10.87-10.87v-.25L3.28 1.01l-.1.06z" fill="#4285F4" />
+                <path d="M17.77 15.73l-3.62-3.62v-.25l3.62-3.62.08.05 4.29 2.44c1.23.7 1.23 1.83 0 2.53l-4.29 2.44-.08.03z" fill="#FBBC05" />
+                <path d="M17.85 15.7L14.15 12 3.18 22.97c.4.43 1.07.48 1.82.05l12.85-7.32" fill="#EA4335" />
+                <path d="M17.85 8.3L5 .98C4.25.55 3.58.6 3.18 1.03L14.15 12l3.7-3.7z" fill="#34A853" />
               </svg>
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: 10, color: C.cyan, fontWeight: 700, letterSpacing: 0.5 }}>DISPONIBLE SUR</div>
@@ -345,7 +345,7 @@ export default function App() {
               }}
             >
               <svg width="26" height="26" viewBox="0 0 24 24" fill="white" style={{ flexShrink: 0 }}>
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
               </svg>
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: 10, color: C.cyan, fontWeight: 700, letterSpacing: 0.5 }}>DISPONIBLE SUR</div>

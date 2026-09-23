@@ -4,18 +4,18 @@ import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../components/atoms/SectionHeading.jsx';
 import DownloadAppCTA from '../components/sections/DownloadAppCTA.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
-import { 
-  ShieldCheck, 
-  TrendingUp, 
-  Coins, 
-  Clock, 
-  Layers, 
-  Percent, 
-  ArrowRight, 
-  Check, 
-  Sliders, 
-  FileText, 
-  CheckCircle2, 
+import {
+  ShieldCheck,
+  TrendingUp,
+  Coins,
+  Clock,
+  Layers,
+  Percent,
+  ArrowRight,
+  Check,
+  Sliders,
+  FileText,
+  CheckCircle2,
   HelpCircle,
   Zap,
   Lock,
@@ -67,10 +67,10 @@ export default function ChefDeFlotte() {
   // Scénario Prudent : 3 courses/jour à 2 000 FCFA sur 20 jours (soit 6 000 FCFA/jour/coursier)
   const activeDays = currentOffer.days;
   const caPerDayPerCourier = activeScenario === 'reference' ? 14500 : 6000;
-  
+
   // Si scénario prudent, calcul sur 20 jours effectifs même en forfait mensuel
   const effectiveWorkingDays = activeScenario === 'prudent' ? Math.min(activeDays, 20) : activeDays;
-  
+
   const totalFleetCA = motosCount * caPerDayPerCourier * effectiveWorkingDays;
   const totalPassCost = motosCount * currentOffer.totalPerCourier;
   const netRemainingForChef = totalFleetCA - totalPassCost;
@@ -107,7 +107,7 @@ export default function ChefDeFlotte() {
 
   return (
     <div className="w-full bg-white text-dark min-h-screen font-['DM_Sans',sans-serif] selection:bg-cyan selection:text-dark">
-      
+
       {/* ── 1. HERO SECTION AWWWARDS ── */}
       <PageHeroSection
         contentMiniBar="PROGRAMME PARTENAIRES · CHEF DE FLOTTE EXTERNE"
@@ -144,7 +144,7 @@ export default function ChefDeFlotte() {
       {/* ── 3. LE MODÈLE EN UN COUP D'ŒIL & LES 3 OFFRES DE PASS ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white" id="offres">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="mb-16">
             <MiniTitleWithBar content="TARIFICATION & OFFRES DE PASS" />
             <SectionHeading
@@ -165,7 +165,7 @@ export default function ChefDeFlotte() {
 
           {/* Grille des 3 Cartes Offres Awwwards Sharp */}
           <div className="grid grid-cols-1 lg:grid-cols-3 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-12">
-            
+
             {/* Offre 1 : Forfait 5 jours */}
             <div className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors">
               <div>
@@ -177,7 +177,7 @@ export default function ChefDeFlotte() {
                     5 jours
                   </span>
                 </div>
-                
+
                 <h3 className="text-2xl font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
                   Forfait 5 jours
                 </h3>
@@ -243,7 +243,7 @@ export default function ChefDeFlotte() {
                     20 jours
                   </span>
                 </div>
-                
+
                 <h3 className="text-2xl font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
                   Forfait 20 jours
                 </h3>
@@ -313,7 +313,7 @@ export default function ChefDeFlotte() {
                     30 jours
                   </span>
                 </div>
-                
+
                 <h3 className="text-2xl font-bold uppercase text-white mb-2 font-['DM_Sans',sans-serif]">
                   Forfait 1 mois (30 j)
                 </h3>
@@ -410,7 +410,7 @@ export default function ChefDeFlotte() {
       {/* ── 4. POSITIONNEMENT FACE AU MARCHÉ (BENCHMARK COMMISSION 19%) ── */}
       <section className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-slate-50">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-5">
               <MiniTitleWithBar content="AVANTAGE COMPÉTITIF ÉCRASANT" />
@@ -510,7 +510,7 @@ export default function ChefDeFlotte() {
       {/* ── 5. SIMULATEUR DYNAMIQUE DE RENTABILITÉ FLOTTE (OFFICIEL DOSSIER) ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white" id="simulateur">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="mb-16">
             <MiniTitleWithBar content="SIMULATEUR DE RENTABILITÉ FLOTTE" />
             <SectionHeading
@@ -530,11 +530,11 @@ export default function ChefDeFlotte() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 bg-white shadow-sm">
-            
+
             {/* Colonne Gauche : Commandes & Paramètres */}
             <div className="lg:col-span-6 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-black/10 flex flex-col justify-between">
               <div>
-                
+
                 {/* Sélecteur 1 : Nombre de motos (3 à 10) */}
                 <div className="mb-8">
                   <div className="flex justify-between items-end mb-4">
@@ -572,11 +572,10 @@ export default function ChefDeFlotte() {
                         key={count}
                         type="button"
                         onClick={() => setMotosCount(count)}
-                        className={`text-xs font-mono font-bold px-3 py-1.5 transition-colors cursor-pointer border ${
-                          motosCount === count
+                        className={`text-xs font-mono font-bold px-3 py-1.5 transition-colors cursor-pointer border ${motosCount === count
                             ? 'bg-[#0086C8] text-white border-[#0086C8]'
                             : 'bg-slate-50 text-slate-700 border-black/10 hover:border-[#0086C8]'
-                        }`}
+                          }`}
                       >
                         {count}
                       </button>
@@ -602,11 +601,10 @@ export default function ChefDeFlotte() {
                         key={plan.key}
                         type="button"
                         onClick={() => setSelectedOffer(plan.key)}
-                        className={`p-3 text-left border transition-all cursor-pointer ${
-                          selectedOffer === plan.key
+                        className={`p-3 text-left border transition-all cursor-pointer ${selectedOffer === plan.key
                             ? 'bg-dark text-white border-dark'
                             : 'bg-white text-dark border-black/10 hover:bg-slate-50'
-                        }`}
+                          }`}
                       >
                         <span className="text-xs font-bold uppercase block">{plan.label}</span>
                         <span className={`text-sm font-bold font-mono block ${selectedOffer === plan.key ? 'text-cyan' : 'text-[#0086C8]'}`}>
@@ -627,11 +625,10 @@ export default function ChefDeFlotte() {
                     <button
                       type="button"
                       onClick={() => setActiveScenario('reference')}
-                      className={`p-3 text-left border transition-all cursor-pointer ${
-                        activeScenario === 'reference'
+                      className={`p-3 text-left border transition-all cursor-pointer ${activeScenario === 'reference'
                           ? 'border-emerald-600 bg-emerald-50/70 text-emerald-950'
                           : 'border-black/10 bg-white text-slate-700 hover:bg-slate-50'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-xs font-bold uppercase">Scénario Référence</span>
@@ -643,11 +640,10 @@ export default function ChefDeFlotte() {
                     <button
                       type="button"
                       onClick={() => setActiveScenario('prudent')}
-                      className={`p-3 text-left border transition-all cursor-pointer ${
-                        activeScenario === 'prudent'
+                      className={`p-3 text-left border transition-all cursor-pointer ${activeScenario === 'prudent'
                           ? 'border-amber-600 bg-amber-50/70 text-amber-950'
                           : 'border-black/10 bg-white text-slate-700 hover:bg-slate-50'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-xs font-bold uppercase">Scénario Prudent</span>
@@ -671,7 +667,7 @@ export default function ChefDeFlotte() {
             {/* Colonne Droite : Bilan Financier & Restant Chef (HUD Sombre) */}
             <div className="lg:col-span-6 p-8 lg:p-12 bg-dark text-white flex flex-col justify-between">
               <div>
-                
+
                 <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
                   <span className="font-serif italic text-lg text-cyan">
                     Bilan d'exploitation flotte
@@ -683,7 +679,7 @@ export default function ChefDeFlotte() {
 
                 {/* 3 Blocs de Décomposition du Dossier */}
                 <div className="space-y-4">
-                  
+
                   {/* CA Brut de la Flotte */}
                   <div className="p-4 bg-white/[0.04] border border-white/10 flex justify-between items-center">
                     <div>
@@ -785,7 +781,7 @@ export default function ChefDeFlotte() {
       {/* ── 6. PROJECTION OFFICIELLE PAR TAILLE DE FLOTTE (TABLEAU DOSSIER PAGE 5) ── */}
       <section className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-white">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="mb-14">
             <MiniTitleWithBar content="PROJECTION COMPLÈTE 3 À 10 COURSIERS" />
             <SectionHeading
@@ -817,11 +813,10 @@ export default function ChefDeFlotte() {
               </thead>
               <tbody className="divide-y divide-black/10 text-xs sm:text-sm font-mono">
                 {PROJECTION_TABLE.map((row) => (
-                  <tr 
+                  <tr
                     key={row.count}
-                    className={`hover:bg-slate-50 transition-colors ${
-                      motosCount === row.count ? 'bg-cyan/10 font-bold' : ''
-                    }`}
+                    className={`hover:bg-slate-50 transition-colors ${motosCount === row.count ? 'bg-cyan/10 font-bold' : ''
+                      }`}
                   >
                     <td className="p-4 lg:p-5 font-sans font-bold text-dark flex items-center gap-2">
                       <span>{row.count} motos</span>
@@ -855,7 +850,7 @@ export default function ChefDeFlotte() {
       {/* ── 7. RÈGLES D'EXPLOITATION & GARDE-FOUS (DOSSIER PAGES 8 & 9) ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-slate-50">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="mb-16">
             <MiniTitleWithBar content="CADRE CONTRACTUEL & RÈGLES D'EXPLOITATION" />
             <SectionHeading
@@ -952,7 +947,7 @@ export default function ChefDeFlotte() {
       {/* ── 8. COCKPIT LOGICIEL & TECHNOLOGIE FLOTTE (CE QUE DEM MET À DISPOSITION) ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="mb-16">
             <MiniTitleWithBar content="FONCTIONNALITÉS LOGICIELLES INCLUSES" />
             <SectionHeading
@@ -969,7 +964,7 @@ export default function ChefDeFlotte() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            
+
             {/* Bloc 1 : Télémétrie Live */}
             <div className="md:col-span-8 p-8 lg:p-12 bg-white border border-black/10 flex flex-col justify-between">
               <div>
@@ -1068,7 +1063,7 @@ export default function ChefDeFlotte() {
       {/* ── 9. QUESTIONS FRÉQUENTES CHEF DE FLOTTE ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-t border-b border-white/10 bg-cyan-deep text-white">
         <div className="max-w-[1000px] mx-auto">
-          
+
           <div className="mb-14 text-center">
             <SectionHeading
               align="center"

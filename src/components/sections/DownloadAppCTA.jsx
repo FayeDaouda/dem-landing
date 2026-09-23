@@ -57,7 +57,7 @@ export default function DownloadAppCTA({
 
       {/* ── 2. CONTENU PRINCIPAL CENTRÉ ── */}
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center text-center">
-        
+
         {/* Titre avec sous-titre cursif */}
         <SectionHeading
           align="center"
@@ -85,16 +85,14 @@ export default function DownloadAppCTA({
               {bullets.map((text, idx) => (
                 <div
                   key={idx}
-                  className={`flex items-start gap-3 p-3.5 border transition-colors ${
-                    isLight
+                  className={`flex items-start gap-3 p-3.5 border transition-colors ${isLight
                       ? 'bg-slate-50/90 border-slate-200 hover:bg-slate-100/90 text-dark'
                       : 'bg-white/[0.03] border-white/10 hover:bg-white/[0.06] text-white/90'
-                  }`}
+                    }`}
                 >
                   <span
-                    className={`shrink-0 mt-0.5 p-1 ${
-                      isLight ? 'text-[#0086C8] bg-cyan/15' : 'text-cyan bg-cyan/20'
-                    }`}
+                    className={`shrink-0 mt-0.5 p-1 ${isLight ? 'text-[#0086C8] bg-cyan/15' : 'text-cyan bg-cyan/20'
+                      }`}
                   >
                     <Check size={14} strokeWidth={3} />
                   </span>
@@ -109,17 +107,16 @@ export default function DownloadAppCTA({
 
         {/* ── 3. BOUTONS DE TÉLÉCHARGEMENT OFFICIELS SHARP ── */}
         <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
-          
+
           {/* Bouton App Store */}
           <a
             href="https://apps.apple.com/us/app/dem-livraison/id6764724342"
             target="_blank"
             rel="noopener noreferrer"
-            className={`group inline-flex items-center justify-between gap-4 px-7 py-4 min-w-[220px] transition-all duration-300 rounded-none border shadow-sm cursor-pointer ${
-              isLight
+            className={`group inline-flex items-center justify-between gap-4 px-7 py-4 min-w-[220px] transition-all duration-300 rounded-none border shadow-sm cursor-pointer ${isLight
                 ? 'bg-[#021520] text-white hover:bg-[#0086C8] border-[#021520]'
                 : 'bg-white/[0.06] text-white hover:bg-[#0086C8] hover:text-white border-white/20'
-            }`}
+              }`}
           >
             <div className="flex items-center gap-3.5">
               <svg className="w-6 h-6 fill-current shrink-0 text-white" viewBox="0 0 24 24">

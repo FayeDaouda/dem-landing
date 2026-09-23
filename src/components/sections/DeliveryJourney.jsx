@@ -528,9 +528,8 @@ export default function DeliveryJourney() {
             >
               {/* Colonne Marqueur */}
               <div
-                className={`md:col-span-4 flex justify-center ${
-                  isMarkerRight ? 'md:justify-end md:order-2' : 'md:justify-start md:order-1'
-                }`}
+                className={`md:col-span-4 flex justify-center ${isMarkerRight ? 'md:justify-end md:order-2' : 'md:justify-start md:order-1'
+                  }`}
               >
                 <div className="dj-container relative z-40">
                   {/* Marqueur principal (100% circulaire, aucun fond carré) */}
@@ -588,16 +587,14 @@ export default function DeliveryJourney() {
 
               {/* Colonne Description */}
               <div
-                className={`md:col-span-8 flex flex-col justify-center ${
-                  isMarkerRight ? 'md:order-1' : 'md:order-2'
-                }`}
+                className={`md:col-span-8 flex flex-col justify-center ${isMarkerRight ? 'md:order-1' : 'md:order-2'
+                  }`}
               >
                 <div className="w-full">
                   <div className="mb-2">
                     <span
-                      className={`inline-block font-serif italic text-lg sm:text-xl md:text-2xl font-light tracking-wide ${
-                        isEnd ? 'text-[#00E08C]' : 'text-[#00D2FF]'
-                      }`}
+                      className={`inline-block font-serif italic text-lg sm:text-xl md:text-2xl font-light tracking-wide ${isEnd ? 'text-[#00E08C]' : 'text-[#00D2FF]'
+                        }`}
                     >
                       {wp.tag}
                     </span>

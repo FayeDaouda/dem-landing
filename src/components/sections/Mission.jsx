@@ -9,11 +9,10 @@ const Mission = ({
     const curtainBg = isDark ? '#021520' : '#ffffff';
 
     return (
-        <section className={`w-full py-24 px-6 lg:px-12 transition-colors duration-300 ${
-            isDark ? 'bg-[#021520] text-white' : 'bg-white text-[#021520]'
-        } ${className}`}>
+        <section className={`w-full py-24 px-6 lg:px-12 transition-colors duration-300 ${isDark ? 'bg-[#021520] text-white' : 'bg-white text-[#021520]'
+            } ${className}`}>
             <div className="max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 items-start">
-                
+
                 {/* 1. Titre & Badge Visuel */}
                 <div className="col-span-1 flex flex-col justify-between">
                     <div>

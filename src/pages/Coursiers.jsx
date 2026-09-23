@@ -50,7 +50,7 @@ export default function Coursiers() {
 
   return (
     <div className="w-full bg-white text-dark min-h-screen font-['DM_Sans',sans-serif] selection:bg-cyan selection:text-dark">
-      
+
       {/* ── 1. HERO SECTION AWWWARDS ── */}
       <PageHeroSection
         contentMiniBar="RECRUTEMENT & FLOTTE COURSIERS"
@@ -87,7 +87,7 @@ export default function Coursiers() {
       {/* ── 3. SECTION SIMULATEUR DE REVENUS & AVANTAGES ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="mb-16">
             <MiniTitleWithBar content="SIMULATEUR DE REVENUS" />
             <SectionHeading
@@ -104,7 +104,7 @@ export default function Coursiers() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 border border-black/10">
-            
+
             {/* Colonne Gauche : Le Calculateur Dynamique */}
             <div className="lg:col-span-6 p-8 lg:p-14 bg-dark text-white flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10">
               <div>
@@ -224,7 +224,7 @@ export default function Coursiers() {
       {/* ── 4. PROCESSUS D'INTÉGRATION : 4 ÉTAPES CLAIRES ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-slate-50 text-dark">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="mb-16">
             <MiniTitleWithBar content="COMMENT ÇA MARCHE" />
             <SectionHeading

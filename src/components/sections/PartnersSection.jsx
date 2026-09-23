@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { Link } from 'react-router-dom';
-import { 
-    Smartphone, 
-    ShoppingBag, 
-    UtensilsCrossed, 
-    Building2, 
-    Store, 
-    CreditCard, 
-    Truck, 
+import {
+    Smartphone,
+    ShoppingBag,
+    UtensilsCrossed,
+    Building2,
+    Store,
+    CreditCard,
+    Truck,
     PackageCheck,
     HeartPulse
 } from 'lucide-react';
@@ -79,15 +79,15 @@ export default function PartnersSection() {
                 <div className="absolute left-0 top-0 bottom-0 w-24 md:w-48 bg-gradient-to-r from-[#021520] to-transparent z-10 pointer-events-none" />
                 <div className="absolute right-0 top-0 bottom-0 w-24 md:w-48 bg-gradient-to-l from-[#021520] to-transparent z-10 pointer-events-none" />
 
-                <div 
-                    ref={trackRef} 
+                <div
+                    ref={trackRef}
                     className="flex items-center gap-12 md:gap-24 w-max px-8"
                 >
                     {duplicatedPartners.map((partner, index) => {
                         const Icon = partner.icon;
                         return (
-                            <div 
-                                key={index} 
+                            <div
+                                key={index}
                                 className="flex items-center gap-4 text-slate-400 hover:text-[#00D2FF] transition-all duration-300 cursor-pointer py-3 px-6 bg-white/[0.02] border border-white/[0.05] hover:border-[#00D2FF]/30 group"
                             >
                                 <div className="w-10 h-10 flex items-center justify-center bg-[#00D2FF]/10 text-[#00D2FF] group-hover:scale-110 transition-transform">
@@ -108,8 +108,8 @@ export default function PartnersSection() {
             </div>
 
             <div className="text-center">
-                <a 
-                    href="mailto:contact@dem.sn" 
+                <a
+                    href="mailto:contact@dem.sn"
                     className="inline-flex items-center gap-3 px-6 py-3 font-bold text-sm tracking-wide uppercase text-white bg-[#00D2FF]/10 border border-[#00D2FF]/30 hover:bg-[#00D2FF]/20 transition-all duration-300 shadow-[0_0_20px_rgba(0,210,255,0.15)]"
                 >
                     <span>Devenir partenaire commercial</span>
