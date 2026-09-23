@@ -100,16 +100,15 @@ export default function Header() {
                     </div>
 
                     {/* --- LOGO CENTRE (Aggressive Cockpit HUD Box) --- */}
-                        <NavLink
-                            to="/"
-                        className="group flex h-full flex-1 lg:flex-none lg:w-[300px] shrink-0 items-center justify-center overflow-hidden cursor-pointer relative px-6 lg:border-r lg:border-l border-[var(--header-border,rgba(0,210,255,0.25))] hover:bg-white/[0.04] transition-colors"
+                    <NavLink
+                        to="/"
+                        className="group flex h-full flex-1 lg:flex-none lg:w-[220px] xl:w-[260px] shrink-0 items-center justify-center overflow-hidden cursor-pointer relative px-4 lg:border-r lg:border-l border-[var(--header-border,rgba(0,210,255,0.25))] hover:bg-white/[0.04] transition-colors"
                         style={{ backgroundColor: 'transparent' }}
                     >
                         <div
                             className="flex items-center justify-center gap-2.5 transition-transform duration-500 group-hover:-translate-y-[220%]"
                             style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
                         >
-
                             <img
                                 src="/logo.png"
                                 alt="DEM"
@@ -118,21 +117,21 @@ export default function Header() {
                             />
                             <span className="font-black text-sm md:text-base uppercase font-['DM_Sans',sans-serif]" style={{ color: 'var(--header-text, inherit)' }}>
                                 DEM
-                                </span>
-                            </div>
+                            </span>
+                        </div>
                         <p
-                            className="absolute w-full px-4 translate-y-[250%] text-center text-xs font-black tracking-[0.25em] text-cyan transition-transform duration-500 uppercase group-hover:translate-y-0"
+                            className="absolute w-full px-2 translate-y-[250%] text-center text-[11px] sm:text-xs font-black tracking-[0.16em] text-cyan transition-transform duration-500 uppercase group-hover:translate-y-0 whitespace-nowrap"
                             style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
                         >
                             Service de qualité
                         </p>
-                        </NavLink>
+                    </NavLink>
 
                     {/* --- DROITE (Desktop uniquement) --- */}
                     <div className="hidden lg:flex flex-1 h-full items-center justify-end border-l border-[var(--header-border,rgba(0,210,255,0.25))]">
-                        <HeaderLink to="/dem-pro" label="DEM PRO" hoverLabel="Pour les entreprises" />
-                        <HeaderLink to="/chef-de-flotte" label="Chef de Flotte" hoverLabel="Nos partenaires" />
-                        <HeaderLink to="/contact" label="Contact" />
+                        <HeaderLink to="/dem-pro" label="DEM PRO" hoverLabel="Pour les entreprises" className="flex-[1.15] min-w-[145px] xl:min-w-[165px]" />
+                        <HeaderLink to="/chef-de-flotte" label="Chef de Flotte" hoverLabel="Nos partenaires" className="flex-[1.05] min-w-[135px] xl:min-w-[155px]" />
+                        <HeaderLink to="/contact" label="Contact" className="flex-[0.9] min-w-[110px] xl:min-w-[130px] px-5 xl:px-7" />
                     </div>
 
                     {/* Mobile: Sharp Brutalist Hamburger Button */}
@@ -166,11 +165,11 @@ export default function Header() {
                 items={[
                     { label: 'Accueil', ariaLabel: 'Accueil', link: '/' },
                     { label: 'Notre Histoire', ariaLabel: 'Notre Histoire', link: '/notre-histoire' },
-                    { label: 'Services', ariaLabel: 'Services', link: '/services' },
+                    { label: 'Nos Services', ariaLabel: 'Nos Services', link: '/services' },
                     { label: 'Actualités', ariaLabel: 'Actualités', link: '/actualites' },
-                    { label: 'Devenir Coursier', ariaLabel: 'Devenir Coursier', link: '/coursiers' },
-                    { label: 'Pour les entreprises', ariaLabel: 'Pour les entreprises', link: '/dem-pro' },
+                    { label: 'DEM PRO', ariaLabel: 'DEM PRO', link: '/dem-pro' },
                     { label: 'Chef de Flotte', ariaLabel: 'Chef de Flotte', link: '/chef-de-flotte' },
+                    { label: 'Devenir Coursier', ariaLabel: 'Devenir Coursier', link: '/coursiers' },
                     { label: 'Contact', ariaLabel: 'Contact', link: '/contact' },
                 ]}
             />
@@ -179,7 +178,7 @@ export default function Header() {
 }
 
 // --- Composant Lien de Header Sharp & Agressif ---
-function HeaderLink({ to, label, hoverLabel, onClick }) {
+function HeaderLink({ to, label, hoverLabel, onClick, className = '' }) {
     const location = useLocation();
 
     return (
@@ -187,9 +186,10 @@ function HeaderLink({ to, label, hoverLabel, onClick }) {
             to={to}
             onClick={onClick}
             className={({ isActive }) => `
-                group/link relative flex h-full grow items-center justify-center px-4 xl:px-6 font-black text-xs xl:text-[12px] tracking-[0.16em] uppercase transition-all duration-200
+                group/link relative flex h-full grow items-center justify-center px-3 xl:px-5 font-black text-xs xl:text-[12px] tracking-[0.12em] uppercase transition-all duration-200
                 border-r border-[var(--header-border,rgba(0,210,255,0.25))] last:border-r-0 hover:bg-white/[0.04] whitespace-nowrap overflow-hidden
                 ${isActive ? "text-cyan font-black" : "text-[var(--header-text,inherit)]"}
+                ${className}
             `}
             style={{ transition: 'var(--header-transition, all 0.25s ease)' }}
         >
@@ -202,7 +202,7 @@ function HeaderLink({ to, label, hoverLabel, onClick }) {
                         {label}
                     </span>
                     <span
-                        className="absolute inset-0 flex items-center justify-center px-3 translate-y-[200%] text-center text-xs xl:text-[12px] font-black font-mono tracking-[0.14em] text-cyan transition-transform duration-500 group-hover/link:translate-y-0 uppercase"
+                        className="absolute inset-0 flex items-center justify-center px-2 translate-y-[200%] text-center text-[10.5px] xl:text-[11.5px] font-black font-['DM_Sans',sans-serif] tracking-[0.04em] text-cyan transition-transform duration-500 group-hover/link:translate-y-0 uppercase whitespace-nowrap"
                         style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
                     >
                         {hoverLabel}

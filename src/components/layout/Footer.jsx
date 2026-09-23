@@ -83,7 +83,7 @@ export default function Footer() {
                                 </span>
                                 <Link to="/" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Accueil</Link>
                                 <Link to="/notre-histoire" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Notre Histoire</Link>
-                                <Link to="/services" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Services</Link>
+                                <Link to="/services" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Nos Services</Link>
                                 <Link to="/actualites" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Actualités</Link>
                                 <a href="/#download" className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Télécharger</a>
                             </div>
@@ -93,9 +93,9 @@ export default function Footer() {
                                 <span className="text-[10px] tracking-[0.18em] uppercase text-white/50 font-sans font-semibold mb-0.5">
                                     Rejoindre
                                 </span>
-                                <Link to="/coursiers" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Devenir Coursier</Link>
+                                <Link to="/dem-pro" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">DEM PRO</Link>
                                 <Link to="/chef-de-flotte" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Chef de Flotte</Link>
-                                <Link to="/dem-pro" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Entreprises</Link>
+                                <Link to="/coursiers" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Devenir Coursier</Link>
                             </div>
 
                             {/* Colonne 3 : ÉCHANGER */}
