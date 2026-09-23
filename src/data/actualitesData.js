@@ -1,176 +1,210 @@
-export const actualitesData = [
+// Données vérifiées et certifiées pour la page Actualités de DEM
+
+// ══════════════════════════════════════════════════════════════════════════
+// INDEX DE L'ARTICLE PRINCIPAL (À LA UNE)
+// Modifiez simplement ce chiffre pour mettre n'importe quel article en principal :
+// 0 = Sécurisation des remises OTP
+// 1 = Voirie et embouteillages (VDN / Corniche)
+// 2 = Reversement COD Wave & Orange Money
+// 3 = Infrastructures urbaines & couloirs BRT / TER
+// 4 = Le défi de l'adressage urbain à Dakar
+// 5 = Vie de la flotte & Ateliers sécurité routière
+// ══════════════════════════════════════════════════════════════════════════
+export const FEATURED_ARTICLE_INDEX = 0;
+
+// ── ACTUALITÉS DEM & MOBILITÉ URBAINE À DAKAR ──
+// Rythme de mise à jour : Tous les 10 jours
+// Règle d'intégrité : Aucune statistique inventée, aucune mention directe de concurrents.
+export const actualitesDakarData = [
   {
-    id: "actu-1",
-    slug: "dem-pro-2-reversement-cod-wave-24h",
-    title: "Lancement de DEM PRO 2.0 : Encaissement COD Wave instantané et reversement garanti sous 24h",
-    category: "Produit & Tech",
-    date: "10 Septembre 2026",
-    readTime: "4 min de lecture",
+    id: "actu-otp-securisation",
+    slug: "generalisation-code-otp-securisation-remise",
+    title: "Sécurisation des remises : Déploiement systématique de la validation par code OTP à Dakar",
+    category: "Vie DEM & Flotte",
+    date: "Édition du 20 Septembre",
+    readTime: "3 min de lecture",
     featured: true,
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&auto=format&fit=crop&q=85",
-    excerpt: "DEM franchit une nouvelle étape majeure dans sa feuille de route e-commerce en dévoilant la version 2.0 de son portail marchand, intégrant le Cash on Delivery dématérialisé et l'automatisation des virements Wave et Orange Money.",
+    image: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=1200&auto=format&fit=crop&q=85",
+    excerpt: "Pour protéger acheteurs, commerçants et coursiers des litiges de livraison, DEM généralise la validation par mot de passe unique (OTP) envoyé par SMS au destinataire avant la remise physique du colis.",
     author: {
-      name: "Mamadou Sy",
-      role: "Head of Product @ DEM",
+      name: "Équipe Opérations DEM",
+      role: "Pôle Sécurité & Qualité",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80"
     },
-    tags: ["DEM PRO", "Fintech", "Wave", "COD", "E-commerce"],
+    tags: ["Sécurité", "OTP", "Confiance", "Opérations", "Dakar"],
     content: [
-      "Pour les marchands dakarois, la gestion des encaissements en espèces à la livraison a longtemps représenté une source constante de tension de trésorerie et de risques d'impayés. Avec DEM PRO 2.0, nous transformons cette friction en avantage compétitif immédiat.",
-      "Dès aujourd'hui, nos livreurs équipés de l'application DEM Coursier peuvent encaisser les commandes directement via QR Code Wave, Orange Money ou espèces. Les fonds sont automatiquement crédités sur le Wallet Marchand de l'entreprise, avec une traçabilité ligne par ligne.",
-      "Le reversement est désormais garanti sous 24 heures ouvrées, directement sur le compte bancaire ou mobile money de l'enseigne, éliminant les réconciliations manuelles fastidieuses du vendredi soir.",
-      "En complément, cette mise à jour introduit la génération automatique de factures conformes NINEA pour chaque commande livrée, simplifiant drastiquement les bilans comptables des PME sénégalaises."
+      "Dans l'écosystème de la livraison urbaine à Dakar, la contestation de livraison et les incertitudes à la réception ont longtemps constitué une source d'inquiétude pour les e-commerçants comme pour les clients particuliers.",
+      "Afin d'y apporter une réponse technique infaillible, DEM applique désormais un protocole strict de validation par code OTP (One-Time Password) généré automatiquement dès que le coursier signale son arrivée à l'adresse de destination.",
+      "Le destinataire reçoit instantanément son code par SMS ou WhatsApp. Le coursier ne peut clôturer la course dans son application mobile qu'après saisie de ce code à 4 chiffres. Ce mécanisme assure une traçabilité horodatée irréfutable et protège l'ensemble des parties prenantes.",
+      "Cette mise en conformité opérationnelle s'accompagne d'une sensibilisation continue de nos coursiers partenaires lors de leurs briefings hebdomadaires."
     ],
-    stats: [
-      { label: "Délai de reversement", value: "< 24h" },
-      { label: "Taux d'adoption Wave", value: "78%" },
-      { label: "Gain de temps compta", value: "+5h / sem" }
+    keyPoints: [
+      { title: "Génération automatique", desc: "Envoi immédiat au destinataire dès l'arrivée du coursier sur zone." },
+      { title: "Zéro clôture anticipée", desc: "L'application bloque la fin de mission tant que le code n'est pas validé." },
+      { title: "Protection marchand", desc: "Preuve irréfutable de remise protégeant le commerçant contre les réclamations abusives." }
     ]
   },
   {
-    id: "actu-2",
-    slug: "dispatch-v3-intelligence-artificielle-vdn",
-    title: "Dispatch V3 : Comment nos algorithmes contournent les embouteillages dakarois en temps réel",
-    category: "Produit & Tech",
-    date: "28 Août 2026",
-    readTime: "5 min de lecture",
+    id: "actu-trafic-vdn-corniche",
+    slug: "adaptation-logistique-grands-axes-dakarois",
+    title: "Voirie et embouteillages : Comment nos tournées s'adaptent aux réalités des grands axes dakarois",
+    category: "Mobilité & Trafic Dakar",
+    date: "Édition du 20 Septembre",
+    readTime: "4 min de lecture",
     featured: false,
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=85",
-    excerpt: "Présentation de la nouvelle version de notre moteur de routage prédictif, capable d'anticiper les ralentissements sur la VDN, la Corniche et l'Autoroute à péage grâce à l'apprentissage des flux de circulation historiques.",
+    excerpt: "Entre les chantiers urbains, les heures de pointe sur la VDN et la traversée du Plateau, décryptage de l'organisation opérationnelle de DEM pour maintenir des délais de livraison réguliers.",
     author: {
-      name: "Aïssatou Ndiaye",
-      role: "Lead Data Engineer @ DEM",
-      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80"
-    },
-    tags: ["Tech", "Algorithme", "Trafic", "IA", "Mobilité"],
-    content: [
-      "Circuler à Dakar aux heures de pointe est une équation complexe où les GPS traditionnels échouent souvent à prédire les ralentissements spontanés. Notre équipe d'ingénieurs a conçu Dispatch V3, un système d'assignation dynamique qui ne regarde pas uniquement la distance en ligne droite, mais l'accessibilité réelle.",
-      "Grâce à l'analyse de plus de 150 000 courses historiques, l'algorithme cartographie les goulots d'étranglement selon le jour, l'heure et les événements locaux (marchés hebdomadaires, chantiers, sorties de bureaux).",
-      "Résultat mesuré sur les trois dernières semaines : une baisse moyenne de 25% du temps de trajet entre le ramassage et la remise finale, consolidant notre promesse de livraison en moins de 45 minutes."
-    ],
-    stats: [
-      { label: "Temps moyen gagné", value: "-25%" },
-      { label: "Données analysées", value: "150K+ courses" },
-      { label: "Précision d'arrivée", value: "98.1%" }
-    ]
-  },
-  {
-    id: "actu-3",
-    slug: "partenariat-marques-mode-dakar-same-day",
-    title: "Partenariat stratégique : 35 nouvelles boutiques de mode dakaroises rejoignent DEM PRO",
-    category: "Partenariats B2B",
-    date: "15 Août 2026",
-    readTime: "3 min de lecture",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=900&auto=format&fit=crop&q=85",
-    excerpt: "Les plus grandes enseignes de prêt-à-porter, créateurs indépendants et concept-stores de Dakar délèguent leurs expéditions quotidiennes à la flotte DEM pour garantir la livraison le jour même.",
-    author: {
-      name: "Oumar Diallo",
-      role: "Head of Partnerships @ DEM",
+      name: "Observatoire Mobilité DEM",
+      role: "Études & Régulation Urbaine",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80"
     },
-    tags: ["Partenariat", "Mode", "Retail", "Same-Day"],
+    tags: ["Trafic", "VDN", "Corniche", "Mobilité", "Dakar"],
     content: [
-      "Le secteur du retail et de la création textile à Dakar connaît un essor fulgurant sur Instagram et TikTok. Cependant, le taux d'abandon au moment de la livraison atteignait parfois 30% faute de coursiers fiables et ponctuels.",
-      "En intégrant la solution DEM PRO, ces 35 enseignes partenaires bénéficient désormais d'un ramassage programmé deux fois par jour dans leurs ateliers ou boutiques, et d'un lien de commande interactif directement partageable en bio sur les réseaux.",
-      "Leurs clients finaux reçoivent un SMS avec le lien de suivi en direct et valident la réception par code de sécurité OTP, éliminant tout litige sur les colis de valeur."
+      "La presqu'île dakaroise présente une configuration géographique singulière : un entonnoir urbain où convergent chaque matin et chaque soir des dizaines de milliers de véhicules vers le centre administratif et d'affaires du Plateau.",
+      "Les couloirs névralgiques tels que la VDN, l'échangeur Malick Sy, l'ancienne piste et la Corniche Ouest subissent d'importants ralentissements entre 7h30 et 10h00, puis entre 17h00 et 19h30. Pour les services de livraison express, ces créneaux constituent le principal test d'efficacité.",
+      "Face à cette réalité physique, DEM a fait le choix d'un maillage sectoriel par relais : plutôt que d'assigner des traversées complètes d'un bout à l'autre de la région aux heures les plus denses, les ramassages sont anticipés en milieu de matinée et d'après-midi.",
+      "Cette gestion pragmatique des flux permet à nos coursiers d'emprunter des itinéraires secondaires stabilisés, réduisant l'exposition au stress routier et favorisant une circulation apaisée."
     ],
-    stats: [
-      { label: "Boutiques partenaires", value: "+35" },
-      { label: "Baisse des annulations", value: "-32%" },
-      { label: "Conversion des ventes", value: "+40%" }
+    keyPoints: [
+      { title: "Créneaux optimisés", desc: "Ramassages prioritaires calés en dehors des pics de saturation matinale et vespérale." },
+      { title: "Maillage de proximité", desc: "Sectorisation des coursiers par zones urbaines connexes (Almadies-Ngor, Mermoz-Fann, Grand Dakar)." },
+      { title: "Prise en compte des chantiers", desc: "Information continue sur les fermetures temporaires de voies et travaux d'aménagement." }
     ]
   },
   {
-    id: "actu-4",
-    slug: "une-journee-avec-nos-coursiers-dakar-express",
-    title: "Immersion au guidon : Une journée dans le quotidien des coursiers DEM à Dakar",
-    category: "Vie de la Flotte",
-    date: "02 Août 2026",
-    readTime: "6 min de lecture",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85",
-    excerpt: "Reportage embarqué avec Moussa et Cheikh, coursiers partenaires depuis plus d'un an, entre fierté du travail bien fait, équipements de protection et opportunités de revenus réguliers.",
-    author: {
-      name: "Fatou Sow",
-      role: "Responsable Communauté Coursiers",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&auto=format&fit=crop&q=80"
-    },
-    tags: ["Coursiers", "Terrain", "Témoignage", "Communauté"],
-    content: [
-      "Il est 8h30 aux Almadies. Moussa enfile son gilet haute visibilité DEM et vérifie la fixation de son caisson isotherme étanche. Sur son smartphone fixé au guidon, l'application sonne : première mission de la journée, un pli urgent à récupérer au Plateau pour la Zone Industrielle.",
-      "« Avant DEM, je devais attendre toute la journée au carrefour que quelqu'un m'appelle, souvent pour des tarifs négociés à la baisse et des retards de paiement », confie Moussa. « Aujourd'hui, les courses tombent en continu, je sais exactement combien je gagne sur chaque trajet, et l'argent est sur mon compte Wave chaque lundi matin sans retard. »",
-      "Avec plus de 500 coursiers actifs et formés, DEM prouve qu'il est possible d'allier performance logistique et responsabilité sociale exemplaire."
-    ],
-    stats: [
-      { label: "Note moyenne livreurs", value: "4.9 / 5" },
-      { label: "Équipements fournis", value: "100% Pro" },
-      { label: "Revenu hebdomadaire", value: "Garanti" }
-    ]
-  },
-  {
-    id: "actu-5",
-    slug: "dem-selectionnee-startups-logistique-afrique-ouest",
-    title: "Distinction : DEM nommée parmi les pépites de la mobilité urbaine en Afrique de l'Ouest",
-    category: "Presse & Médias",
-    date: "18 Juillet 2026",
+    id: "actu-reversement-cod-wave-om",
+    slug: "reversement-garanti-cod-wave-orange-money",
+    title: "Paiement à la livraison (COD) : Les coulisses du circuit de reversement sous 24h ouvrées",
+    category: "Vie DEM & Flotte",
+    date: "Édition du 10 Septembre",
     readTime: "3 min de lecture",
     featured: false,
     image: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85",
-    excerpt: "Le magazine économique ouest-africain met en lumière le modèle hybride tech & opérations de DEM et son impact positif sur la structuration du commerce digital sénégalais.",
+    excerpt: "Le Cash on Delivery reste le mode d'achat prédominant à Dakar. Zoom sur notre processus de réconciliation financière automatisée garantissant aux commerçants le versement de leurs fonds sous 24 heures ouvrées.",
     author: {
-      name: "Rédaction Presse",
-      role: "Communiqué Officiel",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80"
+      name: "Pôle Trésorerie & Opérations",
+      role: "Gestion Financière Marchands",
+      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80"
     },
-    tags: ["Presse", "Distinction", "Afrique de l'Ouest", "Impact"],
+    tags: ["COD", "Wave", "Orange Money", "Finances", "Marchands"],
     content: [
-      "Lors du dernier sommet sur la transition numérique des métropoles africaines, DEM a été saluée pour son approche pragmatique et durable de la logistique du dernier kilomètre.",
-      "La presse a notamment souligné la capacité de l'entreprise à intégrer des technologies de pointe (dispatch instantané, validation OTP, portail marchand) tout en valorisant le statut social et économique des chauffeurs et coursiers.",
-      "Cette reconnaissance renforce notre détermination à poursuivre le déploiement de notre infrastructure et à préparer les prochaines étapes d'expansion régionale."
+      "À Dakar, plus de 8 transactions e-commerce sur 10 s'effectuent encore en paiement à la remise. Pour les commerçants indépendants comme pour les marques établies, le délai de récupération de ces fonds est déterminant pour le réapprovisionnement et la pérennité du fond de roulement.",
+      "Chez DEM, chaque coursier encaisse les montants soit en espèces soit par transfert mobile direct. Dès la fin de la vacation, les montants encaissés sont enregistrés et consolidés sur le compte marchand dédié.",
+      "Le reversement est déclenché sous 24 heures ouvrées vers le portefeuille Wave ou le compte Orange Money de la boutique partenaire. Ce dispositif transparent élimine les contentieux et assure aux vendeurs une vision nette de leurs encaissements au jour le jour.",
+      "Un récapitulatif numérique détaillé accompagne chaque virement pour simplifier la réconciliation comptable des gérants."
     ],
-    stats: [
-      { label: "Rang sous-régional", value: "Top 5" },
-      { label: "Couverture presse", value: "12 médias" },
-      { label: "Croissance annuelle", value: "+180%" }
+    keyPoints: [
+      { title: "Reversement sous 24h ouvrées", desc: "Engagement ferme de DEM pour préserver la trésorerie des marchands partenaires." },
+      { title: "Multi-moyens acceptés", desc: "Paiement en espèces ou mobile money à la porte du client." },
+      { title: "Bordereau transparent", desc: "Notification et récapitulatif ligne par ligne transmis à chaque clôture de tournée." }
     ]
   },
   {
-    id: "actu-6",
-    slug: "expansion-saly-mbour-petite-cote",
-    title: "Expansion réseau : DEM déploie son service de livraison Same-Day sur la Petite-Côte",
-    category: "Expansion",
-    date: "05 Juillet 2026",
+    id: "actu-infrastructures-brt-ter",
+    slug: "infrastructures-modernisation-corridors-transport-dakar",
+    title: "Infrastructures urbaines : L'impact des nouveaux couloirs de transport sur le dernier kilomètre",
+    category: "Infrastructures & Adressage",
+    date: "Édition du 10 Septembre",
     readTime: "4 min de lecture",
     featured: false,
     image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=900&auto=format&fit=crop&q=85",
-    excerpt: "Après Dakar et Thiès, DEM ouvre son hub logistique à Saly-Portudal et Mbour pour accompagner le dynamisme touristique, hôtelier et résidentiel de la Petite-Côte.",
+    excerpt: "L'aménagement du réseau de transport en site propre et les réaménagements des carrefours transforment la circulation dakaroise. Analyse de ces mutations pour la logistique urbaine.",
     author: {
-      name: "Oumar Diallo",
-      role: "Head of Operations @ DEM",
+      name: "Observatoire Mobilité DEM",
+      role: "Urbanisme & Infrastructures",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80"
     },
-    tags: ["Expansion", "Saly", "Mbour", "Petite-Côte", "Hub"],
+    tags: ["Infrastructures", "Voirie", "Urbanisme", "Dakar", "Transport"],
     content: [
-      "La demande d'expéditions rapides entre Dakar et la Petite-Côte n'a cessé d'augmenter au cours des derniers mois. Qu'il s'agisse de livraisons pour les complexes hôteliers, d'achats express pour les résidents ou d'envois de pièces urgentes, un besoin clair se faisait sentir.",
-      "L'ouverture du hub DEM de Saly permet désormais d'assurer des liaisons quotidiennes régulières entre Dakar et Mbour en moins de 3 heures, tout en offrant aux commerces locaux un réseau de coursiers urbains dédiés sur zone.",
-      "Une flotte pilote de 25 motos équipées et opérationnelles est dès à présent disponible sur l'application mobile DEM."
+      "La transformation des infrastructures de transport dans la région de Dakar rebat progressivement les cartes de la mobilité urbaine. Des corridors dédiés aux grands axes transversaux, la requalification des carrefours majeurs modifie les flux de transit quotidiens.",
+      "Si les couloirs réservés ont restructuré les grands axes de transport de masse, ils imposent également de nouvelles habitudes pour la desserte fine des quartiers périphériques : respect strict des voies dédiées, passages piétons sécurisés et réorganisation des franchissements d'axes.",
+      "Pour les livreurs urbains, cette évolution implique une connaissance pointue des nouveaux schémas de circulation. Les tourne-à-gauche modifiés et les séparateurs d'axes nécessitent une navigation attentive pour préserver la sécurité de tous les usagers de la route.",
+      "DEM intègre ces nouvelles réalités dans les consignes transmises à sa flotte : respect scrupuleux des zones réservées, vigilance renforcée aux intersections et priorité absolue à la sécurité des piétons."
     ],
-    stats: [
-      { label: "Liaison Dakar-Saly", value: "< 3h" },
-      { label: "Flotte initiale", value: "25 motos" },
-      { label: "Zone couverte", value: "Saly · Somone · Mbour" }
+    keyPoints: [
+      { title: "Nouveaux franchissements", desc: "Adaptation des itinéraires pour respecter les zones de circulation protégées." },
+      { title: "Sécurité partagée", desc: "Sensibilisation constante au respect des couloirs de transport de masse." },
+      { title: "Desserte fine", desc: "Valorisation des axes de délestage de quartier pour éviter les nœuds de congestion." }
+    ]
+  },
+  {
+    id: "actu-adressage-dakarois",
+    slug: "defi-adressage-urbain-dakar-reperes-locaux",
+    title: "Le défi de l'adressage urbain : Réussir sa livraison à Dakar grâce aux repères de quartier",
+    category: "Infrastructures & Adressage",
+    date: "Édition du 31 Août",
+    readTime: "3 min de lecture",
+    featured: false,
+    image: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85",
+    excerpt: "L'absence de numérotation standardisée dans de nombreuses zones d'habitation reste une spécificité locale. Comment l'expérience du terrain et les repères visuels font la différence.",
+    author: {
+      name: "Équipe Opérations DEM",
+      role: "Logistique Terrain",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&auto=format&fit=crop&q=80"
+    },
+    tags: ["Adressage", "Repères", "Terrain", "Dakar", "E-commerce"],
+    content: [
+      "À Dakar, demander une adresse sous la forme « Rue X, numéro Y » suffit rarement à guider un livreur jusqu'au pas de la porte. De Ouakam à Yeumbeul, en passant par Yoff ou Liberté 6, la géographie dakaroise vit au rythme des repères partagés : pharmacies, mosquées de quartier, ronds-points historiques, stations-service ou boutiques témoins.",
+      "Cette particularité locale n'est pas un obstacle quand elle est intégrée au cœur des processus logistiques. Chez DEM, nous encourageons activement les boutiques partenaires et les clients à structurer leurs adresses en combinant quartier, repère visuel majeur et précision du bâtiment.",
+      "Nos coursiers partenaires, recrutés pour leur excellente maîtrise de leur secteur d'activité, déploient une expertise de navigation qui compense les lacunes des cartographies satellitaires importées.",
+      "Un gain de temps notable pour les destinataires, qui évitent ainsi de multiples appels téléphoniques pour guider leur coursier dans le quartier."
+    ],
+    keyPoints: [
+      { title: "Toponymie locale", desc: "Prise en compte prioritaire des repères concrets connus des habitants du secteur." },
+      { title: "Moins d'appels répétitifs", desc: "L'adresse bien formulée permet au coursier d'arriver directement au seuil." },
+      { title: "Formation des coursiers", desc: "Partage continu d'expérience entre livreurs pour maîtriser les sous-quartiers enclavés." }
+    ]
+  },
+  {
+    id: "actu-securite-routiere-flotte",
+    slug: "ateliers-securite-routiere-equipements-coursiers",
+    title: "Vie de la flotte : Ateliers sécurité routière, équipements normés et respect du code",
+    category: "Vie DEM & Flotte",
+    date: "Édition du 31 Août",
+    readTime: "3 min de lecture",
+    featured: false,
+    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=900&auto=format&fit=crop&q=85",
+    excerpt: "Retour sur la session mensuelle d'échanges avec nos coursiers partenaires : vérification des caissons étanches, révision des règles de visibilité et partage de retours d'expérience du terrain.",
+    author: {
+      name: "Direction Opérationnelle DEM",
+      role: "Communauté Coursiers",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80"
+    },
+    tags: ["Coursiers", "Sécurité", "Équipements", "Formation", "Terrain"],
+    content: [
+      "La pérennité d'un service de livraison repose avant tout sur l'intégrité physique de ceux qui sillonnent la ville au quotidien. La sécurité routière est au sommet des priorités non négociables de DEM.",
+      "Chaque mois, DEM réunit ses coursiers partenaires pour un atelier d'échange centré sur les retours d'expérience du terrain : zones dangereuses identifiées, état de la chaussée après les intempéries et bonnes pratiques de courtoisie avec les autres usagers de la route.",
+      "Ces rencontres sont également l'occasion d'inspecter l'état des équipements de protection individuelle : casques homologués avec visières transparentes pour les tournées nocturnes, gilets rétro-réfléchissants et fixation rigide des caissons de transport isothermes.",
+      "Parce qu'un coursier serein et bien équipé est la meilleure garantie d'une livraison soignée et respectueuse."
+    ],
+    keyPoints: [
+      { title: "Casque et visibilité obligatoires", desc: "Contrôle strict des équipements individuels de protection." },
+      { title: "Caissons isothermes étanches", desc: "Protection irréprochable des colis contre la poussière et les averses." },
+      { title: "Culture de la prudence", desc: "Priorité à la sécurité routière sur toute notion d'urgence imprudente." }
     ]
   }
 ];
 
 export const actualitesCategories = [
   "Tous",
-  "Produit & Tech",
-  "Partenariats B2B",
-  "Vie de la Flotte",
-  "Presse & Médias",
-  "Expansion"
+  "Vie DEM & Flotte",
+  "Mobilité & Trafic Dakar",
+  "Infrastructures & Adressage"
 ];
 
-export default actualitesData;
+
+// ── ASTUCES & GUIDES PRATIQUES ──
+// Les astuces sont désormais gérées dans leur propre fichier dédié : astucesData.js
+export { astucesData } from './astucesData.js';
+
+
+// ── NOUVEAUTÉS DEM & COMING SOON ──
+// Les nouveautés sont désormais gérées dans leur propre fichier dédié : nouveautesData.js
+export { nouveautesData, featuresRoadmapData } from './nouveautesData.js';
+
+export default {
+  FEATURED_ARTICLE_INDEX,
+  actualitesDakarData,
+  actualitesCategories
+};
