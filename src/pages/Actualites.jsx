@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import PageHeroSection from '../components/sections/PageHeroSection.jsx';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
-import { 
-  actualitesDakarData, 
-  actualitesCategories, 
+import {
+  actualitesDakarData,
+  actualitesCategories,
   FEATURED_ARTICLE_INDEX
 } from '../data/actualitesData.js';
 import { astucesData } from '../data/astucesData.js';
@@ -31,7 +31,7 @@ export default function Actualites() {
   const filteredArticles = useMemo(() => {
     return actualitesDakarData.filter((article) => {
       const matchesCategory = activeCategory === "Tous" || article.category === activeCategory;
-      const matchesSearch = 
+      const matchesSearch =
         article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
         article.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -42,10 +42,10 @@ export default function Actualites() {
   // Article vedette sélectionné par son index (0, 1, 2, 3...)
   // Tout article de la liste peut passer en principal en modifiant simplement FEATURED_ARTICLE_INDEX
   const featuredArticle = useMemo(() => {
-    const validIndex = 
-      typeof FEATURED_ARTICLE_INDEX === 'number' && 
-      FEATURED_ARTICLE_INDEX >= 0 && 
-      FEATURED_ARTICLE_INDEX < actualitesDakarData.length
+    const validIndex =
+      typeof FEATURED_ARTICLE_INDEX === 'number' &&
+        FEATURED_ARTICLE_INDEX >= 0 &&
+        FEATURED_ARTICLE_INDEX < actualitesDakarData.length
         ? FEATURED_ARTICLE_INDEX
         : 0;
     return actualitesDakarData[validIndex];
@@ -69,7 +69,7 @@ export default function Actualites() {
 
   return (
     <div className="w-full bg-white text-[#021520] min-h-screen font-['DM_Sans',sans-serif] selection:bg-[#00D2FF] selection:text-[#021520]">
-      
+
       {/* ── 1. HERO SECTION EDITORIALE ── */}
       <PageHeroSection
         contentMiniBar="OBSERVATOIRE DE LA MOBILITÉ & VIE DE DEM"
@@ -81,25 +81,25 @@ export default function Actualites() {
       <section className="border-t border-b border-black/10 bg-[#021520] text-white">
         <div className="max-w-[1400px] mx-auto grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
           {[
-            { 
-              num: "10 jours", 
-              label: "Rythme de publication", 
-              sub: "Nouvelle édition actualisée tous les 10 jours" 
+            {
+              num: "10 jours",
+              label: "Rythme de publication",
+              sub: "Nouvelle édition actualisée tous les 10 jours"
             },
-            { 
-              num: "< 24h", 
-              label: "Reversement COD garanti", 
-              sub: "Fonds Wave & Orange Money reversés sous 24h ouvrées" 
+            {
+              num: "< 24h",
+              label: "Reversement COD garanti",
+              sub: "Fonds Wave & Orange Money reversés sous 24h ouvrées"
             },
-            { 
-              num: "Code OTP", 
-              label: "Validation sécurisée", 
-              sub: "Mot de passe unique par SMS pour certifier chaque remise" 
+            {
+              num: "Code OTP",
+              label: "Validation sécurisée",
+              sub: "Mot de passe unique par SMS pour certifier chaque remise"
             },
-            { 
-              num: "Dakar", 
-              label: "Couverture régionale", 
-              sub: "Presqu'île, quartiers périphériques et banlieue" 
+            {
+              num: "Dakar",
+              label: "Couverture régionale",
+              sub: "Presqu'île, quartiers périphériques et banlieue"
             }
           ].map((item, idx) => (
             <div key={idx} className="p-6 sm:p-8 flex flex-col justify-between hover:bg-white/[0.02] transition-colors">
@@ -126,20 +126,20 @@ export default function Actualites() {
             Navigation :
           </span>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <a 
-              href="#bloc-actus" 
+            <a
+              href="#bloc-actus"
               className="px-3 py-1.5 bg-white text-[#021520] border border-black/10 hover:border-[#0086C8] transition-colors rounded-none"
             >
               Actu DEM & Mobilité urbaine à Dakar
             </a>
-            <a 
-              href="#bloc-astuces" 
+            <a
+              href="#bloc-astuces"
               className="px-3 py-1.5 bg-white text-[#021520] border border-black/10 hover:border-[#0086C8] transition-colors rounded-none"
             >
               Astuces
             </a>
-            <a 
-              href="#bloc-nouveautes" 
+            <a
+              href="#bloc-nouveautes"
               className="px-3 py-1.5 bg-white text-[#021520] border border-black/10 hover:border-[#0086C8] transition-colors rounded-none"
             >
               Nouveautés DEM / Coming soon
@@ -153,7 +153,7 @@ export default function Actualites() {
       {/* ── BLOC 1 — ACTU DEM & MOBILITÉ URBAINE À DAKAR ── */}
       {/* ═════════════════════════════════════════════════════════════════════ */}
       <div id="bloc-actus" className="scroll-mt-14">
-        
+
         {/* En-tête de section Actu & Mobilité */}
         <section className="pt-14 pb-4 px-6 lg:px-16 bg-white border-b border-black/10">
           <div className="max-w-[1400px] mx-auto">
@@ -172,11 +172,11 @@ export default function Actualites() {
           <section className="py-12 lg:py-16 px-6 lg:px-16 border-b border-black/10 bg-slate-50">
             <div className="max-w-[1400px] mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 bg-white shadow-xl overflow-hidden group">
-                
+
                 {/* Image Vedette */}
                 <div className="lg:col-span-7 relative aspect-[16/10] lg:aspect-auto overflow-hidden bg-[#021520] border-b lg:border-b-0 lg:border-r border-black/10 min-h-[320px] lg:min-h-[460px]">
-                  <img 
-                    src={featuredArticle.image} 
+                  <img
+                    src={featuredArticle.image}
                     alt={featuredArticle.title}
                     className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
                   />
@@ -256,14 +256,14 @@ export default function Actualites() {
         {/* Barre de filtres et recherche */}
         <section className="py-6 px-6 lg:px-16 border-b border-black/10 bg-white">
           <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
-            
+
             {/* Boutons Catégories */}
             <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-1 md:pb-0">
               {actualitesCategories.map((category) => {
-                const count = category === "Tous" 
-                  ? actualitesDakarData.length 
+                const count = category === "Tous"
+                  ? actualitesDakarData.length
                   : actualitesDakarData.filter(a => a.category === category).length;
-                
+
                 const isActive = activeCategory === category;
 
                 return (
@@ -271,16 +271,14 @@ export default function Actualites() {
                     key={category}
                     type="button"
                     onClick={() => setActiveCategory(category)}
-                    className={`px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-200 border cursor-pointer flex items-center gap-2 ${
-                      isActive
+                    className={`px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-200 border cursor-pointer flex items-center gap-2 ${isActive
                         ? "bg-[#021520] text-white border-[#021520] shadow-sm"
                         : "bg-slate-50 text-slate-700 border-black/10 hover:border-black/30 hover:bg-white"
-                    }`}
+                      }`}
                   >
                     <span>{category}</span>
-                    <span className={`text-[10px] px-1.5 py-0.2 font-mono ${
-                      isActive ? "bg-[#00D2FF] text-[#021520]" : "bg-black/10 text-slate-600"
-                    }`}>
+                    <span className={`text-[10px] px-1.5 py-0.2 font-mono ${isActive ? "bg-[#00D2FF] text-[#021520]" : "bg-black/10 text-slate-600"
+                      }`}>
                       {count}
                     </span>
                   </button>
@@ -297,20 +295,20 @@ export default function Actualites() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-slate-50 border border-black/15 text-xs py-2.5 pl-9 pr-4 text-[#021520] placeholder:text-slate-400 focus:outline-none focus:border-[#0086C8] font-['Poppins',sans-serif]"
               />
-              <svg 
+              <svg
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-                width="14" 
-                height="14" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
                 strokeWidth="2.5"
               >
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               {searchQuery && (
-                <button 
+                <button
                   type="button"
                   onClick={() => setSearchQuery("")}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#021520] text-xs font-mono"
@@ -326,7 +324,7 @@ export default function Actualites() {
         {/* Grille des articles Actu & Mobilité */}
         <section className="py-16 lg:py-24 px-6 lg:px-16 border-b border-black/10 bg-white">
           <div className="max-w-[1400px] mx-auto">
-            
+
             <div className="flex justify-between items-baseline mb-12">
               <div>
                 <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] block mb-1">
@@ -360,7 +358,7 @@ export default function Actualites() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-black/10 divide-y md:divide-y-0 md:divide-x divide-black/10 bg-white">
                 {gridArticles.map((article) => (
-                  <article 
+                  <article
                     key={article.id}
                     onClick={() => setSelectedArticle(article)}
                     className="flex flex-col justify-between p-6 sm:p-8 hover:bg-slate-50/80 transition-all duration-300 group cursor-pointer border-b border-black/10"
@@ -368,8 +366,8 @@ export default function Actualites() {
                     <div>
                       {/* Image Vignette */}
                       <div className="relative aspect-[16/10] overflow-hidden bg-slate-200 mb-6 border border-black/10">
-                        <img 
-                          src={article.image} 
+                        <img
+                          src={article.image}
                           alt={article.title}
                           className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
                           loading="lazy"
@@ -426,7 +424,7 @@ export default function Actualites() {
       {/* ═════════════════════════════════════════════════════════════════════ */}
       <section id="bloc-astuces" className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-slate-50 scroll-mt-14">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="max-w-3xl mb-12">
             <MiniTitleWithBar content="GUIDES DE TERRAIN & CONSEILS PRATIQUES" />
             <h2 className="text-3xl sm:text-5xl font-black uppercase text-[#021520] tracking-tight mt-3 mb-4 font-['DM_Sans',sans-serif]">
@@ -450,16 +448,14 @@ export default function Actualites() {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveAudience(tab.id)}
-                  className={`px-5 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 border cursor-pointer flex items-center gap-2.5 ${
-                    isActive
+                  className={`px-5 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 border cursor-pointer flex items-center gap-2.5 ${isActive
                       ? "bg-[#021520] text-white border-[#021520] shadow-md"
                       : "bg-white text-slate-700 border-black/10 hover:border-black/30 hover:bg-slate-100"
-                  }`}
+                    }`}
                 >
                   <span>{tab.label}</span>
-                  <span className={`text-[10px] px-2 py-0.5 font-mono ${
-                    isActive ? "bg-[#00D2FF] text-[#021520]" : "bg-black/10 text-slate-600"
-                  }`}>
+                  <span className={`text-[10px] px-2 py-0.5 font-mono ${isActive ? "bg-[#00D2FF] text-[#021520]" : "bg-black/10 text-slate-600"
+                    }`}>
                     {tab.count}
                   </span>
                 </button>
@@ -470,7 +466,7 @@ export default function Actualites() {
           {/* Grille des cartes d'astuces selon l'audience active */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {astucesData[activeAudience]?.map((astuce, index) => (
-              <div 
+              <div
                 key={astuce.id || index}
                 className="bg-white border border-black/10 p-6 sm:p-8 flex flex-col justify-between hover:shadow-lg transition-all duration-300 relative group"
               >
@@ -525,7 +521,7 @@ export default function Actualites() {
       {/* ═════════════════════════════════════════════════════════════════════ */}
       <section id="bloc-nouveautes" className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-white scroll-mt-14">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
             <div>
               <MiniTitleWithBar content="Notes de mise à jour" />
@@ -546,11 +542,10 @@ export default function Actualites() {
                 key={f.id}
                 type="button"
                 onClick={() => setRoadmapFilter(f.id)}
-                className={`px-4 py-2 text-xs font-bold uppercase tracking-wider border cursor-pointer transition-colors ${
-                  roadmapFilter === f.id
+                className={`px-4 py-2 text-xs font-bold uppercase tracking-wider border cursor-pointer transition-colors ${roadmapFilter === f.id
                     ? "bg-[#021520] text-white border-[#021520]"
                     : "bg-slate-50 text-slate-700 border-black/10 hover:border-black/30 hover:bg-white"
-                }`}
+                  }`}
               >
                 {f.label}
               </button>
@@ -559,7 +554,7 @@ export default function Actualites() {
 
           {/* Grille : 2 colonnes comparatives si vue d'ensemble, ou 2 colonnes de cartes en pleine largeur si filtre actif */}
           <div className={roadmapFilter === "all" ? "grid grid-cols-1 lg:grid-cols-2 gap-10" : "w-full"}>
-            
+
             {/* Volet A : Déjà sortis (Disponibles maintenant) */}
             {(roadmapFilter === "all" || roadmapFilter === "released") && (
               <div className="space-y-6">
@@ -577,7 +572,7 @@ export default function Actualites() {
 
                 <div className={roadmapFilter === "all" ? "space-y-4" : "grid grid-cols-1 md:grid-cols-2 gap-6"}>
                   {featuresRoadmapData.releasedFeatures.map((feat) => (
-                    <div 
+                    <div
                       key={feat.id}
                       className="p-6 bg-slate-50 border border-emerald-500/30 hover:border-emerald-500 transition-colors flex flex-col justify-between"
                     >
@@ -629,7 +624,7 @@ export default function Actualites() {
 
                 <div className={roadmapFilter === "all" ? "space-y-4" : "grid grid-cols-1 md:grid-cols-2 gap-6"}>
                   {featuresRoadmapData.comingSoonFeatures.map((feat) => (
-                    <div 
+                    <div
                       key={feat.id}
                       className="p-6 bg-amber-50/30 border border-amber-500/40 hover:border-amber-500 transition-colors flex flex-col justify-between"
                     >
@@ -673,9 +668,9 @@ export default function Actualites() {
       {/* ── 4. ESPACE PRESSE, KIT MÉDIA & NEWSLETTER DÉCADAIRE ── */}
       <section className="py-20 lg:py-28 px-6 lg:px-16 border-b border-white/10 bg-[#021520] text-white">
         <div className="max-w-[1400px] mx-auto">
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            
+
             <div className="lg:col-span-5">
               <span className="font-serif italic text-lg sm:text-xl font-light text-[#00D2FF] block mb-2">
                 Relations Presse & Écosystème
@@ -689,7 +684,7 @@ export default function Actualites() {
               </p>
 
               <div className="space-y-4">
-                <a 
+                <a
                   href="mailto:presse@dem.sn"
                   className="flex items-center justify-between p-4 bg-white/[0.04] border border-white/15 hover:border-[#00D2FF] transition-colors group"
                 >
@@ -719,7 +714,7 @@ export default function Actualites() {
 
             {/* Téléchargement Kit Médias & Newsletter tous les 10 jours */}
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              
+
               <div className="p-6 sm:p-8 bg-white/[0.02] border border-white/10 flex flex-col justify-between">
                 <div>
                   <span className="text-xs font-mono text-[#00D2FF] uppercase tracking-widest block mb-3">
@@ -732,8 +727,8 @@ export default function Actualites() {
                     Fichiers PNG haute définition, déclinaisons sur fond sombre et fond clair et charte typographique DEM.
                   </p>
                 </div>
-                <a 
-                  href="/logo.png" 
+                <a
+                  href="/logo.png"
                   download="DEM_Logo_Pack.png"
                   className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#00D2FF] hover:underline"
                 >
@@ -754,7 +749,7 @@ export default function Actualites() {
                     Découvrez les fondements de notre approche opérationnelle et nos engagements pour la mobilité à Dakar.
                   </p>
                 </div>
-                <Link 
+                <Link
                   to="/notre-histoire"
                   className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#00D2FF] hover:underline"
                 >
@@ -776,22 +771,22 @@ export default function Actualites() {
                     Actualités vérifiées, état de la mobilité à Dakar et astuces logistiques.
                   </p>
                 </div>
-                
+
                 {newsletterSubscribed ? (
                   <div className="px-4 py-2 bg-[#00D2FF] text-[#021520] text-xs font-bold uppercase font-mono">
                     ✓ Inscription confirmée
                   </div>
                 ) : (
                   <form onSubmit={handleNewsletterSubmit} className="flex w-full sm:w-auto">
-                    <input 
-                      type="email" 
+                    <input
+                      type="email"
                       required
                       placeholder="Votre email..."
                       value={newsletterEmail}
                       onChange={(e) => setNewsletterEmail(e.target.value)}
                       className="bg-[#021520] border border-white/20 text-xs px-3 py-2.5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D2FF] w-full sm:w-52"
                     />
-                    <button 
+                    <button
                       type="submit"
                       className="px-4 py-2.5 bg-[#00D2FF] text-[#021520] text-xs font-black uppercase tracking-wider hover:bg-white transition-colors cursor-pointer shrink-0"
                     >
@@ -811,11 +806,11 @@ export default function Actualites() {
 
       {/* ── 5. LECTEUR MODAL D'ARTICLE (MODAL READER) ── */}
       {selectedArticle && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-10 bg-black/80 backdrop-blur-md animate-fadeIn"
           onClick={() => setSelectedArticle(null)}
         >
-          <div 
+          <div
             className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white border border-black/15 shadow-2xl p-6 sm:p-10 lg:p-14 relative"
             onClick={(e) => e.stopPropagation()}
           >
@@ -850,10 +845,10 @@ export default function Actualites() {
 
             {/* Image d'illustration de l'article */}
             <div className="relative aspect-[16/9] w-full overflow-hidden mb-8 border border-black/10 bg-[#021520]">
-              <img 
-                src={selectedArticle.image} 
+              <img
+                src={selectedArticle.image}
                 alt={selectedArticle.title}
-                className="w-full h-full object-cover" 
+                className="w-full h-full object-cover"
               />
             </div>
 

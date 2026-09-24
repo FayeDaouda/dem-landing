@@ -4,7 +4,6 @@ import { gsap } from "gsap";
 import { SplitText } from "../../utils/SplitText.js";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MiniTitleWithBar from "../atoms/MiniTitleWithBar.jsx";
-import CarouselParallax from "./CarouselParallax.jsx";
 import CoursierSimulator from "../atoms/CoursierSimulator.jsx";
 import useIsDesktop from "../../hooks/useIsDesktop.js";
 
@@ -12,17 +11,22 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function ServiceElement({
     id,
+    number,
     title,
     subtitle,
+    summary,
     content,
     detailedDescription,
+    methodeTravail,
+    valeurAjoutee,
     highlights = [],
-    keys,
+    keys = [],
     img,
     miniTitleWithBar,
     linkText,
     linkUrl,
-    projects,
+    badge,
+    audience,
     hasSimulator,
     simulator
 }) {
@@ -34,6 +38,9 @@ export default function ServiceElement({
     const headerWrapper = useRef(null);
     const sectionHeader = useRef(null);
     const keysRef = useRef(null);
+    const imageContainerRef = useRef(null);
+
+    const mainContent = summary || content;
 
     // Calcul du spacer height
     useLayoutEffect(() => {
@@ -45,34 +52,33 @@ export default function ServiceElement({
         setSpacerHeight(compPaddingTop);
     }, []);
 
-    // Animations GSAP
+    // Animations GSAP (Pin Header + Scroll Scrub)
     useEffect(() => {
         const ctx = gsap.context(() => {
             document.fonts.ready.then(() => {
                 const el = sectionRef.current;
                 const header = sectionHeader.current;
                 const headerWrap = headerWrapper.current;
-                const image = el?.nextElementSibling?.querySelector("img");
+                const imageEl = imageContainerRef.current?.querySelector("img");
                 const keysContainer = keysRef.current;
 
-                if (!el || !header || !headerWrap || !image || !keysContainer) return;
+                if (!el || !header || !headerWrap || !imageEl || !keysContainer) return;
 
                 // Nettoyage des ScrollTriggers existants
                 cleanupScrollTriggers();
 
                 // Initialisation des animations
                 initializeSplitTexts(el, keysContainer);
-                createPinAnimation(headerWrap, image);
+                createPinAnimation(headerWrap, imageEl);
 
                 if (isDesktop) {
-                    createContentAnimations(el);
                     createKeysAnimation(keysContainer);
                 }
 
                 // Refresh après création
                 setTimeout(() => ScrollTrigger.refresh(), 150);
             });
-        }, sectionRef);
+        }, compRef);
 
         return () => {
             ctx.revert();
@@ -93,11 +99,6 @@ export default function ServiceElement({
 
     // Initialisation des SplitText
     const initializeSplitTexts = (el, keysContainer) => {
-        const contentDiv = el.querySelector(".content");
-        if (contentDiv) {
-            new SplitText(contentDiv, { type: "lines" });
-        }
-
         try {
             const keyNodes = keysContainer.querySelectorAll(".keys");
             if (keyNodes.length) {
@@ -108,7 +109,7 @@ export default function ServiceElement({
         }
     };
 
-    // Création de l'animation de pin
+    // Création de l'animation de PIN HEADER
     const createPinAnimation = (headerWrap, image) => {
         const headerWrapHeight = headerWrap.offsetHeight;
         const endValue = `bottom top+=${-20 + headerWrapHeight}px`;
@@ -123,52 +124,6 @@ export default function ServiceElement({
             anticipatePin: 1,
             id: `pin-${id}`
         });
-    };
-
-    // Animations du contenu
-    const createContentAnimations = (el) => {
-        const contentDiv = el.querySelector(".content");
-        if (!contentDiv) return;
-
-        const splitContent = new SplitText(contentDiv, { type: "lines" });
-
-        // Animation scroll du contenu
-        gsap.fromTo(contentDiv,
-            { y: 0 },
-            {
-                y: () => {
-                    const parentHeight = el.offsetHeight - 200;
-                    const contentHeight = contentDiv.offsetHeight;
-                    return parentHeight - contentHeight;
-                },
-                ease: "none",
-                scrollTrigger: {
-                    trigger: el,
-                    start: "top top",
-                    end: "bottom bottom",
-                    scrub: 1,
-                    invalidateOnRefresh: true,
-                    id: `content-scroll-${id}`,
-                }
-            }
-        );
-
-        // Animation des lignes du contenu
-        if (splitContent.lines?.length) {
-            gsap.from(splitContent.lines, {
-                yPercent: 100,
-                stagger: 0.1,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: el,
-                    start: "top 85%",
-                    end: "top 60%",
-                    toggleActions: "play reverse play reverse",
-                    scrub: true,
-                    id: `content-lines-${id}`,
-                }
-            });
-        }
     };
 
     // Animation des keys
@@ -198,78 +153,117 @@ export default function ServiceElement({
     const paddingClass = isDesktop ? "" : "px-5";
 
     return (
-        <div ref={compRef} className="lg:px-12 pb-16 border-t border-black/10" id={id}>
+        <div ref={compRef} className="lg:px-12 pb-16 border-t border-black/10 scroll-mt-20" id={id}>
             <div ref={sectionRef}>
-                {/* Header Section */}
-                <div ref={headerWrapper} className="pin-wrapper z-10 w-full">
-                    <div ref={sectionHeader} className={`flex flex-wrap pt-24 bg-white ${paddingClass}`}>
-                        <div className="w-full md:w-1/2 pl-0">
-                            <small className="inline-block px-2.5 py-1 rounded-none text-[0.72rem] font-semibold uppercase tracking-wider bg-cyan/15 text-cyan-dark font-['Raleway',sans-serif]">
-                                {subtitle}
-                            </small>
-                            <h1 className="mt-3 mb-0 text-3xl sm:text-4xl md:text-5xl font-black uppercase font-['DM_Sans',sans-serif] text-dark">
-                                <span className="font-['Poppins',sans-serif] text-cyan-2 mr-1">{"/>"} </span>
+                {/* ── PIN HEADER SECTION (GSAP SCROLL PIN) ── */}
+                <div ref={headerWrapper} className="pin-wrapper z-20 w-full">
+                    <div ref={sectionHeader} className={`flex flex-wrap pt-20 pb-4 bg-white ${paddingClass}`}>
+                        <div className="w-full md:w-2/3 pl-0">
+                            <div className="flex items-center gap-3 mb-2">
+                                
+                                {badge && (
+                                    <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
+                                        {badge}
+                                    </span>
+                                )}
+                            </div>
+                            <h2 className="mt-2 mb-0 text-3xl sm:text-4xl md:text-5xl font-black uppercase font-['DM_Sans',sans-serif] text-dark leading-tight">
+                                <span className="font-['Poppins',sans-serif] text-[#0086C8] mr-2">{"/>"}</span>
                                 {title}
-                            </h1>
+                            </h2>
                         </div>
-                        <div className="hidden md:block md:w-1/2" />
+                        <div className="hidden md:flex md:w-1/3 items-end justify-end pb-2">
+                            {audience && (
+                                <span className="text-xs text-slate-500 font-['Poppins',sans-serif] text-right">
+                                    <strong className="text-slate-700">Cible :</strong> {audience}
+                                </span>
+                            )}
+                        </div>
                     </div>
-                    <div className="w-full h-5 bg-gradient-to-b from-white to-transparent" />
+                    {/* Dégradé doux pour séparer le header épinglé du contenu qui défile */}
+                    <div className="w-full h-6 bg-gradient-to-b from-white via-white/80 to-transparent pointer-events-none" />
                 </div>
 
-                {/* Content Section */}
-                <div className="w-full">
+                {/* ── CONTENT SECTION (DÉFILE SOUS LE HEADER PINNÉ) ── */}
+                <div className="w-full pt-4">
                     <div className={`flex flex-wrap justify-between relative ${paddingClass}`}>
-                        <div className="w-full md:w-1/2 relative pl-0 mb-6 md:mb-0">
-                            <p className="content m-0 font-['Poppins',sans-serif] text-base leading-relaxed text-dark max-w-[500px]">
-                                {content}
+                        
+                        {/* Colonne gauche : Description & Pitch */}
+                        <div className="w-full md:w-1/2 relative pl-0 mb-6 md:mb-0 pr-0 md:pr-8">
+                            <p className="m-0 font-['Poppins',sans-serif] text-base sm:text-lg leading-relaxed text-dark max-w-[550px]">
+                                {mainContent}
                             </p>
+                            
+                            {/* Méthode de travail intégrée */}
+                            {methodeTravail && (
+                                <div className="mt-6 p-5 bg-[#FAFCFD] border-l-4 border-[#0086C8] border-y border-r border-slate-200">
+                                    <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-1.5">
+                                        Notre méthode de travail
+                                    </span>
+                                    <p className="text-xs sm:text-sm text-slate-700 font-['Poppins',sans-serif] leading-relaxed m-0">
+                                        {methodeTravail}
+                                    </p>
+                                </div>
+                            )}
                         </div>
 
-                        <div ref={keysRef} className="w-full md:w-1/2 pl-0 flex flex-col">
+                        {/* Colonne droite : Keys & Points d'engagement */}
+                        <div ref={keysRef} className="w-full md:w-1/2 pl-0 flex flex-col justify-between">
                             <div className="font-['Raleway',sans-serif]">
                                 {keys?.length > 0 ? (
                                     keys.map((key, index) => (
-                                        <h3 key={index} className="font-semibold text-lg md:text-xl text-dark my-1 keys font-['Raleway',sans-serif]">
-                                            {key}
+                                        <h3 key={index} className="font-semibold text-base sm:text-lg text-dark my-2 keys font-['Raleway',sans-serif] flex items-start gap-2.5">
+                                            <span className="w-1.5 h-1.5 bg-[#0086C8] rounded-none mt-2.5 shrink-0" />
+                                            <span>{key}</span>
                                         </h3>
                                     ))
                                 ) : (
-                                    <h3 className="font-semibold text-lg md:text-xl text-muted my-1 keys font-['Raleway',sans-serif]">
-                                        No keys provided
+                                    <h3 className="font-semibold text-base text-muted my-1 keys font-['Raleway',sans-serif]">
+                                        Standards d'excellence opérationnelle
                                     </h3>
                                 )}
                             </div>
+
+                            {/* Encadré Valeur Ajoutée DEM */}
+                            {valeurAjoutee && (
+                                <div className="mt-6 p-5 bg-[#021520] text-white border border-black/10">
+                                    <span className="font-serif italic text-xs text-[#00D2FF] block mb-1">
+                                        La valeur ajoutée DEM
+                                    </span>
+                                    <p className="text-xs sm:text-sm font-bold text-white font-['DM_Sans',sans-serif] leading-snug m-0">
+                                        {valeurAjoutee}
+                                    </p>
+                                </div>
+                            )}
                         </div>
+
                     </div>
                 </div>
             </div>
 
-            {/* Image Section */}
-            {
-                img && (
-                    <div className="w-full my-8 overflow-hidden h-[clamp(280px,60vw,600px)] rounded-none shadow-xl">
-                        <img
-                            src={img}
-                            alt={title}
-                            className="w-full h-full object-cover rounded-none"
-                        />
-                    </div>
-                )
-            }
+            {/* ── IMAGE SECTION (DÉCLENCHEUR DU DÉCROCHAGE / UNPIN DU HEADER) ── */}
+            {img && (
+                <div ref={imageContainerRef} className="w-full my-10 overflow-hidden h-[clamp(280px,50vw,540px)] rounded-none shadow-xl border border-black/10 relative">
+                    <img
+                        src={img}
+                        alt={title}
+                        className="w-full h-full object-cover rounded-none grayscale contrast-110 hover:grayscale-0 transition-all duration-700"
+                    />
+                </div>
+            )}
 
-            {/* Descriptive Section below the Image */}
+            {/* ── DESCRIPTIVE SECTION BELOW THE IMAGE (STANDARDS & CTA) ── */}
             <div className={`mt-8 mb-4 ${paddingClass}`}>
-                <MiniTitleWithBar content={miniTitleWithBar || "EXCELLENCE OPÉRATIONNELLE"} />
+                <MiniTitleWithBar content={miniTitleWithBar || "EXCELLENCE OPÉRATIONNELLE DAKAR"} />
                 <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                     <div className="lg:col-span-7 flex flex-col gap-6">
                         <p className="font-['Poppins',sans-serif] text-base md:text-lg leading-relaxed text-dark/80 m-0">
-                            {detailedDescription || content}
+                            {detailedDescription || mainContent}
                         </p>
                         <div className="pt-2">
                             <Link
                                 to={linkUrl || "/contact"}
-                                className="inline-flex items-center gap-3 uppercase tracking-wider text-xs sm:text-sm font-bold px-6 py-3.5 rounded-none border border-cyan-2 text-cyan-2 hover:bg-cyan-2 hover:text-white transition-all duration-250 cursor-pointer"
+                                className="inline-flex items-center gap-3 uppercase tracking-wider text-xs sm:text-sm font-bold px-6 py-3.5 rounded-none border border-[#0086C8] text-[#0086C8] hover:bg-[#0086C8] hover:text-white transition-all duration-200 cursor-pointer"
                             >
                                 <span>{linkText ? `EN SAVOIR PLUS — ${linkText}` : "EN SAVOIR PLUS"}</span>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -280,9 +274,9 @@ export default function ServiceElement({
                     </div>
 
                     {highlights?.length > 0 && (
-                        <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-3">
+                        <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
                             {highlights.map((item, idx) => (
-                                <div key={idx} className="p-4 rounded-none bg-slate-50 border border-slate-100 flex items-center justify-between">
+                                <div key={idx} className="p-4 rounded-none bg-slate-50 border border-slate-200 flex items-center justify-between">
                                     <span className="text-xs uppercase tracking-wider font-semibold text-slate-500 font-['Raleway',sans-serif]">
                                         {item.label}
                                     </span>
@@ -296,28 +290,24 @@ export default function ServiceElement({
                 </div>
             </div>
 
-            {/* Simulateur interactif de gains (pour le service coursiers) */}
-            {(hasSimulator || id === "coursiers-dem") && (
-                <div className={`mt-8 ${paddingClass}`}>
+            {/* ── SIMULATEUR DES COURSIERS (INTÉGRÉ DIRECTEMENT AU SERVICE DES COURSIERS) ── */}
+            {(hasSimulator || id === "flotte-dediee" || id === "coursiers-dem") && (
+                <div className={`mt-10 pt-8 border-t border-black/10 ${paddingClass}`}>
+                    <div className="mb-4">
+                        <span className="font-serif italic text-sm text-[#0086C8] block mb-1">
+                            Transparence & Rémunération
+                        </span>
+                        <h3 className="text-xl sm:text-2xl font-black uppercase text-dark tracking-tight font-['DM_Sans',sans-serif] m-0">
+                            Simulateur de revenus coursier DEM
+                        </h3>
+                    </div>
                     <CoursierSimulator
                         ratePerDelivery={simulator?.ratePerDelivery || 1200}
-                        title="Simulateur de revenus coursier DEM"
-                        subtitle="Ajustez le curseur selon le nombre de livraisons par jour pour projeter vos revenus réels"
+                        title="Calculateur de gains en direct"
+                        subtitle="Ajustez le curseur selon le nombre de livraisons par jour pour projeter vos revenus réels à Dakar"
                     />
                 </div>
             )}
-
-            {/* Projects / Carousel Section (conservé en commentaire pour réactivation à la demande) */}
-            {/* {
-                projects && (
-                    <div className={`mt-12 ${paddingClass}`}>
-                        <MiniTitleWithBar content={miniTitleWithBar} />
-                        <div className="mt-5">
-                            <CarouselParallax projects={projects} />
-                        </div>
-                    </div>
-                )
-            } */}
         </div>
     );
 }
