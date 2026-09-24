@@ -3,41 +3,41 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
 import SolutionPoint from '../components/sections/SolutionPoint.jsx';
-
+import coursierLambda from "../assets/coursierLambda1.png"
 gsap.registerPlugin(ScrollTrigger);
 
 const SOLUTION_POINTS = [
   {
     number: "01",
-    category: "Algorithme & Cartographie",
-    title: "Dispatch Intelligent & Routage Contextuel Dakarois",
-    description: "Loin des logiciels importés inopérants sans numérotation de rue, le moteur DEM intègre les repères visuels dakarois et contourne dynamiquement les goulots d'étranglement de la VDN, de la Corniche et de l'autoroute.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=85",
-    imageAlt: "Dispatch intelligent et carte interactive"
-  },
-  {
-    number: "02",
-    category: "Paiement & Confiance",
-    title: "Sécurisation Cash on Delivery & Traçabilité OTP",
-    description: "Finies les disparitions d'espèces et les contestations de livraison. Chaque colis remis fait l'objet d'une confirmation par code OTP sécurisé. Les sommes collectées sont automatiquement reversées sur vos comptes Wave ou Orange Money sous 24h.",
-    image: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=900&auto=format&fit=crop&q=85",
-    imageAlt: "Sécurisation Cash on Delivery Wave Orange Money"
-  },
-  {
-    number: "03",
-    category: "L'Humain au Guidon",
-    title: "Flotte Professionnalisée & Équipements Normés",
-    description: "Nos coursiers sont les ambassadeurs de votre marque auprès de vos clients finaux. Ils disposent d'équipements de protection complets, de caissons isothermes étanches, d'une formation rigoureuse et d'une rémunération hebdomadaire garantie et transparente.",
+    category: "Le Coursier au Centre",
+    title: "Une profession, pas un plan B",
+    description: "Chez DEM, le coursier n'est pas un sous-traitant jetable. C'est le premier maillon qu'on a structuré : rémunération transparente et hebdomadaire, équipement de protection complet, caisson isotherme normé, formation terrain rigoureuse et outils de navigation adaptés à Dakar. Quand le livreur est valorisé, toute la chaîne en profite.",
     image: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85",
     imageAlt: "Coursier professionnel équipé DEM"
   },
   {
-    number: "04",
-    category: "Outils Entreprises",
-    title: "Portail DEM Pro & Intégration E-Commerce",
-    description: "Un espace unique pour piloter l'ensemble de vos expéditions : déclenchement de courses groupées en quelques clics, partage du lien de suivi GPS au client final, tarification dégressive transparente et facturation mensuelle simplifiée.",
+    number: "02",
+    category: "L'Expérience Client",
+    title: "Suivi live, paiement sécurisé & preuve de remise",
+    description: "Le client final suit son colis en temps réel sur la carte, paie en ligne ou à la livraison en toute confiance, et valide la réception par code OTP. Zéro zone d'ombre, zéro litige : une expérience d'achat digne des meilleurs standards mondiaux, adaptée à Dakar.",
+    image: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=900&auto=format&fit=crop&q=85",
+    imageAlt: "Expérience client suivi GPS et paiement sécurisé"
+  },
+  {
+    number: "03",
+    category: "DEM Pro · Entreprises & E-Commerce",
+    title: "Portail marchand, catalogue digital & reversements 24h",
+    description: "Un espace unique pour piloter toutes vos expéditions : courses groupées en un clic, lien de commande partageable sur vos réseaux, encaissement COD sécurisé avec reversement sous 24h sur Wave ou Orange Money, et facturation automatique avec votre logo et NINEA.",
     image: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85",
-    imageAlt: "Portail Marchand et intégration API"
+    imageAlt: "Portail DEM Pro et intégration e-commerce"
+  },
+  {
+    number: "04",
+    category: "Chef de Flotte",
+    title: "Structurez votre flotte, rentabilisez vos coursiers",
+    description: "Vous gérez déjà des livreurs ? DEM vous donne le cadre pour professionnaliser votre activité : pass prépayés dégressifs, dispatch automatique, suivi de performance par coursier et revenus prévisibles. Transformez votre flotte informelle en véritable entreprise logistique.",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=85",
+    imageAlt: "Gestion de flotte et tableau de bord Chef de Flotte"
   }
 ];
 
@@ -138,13 +138,13 @@ export default function NotreHistoire() {
 
               <div className="space-y-4 text-base sm:text-lg text-slate-700 font-['Poppins',sans-serif] leading-relaxed pt-2">
                 <p>
-                  Dakar figure parmi les métropoles les plus bouillonnantes d'Afrique de l'Ouest. Ses commerçants créent, ses boutiques vendent sur les réseaux sociaux et sa population consomme à toute allure. Pourtant, un blocage structurel persistait : <strong>l'absence totale d'organisation de la mobilité du dernier kilomètre</strong>.
+                  Dakar figure parmi les métropoles les plus dynamiques d'Afrique de l'Ouest. Ses commerçants innovent, ses boutiques vendent sur les réseaux sociaux et sa population consomme à toute vitesse. Des solutions de livraison existaient déjà, mais pour les coursiers, elles restaient <strong>un véritable casse-tête financier, pensé sans eux et rarement adapté à leur réalité</strong>.
                 </p>
                 <p>
-                  Pour les commerçants, chaque envoi était une loterie. Absence d'adressage standardisé, retards chroniques de plusieurs heures, coursiers informels introuvables au téléphone et litiges récurrents sur les encaissements en espèces : le commerce dakarois subissait une perte massive de confiance et de chiffre d'affaires.
+                  Commissions trop élevées, reversements tardifs, aucune visibilité sur les gains de la journée, zéro couverture en cas de litige : les livreurs portaient le système sur leurs épaules sans en tirer un revenu juste. Côté commerçants, le résultat se faisait sentir, retards chroniques, coursiers démotivés, encaissements opaques et confiance client qui s'effritait à chaque colis.
                 </p>
                 <p>
-                  Il ne manquait pas de motos à Dakar : il manquait un cadre technologique rigoureux, une infrastructure de paiement sécurisée et une considération humaine pour relier ces maillons essentiels de la ville.
+                  Les motos ne manquaient pas à Dakar, et les plateformes non plus. Ce qui manquait, c'était un modèle qui prenne enfin en compte le coursier, qui sécurise ses revenus, simplifie son quotidien et transforme un métier subi en véritable profession.
                 </p>
               </div>
             </div>
@@ -153,7 +153,7 @@ export default function NotreHistoire() {
             <div className="lg:col-span-6 relative mt-8 lg:mt-0 pb-16 sm:pb-24">
               <div className="relative w-full">
 
-                {/* Image Principale avec rideau */}
+                {/* Image Principale — Coursier lambda */}
                 <div
                   className="parallax-item relative z-10 w-full aspect-[4/5] bg-slate-200 border border-black/10 shadow-2xl overflow-hidden h-curtain-wrapper"
                   data-speed="0.1"
@@ -161,34 +161,13 @@ export default function NotreHistoire() {
                   data-curtain-origin="right"
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=1000&auto=format&fit=crop&q=85"
-                    alt="Circulation et logistique Dakar"
+                    src={coursierLambda}
+                    alt="Coursier lambda à moto dans les rues de Dakar"
                     className="h-curtain-img w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-700 will-change-transform"
                   />
                   <div className="h-curtain-panel absolute inset-0 z-20 pointer-events-none bg-[#0086C8]" />
                   <div className="absolute top-4 left-4 z-30 bg-[#021520]/90 backdrop-blur-md px-3 py-1 text-[10px] font-mono uppercase tracking-widest text-white border border-white/20">
                     FIG. 01 — RÉALITÉ URBAINE
-                  </div>
-                </div>
-
-                {/* Image Secondaire Superposée en Parallaxe */}
-                <div
-                  className="parallax-item absolute -bottom-12 right-0 sm:-right-6 w-2/3 aspect-[3/4] bg-[#021520] border-4 border-white shadow-2xl z-20 overflow-hidden"
-                  data-speed="0.25"
-                  data-direction="up"
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&auto=format&fit=crop&q=85"
-                    alt="Le défi de la mobilité sur le terrain"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/90 to-transparent text-white z-30">
-                    <span className="font-serif italic text-xs block mb-0.5 text-[#00D2FF]">
-                      Terrain & Réalité
-                    </span>
-                    <span className="text-xs font-bold uppercase tracking-wider block">
-                      Le défi de la synchronisation
-                    </span>
                   </div>
                 </div>
 
@@ -350,7 +329,7 @@ export default function NotreHistoire() {
             </h2>
 
             <p className="text-base sm:text-lg text-slate-700 font-['Poppins',sans-serif] leading-relaxed">
-              Face à la faillite d'un modèle artisanal et fragmenté, DEM a été créé avec une mission claire : transformer la mobilité urbaine dakaroise en une infrastructure technologique fiable, prédictible et humaine. Notre cap s'articule autour de trois piliers fondamentaux.
+              Face à un écosystème qui oubliait ceux qui le font tourner, DEM a été créé avec une mission claire : repenser la mobilité urbaine dakaroise en plaçant le coursier au centre — avec une infrastructure technologique fiable, des revenus sécurisés et une considération humaine à chaque maillon. Notre cap s'articule autour de trois piliers fondamentaux.
             </p>
           </div>
 
@@ -364,7 +343,7 @@ export default function NotreHistoire() {
                   /01 · Notre Vision
                 </span>
                 <p className="text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-                  Bâtir le système d'exploitation de la mobilité commerciale en Afrique de l'Ouest. Un écosystème où chaque commerçant, de la créatrice indépendante au grand compte de distribution, dispose instantanément de la puissance logistique des leaders mondiaux.
+                  Bâtir le premier écosystème de mobilité commerciale en Afrique de l'Ouest qui valorise autant le coursier que le commerçant. Un modèle où chaque livreur dispose d'outils dignes de ce nom, et où chaque commerce, de la créatrice indépendante au grand compte, accède à une logistique de classe mondiale.
                 </p>
               </div>
             </div>
@@ -376,7 +355,7 @@ export default function NotreHistoire() {
                   /02 · Notre Ambition
                 </span>
                 <p className="text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-                  Devenir le réflexe incontournable de la livraison Same-Day à Dakar et dans la sous-région, avec un standard de 99,4% de réussite, des délais garantis de 20 à 45 minutes et une digitalisation absolue de tous les flux financiers.
+                  Devenir le réflexe incontournable de la livraison Same-Day à Dakar et dans la sous-région, en prouvant qu'un coursier bien équipé et justement rémunéré livre mieux. Notre standard : 99,4% de réussite, des délais de 20 à 45 minutes et une digitalisation totale des flux financiers.
                 </p>
               </div>
             </div>
@@ -388,7 +367,7 @@ export default function NotreHistoire() {
                   /03 · Nos Actions
                 </span>
                 <p className="text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-                  Développer des algorithmes contextuels adaptés à la réalité dakaroise, équiper et valoriser nos motocyclistes, garantir des reversements Cash on Delivery sous 24h via Wave et Orange Money, et connecter les marchands par API directe.
+                  Développer des algorithmes contextuels adaptés à la réalité dakaroise, sécuriser les revenus de nos coursiers avec des reversements transparents sous 24h.
                 </p>
               </div>
             </div>
@@ -457,11 +436,11 @@ export default function NotreHistoire() {
             </h2>
 
             <p className="text-base sm:text-lg text-white/80 font-['Poppins',sans-serif] leading-relaxed">
-              Dakar concentre près de 25% de la population nationale et 80% des activités économiques du Sénégal sur une presqu'île exiguë de 550 km². Cette configuration géographique unique fait de la mobilité urbaine le défi central et le principal levier de compétitivité de la métropole.
+              Dakar concentre près de 25% de la population nationale et 80% des activités économiques du Sénégal sur une presqu'île de 550 km². Cette densité crée une demande massive de livraison. Pour les coursiers, c'est à la fois une opportunité immense et un défi quotidien que DEM transforme en levier de croissance.
             </p>
           </div>
 
-          {/* Grille des 3 dimensions du potentiel à Dakar (bordures nettes, sans arrondi) */}
+          {/* Grille des 3 dimensions du potentiel à Dakar */}
           <div className="grid grid-cols-1 md:grid-cols-3 border border-white/10 divide-y md:divide-y-0 md:divide-x divide-white/10 bg-white/[0.02]">
 
             <div className="p-8 lg:p-12 flex flex-col justify-between">
@@ -470,10 +449,10 @@ export default function NotreHistoire() {
                   01 · Saturation & Géographie
                 </span>
                 <h3 className="text-xl font-bold uppercase text-white mb-4">
-                  La Presqu'île en entonnoir
+                  La presqu'île en entonnoir
                 </h3>
                 <p className="text-sm text-white/70 font-['Poppins',sans-serif] leading-relaxed mb-6">
-                  Avec des axes routiers majeurs régulièrement saturés, le transport deux-roues structuré et synchronisé est la seule solution capable de garantir des flux rapides et constants entre le Plateau, les Almadies, la banlieue et Diamniadio.
+                  Axes saturés, embouteillages chroniques : le deux-roues reste le seul moyen de garantir des flux rapides entre le Plateau, les Almadies, la banlieue et Diamniadio. Les coursiers qui maîtrisent ce terrain sont la colonne vertébrale de la logistique dakaroise.
                 </p>
               </div>
             </div>
@@ -487,7 +466,7 @@ export default function NotreHistoire() {
                   L'explosion du Social Commerce
                 </h3>
                 <p className="text-sm text-white/70 font-['Poppins',sans-serif] leading-relaxed mb-6">
-                  Des milliers de commerces indépendants réalisent l'essentiel de leurs ventes via WhatsApp, Instagram et TikTok. Ce commerce informel dynamique exige une logistique instantanée pour transformer les intentions d'achat en ventes livrées.
+                  Des milliers de commerces vendent via WhatsApp, Instagram et TikTok. Chaque vente doit être livrée dans l'heure. Pour le coursier, c'est un volume de courses en croissance constante, à condition d'avoir les bons outils pour le capter.
                 </p>
               </div>
             </div>
@@ -501,7 +480,7 @@ export default function NotreHistoire() {
                   L'interconnexion Mobile Money
                 </h3>
                 <p className="text-sm text-white/70 font-['Poppins',sans-serif] leading-relaxed mb-6">
-                  La généralisation des paiements mobiles (Wave, Orange Money) permet pour la première fois de synchroniser le déplacement physique du colis et le transfert instantané de valeur, éliminant les frictions d'espèces.
+                  Wave et Orange Money permettent enfin de synchroniser le déplacement du colis et le transfert d'argent. Pour le coursier, c'est la fin des litiges sur les espèces et la garantie d'être payé rapidement, sans intermédiaire opaque.
                 </p>
               </div>
             </div>
@@ -513,7 +492,7 @@ export default function NotreHistoire() {
 
 
       {/* ══════════════════════════════════════════════════════════════════════
-          BLOC 5 — CLÔTURE (UNE PHRASE MARKETING EN GUISE D'ACCROCHE FINALE)
+          BLOC 5 — CLÔTURE
       ══════════════════════════════════════════════════════════════════════ */}
       <section
         id="cloture"
@@ -523,12 +502,12 @@ export default function NotreHistoire() {
         <div className="max-w-[1200px] mx-auto text-center relative z-10">
 
           <blockquote className="text-3xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight leading-[1.05] text-white max-w-5xl mx-auto">
-            « Nous ne déplaçons pas seulement des colis : <br className="hidden sm:inline" />
+            « Nous ne déplaçons pas seulement des colis. <br className="hidden sm:inline" />
             <span className="text-[#00D2FF]">
-              nous synchronisons
+              Nous donnons aux coursiers
             </span>{' '}
-            le pouls économique <br className="hidden sm:inline" />
-            et humain de <span className="text-transparent" style={{ WebkitTextStroke: '1.5px #FFFFFF' }}>Dakar.</span> »
+            les moyens de transformer <br className="hidden sm:inline" />
+            Dakar, <span className="text-transparent" style={{ WebkitTextStroke: '1.5px #FFFFFF' }}>course après course.</span> »
           </blockquote>
 
           <div className="w-16 h-[2px] bg-[#00D2FF] mx-auto mt-12" />
