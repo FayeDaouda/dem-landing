@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import PageHeroSection from '../components/sections/PageHeroSection.jsx';
+import AvantagesDemProSection from '../components/sections/AvantagesDemProSection.jsx';
+import TerrainVsDemSection from '../components/sections/TerrainVsDemSection.jsx';
+import PricingDemPro from '../components/sections/PricingDemPro.jsx';
 import DownloadAppCTA from '../components/sections/DownloadAppCTA.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
-import PricingDemPro from '../components/sections/PricingDemPro.jsx';
 
 export default function DemPro() {
   const [selectedPlan, setSelectedPlan] = useState('business');
@@ -10,16 +12,20 @@ export default function DemPro() {
   return (
     <div className="w-full bg-white text-dark min-h-screen font-['DM_Sans',sans-serif] selection:bg-cyan selection:text-dark">
       
-      {/* ── 1. HERO SECTION AWWWARDS ── */}
+      {/* ── 1. HERO SECTION (PHRASE F RETENUE) ── */}
       <PageHeroSection
-        contentMiniBar="SOLUTIONS E-COMMERCE & GRANDS COMPTES"
-        firstTitle="Propulsez la logistique de votre business plus facilement."
-        secondTitle="Livraison Same-Day, reversement COD sous 24h et intégration e-commerce fluide partout à Dakar."
+        contentMiniBar="SOLUTIONS ENTREPRISES & E-COMMERCE"
+        firstTitle="Organisez mieux, vendez plus."
+        secondTitle="DEM Pro, votre logistique nouvelle génération."
       />
 
+      {/* ── 2. CE QUE VOUS GAGNEZ AVEC DEM PRO (AVANTAGES DU COMPTE) ── */}
+      <AvantagesDemProSection />
 
+      {/* ── 3. COMPARATIF EN 2 COLONNES : PROBLÈMES TERRAIN VS SOLUTIONS DEM ── */}
+      <TerrainVsDemSection />
 
-      {/* ── 3. TARIFICATION, AVANTAGES & TABLEAU COMPARATIF DEM PRO (AWWWARDS) ── */}
+      {/* ── 4. LES OFFRES DEM PRO (STARTER / BUSINESS / PREMIUM) & TABLEAU COMPARATIF ── */}
       <PricingDemPro onSelectPlan={(plan) => setSelectedPlan(plan)} />
 
       {/* ── 5. SECTION TÉLÉCHARGEMENT & ONBOARDING DEM PRO ── */}
