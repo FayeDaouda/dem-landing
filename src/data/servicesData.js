@@ -3,16 +3,48 @@
 
 export const servicesData = [
   {
-    id: "express-point-a-point",
+    id: "coursiers",
     number: "01",
-    title: "Livraison Express Point-à-Point",
-    subtitle: "SERVICE 01 · PARTICULIERS & URGENCES",
-    badge: "Particuliers & Urgences",
-    audience: "Particuliers, professionnels pressés & envois immédiats",
-    summary: "Acheminement direct de plis, colis, clés ou médicaments partout à Dakar. Un coursier géolocalisé est assigné en moins de 10 minutes pour une livraison garantie sans détour.",
-    detailedDescription: "Conçue pour répondre à l'urgence du quotidien dakarois, la livraison Express Point-à-Point DEM mobilise le coursier le plus proche de votre point de collecte. Le trajet s'effectue en direct, sans transit intermédiaire ni regroupement chronophage. De la prise en charge à la remise en main propre, vous suivez le déplacement du livreur en temps réel sur carte interactive.",
-    methodeTravail: "Routage contextuel dakarois sans blocage d'adresse : notre système s'appuie sur les repères visuels réels de la capitale. La remise finale est obligatoirement validée par code confidentiel OTP, assurant qu'aucun colis ne soit remis à un tiers non autorisé.",
-    valeurAjoutee: "Gain de temps absolu, suppression des appels à répétition pour situer l'adresse et sécurisation totale du colis de bout en bout.",
+    title: "Coursiers",
+    subtitle: "SERVICE 01 · RECRUTEMENT, ÉQUIPEMENT & REVENUS",
+    badge: "Coursiers d'abord",
+    audience: "Livreurs indépendants, conducteurs de moto & candidats livreurs",
+    summary: "Rejoignez le réseau DEM : application avec repères dakarois réels, reversement transparent des gains, équipements complets et fin des négociations au téléphone.",
+    detailedDescription: "DEM replace le coursier au centre de l'équation logistique. Fini le harcèlement téléphonique, les litiges de monnaie et les pertes de temps. Grâce à notre application dédiée, chaque coursier reçoit des missions claires, guidées par les repères urbains de Dakar, avec une tarification juste et des gains versés chaque semaine sur Wave ou Orange Money.",
+    methodeTravail: "Affectation intelligente selon la position réelle, validation des étapes par code OTP confidentiel et simulateur de gains intégré pour une visibilité totale sur vos revenus.",
+    valeurAjoutee: "Protection financière, valorisation du métier, équipements de sécurité fournis et autonomie complète.",
+    highlights: [
+      { label: "Versement des gains", value: "Hebdomadaire Wave / OM" },
+      { label: "Pourboires", value: "100% au coursier" },
+      { label: "Équipements", value: "Casque & caisson fournis" },
+      { label: "Modèle", value: "Pass fixe sans commission" }
+    ],
+    keys: [
+      "Application mobile fluide avec navigation par repères dakarois",
+      "Paiement garanti chaque semaine sur Wave ou Orange Money",
+      "Zéro commission par course grâce aux formules de pass",
+      "Équipements de sécurité et caissons professionnels fournis",
+      "Assistance opérationnelle directe en cas d'imprévu sur la route"
+    ],
+    hasSimulator: true,
+    simulator: {
+      ratePerDelivery: 1200
+    },
+    img: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=1600&auto=format&fit=crop&q=85",
+    linkText: "Rejoindre la flotte DEM",
+    linkUrl: "/coursiers"
+  },
+  {
+    id: "clients-express",
+    number: "02",
+    title: "Clients",
+    subtitle: "SERVICE 02 · EXPÉRIENCE CLIENT & ENVOIS DU QUOTIDIEN",
+    badge: "Expérience Client",
+    audience: "Clients particuliers, résidents de Dakar & envois personnels urgents",
+    summary: "Acheminement direct de plis, clés, colis ou courses urgentes partout à Dakar. Suivez votre coursier en temps réel sur la carte et validez la remise par code confidentiel.",
+    detailedDescription: "Conçue pour simplifier le quotidien dakarois, la livraison Express DEM mobilise le coursier le plus proche en quelques minutes. Votre colis voyage en direct, sans transit intermédiaire ni détour inutile. De la prise en charge à la remise en main propre, vous suivez le déplacement du livreur en temps réel sur carte interactive.",
+    methodeTravail: "Assignation instantanée, repérage contextuel dakarois sans blocage d'adresse et validation finale obligatoire par code OTP sécurisé.",
+    valeurAjoutee: "Gain de temps immédiat, fin des appels incessants pour situer son domicile et sécurité absolue pour vos objets.",
     highlights: [
       { label: "Assignation coursier", value: "< 10 minutes" },
       { label: "Délai moyen constaté", value: "35 à 45 min" },
@@ -20,130 +52,98 @@ export const servicesData = [
       { label: "Disponibilité", value: "7 jours / 7" }
     ],
     keys: [
-      "Prise en charge directe sans rupture de charge",
-      "Assignation instantanée du motocycliste le plus proche",
-      "Traçabilité GPS en continu sur carte interactive",
-      "Validation de la remise par code OTP confidentiel",
-      "Paiement au choix : Wave, Orange Money ou Espèces"
+      "Prise en charge directe du coursier le plus proche",
+      "Traçabilité GPS continue sur carte interactive",
+      "Validation obligatoire de la remise par code OTP confidentiel",
+      "Paiement flexible : Wave, Orange Money ou espèces",
+      "Tarification claire et transparente dès la commande"
     ],
     img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=1600&auto=format&fit=crop&q=85",
     linkText: "Commander une course express",
     linkUrl: "/#download"
   },
   {
-    id: "flotte-dediee",
-    number: "02",
-    title: "Mise à Disposition de Flotte & Coursiers Dédiés",
-    subtitle: "SERVICE 02 · RECRUTEMENT & FLOTTE COURSIERS",
-    badge: "Flotte & Coursiers",
-    audience: "Livreurs indépendants, chaînes de restauration, pharmacies & PME",
-    summary: "Rejoignez la flotte des coursiers DEM ou déléguez intégralement votre logistique urbaine : conducteurs formés, matériels isothermes professionnels et revenus garantis.",
-    detailedDescription: "DEM place le coursier au cœur de son modèle économique. En devenant livreur partenaire ou en externalisant votre flotte avec DEM, vous bénéficiez d'une infrastructure complète : équipements de protection normés, caissons étanches, optimisation algorithmique des trajets et simulateur de gains intégré pour une transparence financière absolue.",
-    methodeTravail: "Affectation de coursiers attitrés formés aux exigences spécifiques de chaque secteur. En cas d'imprévu, un coursier relais issu de notre flotte prend le relais immédiatement sans interruption d'activité.",
-    valeurAjoutee: "Zéro charge mentale liée à la gestion de deux-roues, simulateur interactif pour piloter la rentabilité, et présence d'ambassadeurs soignés et ponctuels sur le terrain dakarois.",
-    highlights: [
-      { label: "Affectation", value: "Coursiers exclusifs & libres" },
-      { label: "Continuité de service", value: "Remplacement garanti" },
-      { label: "Équipements", value: "Caissons étanches / froid" },
-      { label: "Paiements gains", value: "Chaque semaine Wave / OM" }
-    ],
-    keys: [
-      "Flotte exclusive positionnée à votre siège ou en tournée",
-      "Conducteurs formés à votre relation client et vos procédures",
-      "Maintenance, carburant et assurances pris en charge",
-      "Simulateur de revenus en direct pour projeter les gains",
-      "Supervision opérationnelle par un chef de flotte DEM dédié"
-    ],
-    hasSimulator: true,
-    simulator: {
-      ratePerDelivery: 1200
-    },
-    img: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=1600&auto=format&fit=crop&q=85",
-    linkText: "Rejoindre ou réserver la flotte",
-    linkUrl: "/coursiers"
-  },
-  {
-    id: "dem-pro-ecommerce",
+    id: "dem-pro",
     number: "03",
-    title: "DEM PRO : E-Commerce & Vente en Ligne",
-    subtitle: "SERVICE 03 · COMMERÇANTS & MARQUES",
-    badge: "E-Commerce & Boutiques",
-    audience: "Boutiques en ligne, créateurs de mode, commerçants digitaux",
-    summary: "La logistique professionnelle du dernier kilomètre pour les marchands dakarois : ramassages réguliers, expéditions Same-Day et vitrine de vente connectée.",
-    detailedDescription: "DEM PRO transforme la livraison en un levier de conversion commerciale. Nous prenons en charge vos expéditions directement à votre boutique ou atelier pour les livrer le jour même à vos clients partout dans la presqu'île et sa banlieue. Vos clients reçoivent un lien de suivi en direct et sont notifiés avant l'arrivée du coursier.",
-    methodeTravail: "Planification des créneaux de ramassage, communication proactive par SMS/WhatsApp avec le destinataire pour convenir du meilleur moment de passage, réduisant drastiquement les échecs de livraison et les retours d'articles.",
-    valeurAjoutee: "Baisse de plus de 30% des refus de colis, fidélisation accrue de vos acheteurs et gain d'au moins 3 heures par jour sur votre gestion quotidienne.",
+    title: "DEM Pro : Marchands & E-Commerce",
+    subtitle: "SERVICE 03 · COMMERÇANTS & VENTE EN LIGNE",
+    badge: "Marchands & E-Commerce",
+    audience: "Boutiques Instagram, TikTok, WhatsApp, créateurs de mode & commerçants",
+    summary: "La logistique du dernier kilomètre pensée pour les marchands dakarois : ramassages programmés, livraisons Same-Day, encaissement Cash on Delivery et reversement garanti sous 24h.",
+    detailedDescription: "DEM Pro transforme la livraison en levier de conversion commerciale. Nous collectons vos colis directement à votre boutique ou atelier pour les livrer le jour même à vos clients partout à Dakar. Vos clients sont notifiés par SMS, et vos encaissements à la livraison sont sécurisés dans votre portefeuille numérique avec virement sous 24h ouvrées.",
+    methodeTravail: "Portail de commande groupée, notification SMS automatique de l'acheteur avant livraison pour convenir de l'horaire et réconciliation financière quotidienne automatique.",
+    valeurAjoutee: "Baisse de plus de 30% des refus de colis, trésorerie disponible sous 24h et gain de plusieurs heures de gestion chaque jour.",
     highlights: [
       { label: "Livraison Same-Day", value: "Le jour même" },
       { label: "Taux de succès", value: "99,4%" },
-      { label: "Réduction des retours", value: "-30% via alertes" },
-      { label: "Gestion des expéditions", value: "Portail dédié" }
+      { label: "Reversement COD", value: "< 24h ouvrées" },
+      { label: "Gestion des envois", value: "Portail dédié" }
     ],
     keys: [
-      "Ramassages quotidiens programmés à votre adresse",
-      "Notification automatique du client acheteur par SMS",
-      "Tarification professionnelle dégressive au volume",
-      "Lien de catalogue digital pour vendre sur les réseaux",
-      "Tableau de bord de suivi de l'ensemble de vos envois"
+      "Ramassages quotidiens programmés à votre boutique ou domicile",
+      "Notification automatique de l'acheteur par SMS",
+      "Encaissement exact des fonds à la livraison (Wave, OM, Espèces)",
+      "Reversement garanti sous 24h ouvrées sur votre compte mobile money",
+      "Tableau de bord complet pour piloter commandes et trésorerie"
     ],
     img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1600&auto=format&fit=crop&q=85",
-    linkText: "Découvrir les offres DEM PRO",
+    linkText: "Découvrir DEM Pro",
     linkUrl: "/dem-pro"
   },
   {
-    id: "cash-on-delivery",
+    id: "chef-de-flotte",
     number: "04",
-    title: "Encaissement Cash on Delivery (COD) & Reversement 24h",
-    subtitle: "SERVICE 04 · GESTION FINANCIÈRE SÉCURISÉE",
-    badge: "Sécurité Financière",
-    audience: "Vendeurs acceptant le paiement à la livraison",
-    summary: "Encaissement scrupuleux des fonds lors de la remise (espèces, Wave ou Orange Money) et reversement garanti sous 24h ouvrées sur votre compte marchand.",
-    detailedDescription: "À Dakar, le paiement à la livraison reste le mode d'achat privilégié de plus de 80% des clients en ligne. DEM sécurise l'intégralité de ce cycle financier : nos coursiers collectent la somme exacte indiquée sur le bon de commande et délivrent une preuve d'encaissement numérique instantanée. Vos fonds sont comptabilisés en temps réel dans votre solde DEM PRO.",
-    methodeTravail: "Protocole strict de réconciliation journalière : chaque montant collecté est synchronisé avec l'ordre de mission. Les fonds sont automatiquement débloqués et virés sur votre compte Wave ou Orange Money sous 24h ouvrées, accompagnés d'un relevé d'opérations détaillé.",
-    valeurAjoutee: "Trésorerie fluidifiée, zéro contestation sur la monnaie ou le montant perçu, et fin des litiges récurrents liés aux coursiers informels.",
+    title: "Espace Chefs de Flotte & Gestionnaires",
+    subtitle: "SERVICE 04 · GESTIONNAIRES DE PARCS & INVESTISSEURS",
+    badge: "Chefs de Flotte",
+    audience: "Propriétaires de motos, responsables d'équipes de livraison & investisseurs",
+    summary: "Pilotez votre parc de deux-roues avec une rentabilité maximale : formules de pass prépayé sans commission cachée, affectation intelligente des courses et supervision en temps réel.",
+    detailedDescription: "Vous possédez une ou plusieurs motos à Dakar et souhaitez rentabiliser votre investissement sans friction. DEM met à votre disposition un portail de gestion complet pour suivre vos coursiers, surveiller le volume de courses en temps réel, optimiser leur journée de travail et éliminer les kilomètres à vide.",
+    methodeTravail: "Supervision cartographique en direct de votre équipe, répartition algorithmique équitable des commandes et tarification claire par abonnement ou pass journalier/hebdomadaire.",
+    valeurAjoutee: "Rentabilité prévisible par moto, visibilité totale sur l'activité des conducteurs et réduction drastique des temps d'inactivité.",
     highlights: [
-      { label: "Délai de reversement", value: "< 24h ouvrées" },
-      { label: "Modes de paiement", value: "Wave, OM, Espèces" },
-      { label: "Traçabilité des fonds", value: "100% numérique" },
-      { label: "Relevé comptable", value: "Automatique" }
+      { label: "Modèle tarifaire", value: "Pass fixe sans commission" },
+      { label: "Supervision", value: "Temps réel sur carte" },
+      { label: "Rentabilité", value: "Maximale par moto" },
+      { label: "Gestion", value: "Portail multi-coursiers" }
     ],
     keys: [
-      "Encaissement exact en espèces ou QR mobile money",
-      "Reversement garanti sous 24h sur Wave ou Orange Money",
-      "Reçu d'encaissement électronique délivré à l'acheteur",
-      "Portefeuille marchand consultable en direct sur l'application",
-      "Historique financier certifié pour votre comptabilité"
+      "Suivi cartographique de l'ensemble de votre flotte en temps réel",
+      "Formules de pass avantageuses sans prélèvement sur vos gains",
+      "Historique détaillé des courses réalisées par chaque conducteur",
+      "Répartition intelligente et continue des commandes disponibles",
+      "Rapports d'activité et de performance téléchargeables"
     ],
     img: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=1600&auto=format&fit=crop&q=85",
-    linkText: "Ouvrir un compte d'encaissement COD",
-    linkUrl: "/dem-pro"
+    linkText: "Accéder à l'espace Chef de Flotte",
+    linkUrl: "/chef-de-flotte"
   },
   {
     id: "courses-programmees",
     number: "05",
-    title: "Courses Programmées & Multi-Destinations",
-    subtitle: "SERVICE 05 · TOURNÉES & LOGISTIQUE PLANIFIÉE",
-    badge: "Tournées & Planification",
-    audience: "PME, grossistes, traiteurs, distribution périodique",
-    summary: "Planification anticipée de tournées de livraison et distribution groupée vers plusieurs destinataires à travers Dakar en un seul ordre de mission.",
-    detailedDescription: "Idéal pour les entreprises qui expédient des volumes récurrents ou des colis groupés chaque matin ou chaque après-midi. Vous saisissez l'ensemble de vos adresses de livraison sur notre interface, et notre moteur logistique organise la séquence de passage la plus fluide pour optimiser le temps de parcours et limiter les kilomètres superflus.",
-    methodeTravail: "Découpage cartographique par zones géographiques (Plateau, Almadies/Ngor, Mermoz/Sacré-Cœur, Grand Dakar, Banlieue/Guédiawaye/Pikine) et ordonnancement chronologique des étapes pour respecter les plages horaires souhaitées.",
-    valeurAjoutee: "Économie substantielle sur le coût unitaire par course, respect rigoureux des heures de rendez-vous et réduction de l'empreinte carbone urbaine.",
+    title: "Courses Programmées & Tournées Multi-Destinations",
+    subtitle: "SERVICE 05 · ENTREPRISES, TOURNÉES & LOGISTIQUE PLANIFIÉE",
+    badge: "Entreprises & Tournées",
+    audience: "PME, grossistes, traiteurs, pharmacies & distribution récurrente",
+    summary: "Planification anticipée de tournées de livraison et distribution groupée vers plusieurs adresses à Dakar en un seul ordre de mission optimisé.",
+    detailedDescription: "Idéal pour les structures qui expédient des volumes réguliers chaque matin ou chaque après-midi. Vous saisissez l'ensemble de vos adresses, et notre moteur logistique calcule la séquence de passage la plus fluide pour optimiser le temps de parcours, limiter les kilomètres superflus et respecter les créneaux convenus.",
+    methodeTravail: "Découpage par zones géographiques dakaroises, ordonnancement logique des étapes et affectation d'un coursier dédié pour toute la durée de la tournée.",
+    valeurAjoutee: "Coût unitaire réduit par point de livraison, ponctualité exemplaire et simplification complète de votre logistique récurrente.",
     highlights: [
-      { label: "Saisie groupée", value: "Multi-adresses" },
-      { label: "Routage optimisé", value: "Par secteur urbain" },
-      { label: "Planification", value: "Jusqu'à 7 jours avant" },
-      { label: "Rapport de tournée", value: "Détaillé & instantané" }
+      { label: "Saisie groupée", value: "Multi-adresses en 1 clic" },
+      { label: "Routage", value: "Optimisé par zone urbaine" },
+      { label: "Planification", value: "Jusqu'à 7 jours à l'avance" },
+      { label: "Facturation", value: "Consolidée à la tournée" }
     ],
     keys: [
       "Importation simple de listes d'adresses multiples",
-      "Optimisation automatique du tracé par intelligence de zone",
-      "Respect des créneaux horaires convenus avec chaque destinataire",
-      "Suivi de progression étape par étape en temps réel",
-      "Facturation consolidée à la tournée"
+      "Optimisation automatique de l'itinéraire par secteur urbain",
+      "Respect strict des plages horaires avec chaque destinataire",
+      "Suivi de progression étape par étape en direct",
+      "Facturation consolidée adaptée aux entreprises"
     ],
     img: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=1600&auto=format&fit=crop&q=85",
-    linkText: "Planifier une tournée groupée",
+    linkText: "Planifier une tournée d'entreprise",
     linkUrl: "/contact"
   }
 ];
