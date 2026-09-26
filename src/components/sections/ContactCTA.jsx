@@ -60,7 +60,8 @@ export default function ContactCTA({
   children,
 }) {
   const isCyanDeep = theme === 'cyan-deep';
-  const isLight = (theme === 'white' || theme === 'light' || theme === 'slate') && !isCyanDeep;
+  const isCyanLight = theme === 'cyan-light' || theme === 'cyan light' || theme === 'cyan';
+  const isLight = (theme === 'white' || theme === 'light' || theme === 'slate' || isCyanLight) && !isCyanDeep;
   const isSlate = theme === 'slate';
   const isCenter = align === 'center';
 
@@ -120,7 +121,13 @@ export default function ContactCTA({
   let defaultHighlightColor = 'var(--color-cyan-2, #0086C8)';
   let scriptColor = 'text-[#0086C8]';
 
-  if (isSlate) {
+  if (isCyanLight) {
+    bgClass = 'bg-gradient-to-b from-[#EAF8FC] to-[#F4FCFD] text-[#021520] border-[#00D2FF]/30';
+    watermarkClass = 'text-[#0086C8]/[0.08]';
+    descClass = 'text-slate-700';
+    defaultHighlightColor = 'var(--color-cyan-2, #0086C8)';
+    scriptColor = 'text-[#0086C8]';
+  } else if (isSlate) {
     bgClass = 'bg-slate-50 text-dark border-black/10';
     watermarkClass = 'text-slate-900/[0.04]';
     descClass = 'text-slate-600';

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 const SUBJECT_OPTIONS = [
-  "Renseignement général",
   "Devenir Coursier DEM",
-  "Partenariat Entreprise / Marchand",
+  "Je suis marchand",
+  "Investir",
   "Programme Chef de Flotte",
   "Suivi de commande & Réclamation",
-  "Investir"
+  "Renseignement général"
 ];
 
 export default function Contact() {

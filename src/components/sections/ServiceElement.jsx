@@ -9,6 +9,102 @@ import useIsDesktop from "../../hooks/useIsDesktop.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
+function AnimatedStatCard({ stat }) {
+    const [displayNumber, setDisplayNumber] = useState(0);
+    const [barWidth, setBarWidth] = useState(0);
+    const cardRef = useRef(null);
+
+    useEffect(() => {
+        const el = cardRef.current;
+        if (!el) return;
+
+        const target = typeof stat.target === 'number' ? stat.target : null;
+        const decimals = stat.decimals || 0;
+        const targetProgress = stat.progress || 95;
+
+        if (target === null) {
+            setBarWidth(targetProgress);
+            return;
+        }
+
+        const counter = { val: 0 };
+
+        const trigger = ScrollTrigger.create({
+            trigger: el,
+            start: "top 85%",
+            once: true,
+            onEnter: () => {
+                // Animation d'incrémentation du nombre de 0 au nombre cible
+                gsap.to(counter, {
+                    val: target,
+                    duration: 2.2,
+                    ease: "power2.out",
+                    onUpdate: () => {
+                        setDisplayNumber(
+                            decimals > 0
+                                ? Number(counter.val).toFixed(decimals)
+                                : Math.round(counter.val)
+                        );
+                    }
+                });
+
+                // Animation de remplissage de la jauge
+                gsap.to({}, {
+                    duration: 2.2,
+                    ease: "power3.out",
+                    onUpdate: function () {
+                        setBarWidth(this.progress() * targetProgress);
+                    }
+                });
+            }
+        });
+
+        return () => {
+            trigger.kill();
+        };
+    }, [stat]);
+
+    const formattedValue =
+        stat.target !== undefined
+            ? `${stat.prefix || ""}${displayNumber}${stat.suffix || ""}`
+            : stat.value;
+
+    return (
+        <div
+            ref={cardRef}
+            className="p-6 sm:p-7 bg-[#021520] text-white border border-black/10 hover:border-[#00D2FF]/60 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden"
+        >
+            <div>
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-black font-mono text-[#00D2FF] group-hover:text-white transition-colors tracking-tight mb-2">
+                    {formattedValue}
+                </div>
+                <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mb-1.5 font-['DM_Sans',sans-serif]">
+                    {stat.label}
+                </div>
+                <p className="text-xs text-white/70 font-['Poppins',sans-serif] leading-relaxed m-0">
+                    {stat.desc}
+                </p>
+            </div>
+
+            {/* Jauge dynamique animée */}
+            {/* <div className="mt-5 pt-3 border-t border-white/10">
+                <div className="flex justify-between items-center text-[10px] font-mono text-white/50 mb-1">
+                    <span>Performance</span>
+                    <span className="text-[#00D2FF] font-bold">
+                        {stat.progress || 95}%
+                    </span>
+                </div>
+                <div className="w-full h-1 bg-white/10 overflow-hidden">
+                    <div
+                        className="h-full bg-gradient-to-r from-[#0086C8] to-[#00D2FF] transition-all duration-300"
+                        style={{ width: `${barWidth}%` }}
+                    />
+                </div>
+            </div> */}
+        </div>
+    );
+}
+
 export default function ServiceElement({
     id,
     number,
@@ -21,6 +117,10 @@ export default function ServiceElement({
     valeurAjoutee,
     highlights = [],
     keys = [],
+    dynamicStats = [],
+    statsHeader,
+    statsImpactPhrase,
+    supportBanner,
     img,
     miniTitleWithBar,
     linkText,
@@ -38,7 +138,6 @@ export default function ServiceElement({
     const headerWrapper = useRef(null);
     const sectionHeader = useRef(null);
     const keysRef = useRef(null);
-    const imageContainerRef = useRef(null);
 
     const mainContent = summary || content;
 
@@ -59,17 +158,17 @@ export default function ServiceElement({
                 const el = sectionRef.current;
                 const header = sectionHeader.current;
                 const headerWrap = headerWrapper.current;
-                const imageEl = imageContainerRef.current?.querySelector("img");
+                const comp = compRef.current;
                 const keysContainer = keysRef.current;
 
-                if (!el || !header || !headerWrap || !imageEl || !keysContainer) return;
+                if (!el || !header || !headerWrap || !comp || !keysContainer) return;
 
                 // Nettoyage des ScrollTriggers existants
                 cleanupScrollTriggers();
 
                 // Initialisation des animations
                 initializeSplitTexts(el, keysContainer);
-                createPinAnimation(headerWrap, imageEl);
+                createPinAnimation(headerWrap, comp);
 
                 if (isDesktop) {
                     createKeysAnimation(keysContainer);
@@ -109,16 +208,13 @@ export default function ServiceElement({
         }
     };
 
-    // Création de l'animation de PIN HEADER
-    const createPinAnimation = (headerWrap, image) => {
-        const headerWrapHeight = headerWrap.offsetHeight;
-        const endValue = `bottom top+=${-20 + headerWrapHeight}px`;
-
+    // Création de l'animation de PIN HEADER (décrochage à la fin du conteneur du service)
+    const createPinAnimation = (headerWrap, endTarget) => {
         ScrollTrigger.create({
             trigger: headerWrap,
             start: "top top",
-            endTrigger: image,
-            end: endValue,
+            endTrigger: endTarget,
+            end: () => `bottom top+=${headerWrap.offsetHeight}px`,
             pin: true,
             pinSpacing: false,
             anticipatePin: 1,
@@ -196,7 +292,7 @@ export default function ServiceElement({
                             
                             {/* Méthode de travail intégrée */}
                             {methodeTravail && (
-                                <div className="mt-6 p-5 bg-[#FAFCFD] border-l-4 border-[#0086C8] border-y border-r border-slate-200">
+                                <div className="mt-6 pt-5">
                                     <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-1.5">
                                         Notre méthode de travail
                                     </span>
@@ -241,18 +337,20 @@ export default function ServiceElement({
                 </div>
             </div>
 
-            {/* ── IMAGE SECTION (DÉCLENCHEUR DU DÉCROCHAGE / UNPIN DU HEADER) ── */}
-            {img && (
-                <div ref={imageContainerRef} className="w-full my-10 overflow-hidden h-[clamp(280px,50vw,540px)] rounded-none shadow-xl border border-black/10 relative">
-                    <img
-                        src={img}
-                        alt={title}
-                        className="w-full h-full object-cover rounded-none grayscale contrast-110 hover:grayscale-0 transition-all duration-700"
-                    />
+
+
+            {/* ── MODULE DE STATISTIQUES DYNAMIQUES (REMPLACE L'ANCIENNE IMAGE) ── */}
+            {dynamicStats && dynamicStats.length > 0 && (
+                <div className={`my-10 ${paddingClass}`}>
+                    {/* Grille des 4 Statistiques Dynamiques avec Compteur Animé (Cartes fond bleu DEM) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                        {dynamicStats.map((stat, idx) => (
+                            <AnimatedStatCard key={idx} stat={stat} />
+                        ))}
+                    </div>
                 </div>
             )}
 
-            {/* ── DESCRIPTIVE SECTION BELOW THE IMAGE (STANDARDS & CTA) ── */}
             <div className={`mt-8 mb-4 ${paddingClass}`}>
                 <MiniTitleWithBar content={miniTitleWithBar || "EXCELLENCE OPÉRATIONNELLE DAKAR"} />
                 <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

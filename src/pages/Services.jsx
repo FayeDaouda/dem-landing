@@ -5,7 +5,7 @@ import ServicesHero from '../components/sections/ServicesHero.jsx';
 import ServiceElement from '../components/sections/ServiceElement.jsx';
 import PiliersSection from '../components/sections/PiliersSection.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
-import { servicesData, piliersData } from '../data/servicesData.js';
+import { servicesData } from '../data/servicesData.js';
 
 export default function Services() {
   const isDesktop = useIsDesktop();
@@ -34,15 +34,12 @@ export default function Services() {
         ))}
       </section>
 
-      {/* ── 3. LES 4 PILIERS D'EXCELLENCE DEM (DONT LE SERVICE CLIENT) ── */}
-      <div data-header-theme="white">
-        <PiliersSection piliers={piliersData} />
-      </div>
+      
 
       {/* ── 4. SECTION CTA PERSONNALISÉ SERVICES ── */}
-      <div data-header-theme="black">
+      <div data-header-theme="white">
         <ContactCTA
-          theme="white"
+          theme="cyan-light"
           watermark="SERVICES"
           title="Une formule de livraison adaptée à"
           highlight="votre activité."

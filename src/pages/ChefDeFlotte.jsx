@@ -111,9 +111,281 @@ export default function ChefDeFlotte() {
       {/* ── 1. HERO SECTION AWWWARDS ── */}
       <PageHeroSection
         contentMiniBar="PROGRAMME PARTENAIRES · CHEF DE FLOTTE EXTERNE"
-        firstTitle="Monétisez et supervisez votre flotte sur le réseau DEM."
-        secondTitle="Apportez vos motos (3 à 10 deux-roues), branchez-les sur notre plateforme, gardez 100% de la liberté de gestion interne et bénéficiez d'un forfait maîtrisé sans commission sur les courses."
+        firstTitle="Estimez vos revenus en intégrant le réseau DEM."
+        
       />
+
+      {/* ── 5. SIMULATEUR DYNAMIQUE DE RENTABILITÉ FLOTTE (OFFICIEL DOSSIER) ── */}
+      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white" id="simulateur">
+        <div className="max-w-[1400px] mx-auto">
+
+          <div className="mb-16">
+            <MiniTitleWithBar content="SIMULATEUR DE RENTABILITÉ FLOTTE" />
+            <SectionHeading
+              align="left"
+              title="Calculez précisément les gains"
+              highlight="et la part conservée par votre flotte"
+              subtitle="Transparence Totale · Données Dossier Interne"
+              titleColor="text-dark"
+              highlightColor="var(--color-cyan-2, #0086C8)"
+              scriptColor="text-cyan-2"
+              titleSize="text-3xl md:text-5xl lg:text-6xl"
+              className="mt-4"
+            />
+            <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
+              Le principe est simple : <strong>ce que votre flotte génère vs ce que vous payez à DEM</strong>. Vous constatez immédiatement le reste à charge minimal et la marge disponible pour rémunérer vos coursiers, l'entretien et votre bénéfice.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 bg-white shadow-sm">
+
+            {/* Colonne Gauche : Commandes & Paramètres */}
+            <div className="lg:col-span-6 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-black/10 flex flex-col justify-between">
+              <div>
+
+                {/* Sélecteur 1 : Nombre de motos (3 à 10) */}
+                <div className="mb-8">
+                  <div className="flex justify-between items-end mb-4">
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-1">
+                        Éligibilité Chef de Flotte
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-bold text-dark font-['DM_Sans',sans-serif]">
+                        Nombre de motos (coursiers)
+                      </h3>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-3xl sm:text-4xl font-black text-dark font-['DM_Sans',sans-serif]">
+                        {motosCount}
+                      </span>
+                      <span className="text-xs text-slate-500 block font-mono">
+                        {motosCount > 1 ? 'motos inscrites' : 'moto inscrite'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <input
+                    type="range"
+                    min="3"
+                    max="10"
+                    value={motosCount}
+                    onChange={(e) => setMotosCount(Number(e.target.value))}
+                    className="w-full accent-[#0086C8] cursor-pointer h-2 bg-slate-200 rounded-none"
+                  />
+
+                  {/* Boutons rapides 3 à 10 */}
+                  <div className="flex flex-wrap gap-1.5 mt-3">
+                    {[3, 4, 5, 6, 7, 8, 9, 10].map((count) => (
+                      <button
+                        key={count}
+                        type="button"
+                        onClick={() => setMotosCount(count)}
+                        className={`text-xs font-mono font-bold px-3 py-1.5 transition-colors cursor-pointer border ${motosCount === count
+                          ? 'bg-[#0086C8] text-white border-[#0086C8]'
+                          : 'bg-slate-50 text-slate-700 border-black/10 hover:border-[#0086C8]'
+                          }`}
+                      >
+                        {count}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-2 italic font-['Poppins',sans-serif]">
+                    * Éligibilité standard : 3 à 10 motos. Au-delà de 10 motos, extension soumise à validation préalable de la direction DEM.
+                  </p>
+                </div>
+
+                {/* Sélecteur 2 : Choix du Pass */}
+                <div className="mb-8 pt-6 border-t border-black/10">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-3">
+                    Offre de Pass DEM choisie
+                  </span>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { key: '5days', label: '5 jours', price: '9 500 F', sub: '1 900 F/j' },
+                      { key: '20days', label: '20 jours', price: '28 000 F', sub: '1 400 F/j' },
+                      { key: 'month', label: '1 mois (30j)', price: '39 000 F', sub: '1 300 F/j' }
+                    ].map((plan) => (
+                      <button
+                        key={plan.key}
+                        type="button"
+                        onClick={() => setSelectedOffer(plan.key)}
+                        className={`p-3 text-left border transition-all cursor-pointer ${selectedOffer === plan.key
+                          ? 'bg-dark text-white border-dark'
+                          : 'bg-white text-dark border-black/10 hover:bg-slate-50'
+                          }`}
+                      >
+                        <span className="text-xs font-bold uppercase block">{plan.label}</span>
+                        <span className={`text-sm font-bold font-mono block ${selectedOffer === plan.key ? 'text-cyan' : 'text-[#0086C8]'}`}>
+                          {plan.price}
+                        </span>
+                        <span className="text-[10px] opacity-70 block">{plan.sub}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Sélecteur 3 : Scénario d'activité (Référence vs Prudent) */}
+                <div className="pt-6 border-t border-black/10">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-3">
+                    Scénario de Chiffre d'Affaires
+                  </span>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setActiveScenario('reference')}
+                      className={`p-3 text-left border transition-all cursor-pointer ${activeScenario === 'reference'
+                        ? 'border-emerald-600 bg-emerald-50/70 text-emerald-950'
+                        : 'border-black/10 bg-white text-slate-700 hover:bg-slate-50'
+                        }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-bold uppercase">Scénario Référence</span>
+                        {activeScenario === 'reference' && <Check size={14} className="text-emerald-600" />}
+                      </div>
+                      <span className="text-xs text-slate-600 block">14 500 FCFA / jour / coursier (~6-8 courses/j)</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setActiveScenario('prudent')}
+                      className={`p-3 text-left border transition-all cursor-pointer ${activeScenario === 'prudent'
+                        ? 'border-amber-600 bg-amber-50/70 text-amber-950'
+                        : 'border-black/10 bg-white text-slate-700 hover:bg-slate-50'
+                        }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-bold uppercase">Scénario Prudent</span>
+                        {activeScenario === 'prudent' && <Check size={14} className="text-amber-600" />}
+                      </div>
+                      <span className="text-xs text-slate-600 block">3 courses/jour à 2 000 F (sur 20 jours)</span>
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              <div className="pt-8 mt-8 border-t border-black/10">
+                <div className="flex items-center gap-2 text-slate-500 text-xs font-['Poppins',sans-serif]">
+                  <Lock size={14} className="text-[#0086C8]" />
+                  <span>Crédit prépayé : le chef achète d'avance, aucun découvert possible.</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Colonne Droite : Bilan Financier & Restant Chef (HUD Sombre) */}
+            <div className="lg:col-span-6 p-8 lg:p-12 bg-dark text-white flex flex-col justify-between">
+              <div>
+
+                <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
+                  <span className="font-serif italic text-lg text-cyan">
+                    Bilan d'exploitation flotte
+                  </span>
+                  <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 bg-white/10 text-white font-mono">
+                    {motosCount} motos · {currentOffer.name}
+                  </span>
+                </div>
+
+                {/* 3 Blocs de Décomposition du Dossier */}
+                <div className="space-y-4">
+
+                  {/* CA Brut de la Flotte */}
+                  <div className="p-4 bg-white/[0.04] border border-white/10 flex justify-between items-center">
+                    <div>
+                      <span className="text-xs uppercase tracking-wider text-white/70 font-['Raleway',sans-serif] block">
+                        CA généré par la flotte
+                      </span>
+                      <small className="text-[10px] text-white/50">
+                        {motosCount} coursiers × {caPerDayPerCourier.toLocaleString('fr-FR')} F × {effectiveWorkingDays} jours
+                      </small>
+                    </div>
+                    <span className="text-xl lg:text-2xl font-bold text-white font-mono">
+                      {totalFleetCA.toLocaleString('fr-FR')} FCFA
+                    </span>
+                  </div>
+
+                  {/* Coût Pass DEM */}
+                  <div className="p-4 bg-red-500/10 border border-red-500/30 flex justify-between items-center">
+                    <div>
+                      <span className="text-xs uppercase tracking-wider text-red-200 font-['Raleway',sans-serif] block">
+                        Coût Pass DEM (prépayé)
+                      </span>
+                      <small className="text-[10px] text-red-300/80">
+                        {motosCount} coursiers × {currentOffer.totalPerCourier.toLocaleString('fr-FR')} FCFA
+                      </small>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xl lg:text-2xl font-bold text-red-400 font-mono">
+                        − {totalPassCost.toLocaleString('fr-FR')} FCFA
+                      </span>
+                      <span className="text-[10px] text-red-300 block font-mono">
+                        ne pèse que {passSharePercent}% du CA
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Reste Net Chef de Flotte (Grande Boîte Cyan) */}
+                  <div className="p-6 bg-cyan/15 border border-cyan/40">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div>
+                        <span className="text-xs uppercase tracking-widest text-cyan font-bold block font-['Raleway',sans-serif]">
+                          Reste au chef de flotte
+                        </span>
+                        <small className="text-[11px] text-white/70 block">
+                          Pour payer vos coursiers, l'entretien et votre marge
+                        </small>
+                        <span className="inline-block mt-2 text-xs font-mono font-bold text-dark bg-cyan px-2.5 py-0.5">
+                          Vous conservez {chefKeepsPercent}% du CA !
+                        </span>
+                      </div>
+                      <div className="text-left sm:text-right">
+                        <span className="text-3xl lg:text-4xl font-black text-cyan font-['DM_Sans',sans-serif] block">
+                          {netRemainingForChef.toLocaleString('fr-FR')} FCFA
+                        </span>
+                        <span className="text-xs text-white/70 font-mono">
+                          soit ~{Math.round(netRemainingForChef / motosCount).toLocaleString('fr-FR')} FCFA / moto
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Estimation complémentaire : Mise en relation client (Page 5 dossier) */}
+                  <div className="p-4 bg-white/[0.02] border border-white/5 flex justify-between items-center text-xs">
+                    <div>
+                      <span className="text-white/60 block font-['Raleway',sans-serif] uppercase text-[10px] tracking-wider">
+                        Mise en relation collectée par DEM (estimée) :
+                      </span>
+                      <span className="text-[11px] text-white/40">
+                        100 F × {estimatedCoursesPerMonth.toLocaleString('fr-FR')} courses/mois (payé par le client, 0 F ponctionné sur vous)
+                      </span>
+                    </div>
+                    <span className="font-mono text-white/70 font-bold">
+                      ~{estimatedMiseEnRelation.toLocaleString('fr-FR')} FCFA
+                    </span>
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* Bouton d'action direct */}
+              <div className="pt-8 mt-8 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={handleApplyFromSimulator}
+                  className="w-full py-4 uppercase font-bold tracking-widest text-xs sm:text-sm bg-cyan text-dark hover:bg-white transition-all duration-250 cursor-pointer border border-cyan rounded-none flex items-center justify-center gap-2"
+                >
+                  <span>Brancher ma flotte de {motosCount} moto{motosCount > 1 ? 's' : ''} sur DEM</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
 
       {/* ── 2. BANDEAU DE MÉTRIQUES B2B & PRINCIPES CLÉS (SHARP HUD) ── */}
       <section className="border-t border-b border-black/10 bg-dark text-white">
@@ -502,277 +774,6 @@ export default function ChefDeFlotte() {
                 </div>
               </div>
             </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── 5. SIMULATEUR DYNAMIQUE DE RENTABILITÉ FLOTTE (OFFICIEL DOSSIER) ── */}
-      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white" id="simulateur">
-        <div className="max-w-[1400px] mx-auto">
-
-          <div className="mb-16">
-            <MiniTitleWithBar content="SIMULATEUR DE RENTABILITÉ FLOTTE" />
-            <SectionHeading
-              align="left"
-              title="Calculez précisément les gains"
-              highlight="et la part conservée par votre flotte"
-              subtitle="Transparence Totale · Données Dossier Interne"
-              titleColor="text-dark"
-              highlightColor="var(--color-cyan-2, #0086C8)"
-              scriptColor="text-cyan-2"
-              titleSize="text-3xl md:text-5xl lg:text-6xl"
-              className="mt-4"
-            />
-            <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
-              Le principe est simple : <strong>ce que votre flotte génère vs ce que vous payez à DEM</strong>. Vous constatez immédiatement le reste à charge minimal et la marge disponible pour rémunérer vos coursiers, l'entretien et votre bénéfice.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 bg-white shadow-sm">
-
-            {/* Colonne Gauche : Commandes & Paramètres */}
-            <div className="lg:col-span-6 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-black/10 flex flex-col justify-between">
-              <div>
-
-                {/* Sélecteur 1 : Nombre de motos (3 à 10) */}
-                <div className="mb-8">
-                  <div className="flex justify-between items-end mb-4">
-                    <div>
-                      <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-1">
-                        Éligibilité Chef de Flotte
-                      </span>
-                      <h3 className="text-xl sm:text-2xl font-bold text-dark font-['DM_Sans',sans-serif]">
-                        Nombre de motos (coursiers)
-                      </h3>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-3xl sm:text-4xl font-black text-dark font-['DM_Sans',sans-serif]">
-                        {motosCount}
-                      </span>
-                      <span className="text-xs text-slate-500 block font-mono">
-                        {motosCount > 1 ? 'motos inscrites' : 'moto inscrite'}
-                      </span>
-                    </div>
-                  </div>
-
-                  <input
-                    type="range"
-                    min="3"
-                    max="10"
-                    value={motosCount}
-                    onChange={(e) => setMotosCount(Number(e.target.value))}
-                    className="w-full accent-[#0086C8] cursor-pointer h-2 bg-slate-200 rounded-none"
-                  />
-
-                  {/* Boutons rapides 3 à 10 */}
-                  <div className="flex flex-wrap gap-1.5 mt-3">
-                    {[3, 4, 5, 6, 7, 8, 9, 10].map((count) => (
-                      <button
-                        key={count}
-                        type="button"
-                        onClick={() => setMotosCount(count)}
-                        className={`text-xs font-mono font-bold px-3 py-1.5 transition-colors cursor-pointer border ${motosCount === count
-                            ? 'bg-[#0086C8] text-white border-[#0086C8]'
-                            : 'bg-slate-50 text-slate-700 border-black/10 hover:border-[#0086C8]'
-                          }`}
-                      >
-                        {count}
-                      </button>
-                    ))}
-                  </div>
-                  <p className="text-[11px] text-slate-500 mt-2 italic font-['Poppins',sans-serif]">
-                    * Éligibilité standard : 3 à 10 motos. Au-delà de 10 motos, extension soumise à validation préalable de la direction DEM.
-                  </p>
-                </div>
-
-                {/* Sélecteur 2 : Choix du Pass */}
-                <div className="mb-8 pt-6 border-t border-black/10">
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-3">
-                    Offre de Pass DEM choisie
-                  </span>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { key: '5days', label: '5 jours', price: '9 500 F', sub: '1 900 F/j' },
-                      { key: '20days', label: '20 jours', price: '28 000 F', sub: '1 400 F/j' },
-                      { key: 'month', label: '1 mois (30j)', price: '39 000 F', sub: '1 300 F/j' }
-                    ].map((plan) => (
-                      <button
-                        key={plan.key}
-                        type="button"
-                        onClick={() => setSelectedOffer(plan.key)}
-                        className={`p-3 text-left border transition-all cursor-pointer ${selectedOffer === plan.key
-                            ? 'bg-dark text-white border-dark'
-                            : 'bg-white text-dark border-black/10 hover:bg-slate-50'
-                          }`}
-                      >
-                        <span className="text-xs font-bold uppercase block">{plan.label}</span>
-                        <span className={`text-sm font-bold font-mono block ${selectedOffer === plan.key ? 'text-cyan' : 'text-[#0086C8]'}`}>
-                          {plan.price}
-                        </span>
-                        <span className="text-[10px] opacity-70 block">{plan.sub}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Sélecteur 3 : Scénario d'activité (Référence vs Prudent) */}
-                <div className="pt-6 border-t border-black/10">
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-3">
-                    Scénario de Chiffre d'Affaires
-                  </span>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setActiveScenario('reference')}
-                      className={`p-3 text-left border transition-all cursor-pointer ${activeScenario === 'reference'
-                          ? 'border-emerald-600 bg-emerald-50/70 text-emerald-950'
-                          : 'border-black/10 bg-white text-slate-700 hover:bg-slate-50'
-                        }`}
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-bold uppercase">Scénario Référence</span>
-                        {activeScenario === 'reference' && <Check size={14} className="text-emerald-600" />}
-                      </div>
-                      <span className="text-xs text-slate-600 block">14 500 FCFA / jour / coursier (~6-8 courses/j)</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setActiveScenario('prudent')}
-                      className={`p-3 text-left border transition-all cursor-pointer ${activeScenario === 'prudent'
-                          ? 'border-amber-600 bg-amber-50/70 text-amber-950'
-                          : 'border-black/10 bg-white text-slate-700 hover:bg-slate-50'
-                        }`}
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-bold uppercase">Scénario Prudent</span>
-                        {activeScenario === 'prudent' && <Check size={14} className="text-amber-600" />}
-                      </div>
-                      <span className="text-xs text-slate-600 block">3 courses/jour à 2 000 F (sur 20 jours)</span>
-                    </button>
-                  </div>
-                </div>
-
-              </div>
-
-              <div className="pt-8 mt-8 border-t border-black/10">
-                <div className="flex items-center gap-2 text-slate-500 text-xs font-['Poppins',sans-serif]">
-                  <Lock size={14} className="text-[#0086C8]" />
-                  <span>Crédit prépayé : le chef achète d'avance, aucun découvert possible.</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Colonne Droite : Bilan Financier & Restant Chef (HUD Sombre) */}
-            <div className="lg:col-span-6 p-8 lg:p-12 bg-dark text-white flex flex-col justify-between">
-              <div>
-
-                <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
-                  <span className="font-serif italic text-lg text-cyan">
-                    Bilan d'exploitation flotte
-                  </span>
-                  <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 bg-white/10 text-white font-mono">
-                    {motosCount} motos · {currentOffer.name}
-                  </span>
-                </div>
-
-                {/* 3 Blocs de Décomposition du Dossier */}
-                <div className="space-y-4">
-
-                  {/* CA Brut de la Flotte */}
-                  <div className="p-4 bg-white/[0.04] border border-white/10 flex justify-between items-center">
-                    <div>
-                      <span className="text-xs uppercase tracking-wider text-white/70 font-['Raleway',sans-serif] block">
-                        CA généré par la flotte
-                      </span>
-                      <small className="text-[10px] text-white/50">
-                        {motosCount} coursiers × {caPerDayPerCourier.toLocaleString('fr-FR')} F × {effectiveWorkingDays} jours
-                      </small>
-                    </div>
-                    <span className="text-xl lg:text-2xl font-bold text-white font-mono">
-                      {totalFleetCA.toLocaleString('fr-FR')} FCFA
-                    </span>
-                  </div>
-
-                  {/* Coût Pass DEM */}
-                  <div className="p-4 bg-red-500/10 border border-red-500/30 flex justify-between items-center">
-                    <div>
-                      <span className="text-xs uppercase tracking-wider text-red-200 font-['Raleway',sans-serif] block">
-                        Coût Pass DEM (prépayé)
-                      </span>
-                      <small className="text-[10px] text-red-300/80">
-                        {motosCount} coursiers × {currentOffer.totalPerCourier.toLocaleString('fr-FR')} FCFA
-                      </small>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-xl lg:text-2xl font-bold text-red-400 font-mono">
-                        − {totalPassCost.toLocaleString('fr-FR')} FCFA
-                      </span>
-                      <span className="text-[10px] text-red-300 block font-mono">
-                        ne pèse que {passSharePercent}% du CA
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Reste Net Chef de Flotte (Grande Boîte Cyan) */}
-                  <div className="p-6 bg-cyan/15 border border-cyan/40">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div>
-                        <span className="text-xs uppercase tracking-widest text-cyan font-bold block font-['Raleway',sans-serif]">
-                          Reste au chef de flotte
-                        </span>
-                        <small className="text-[11px] text-white/70 block">
-                          Pour payer vos coursiers, l'entretien et votre marge
-                        </small>
-                        <span className="inline-block mt-2 text-xs font-mono font-bold text-dark bg-cyan px-2.5 py-0.5">
-                          Vous conservez {chefKeepsPercent}% du CA !
-                        </span>
-                      </div>
-                      <div className="text-left sm:text-right">
-                        <span className="text-3xl lg:text-4xl font-black text-cyan font-['DM_Sans',sans-serif] block">
-                          {netRemainingForChef.toLocaleString('fr-FR')} FCFA
-                        </span>
-                        <span className="text-xs text-white/70 font-mono">
-                          soit ~{Math.round(netRemainingForChef / motosCount).toLocaleString('fr-FR')} FCFA / moto
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Estimation complémentaire : Mise en relation client (Page 5 dossier) */}
-                  <div className="p-4 bg-white/[0.02] border border-white/5 flex justify-between items-center text-xs">
-                    <div>
-                      <span className="text-white/60 block font-['Raleway',sans-serif] uppercase text-[10px] tracking-wider">
-                        Mise en relation collectée par DEM (estimée) :
-                      </span>
-                      <span className="text-[11px] text-white/40">
-                        100 F × {estimatedCoursesPerMonth.toLocaleString('fr-FR')} courses/mois (payé par le client, 0 F ponctionné sur vous)
-                      </span>
-                    </div>
-                    <span className="font-mono text-white/70 font-bold">
-                      ~{estimatedMiseEnRelation.toLocaleString('fr-FR')} FCFA
-                    </span>
-                  </div>
-
-                </div>
-
-              </div>
-
-              {/* Bouton d'action direct */}
-              <div className="pt-8 mt-8 border-t border-white/10">
-                <button
-                  type="button"
-                  onClick={handleApplyFromSimulator}
-                  className="w-full py-4 uppercase font-bold tracking-widest text-xs sm:text-sm bg-cyan text-dark hover:bg-white transition-all duration-250 cursor-pointer border border-cyan rounded-none flex items-center justify-center gap-2"
-                >
-                  <span>Brancher ma flotte de {motosCount} moto{motosCount > 1 ? 's' : ''} sur DEM</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-
-            </div>
-
           </div>
 
         </div>

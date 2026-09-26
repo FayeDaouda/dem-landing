@@ -2,7 +2,7 @@ export default function PiliersSection({ piliers = [] }) {
   return (
     <section className="w-full py-24 lg:py-32 bg-[#021520] text-white border-b border-white/10 relative overflow-hidden">
       {/* Background architectural grid */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.04] pointer-events-none"
         style={{
           backgroundImage: 'radial-gradient(#00D2FF 1px, transparent 1px)',
@@ -11,7 +11,7 @@ export default function PiliersSection({ piliers = [] }) {
       />
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
-        
+
         {/* Header des Piliers */}
         <div className="max-w-3xl mb-16 lg:mb-20">
 

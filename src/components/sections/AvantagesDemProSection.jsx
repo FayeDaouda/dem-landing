@@ -13,7 +13,7 @@ export default function AvantagesDemProSection() {
 
   const avantages = [
     {
-      num: '/01',
+      num: '/1',
       domain: 'Gain de temps',
       badge: 'Zéro appel',
       icon: Clock,
@@ -23,7 +23,7 @@ export default function AvantagesDemProSection() {
       benefitValue: '+3h gagnées par jour'
     },
     {
-      num: '/02',
+      num: '/2',
       domain: 'Trésorerie',
       badge: '24h chrono',
       icon: Wallet,
@@ -33,7 +33,7 @@ export default function AvantagesDemProSection() {
       benefitValue: '0 risque d\'impayé'
     },
     {
-      num: '/03',
+      num: '/3',
       domain: 'Vente en ligne',
       badge: 'Mini-Boutique',
       icon: ShoppingBag,
@@ -43,7 +43,7 @@ export default function AvantagesDemProSection() {
       benefitValue: '+40% de conversion'
     },
     {
-      num: '/04',
+      num: '/4',
       domain: 'Crédibilité',
       badge: 'Image de marque',
       icon: FileCheck,
@@ -53,7 +53,7 @@ export default function AvantagesDemProSection() {
       benefitValue: 'Comptabilité simplifiée'
     },
     {
-      num: '/05',
+      num: '/5',
       domain: 'Sécurité & Suivi',
       badge: 'Live GPS & OTP',
       icon: ShieldCheck,
@@ -63,7 +63,7 @@ export default function AvantagesDemProSection() {
       benefitValue: '-30% de retours colis'
     },
     {
-      num: '/06',
+      num: '/6',
       domain: 'Croissance',
       badge: 'CRM & Analytics',
       icon: TrendingUp,

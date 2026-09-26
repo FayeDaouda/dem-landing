@@ -335,7 +335,7 @@ export default function PricingDemPro({ onSelectPlan }) {
                 </div>
 
                 {/* Bouton d'action */}
-                <div className="pt-6 border-t border-black/10">
+                {/* <div className="pt-6 border-t border-black/10">
                   <button
                     type="button"
                     onClick={() => handleSelect(plan.key)}
@@ -348,7 +348,7 @@ export default function PricingDemPro({ onSelectPlan }) {
                     <span>{plan.ctaText}</span>
                     <ArrowRight size={16} />
                   </button>
-                </div>
+                </div> */}
               </div>
             );
           })}

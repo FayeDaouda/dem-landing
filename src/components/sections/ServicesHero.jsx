@@ -26,24 +26,12 @@ export default function ServicesHero({ services = [] }) {
           
           {/* Colonne Gauche : La Phrase d'Entrée Maîtresse */}
           <div className="lg:col-span-8">
-            <span className="font-serif italic text-base sm:text-lg text-[#0086C8] block mb-4">
-              Notre engagement fondamental
-            </span>
+            
             <h1 className="font-['DM_Sans',sans-serif] text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#021520] tracking-tight leading-[1.08] m-0">
               « Nous ne faisons pas beaucoup de choses : <br className="hidden sm:inline" />
               <span className="text-[#0086C8]">nous faisons une seule chose,</span> <br className="hidden sm:inline" />
               mais nous la faisons bien. »
             </h1>
-          </div>
-
-          {/* Colonne Droite : Explication & Positionnement DEM */}
-          <div className="lg:col-span-4 flex flex-col justify-between h-full pt-2">
-            <div className="space-y-4">
-              <p className="font-['Poppins',sans-serif] text-base sm:text-lg text-slate-700 leading-relaxed m-0">
-                La mobilité et la livraison urbaine rapide, fiable et sécurisée partout à Dakar. Zéro dispersion, zéro compromis : nous concentrons 100% de nos ressources sur une exécution rigoureuse au service de vos envois.
-              </p>
-            </div>
-
           </div>
 
         </div>

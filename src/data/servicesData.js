@@ -20,6 +20,7 @@ export const servicesData = [
       { label: "Modèle", value: "Pass fixe sans commission" }
     ],
     keys: [
+      "Formation des coursiers",
       "Application mobile fluide avec navigation par repères dakarois",
       "Paiement garanti chaque semaine sur Wave ou Orange Money",
       "Zéro commission par course grâce aux formules de pass",
@@ -37,29 +38,70 @@ export const servicesData = [
   {
     id: "clients-express",
     number: "02",
-    title: "Clients",
-    subtitle: "SERVICE 02 · EXPÉRIENCE CLIENT & ENVOIS DU QUOTIDIEN",
-    badge: "Expérience Client",
-    audience: "Clients particuliers, résidents de Dakar & envois personnels urgents",
-    summary: "Acheminement direct de plis, clés, colis ou courses urgentes partout à Dakar. Suivez votre coursier en temps réel sur la carte et validez la remise par code confidentiel.",
-    detailedDescription: "Conçue pour simplifier le quotidien dakarois, la livraison Express DEM mobilise le coursier le plus proche en quelques minutes. Votre colis voyage en direct, sans transit intermédiaire ni détour inutile. De la prise en charge à la remise en main propre, vous suivez le déplacement du livreur en temps réel sur carte interactive.",
-    methodeTravail: "Assignation instantanée, repérage contextuel dakarois sans blocage d'adresse et validation finale obligatoire par code OTP sécurisé.",
-    valeurAjoutee: "Gain de temps immédiat, fin des appels incessants pour situer son domicile et sécurité absolue pour vos objets.",
+    title: "Clients & Service Client 7j/7",
+    subtitle: "SERVICE 02 · EXPÉRIENCE CLIENT & SERVICE CLIENT DÉDIÉ",
+    badge: "Service Client Dédié",
+    audience: "Clients particuliers, résidents dakarois & destinataires exigeants",
+    summary: "Vos envois et livraisons du quotidien soutenus par un service client réactif basé à Dakar. Traçabilité GPS en direct, intervention humaine proactive en cas d'imprévu et remise scellée par code OTP.",
+    detailedDescription: "Chez DEM, l'expérience client repose sur une promesse claire : un service client humain, réactif et basé au cœur de Dakar, joignable directement par téléphone et WhatsApp 7j/7. Fini les coursiers perdus et les livraisons sans nouvelles : nos régulateurs surveillent vos courses en direct, vous informent en temps réel et interviennent immédiatement pour guider le livreur. Chaque colis est remis en main propre et validé par un code OTP confidentiel.",
+    methodeTravail: "Régulation proactive par notre équipe d'assistance à Dakar, canal WhatsApp direct 7j/7, guidage contextuel dakarois sans blocage d'adresse et validation obligatoire par code OTP.",
+    valeurAjoutee: "Assistance humaine disponible 7j/7, temps de réponse sous 2 minutes, zéro litige grâce au code OTP et tranquillité d'esprit garantie.",
+    statsHeader: "SERVICE CLIENT LOCAL DAKAR · ENGAGEMENTS & PERFORMANCE",
+    
+    dynamicStats: [
+      {
+        value: "< 2 min",
+        target: 2,
+        prefix: "< ",
+        suffix: " min",
+        decimals: 0,
+        label: "Temps de réponse support",
+        desc: "Assistance WhatsApp direct & Hotline 7j/7",
+        progress: 96
+      },
+      {
+        value: "98.7%",
+        target: 98.7,
+        decimals: 1,
+        suffix: "%",
+        label: "Satisfaction client",
+        desc: "Résolution immédiate dès le premier échange",
+        progress: 98.7
+      },
+      {
+        value: "7j / 7",
+        target: 7,
+        suffix: "j / 7",
+        decimals: 0,
+        label: "Disponibilité assistance",
+        desc: "De 08h00 à 22h00 sans interruption",
+        progress: 100
+      },
+      {
+        value: "99.4%",
+        target: 99.4,
+        decimals: 1,
+        suffix: "%",
+        label: "Remises validées OTP",
+        desc: "Preuve de livraison sans litige ni contestation",
+        progress: 99.4
+      }
+    ],
     highlights: [
-      { label: "Assignation coursier", value: "< 10 minutes" },
-      { label: "Délai moyen constaté", value: "35 à 45 min" },
-      { label: "Validation de remise", value: "Code OTP unique" },
-      { label: "Disponibilité", value: "7 jours / 7" }
+      { label: "Support Client", value: "7j/7 Hotline & WhatsApp" },
+      { label: "Temps de réponse", value: "< 2 minutes" },
+      { label: "Validation remise", value: "Code OTP confidentiel" },
+      { label: "Équipe support", value: "100% basée à Dakar" }
     ],
     keys: [
-      "Prise en charge directe du coursier le plus proche",
-      "Traçabilité GPS continue sur carte interactive",
-      "Validation obligatoire de la remise par code OTP confidentiel",
-      "Paiement flexible : Wave, Orange Money ou espèces",
-      "Tarification claire et transparente dès la commande"
+      "Service client réactif basé à Dakar joignable 7j/7 par WhatsApp et téléphone",
+      "Intervention humaine immédiate en cas de retard ou d'adresse introuvable",
+      "Traçabilité GPS continue de votre coursier sur carte interactive",
+      "Validation obligatoire de la remise par code OTP unique",
+      "Paiements flexibles et sécurisés : Wave, Orange Money ou espèces à l'arrivée"
     ],
     img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=1600&auto=format&fit=crop&q=85",
-    linkText: "Commander une course express",
+    linkText: "Commander avec suivi & assistance",
     linkUrl: "/#download"
   },
   {
@@ -69,7 +111,7 @@ export const servicesData = [
     subtitle: "SERVICE 03 · COMMERÇANTS & VENTE EN LIGNE",
     badge: "Marchands & E-Commerce",
     audience: "Boutiques Instagram, TikTok, WhatsApp, créateurs de mode & commerçants",
-    summary: "La logistique du dernier kilomètre pensée pour les marchands dakarois : ramassages programmés, livraisons Same-Day, encaissement Cash on Delivery et reversement garanti sous 24h.",
+    summary: "Les commerçants et e-commerçants ayant rejoint le réseau DEM Pro propulsent leurs ventes et sécurisent leur trésorerie : ramassages programmés, livraisons Same-Day, encaissement Cash on Delivery et reversement garanti sous 24h.",
     detailedDescription: "DEM Pro transforme la livraison en levier de conversion commerciale. Nous collectons vos colis directement à votre boutique ou atelier pour les livrer le jour même à vos clients partout à Dakar. Vos clients sont notifiés par SMS, et vos encaissements à la livraison sont sécurisés dans votre portefeuille numérique avec virement sous 24h ouvrées.",
     methodeTravail: "Portail de commande groupée, notification SMS automatique de l'acheteur avant livraison pour convenir de l'horaire et réconciliation financière quotidienne automatique.",
     valeurAjoutee: "Baisse de plus de 30% des refus de colis, trésorerie disponible sous 24h et gain de plusieurs heures de gestion chaque jour.",
@@ -97,7 +139,7 @@ export const servicesData = [
     subtitle: "SERVICE 04 · GESTIONNAIRES DE PARCS & INVESTISSEURS",
     badge: "Chefs de Flotte",
     audience: "Propriétaires de motos, responsables d'équipes de livraison & investisseurs",
-    summary: "Pilotez votre parc de deux-roues avec une rentabilité maximale : formules de pass prépayé sans commission cachée, affectation intelligente des courses et supervision en temps réel.",
+    summary: "Les chefs de flotte ayant rejoint le réseau DEM maximisent la rentabilité de leur parc : formules de pass prépayé sans commission cachée, affectation intelligente des courses et supervision en temps réel.",
     detailedDescription: "Vous possédez une ou plusieurs motos à Dakar et souhaitez rentabiliser votre investissement sans friction. DEM met à votre disposition un portail de gestion complet pour suivre vos coursiers, surveiller le volume de courses en temps réel, optimiser leur journée de travail et éliminer les kilomètres à vide.",
     methodeTravail: "Supervision cartographique en direct de votre équipe, répartition algorithmique équitable des commandes et tarification claire par abonnement ou pass journalier/hebdomadaire.",
     valeurAjoutee: "Rentabilité prévisible par moto, visibilité totale sur l'activité des conducteurs et réduction drastique des temps d'inactivité.",
