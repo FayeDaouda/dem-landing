@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, Check, Smartphone } from 'lucide-react';
 import SectionHeading from '../atoms/SectionHeading.jsx';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function DownloadAppCTA({
   theme = 'white',
@@ -8,10 +12,12 @@ export default function DownloadAppCTA({
   subtitle = 'Application Mobile',
   title = 'Votre livraison express au bout',
   highlight = 'des doigts.',
-  description = 'Téléchargez gratuitement l’application DEM sur iOS et Android. Commandez en 30 secondes, suivez votre coursier en direct sur la carte et payez en toute sécurité.',
+  description = `Téléchargez gratuitement l'application DEM sur iOS et Android. Commandez en 30 secondes, suivez votre coursier en direct sur la carte et payez en toute sécurité.`,
   bullets = [],
   id = 'download',
 }) {
+  const sectionRef = useRef(null);
+
   const isCyanDeep = theme === 'cyan-deep';
   const isLight = theme === 'white' || theme === 'light';
 
@@ -38,17 +44,88 @@ export default function DownloadAppCTA({
     scriptColor = 'text-[#00D2FF]';
   }
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const sec = sectionRef.current;
+
+      // ── Filigrane : scale depuis 1.4 + reveal ──
+      gsap.fromTo('[data-dl="watermark"]',
+        { scale: 1.4, clipPath: 'inset(0 50% 0 50%)' },
+        {
+          scale: 1, clipPath: 'inset(0 0% 0 0%)',
+          duration: 1.6, ease: 'expo.out',
+          scrollTrigger: { trigger: sec, start: 'top 85%', once: true }
+        }
+      );
+
+      // ── Titre : split word curtain sur le heading de SectionHeading ──
+      const titleEl = sec.querySelector('[data-dl="heading-wrap"] h2, [data-dl="heading-wrap"] h3, [data-dl="heading-wrap"] h1');
+      if (titleEl) {
+        const words = titleEl.textContent.trim().split(' ');
+        titleEl.innerHTML = words.map(w =>
+          `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
+          `<span style="display:inline-block;" class="dl-word">${w}\u00a0</span>` +
+          `</span>`
+        ).join('');
+        gsap.fromTo(titleEl.querySelectorAll('.dl-word'),
+          { yPercent: 110 },
+          {
+            yPercent: 0, duration: 1.1, ease: 'expo.out', stagger: 0.05,
+            scrollTrigger: { trigger: sec, start: 'top 80%', once: true }
+          }
+        );
+      }
+
+      // ── Description : line by line reveal ──
+      gsap.fromTo('[data-dl="desc"]',
+        { y: 40, clipPath: 'inset(0 0 100% 0)', skewY: 1 },
+        {
+          y: 0, clipPath: 'inset(0 0 0% 0)', skewY: 0,
+          duration: 1.0, ease: 'expo.out', delay: 0.2,
+          scrollTrigger: { trigger: '[data-dl="desc"]', start: 'top 88%', once: true }
+        }
+      );
+
+      // ── Bullets : stagger curtain depuis bas ──
+      gsap.fromTo('[data-dl="bullet"]',
+        { y: 30, clipPath: 'inset(100% 0 0 0)' },
+        {
+          y: 0, clipPath: 'inset(0% 0 0 0)',
+          duration: 0.75, ease: 'expo.out',
+          stagger: { amount: 0.5, from: 'start' },
+          scrollTrigger: { trigger: '[data-dl="bullets"]', start: 'top 85%', once: true }
+        }
+      );
+
+      // ── Boutons : slide up + expand depuis centre ──
+      gsap.fromTo('[data-dl="btn"]',
+        { y: 50, clipPath: 'inset(0 50% 0 50%)', scale: 0.92 },
+        {
+          y: 0, clipPath: 'inset(0 0% 0 0%)', scale: 1,
+          duration: 0.45, ease: 'expo.out',
+          stagger: 0.08,
+          scrollTrigger: { trigger: '[data-dl="btns"]', start: 'top 90%', once: true }
+        }
+      );
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id={id}
       className={`relative w-full py-20 md:py-32 px-6 overflow-hidden border-t font-['DM_Sans',sans-serif] ${bgClass}`}
     >
-      {/* ── 1. FILIGRANE GÉANT EN ARRIÈRE-PLAN ── */}
+      {/* ── 1. FILIGRANE GÉANT ANIMÉ ── */}
       <div
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
         aria-hidden="true"
       >
         <span
+          data-dl="watermark"
           className={`font-black text-[17vw] leading-none uppercase tracking-tighter whitespace-nowrap font-['DM_Sans',sans-serif] ${watermarkClass}`}
         >
           {watermark}
@@ -58,41 +135,46 @@ export default function DownloadAppCTA({
       {/* ── 2. CONTENU PRINCIPAL CENTRÉ ── */}
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center text-center">
 
-        {/* Titre avec sous-titre cursif */}
-        <SectionHeading
-          align="center"
-          title={title}
-          highlight={highlight}
-          subtitle={subtitle}
-          titleColor={isLight ? 'text-dark' : 'text-white'}
-          highlightColor={highlightColor}
-          highlightClassName={highlightClassName}
-          scriptColor={scriptColor}
-          titleSize="text-3xl md:text-5xl lg:text-6xl"
-          subtitleSize="text-xl md:text-2xl lg:text-3xl"
-          className="mb-6"
-        />
+        {/* Titre avec sous-titre cursif — style original */}
+        <div data-dl="heading-wrap">
+          <SectionHeading
+            align="center"
+            title={title}
+            highlight={highlight}
+            subtitle={subtitle}
+            titleColor={isLight ? 'text-dark' : 'text-white'}
+            highlightColor={highlightColor}
+            highlightClassName={highlightClassName}
+            scriptColor={scriptColor}
+            titleSize="text-3xl md:text-5xl lg:text-6xl"
+            subtitleSize="text-xl md:text-2xl lg:text-3xl"
+            className="mb-6"
+          />
+        </div>
 
         {/* Description */}
-        <p className={`${descClass} text-base md:text-lg max-w-2xl leading-relaxed mb-6 font-['Poppins',sans-serif]`}>
+        <p
+          data-dl="desc"
+          className={`${descClass} text-base md:text-lg max-w-2xl leading-relaxed mb-6 font-['Poppins',sans-serif]`}
+        >
           {description}
         </p>
 
-        {/* Puces / Avantages optionnels */}
+        {/* Bullets */}
         {bullets && bullets.length > 0 && (
-          <div className="w-full max-w-3xl my-4 mx-auto">
+          <div data-dl="bullets" className="w-full max-w-3xl my-4 mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
               {bullets.map((text, idx) => (
                 <div
                   key={idx}
+                  data-dl="bullet"
                   className={`flex items-start gap-3 p-3.5 border transition-colors ${isLight
                       ? 'bg-slate-50/90 border-slate-200 hover:bg-slate-100/90 text-dark'
                       : 'bg-white/[0.03] border-white/10 hover:bg-white/[0.06] text-white/90'
                     }`}
                 >
                   <span
-                    className={`shrink-0 mt-0.5 p-1 ${isLight ? 'text-[#0086C8] bg-cyan/15' : 'text-cyan bg-cyan/20'
-                      }`}
+                    className={`shrink-0 mt-0.5 p-1 ${isLight ? 'text-[#0086C8] bg-cyan/15' : 'text-cyan bg-cyan/20'}`}
                   >
                     <Check size={14} strokeWidth={3} />
                   </span>
@@ -105,11 +187,12 @@ export default function DownloadAppCTA({
           </div>
         )}
 
-        {/* ── 3. BOUTONS DE TÉLÉCHARGEMENT OFFICIELS SHARP ── */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
+        {/* ── 3. BOUTONS DE TÉLÉCHARGEMENT ── */}
+        <div data-dl="btns" className="flex flex-wrap items-center justify-center gap-4 mt-8">
 
           {/* Bouton App Store */}
           <a
+            data-dl="btn"
             href="https://apps.apple.com/us/app/dem-livraison/id6764724342"
             target="_blank"
             rel="noopener noreferrer"
@@ -136,6 +219,7 @@ export default function DownloadAppCTA({
 
           {/* Bouton Google Play */}
           <a
+            data-dl="btn"
             href="https://play.google.com/store/apps/details?id=sn.dem.demapp"
             target="_blank"
             rel="noopener noreferrer"

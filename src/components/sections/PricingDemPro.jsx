@@ -1,8 +1,86 @@
+import { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Check, ArrowRight } from 'lucide-react';
 import MiniTitleWithBar from '../atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../atoms/SectionHeading.jsx';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function PricingDemPro({ onSelectPlan }) {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+
+      // ── Heading split curtain ──
+      const heading = sectionRef.current.querySelector('[data-pr="heading"]');
+      if (heading) {
+        const words = heading.textContent.trim().split(' ');
+        heading.innerHTML = words.map(w =>
+          `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
+          `<span style="display:inline-block;" class="pr-word">${w}\u00a0</span>` +
+          `</span>`
+        ).join('');
+        gsap.fromTo(heading.querySelectorAll('.pr-word'),
+          { yPercent: 110 },
+          {
+            yPercent: 0, duration: 1.1, ease: 'expo.out', stagger: 0.045,
+            scrollTrigger: { trigger: heading, start: 'top 88%', once: true }
+          }
+        );
+      }
+
+      // ── Règle commune : slide in from left ──
+      gsap.fromTo('[data-pr="rule-box"]',
+        { x: -50, opacity: 0, clipPath: 'inset(0 100% 0 0)' },
+        {
+          x: 0, opacity: 1, clipPath: 'inset(0 0% 0 0)',
+          duration: 1.1, ease: 'expo.out',
+          scrollTrigger: { trigger: '[data-pr="rule-box"]', start: 'top 88%', once: true }
+        }
+      );
+
+      // ── 3 cartes pricing : curtain stagger ──
+      gsap.fromTo('[data-pr="plan-card"]',
+        { y: 80, opacity: 0, clipPath: 'inset(100% 0 0 0)' },
+        {
+          y: 0, opacity: 1, clipPath: 'inset(0% 0 0 0)',
+          duration: 1.0, ease: 'expo.out',
+          stagger: { amount: 0.5, from: 'start' },
+          scrollTrigger: { trigger: '[data-pr="plans-grid"]', start: 'top 80%', once: true }
+        }
+      );
+
+      // ── Prix en chiffres : compteur ──
+      sectionRef.current.querySelectorAll('[data-pr-price]').forEach((el) => {
+        const target = parseFloat(el.dataset.prPrice.replace(/\s/g, ''));
+        if (!target) return;
+        const counter = { val: 0 };
+        gsap.to(counter, {
+          val: target,
+          duration: 1.8,
+          ease: 'power2.out',
+          onUpdate: () => { el.textContent = Math.round(counter.val).toLocaleString('fr-FR'); },
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+        });
+      });
+
+      // ── Tableau comparatif : expand depuis le bas ──
+      gsap.fromTo('[data-pr="comparison"]',
+        { y: 60, opacity: 0, clipPath: 'inset(0 0 100% 0)' },
+        {
+          y: 0, opacity: 1, clipPath: 'inset(0 0 0% 0)',
+          duration: 1.2, ease: 'expo.out',
+          scrollTrigger: { trigger: '[data-pr="comparison"]', start: 'top 85%', once: true }
+        }
+      );
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const handleSelect = (planKey) => {
     if (onSelectPlan) {
       onSelectPlan(planKey);
@@ -208,30 +286,28 @@ export default function PricingDemPro({ onSelectPlan }) {
   };
 
   return (
-    <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white font-['DM_Sans',sans-serif]" id="tarifs">
+    <section ref={sectionRef} className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white font-['DM_Sans',sans-serif]" id="tarifs">
       <div className="max-w-[1400px] mx-auto">
 
         {/* ── 1. EN-TÊTE PRINCIPAL ── */}
         <div className="mb-16">
           <MiniTitleWithBar content="LE PRINCIPE TARIFAIRE DEM PRO" />
-          <SectionHeading
-            align="left"
-            title="Trois offres construites"
-            highlight="en escalier"
-            subtitle="Transparence, E-commerce & Rentabilité"
-            titleColor="text-dark"
-            highlightColor="var(--color-cyan-2, #0086C8)"
-            scriptColor="text-cyan-2"
-            titleSize="text-3xl md:text-5xl lg:text-6xl"
-            className="mt-4"
-          />
+          <div className="mt-4 overflow-hidden">
+            <h2
+              data-pr="heading"
+              className="font-extrabold text-3xl md:text-5xl lg:text-6xl font-['DM_Sans',sans-serif] text-dark leading-[1.05] tracking-tight"
+            >
+              Trois offres construites en escalier
+            </h2>
+          </div>
+          <p className="mt-4 text-xs uppercase font-bold tracking-widest text-[#0086C8] font-['Raleway',sans-serif]">Transparence, E-commerce &amp; Rentabilité</p>
           <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
             DEM Pro fonctionne sur un modèle <strong>100% transparent et rentable</strong>. Chaque palier lève les limites du précédent. L’offre <strong>Business</strong> est pensée pour être le choix évident : c’est elle qui débloque la vente en ligne, le lien de commande et l’encaissement Wallet, le cœur de valeur de DEM Pro.
           </p>
         </div>
 
         {/* ── 2. RÈGLE COMMUNE À TOUTES LES OFFRES ── */}
-        <div className="mb-16 border border-black/10 bg-slate-50 relative overflow-hidden">
+        <div data-pr="rule-box" className="mb-16 border border-black/10 bg-slate-50 relative overflow-hidden">
           <div className="absolute top-0 left-0 bottom-0 w-2 bg-cyan" />
           <div className="p-6 md:p-8 pl-8 md:pl-10">
             <h3 className="text-lg md:text-xl font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
@@ -244,13 +320,14 @@ export default function PricingDemPro({ onSelectPlan }) {
         </div>
 
         {/* ── 3. LES 3 CARTES DE PRICING OFFICIELLES ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-24">
+        <div data-pr="plans-grid" className="grid grid-cols-1 lg:grid-cols-3 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-24">
           {plans.map((plan) => {
             const isFeatured = plan.isFeatured;
 
             return (
               <div
                 key={plan.key}
+                data-pr="plan-card"
                 className={`p-8 lg:p-12 flex flex-col justify-between relative transition-all duration-300 ${
                   isFeatured
                     ? 'bg-dark text-white shadow-2xl relative z-10 lg:-my-4 lg:border-t-4 lg:border-t-cyan border-cyan'
@@ -355,7 +432,7 @@ export default function PricingDemPro({ onSelectPlan }) {
         </div>
 
         {/* ── 4. TABLEAU COMPARATIF COMPLET (MATRICE DÉTAILLÉE) ── */}
-        <div className="border border-black/10 bg-white mb-28">
+        <div data-pr="comparison" className="border border-black/10 bg-white mb-28">
           
           {/* En-tête du Tableau */}
           <div className="p-8 lg:p-12 border-b border-black/10 bg-slate-50">

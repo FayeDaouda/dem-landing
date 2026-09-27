@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, PhoneCall, Download, Check, Mail, ExternalLink } from 'lucide-react';
 import SectionHeading from '../atoms/SectionHeading.jsx';
+
+gsap.registerPlugin(ScrollTrigger);
 
 /**
  * ContactCTA - Section d'impact et d'appel à l'action entièrement paramétrable
@@ -40,7 +44,7 @@ export default function ContactCTA({
   highlight = "l'excellence.",
   highlightColor,
   kicker,
-  description = 'Que vous soyez un particulier, un commerçant ou une entreprise, profitez du réseau de livraison le plus rapide et fiable de Dakar.',
+  description = `Que vous soyez un particulier, un commerçant ou une entreprise, profitez du réseau de livraison le plus rapide et fiable de Dakar.`,
   bullets = [],
   bulletsTitle,
   align = 'center',
@@ -59,6 +63,8 @@ export default function ContactCTA({
   id,
   children,
 }) {
+  const sectionRef = useRef(null);
+
   const isCyanDeep = theme === 'cyan-deep';
   const isCyanLight = theme === 'cyan-light' || theme === 'cyan light' || theme === 'cyan';
   const isLight = (theme === 'white' || theme === 'light' || theme === 'slate' || isCyanLight) && !isCyanDeep;
@@ -149,8 +155,79 @@ export default function ContactCTA({
 
   const finalHighlightColor = highlightColor || defaultHighlightColor;
 
+  // ── GSAP ScrollTrigger animations ──
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const sec = sectionRef.current;
+
+      // 1. Filigrane : scale compress + reveal horizontal
+      gsap.fromTo('[data-ctc="watermark"]',
+        { scale: 1.5, clipPath: 'inset(0 50% 0 50%)' },
+        {
+          scale: 1, clipPath: 'inset(0 0% 0 0%)',
+          duration: 1.8, ease: 'expo.out',
+          scrollTrigger: { trigger: sec, start: 'top 82%', once: true }
+        }
+      );
+
+      // 2. Titre : split word curtain sur le heading de SectionHeading
+      const titleEl = sec.querySelector('[data-ctc="heading-wrap"] h2, [data-ctc="heading-wrap"] h3, [data-ctc="heading-wrap"] h1');
+      if (titleEl) {
+        const words = titleEl.textContent.trim().split(' ');
+        titleEl.innerHTML = words.map(w =>
+          `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
+          `<span style="display:inline-block;" class="ctc-word">${w}\u00a0</span>` +
+          `</span>`
+        ).join('');
+        gsap.fromTo(titleEl.querySelectorAll('.ctc-word'),
+          { yPercent: 110 },
+          {
+            yPercent: 0, duration: 1.15, ease: 'expo.out', stagger: 0.05,
+            scrollTrigger: { trigger: sec, start: 'top 80%', once: true }
+          }
+        );
+      }
+
+      // 3. Description : slide + clip depuis le bas avec skew
+      gsap.fromTo('[data-ctc="desc"]',
+        { y: 50, clipPath: 'inset(0 0 100% 0)', skewY: 1.5 },
+        {
+          y: 0, clipPath: 'inset(0 0 0% 0)', skewY: 0,
+          duration: 1.1, ease: 'expo.out',
+          scrollTrigger: { trigger: '[data-ctc="desc"]', start: 'top 90%', once: true }
+        }
+      );
+
+      // 4. Bullets : curtain stagger depuis bas
+      gsap.fromTo('[data-ctc="bullet"]',
+        { y: 40, clipPath: 'inset(100% 0 0 0)' },
+        {
+          y: 0, clipPath: 'inset(0% 0 0 0)',
+          duration: 0.8, ease: 'expo.out',
+          stagger: { amount: 0.55, from: 'start' },
+          scrollTrigger: { trigger: '[data-ctc="bullets"]', start: 'top 88%', once: true }
+        }
+      );
+
+      // 5. Boutons : expand depuis centre + slide up
+      gsap.fromTo('[data-ctc="btn"]',
+        { y: 60, clipPath: 'inset(0 48% 0 48%)', scale: 0.9 },
+        {
+          y: 0, clipPath: 'inset(0 0% 0 0%)', scale: 1,
+          duration: 0.45, ease: 'expo.out',
+          stagger: 0.08,
+          scrollTrigger: { trigger: '[data-ctc="btns"]', start: 'top 92%', once: true }
+        }
+      );
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id={id}
       className={`relative w-full ${padding} px-6 overflow-hidden border-t ${bgClass} font-['DM_Sans',sans-serif] ${className}`}
     >
@@ -161,6 +238,7 @@ export default function ContactCTA({
           aria-hidden="true"
         >
           <span
+            data-ctc="watermark"
             className={`font-black text-[17vw] leading-none uppercase tracking-tighter whitespace-nowrap font-['DM_Sans',sans-serif] ${watermarkClass}`}
           >
             {watermark}
@@ -174,24 +252,26 @@ export default function ContactCTA({
           isCenter ? 'items-center text-center' : 'items-start text-left'
         }`}
       >
-        {/* Titre avec sous-titre cursif et highlight cyan */}
-        <SectionHeading
-          align={align}
-          title={title}
-          highlight={highlight}
-          subtitle={subtitle}
-          titleColor={isLight ? 'text-dark' : 'text-white'}
-          highlightColor={finalHighlightColor}
-          highlightClassName={isLight ? 'text-[#0086C8]' : 'text-[#00D2FF]'}
-          scriptColor={scriptColor}
-          titleSize="text-3xl md:text-5xl lg:text-6xl"
-          subtitleSize="text-xl md:text-2xl lg:text-3xl"
-          className="mb-6"
-        />
+        {/* Titre avec sous-titre cursif — style original */}
+        <div data-ctc="heading-wrap">
+          <SectionHeading
+            align={align}
+            title={title}
+            highlight={highlight}
+            subtitle={subtitle}
+            titleColor={isLight ? 'text-dark' : 'text-white'}
+            highlightColor={finalHighlightColor}
+            highlightClassName={isLight ? 'text-[#0086C8]' : 'text-[#00D2FF]'}
+            scriptColor={scriptColor}
+            titleSize="text-3xl md:text-5xl lg:text-6xl"
+            subtitleSize="text-xl md:text-2xl lg:text-3xl"
+            className="mb-6"
+          />
+        </div>
 
-        {/* Paragraphe descriptif */}
         {description && (
           <p
+            data-ctc="desc"
             className={`${descClass} text-base md:text-lg max-w-2xl leading-relaxed mb-8 font-['Poppins',sans-serif]`}
           >
             {description}
@@ -200,7 +280,7 @@ export default function ContactCTA({
 
         {/* ── 3. LISTE DE PUCES / GARANTIES OPTIONNELLES ── */}
         {bullets && bullets.length > 0 && (
-          <div className={`w-full max-w-3xl my-6 ${isCenter ? 'mx-auto' : ''}`}>
+          <div data-ctc="bullets" className={`w-full max-w-3xl my-6 ${isCenter ? 'mx-auto' : ''}`}>
             {bulletsTitle && (
               <span
                 className={`text-[11px] font-mono font-bold uppercase tracking-widest block mb-3 ${
@@ -216,6 +296,7 @@ export default function ContactCTA({
                 return (
                   <div
                     key={idx}
+                    data-ctc="bullet"
                     className={`flex items-start gap-3 p-3.5 border transition-colors ${
                       isLight
                         ? 'bg-slate-50/90 border-slate-200 hover:bg-slate-100/90 text-dark'
@@ -245,6 +326,7 @@ export default function ContactCTA({
         {/* ── 4. BOUTONS D'ACTION (STRICTEMENT OPTIONNELS) ── */}
         {resolvedButtons.length > 0 && (
           <div
+            data-ctc="btns"
             className={`flex flex-wrap items-center gap-4 mt-8 ${
               isCenter ? 'justify-center' : 'justify-start'
             }`}
@@ -265,6 +347,7 @@ export default function ContactCTA({
                 return (
                   <button
                     key={index}
+                    data-ctc="btn"
                     type="button"
                     onClick={btn.onClick}
                     className={btnClasses}
@@ -279,6 +362,7 @@ export default function ContactCTA({
               return (
                 <a
                   key={index}
+                  data-ctc="btn"
                   href={btn.link || '#'}
                   className={btnClasses}
                 >

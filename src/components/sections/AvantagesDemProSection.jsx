@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MiniTitleWithBar from '../atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../atoms/SectionHeading.jsx';
 import { Clock, Wallet, ShoppingBag, FileCheck, ShieldCheck, TrendingUp, ArrowDown } from 'lucide-react';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function AvantagesDemProSection() {
+  const sectionRef = useRef(null);
+
   const scrollToPricing = () => {
     const el = document.getElementById('tarifs');
     if (el) {
@@ -18,7 +24,7 @@ export default function AvantagesDemProSection() {
       badge: 'Zéro appel',
       icon: Clock,
       title: 'Expéditions groupées & programmées',
-      desc: 'Fini la perte de temps à négocier chaque course au téléphone. Enregistrez jusqu’à 8 livraisons simultanées ou planifiez vos envois plusieurs jours à l\'avance en un clic.',
+      desc: `Fini la perte de temps à négocier chaque course au téléphone. Enregistrez jusqu'à 8 livraisons simultanées ou planifiez vos envois plusieurs jours à l'avance en un clic.`,
       benefitLabel: 'Bénéfice direct :',
       benefitValue: '+3h gagnées par jour'
     },
@@ -28,9 +34,9 @@ export default function AvantagesDemProSection() {
       badge: '24h chrono',
       icon: Wallet,
       title: 'Encaissement COD & Reversement 24h',
-      desc: 'Nos livreurs encaissent vos fonds à la livraison (Espèces, Wave ou OM). L’argent est crédité sur votre Wallet DEM Pro et reversé sous 24h ouvrées sur votre compte.',
+      desc: `Nos livreurs encaissent vos fonds à la livraison (Espèces, Wave ou OM). L'argent est crédité sur votre Wallet DEM Pro et reversé sous 24h ouvrées sur votre compte.`,
       benefitLabel: 'Bénéfice direct :',
-      benefitValue: '0 risque d\'impayé'
+      benefitValue: "0 risque d'impayé"
     },
     {
       num: '/3',
@@ -74,27 +80,98 @@ export default function AvantagesDemProSection() {
     }
   ];
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+
+      // ── Header : label + titre split curtain ──
+      const heading = sectionRef.current.querySelector('[data-av="heading"]');
+      if (heading) {
+        const words = heading.textContent.trim().split(' ');
+        heading.innerHTML = words.map(w =>
+          `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
+          `<span style="display:inline-block;" class="av-word">${w}&nbsp;</span>` +
+          `</span>`
+        ).join('');
+        gsap.fromTo(heading.querySelectorAll('.av-word'),
+          { yPercent: 110 },
+          {
+            yPercent: 0, duration: 1.1, ease: 'expo.out', stagger: 0.045,
+            scrollTrigger: { trigger: heading, start: 'top 88%', once: true }
+          }
+        );
+      }
+
+      // ── Sous-titre glisse ──
+      gsap.fromTo('[data-av="sub"]',
+        { y: 30, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.9, ease: 'expo.out',
+          scrollTrigger: { trigger: '[data-av="sub"]', start: 'top 90%', once: true }
+        }
+      );
+
+      // ── Cartes avantages : curtain clip + stagger ──
+      const cards = sectionRef.current.querySelectorAll('[data-av="card"]');
+      gsap.fromTo(cards,
+        { y: 70, opacity: 0, clipPath: 'inset(100% 0 0 0)' },
+        {
+          y: 0, opacity: 1, clipPath: 'inset(0% 0 0 0)',
+          duration: 0.9, ease: 'expo.out',
+          stagger: { amount: 0.7, from: 'start' },
+          scrollTrigger: {
+            trigger: '[data-av="grid"]',
+            start: 'top 80%',
+            once: true,
+          }
+        }
+      );
+
+      // ── Bénéfice value : compteur ──
+      cards.forEach((card) => {
+        const benefitEl = card.querySelector('[data-av="benefit"]');
+        if (!benefitEl) return;
+        gsap.fromTo(benefitEl,
+          { xPercent: 30, opacity: 0 },
+          {
+            xPercent: 0, opacity: 1, duration: 0.7, ease: 'expo.out',
+            scrollTrigger: { trigger: card, start: 'top 82%', once: true }
+          }
+        );
+      });
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-white font-['DM_Sans',sans-serif]" id="avantages-pro">
+    <section ref={sectionRef} className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-white font-['DM_Sans',sans-serif]" id="avantages-pro">
       <div className="max-w-[1400px] mx-auto">
         
         {/* En-tête */}
         <div className="mb-16">
           <MiniTitleWithBar content="CE QUE VOUS GAGNEZ AVEC DEM PRO" />
-          <SectionHeading
-            align="left"
-            title="Transformez votre logistique en"
-            highlight="accélérateur de ventes"
-            subtitle="Avantages Business & E-commerce"
-            titleColor="text-dark"
-            highlightColor="var(--color-cyan-2, #0086C8)"
-            scriptColor="text-cyan-2"
-            titleSize="text-3xl md:text-5xl lg:text-6xl"
-            className="mt-4"
-          />
+
+          {/* Titre animé split */}
+          <div className="mt-4 overflow-hidden">
+            <h2
+              data-av="heading"
+              className="font-extrabold text-3xl md:text-5xl lg:text-6xl font-['DM_Sans',sans-serif] text-dark leading-[1.05] tracking-tight"
+            >
+              Transformez votre logistique en accélérateur de ventes
+            </h2>
+          </div>
+
+          <p
+            data-av="sub"
+            className="mt-4 text-xs uppercase font-bold tracking-widest text-[#0086C8] font-['Raleway',sans-serif]"
+          >
+            Avantages Business & E-commerce
+          </p>
+
           <div className="mt-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <p className="text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif] m-0">
-              Passer à un compte <strong>DEM Pro</strong>, c’est libérer votre business des contraintes de livraison, sécuriser vos encaissements et offrir à vos clients une expérience d’achat moderne et digne des plus grandes marques.
+              Passer à un compte <strong>DEM Pro</strong>, c'est libérer votre business des contraintes de livraison, sécuriser vos encaissements et offrir à vos clients une expérience d'achat moderne et digne des plus grandes marques.
             </p>
             <button
               type="button"
@@ -107,8 +184,11 @@ export default function AvantagesDemProSection() {
           </div>
         </div>
 
-        {/* Grille des 6 Avantages Clés Awwwards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-black/10 divide-y md:divide-y-0 divide-black/10 bg-white shadow-sm">
+        {/* Grille des 6 Avantages */}
+        <div
+          data-av="grid"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-black/10 divide-y md:divide-y-0 divide-black/10 bg-white shadow-sm"
+        >
           {avantages.map((item, idx) => {
             const Icon = item.icon;
             const borderClasses = `
@@ -122,6 +202,7 @@ export default function AvantagesDemProSection() {
             return (
               <div
                 key={idx}
+                data-av="card"
                 className={`p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50/80 transition-colors group ${borderClasses}`}
               >
                 <div>
@@ -134,9 +215,6 @@ export default function AvantagesDemProSection() {
                         · {item.domain}
                       </span>
                     </div>
-                    {/* <span className="text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/15 text-[#0086C8]">
-                      {item.badge}
-                    </span> */}
                   </div>
 
                   <div className="w-10 h-10 rounded-none bg-slate-100 flex items-center justify-center text-dark mb-5 group-hover:bg-cyan group-hover:text-dark transition-colors">
@@ -155,7 +233,7 @@ export default function AvantagesDemProSection() {
                   <span className="text-xs font-bold uppercase tracking-wider text-dark font-['DM_Sans',sans-serif]">
                     {item.benefitLabel}
                   </span>
-                  <span className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
+                  <span data-av="benefit" className="text-xs font-bold text-[#0086C8] uppercase font-['DM_Sans',sans-serif]">
                     {item.benefitValue}
                   </span>
                 </div>
