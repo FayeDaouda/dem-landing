@@ -1,4 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 import PageHeroSection from '../components/sections/PageHeroSection.jsx';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../components/atoms/SectionHeading.jsx';
@@ -86,6 +90,146 @@ export default function ChefDeFlotte() {
     setOpenFaq(openFaq === idx ? null : idx);
   };
 
+  const pageRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+
+      // ── Utilitaire split word curtain ──
+      const splitCurtain = (selector, triggerEl, delayOffset = 0) => {
+        const el = typeof selector === 'string'
+          ? (triggerEl || document).querySelector(selector)
+          : selector;
+        if (!el) return;
+        const words = el.textContent.trim().split(' ');
+        el.innerHTML = words.map(w =>
+          `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
+          `<span style="display:inline-block;" class="sc-w">${w}\u00a0</span>` +
+          `</span>`
+        ).join('');
+        gsap.fromTo(el.querySelectorAll('.sc-w'),
+          { yPercent: 110 },
+          {
+            yPercent: 0, duration: 1.05, ease: 'expo.out',
+            stagger: 0.045, delay: delayOffset,
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+          }
+        );
+      };
+
+      // ── 1. HERO : split curtain + ligne ──
+      splitCurtain('[data-cdf="hero-h1"]');
+
+      // ── 2. SECTION MÉTRIQUES HUD : cards slide up stagger depuis bas ──
+      gsap.fromTo('[data-cdf="metric-card"]',
+        { y: 60, clipPath: 'inset(100% 0 0 0)' },
+        {
+          y: 0, clipPath: 'inset(0% 0 0 0)',
+          duration: 0.8, ease: 'expo.out',
+          stagger: { amount: 0.5, from: 'start' },
+          scrollTrigger: { trigger: '[data-cdf="metrics-grid"]', start: 'top 82%', once: true }
+        }
+      );
+
+      // ── 3. SECTION OFFRES : heading + cards 3 colonnes ──
+      splitCurtain('[data-cdf="offres-h"]');
+      gsap.fromTo('[data-cdf="offer-card"]',
+        { y: 80, clipPath: 'inset(100% 0 0 0)' },
+        {
+          y: 0, clipPath: 'inset(0% 0 0 0)',
+          duration: 0.9, ease: 'expo.out',
+          stagger: { amount: 0.45, from: 'start' },
+          scrollTrigger: { trigger: '[data-cdf="offers-grid"]', start: 'top 80%', once: true }
+        }
+      );
+
+      // ── 4. BENCHMARK : heading + lignes tableau alternantes ──
+      splitCurtain('[data-cdf="bench-h"]');
+      gsap.fromTo('[data-cdf="bench-col-l"]',
+        { x: -60, clipPath: 'inset(0 100% 0 0)' },
+        {
+          x: 0, clipPath: 'inset(0 0% 0 0)',
+          duration: 1.1, ease: 'expo.out',
+          scrollTrigger: { trigger: '[data-cdf="bench-wrap"]', start: 'top 85%', once: true }
+        }
+      );
+      gsap.fromTo('[data-cdf="bench-col-r"]',
+        { x: 60, clipPath: 'inset(0 0 0 100%)' },
+        {
+          x: 0, clipPath: 'inset(0 0 0 0%)',
+          duration: 1.1, ease: 'expo.out', delay: 0.1,
+          scrollTrigger: { trigger: '[data-cdf="bench-wrap"]', start: 'top 85%', once: true }
+        }
+      );
+
+      // ── 5. SIMULATEUR : expand depuis bas ──
+      gsap.fromTo('[data-cdf="simulator"]',
+        { y: 80, clipPath: 'inset(0 0 100% 0)', scale: 0.97 },
+        {
+          y: 0, clipPath: 'inset(0 0 0% 0)', scale: 1,
+          duration: 1.2, ease: 'expo.out',
+          scrollTrigger: { trigger: '[data-cdf="simulator"]', start: 'top 82%', once: true }
+        }
+      );
+
+      // ── 6. PROJECTION TABLE : reveal depuis bas ──
+      gsap.fromTo('[data-cdf="proj-table"]',
+        { y: 60, clipPath: 'inset(0 0 100% 0)' },
+        {
+          y: 0, clipPath: 'inset(0 0 0% 0)',
+          duration: 1.1, ease: 'expo.out',
+          scrollTrigger: { trigger: '[data-cdf="proj-table"]', start: 'top 85%', once: true }
+        }
+      );
+
+      // ── 7. RÈGLES : stagger clipPath ──
+      splitCurtain('[data-cdf="rules-h"]');
+      gsap.fromTo('[data-cdf="rule-card"]',
+        { y: 50, clipPath: 'inset(100% 0 0 0)' },
+        {
+          y: 0, clipPath: 'inset(0% 0 0 0)',
+          duration: 0.75, ease: 'expo.out',
+          stagger: { amount: 0.65, from: 'start' },
+          scrollTrigger: { trigger: '[data-cdf="rules-grid"]', start: 'top 82%', once: true }
+        }
+      );
+
+      // ── 8. COCKPIT BLOCS : expand alternant ──
+      splitCurtain('[data-cdf="cockpit-h"]');
+      gsap.fromTo('[data-cdf="cockpit-block"]',
+        { y: 60, clipPath: 'inset(0 0 100% 0)' },
+        {
+          y: 0, clipPath: 'inset(0 0 0% 0)',
+          duration: 0.9, ease: 'expo.out',
+          stagger: { amount: 0.5, from: 'start' },
+          scrollTrigger: { trigger: '[data-cdf="cockpit-grid"]', start: 'top 82%', once: true }
+        }
+      );
+
+      // ── 9. FAQ : items curtain stagger ──
+      splitCurtain('[data-cdf="faq-h"]');
+      gsap.fromTo('[data-cdf="faq-item"]',
+        { x: -40, clipPath: 'inset(0 100% 0 0)' },
+        {
+          x: 0, clipPath: 'inset(0 0% 0 0)',
+          duration: 0.7, ease: 'expo.out',
+          stagger: { amount: 0.6, from: 'start' },
+          scrollTrigger: { trigger: '[data-cdf="faq-list"]', start: 'top 84%', once: true }
+        }
+      );
+
+    }, pageRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const pageRef_handleApplyFromSimulator = () => {
+    const downloadElement = document.getElementById('download');
+    if (downloadElement) {
+      downloadElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const handleApplyFromSimulator = () => {
     const downloadElement = document.getElementById('download');
     if (downloadElement) {
@@ -106,13 +250,13 @@ export default function ChefDeFlotte() {
   ];
 
   return (
-    <div className="w-full bg-white text-dark min-h-screen font-['DM_Sans',sans-serif] selection:bg-cyan selection:text-dark">
+    <div ref={pageRef} className="w-full bg-white text-dark min-h-screen font-['DM_Sans',sans-serif] selection:bg-cyan selection:text-dark">
 
       {/* ── 1. HERO SECTION AWWWARDS ── */}
       <PageHeroSection
         contentMiniBar="PROGRAMME PARTENAIRES · CHEF DE FLOTTE EXTERNE"
         firstTitle="Estimez vos revenus en intégrant le réseau DEM."
-        
+        data-hero-h1="hero-h1"
       />
 
       {/* ── 5. SIMULATEUR DYNAMIQUE DE RENTABILITÉ FLOTTE (OFFICIEL DOSSIER) ── */}
@@ -137,7 +281,7 @@ export default function ChefDeFlotte() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 bg-white shadow-sm">
+        <div data-cdf="simulator" className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 bg-white shadow-sm">
 
             {/* Colonne Gauche : Commandes & Paramètres */}
             <div className="lg:col-span-6 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-black/10 flex flex-col justify-between">
@@ -389,7 +533,7 @@ export default function ChefDeFlotte() {
 
       {/* ── 2. BANDEAU DE MÉTRIQUES B2B & PRINCIPES CLÉS (SHARP HUD) ── */}
       <section className="border-t border-b border-black/10 bg-dark text-white">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
+        <div data-cdf="metrics-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
           {[
             { num: "0%", label: "Commission sur les courses", sub: "Principe intangible : vos coursiers gardent 100% de leurs revenus" },
             { num: "-53%", label: "Écart vs commissions marché", sub: "1 300 F/j chez DEM contre ~2 755 F/j sur le marché à 19%" },
@@ -436,10 +580,10 @@ export default function ChefDeFlotte() {
           </div>
 
           {/* Grille des 3 Cartes Offres Awwwards Sharp */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-12">
+          <div data-cdf="offers-grid" className="grid grid-cols-1 lg:grid-cols-3 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-12">
 
             {/* Offre 1 : Forfait 5 jours */}
-            <div className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+            <div data-cdf="offer-card" className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors">
               <div>
                 <div className="flex justify-between items-center mb-6">
                   <span className="font-serif italic text-base text-[#0086C8]">
@@ -505,7 +649,7 @@ export default function ChefDeFlotte() {
             </div>
 
             {/* Offre 2 : Forfait 20 jours */}
-            <div className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors bg-slate-50/50">
+            <div data-cdf="offer-card" className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors bg-slate-50/50">
               <div>
                 <div className="flex justify-between items-center mb-6">
                   <span className="font-serif italic text-base text-[#0086C8]">
@@ -571,7 +715,7 @@ export default function ChefDeFlotte() {
             </div>
 
             {/* Offre 3 : Forfait 1 mois (30 jours) */}
-            <div className="p-8 lg:p-10 flex flex-col justify-between bg-dark text-white relative">
+            <div data-cdf="offer-card" className="p-8 lg:p-10 flex flex-col justify-between bg-dark text-white relative">
               <div className="absolute top-0 right-0 bg-cyan text-dark text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 font-['DM_Sans',sans-serif]">
                 PRIX / JOUR MINI
               </div>
@@ -683,8 +827,8 @@ export default function ChefDeFlotte() {
       <section className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-slate-50">
         <div className="max-w-[1400px] mx-auto">
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-5">
+          <div data-cdf="bench-wrap" className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div data-cdf="bench-col-l" className="lg:col-span-5">
               <MiniTitleWithBar content="AVANTAGE COMPÉTITIF ÉCRASANT" />
               <SectionHeading
                 align="left"
@@ -705,7 +849,7 @@ export default function ChefDeFlotte() {
               </p>
             </div>
 
-            <div className="lg:col-span-7">
+            <div data-cdf="bench-col-r" className="lg:col-span-7">
               <div className="border border-black/10 bg-white shadow-sm">
                 <div className="p-6 border-b border-black/10 bg-dark text-white flex justify-between items-center">
                   <span className="text-xs uppercase font-bold tracking-wider font-['Raleway',sans-serif]">
@@ -801,7 +945,7 @@ export default function ChefDeFlotte() {
             </p>
           </div>
 
-          <div className="border border-black/10 overflow-x-auto bg-white">
+          <div data-cdf="proj-table" className="border border-black/10 overflow-x-auto bg-white">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-dark text-white border-b border-black/10 text-xs uppercase font-['Raleway',sans-serif] tracking-wider">
@@ -870,7 +1014,7 @@ export default function ChefDeFlotte() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-black/10 divide-y md:divide-y-0 md:divide-x divide-black/10 bg-white">
+          <div data-cdf="rules-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-black/10 divide-y md:divide-y-0 md:divide-x divide-black/10 bg-white">
             {[
               {
                 num: "01",
@@ -921,7 +1065,7 @@ export default function ChefDeFlotte() {
                 desc: "Contrat résiliable à tout moment par l'une ou l'autre des parties, sous réserve d'un préavis formel de 2 semaines."
               }
             ].map((ruleItem, idx) => (
-              <div key={idx} className="p-8 flex flex-col justify-between hover:bg-slate-50 transition-colors">
+              <div key={idx} data-cdf="rule-card" className="p-8 flex flex-col justify-between hover:bg-slate-50 transition-colors">
                 <div>
                   <div className="flex justify-between items-center mb-4">
                     <span className="font-mono text-xs font-bold text-[#0086C8]">
@@ -964,10 +1108,10 @@ export default function ChefDeFlotte() {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+          <div data-cdf="cockpit-grid" className="grid grid-cols-1 md:grid-cols-12 gap-8">
 
             {/* Bloc 1 : Télémétrie Live */}
-            <div className="md:col-span-8 p-8 lg:p-12 bg-white border border-black/10 flex flex-col justify-between">
+            <div data-cdf="cockpit-block" className="md:col-span-8 p-8 lg:p-12 bg-white border border-black/10 flex flex-col justify-between">
               <div>
                 <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] mb-4 block">
                   /01 · Télémétrie Live
@@ -997,7 +1141,7 @@ export default function ChefDeFlotte() {
             </div>
 
             {/* Bloc 2 : Gestion des Pass & Consommation */}
-            <div className="md:col-span-4 p-8 lg:p-10 bg-dark text-white border border-black/10 flex flex-col justify-between">
+            <div data-cdf="cockpit-block" className="md:col-span-4 p-8 lg:p-10 bg-dark text-white border border-black/10 flex flex-col justify-between">
               <div>
                 <span className="font-serif italic text-lg sm:text-xl font-light text-cyan mb-4 block">
                   /02 · Gestion des Pass
@@ -1017,7 +1161,7 @@ export default function ChefDeFlotte() {
             </div>
 
             {/* Bloc 3 : Dispatch & Attribution */}
-            <div className="md:col-span-4 p-8 lg:p-10 bg-white border border-black/10 flex flex-col justify-between">
+            <div data-cdf="cockpit-block" className="md:col-span-4 p-8 lg:p-10 bg-white border border-black/10 flex flex-col justify-between">
               <div>
                 <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] mb-4 block">
                   /03 · Dispatch
@@ -1036,7 +1180,7 @@ export default function ChefDeFlotte() {
             </div>
 
             {/* Bloc 4 : Accords Garage & Remises Flotte */}
-            <div className="md:col-span-8 p-8 lg:p-12 bg-white border border-black/10 flex flex-col justify-between">
+            <div data-cdf="cockpit-block" className="md:col-span-8 p-8 lg:p-12 bg-white border border-black/10 flex flex-col justify-between">
               <div>
                 <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] mb-4 block">
                   /04 · Écosystème
@@ -1065,7 +1209,7 @@ export default function ChefDeFlotte() {
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-t border-b border-white/10 bg-cyan-deep text-white">
         <div className="max-w-[1000px] mx-auto">
 
-          <div className="mb-14 text-center">
+          <div data-cdf="faq-h" className="mb-14 text-center">
             <SectionHeading
               align="center"
               title="Tout ce que vous devez savoir"
@@ -1080,7 +1224,7 @@ export default function ChefDeFlotte() {
             />
           </div>
 
-          <div className="border border-white/15 divide-y divide-white/10 bg-black/10 backdrop-blur-sm">
+          <div data-cdf="faq-list" className="border border-white/15 divide-y divide-white/10 bg-black/10 backdrop-blur-sm">
             {[
               {
                 q: "Combien de motos puis-je inscrire au démarrage ?",
@@ -1107,7 +1251,7 @@ export default function ChefDeFlotte() {
                 a: "Oui, totalement. Les 3 offres (5 jours, 20 jours, 30 jours) sont indépendantes. Vous pouvez par exemple prendre une offre 5 jours au démarrage pour évaluer vos équipes, puis basculer sur l'offre 30 jours pour maximiser votre marge à 1 300 F/jour."
               }
             ].map((faq, idx) => (
-              <div key={idx} className="p-6 lg:p-8 bg-white/[0.03] hover:bg-white/[0.07] transition-colors">
+              <div key={idx} data-cdf="faq-item" className="p-6 lg:p-8 bg-white/[0.03] hover:bg-white/[0.07] transition-colors">
                 <button
                   onClick={() => toggleFaq(idx)}
                   className="w-full flex justify-between items-center text-left cursor-pointer gap-4"

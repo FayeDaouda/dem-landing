@@ -58,23 +58,16 @@ export default function DownloadAppCTA({
         }
       );
 
-      // ── Titre : split word curtain sur le heading de SectionHeading ──
-      const titleEl = sec.querySelector('[data-dl="heading-wrap"] h2, [data-dl="heading-wrap"] h3, [data-dl="heading-wrap"] h1');
-      if (titleEl) {
-        const words = titleEl.textContent.trim().split(' ');
-        titleEl.innerHTML = words.map(w =>
-          `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
-          `<span style="display:inline-block;" class="dl-word">${w}\u00a0</span>` +
-          `</span>`
-        ).join('');
-        gsap.fromTo(titleEl.querySelectorAll('.dl-word'),
-          { yPercent: 110 },
-          {
-            yPercent: 0, duration: 1.1, ease: 'expo.out', stagger: 0.05,
-            scrollTrigger: { trigger: sec, start: 'top 80%', once: true }
-          }
-        );
-      }
+      // ── Titre : slide curtain sur le wrapper (sans toucher au HTML interne) ──
+      gsap.fromTo('[data-dl="heading-wrap"]',
+        { y: 60, clipPath: 'inset(0 0 100% 0)' },
+        {
+          y: 0, clipPath: 'inset(0 0 0% 0)',
+          duration: 1.1, ease: 'expo.out',
+          scrollTrigger: { trigger: sec, start: 'top 82%', once: true }
+        }
+      );
+
 
       // ── Description : line by line reveal ──
       gsap.fromTo('[data-dl="desc"]',

@@ -170,30 +170,22 @@ export default function ContactCTA({
         }
       );
 
-      // 2. Titre : split word curtain sur le heading de SectionHeading
-      const titleEl = sec.querySelector('[data-ctc="heading-wrap"] h2, [data-ctc="heading-wrap"] h3, [data-ctc="heading-wrap"] h1');
-      if (titleEl) {
-        const words = titleEl.textContent.trim().split(' ');
-        titleEl.innerHTML = words.map(w =>
-          `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
-          `<span style="display:inline-block;" class="ctc-word">${w}\u00a0</span>` +
-          `</span>`
-        ).join('');
-        gsap.fromTo(titleEl.querySelectorAll('.ctc-word'),
-          { yPercent: 110 },
-          {
-            yPercent: 0, duration: 1.15, ease: 'expo.out', stagger: 0.05,
-            scrollTrigger: { trigger: sec, start: 'top 80%', once: true }
-          }
-        );
-      }
+      // 2. Heading wrapper : slide up + curtain reveal (sans toucher au HTML interne)
+      gsap.fromTo('[data-ctc="heading-wrap"]',
+        { y: 60, clipPath: 'inset(0 0 100% 0)' },
+        {
+          y: 0, clipPath: 'inset(0 0 0% 0)',
+          duration: 1.1, ease: 'expo.out',
+          scrollTrigger: { trigger: sec, start: 'top 82%', once: true }
+        }
+      );
 
       // 3. Description : slide + clip depuis le bas avec skew
       gsap.fromTo('[data-ctc="desc"]',
         { y: 50, clipPath: 'inset(0 0 100% 0)', skewY: 1.5 },
         {
           y: 0, clipPath: 'inset(0 0 0% 0)', skewY: 0,
-          duration: 1.1, ease: 'expo.out',
+          duration: 1.0, ease: 'expo.out',
           scrollTrigger: { trigger: '[data-ctc="desc"]', start: 'top 90%', once: true }
         }
       );

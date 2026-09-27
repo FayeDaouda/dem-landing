@@ -82,12 +82,15 @@ export default function SectionHeading({
                 >
                     {title}
                     {highlight && (
-                        <em
-                            style={{ color: highlightColor }}
-                            className={`not-italic ml-2 ${highlightClassName}`}
-                        >
-                            {highlight}
-                        </em>
+                        <>
+                            {' '}
+                            <em
+                                style={{ color: highlightColor }}
+                                className={`not-italic ${highlightClassName}`}
+                            >
+                                {highlight}
+                            </em>
+                        </>
                     )}
                     {children}
                 </TitleTag>
