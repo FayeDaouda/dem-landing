@@ -25,15 +25,6 @@ export default function Footer() {
                                 <span className="text-red font-bold text-lg mt-0.5">®</span>
                             </div>
 
-                            {/* Badge Logo */}
-                            <div className="mb-4">
-                                <img
-                                    src="/logo.png"
-                                    alt="DEM Logo"
-                                    className="w-10 h-10 rounded-xl object-cover border border-white/15 shadow-md"
-                                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                                />
-                            </div>
 
                             {/* Description */}
                             <p className="text-white/70 text-xs sm:text-sm font-sans leading-relaxed max-w-sm mb-6">
