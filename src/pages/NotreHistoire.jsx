@@ -21,24 +21,24 @@ const SOLUTION_POINTS = [
   {
     number: "2",
     category: "L'Expérience Client",
-    title: "Suivi live, paiement sécurisé & preuve de remise",
-    description: "Le client final suit son colis en temps réel sur la carte, paie en ligne ou à la livraison en toute confiance, et valide la réception par code OTP. Zéro zone d'ombre, zéro litige : une expérience d'achat digne des meilleurs standards mondiaux, adaptée à Dakar.",
+    title: "SUIVI LIVE, PAIEMENT SÉCURISÉ ",
+    description: "Suivez votre colis en temps réel sur la carte. Votre prix est connu dès la commande, et vous payez en ligne ou à la livraison, en toute confiance. À chaque étape, notre service client est à vos côtés en cas de besoin, de la commande jusqu'à la réception. Tout est clair, du départ à l'arrivée : une expérience au niveau des meilleurs, pensée pour Dakar.",
     image: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=900&auto=format&fit=crop&q=85",
     imageAlt: "Expérience client suivi GPS et paiement sécurisé"
   },
   {
     number: "3",
     category: "DEM Pro · Entreprises & E-Commerce",
-    title: "Portail marchand, catalogue digital & reversements 24h",
-    description: "Un espace unique pour piloter toutes vos expéditions : courses groupées en un clic, lien de commande partageable sur vos réseaux, encaissement COD sécurisé avec reversement sous 24h sur Wave ou Orange Money, et facturation automatique avec votre logo et NINEA.",
+    title: "Portail marchand, catalogue digital et wallet instantané",
+    description: "Un seul espace pour piloter toutes vos ventes et vos livraisons. Lancez plusieurs courses en un clic, partagez votre lien de commande sur vos réseaux, et laissez vos factures se générer automatiquement, avec votre logo et votre NINEA si vous le souhaitez. Tout pour vendre plus, sans vous prendre la tête.",
     image: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85",
     imageAlt: "Portail DEM Pro et intégration e-commerce"
   },
   {
     number: "4",
     category: "Chef de Flotte",
-    title: "Structurez votre flotte, rentabilisez vos coursiers",
-    description: "Vous gérez déjà des livreurs ? DEM vous donne le cadre pour professionnaliser votre activité : pass prépayés dégressifs, dispatch automatique, suivi de performance par coursier et revenus prévisibles. Transformez votre flotte informelle en véritable entreprise logistique.",
+    title: "Structurez votre flotte, développez votre activité",
+    description: "Vous gérez déjà des coursiers ? DEM vous donne le cadre pour professionnaliser votre activité : des pass prépayés dégressifs, un dispatch automatique et des revenus plus prévisibles. Avec votre compte DEM Chef de flotte, vous suivez la performance de chaque coursier à tout instant, sur téléphone, tablette ou ordinateur. Et nous formons vos coursiers à notre méthode de travail. Votre flotte devient une vraie entreprise logistique.",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=85",
     imageAlt: "Gestion de flotte et tableau de bord Chef de Flotte"
   }
