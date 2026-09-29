@@ -84,17 +84,17 @@ export default function Home() {
           />
         </div>
 
-        <div className="w-full relative" style={{ height: '560px' }}>
+        <div className="w-full relative h-[480px] sm:h-[510px] md:h-[560px]">
           <CircularGallery
             items={galleryItems}
             bend={1.2}
             textColor="#021520"
-            borderRadius={0}
+            borderRadius={0.02}
             font="bold 28px Inter, sans-serif"
             scrollSpeed={2}
             scrollEase={0.05}
             autoRotate={true}
-            autoRotateSpeed={0.8}
+            autoRotateSpeed={0.65}
           />
         </div>
       </section>

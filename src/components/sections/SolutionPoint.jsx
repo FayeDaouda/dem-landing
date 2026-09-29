@@ -13,7 +13,7 @@ export default function SolutionPoint({
       <div className={`lg:col-span-6 ${isReversed ? 'order-1 lg:order-2' : 'order-1'}`}>
         {(number || category) && (
           <span className="font-serif italic text-xl sm:text-2xl text-[#0086C8] block mb-2 font-normal">
-            /{number} {category && `· ${category}`}
+            {number} {category && `· ${category}`}
           </span>
         )}
         <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase text-[#021520] tracking-tight leading-tight mb-4">

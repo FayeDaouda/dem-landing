@@ -193,7 +193,7 @@ export const servicesData = [
 export const piliersData = [
   {
     id: "service-client",
-    number: "01",
+    number: "1",
     tag: "Proximité & Réactivité",
     title: "Service Client Réactif & Localisé à Dakar",
     isFeatured: true,
@@ -207,7 +207,7 @@ export const piliersData = [
   },
   {
     id: "securite-otp",
-    number: "02",
+    number: "2",
     tag: "Confiance & Contrôle",
     title: "Sécurité & Traçabilité OTP Systématique",
     isFeatured: false,
@@ -221,7 +221,7 @@ export const piliersData = [
   },
   {
     id: "routage-terrain",
-    number: "03",
+    number: "3",
     tag: "Technologie Adaptée",
     title: "Cartographie Contextuelle & Maîtrise du Terrain",
     isFeatured: false,
@@ -235,7 +235,7 @@ export const piliersData = [
   },
   {
     id: "valorisation-coursiers",
-    number: "04",
+    number: "4",
     tag: "Éthique & Humain",
     title: "Valorisation & Professionnalisation des Coursiers",
     isFeatured: false,

@@ -8,6 +8,7 @@ export default function PageHeroSection({
     contentMiniBar,
     firstTitle,
     secondTitle,
+    watermark = 'DEM',
 }) {
     const sectionRef = useRef(null);
 
@@ -20,9 +21,9 @@ export default function PageHeroSection({
             );
 
             // H1 — chaque mot monte depuis overflow hidden
-            const h1 = sectionRef.current.querySelector('[data-hero="h1"]');
-            if (h1) {
-                const words = h1.textContent.trim().split(' ');
+            const h1 = sectionRef.current?.querySelector('[data-hero="h1"]');
+            if (h1 && h1.textContent.trim()) {
+                const words = h1.textContent.trim().split(/\s+/);
                 h1.innerHTML = words
                     .map(w =>
                         `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
@@ -31,14 +32,14 @@ export default function PageHeroSection({
                     ).join('');
                 gsap.fromTo(h1.querySelectorAll('.hero-word'),
                     { yPercent: 110 },
-                    { yPercent: 0, duration: 1.1, ease: 'expo.out', stagger: 0.06, delay: 0.25 }
+                    { yPercent: 0, duration: 1.1, ease: 'expo.out', stagger: 0.05, delay: 0.25 }
                 );
             }
 
             // H2 curtain reveal
-            const h2 = sectionRef.current.querySelector('[data-hero="h2"]');
-            if (h2) {
-                const words = h2.textContent.trim().split(' ');
+            const h2 = sectionRef.current?.querySelector('[data-hero="h2"]');
+            if (h2 && h2.textContent.trim()) {
+                const words = h2.textContent.trim().split(/\s+/);
                 h2.innerHTML = words
                     .map(w =>
                         `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
@@ -47,7 +48,7 @@ export default function PageHeroSection({
                     ).join('');
                 gsap.fromTo(h2.querySelectorAll('.hero-word-2'),
                     { yPercent: 110, opacity: 0 },
-                    { yPercent: 0, opacity: 1, duration: 1.0, ease: 'expo.out', stagger: 0.04, delay: 0.55 }
+                    { yPercent: 0, opacity: 1, duration: 1.0, ease: 'expo.out', stagger: 0.03, delay: 0.45 }
                 );
             }
 
@@ -63,58 +64,62 @@ export default function PageHeroSection({
     }, []);
 
     return (
-        <section ref={sectionRef} className="bg-white pt-32 min-h-[60vh] text-black relative overflow-hidden">
-
+        <section
+            ref={sectionRef}
+            className="bg-white pt-24 pb-10 sm:pt-32 sm:pb-16 lg:pt-36 lg:pb-20 text-black relative overflow-hidden flex flex-col justify-center border-b border-slate-100"
+        >
             {/* Filigrane géant en bg */}
             <div
-                className="absolute right-0 top-0 h-full flex items-center pointer-events-none select-none overflow-hidden"
+                className="absolute right-0 top-0 h-full flex items-center pointer-events-none select-none overflow-hidden max-w-[65vw] sm:max-w-none"
                 aria-hidden="true"
             >
                 <span
-                    className="text-[clamp(6rem,18vw,20rem)] font-black uppercase font-['DM_Sans',sans-serif] leading-none"
-                    style={{ color: 'rgba(0,134,200,0.04)', letterSpacing: '-0.04em' }}
+                    className="text-[clamp(4.5rem,14vw,18rem)] font-black uppercase font-['DM_Sans',sans-serif] leading-none translate-x-[10%] sm:translate-x-0"
+                    style={{ color: 'rgba(0,134,200,0.035)', letterSpacing: '-0.04em' }}
                 >
-                    PRO
+                    {watermark}
                 </span>
             </div>
 
-            <div className="mx-6 lg:mx-12 relative z-10">
-                <div className="w-full px-4 sm:px-6 lg:px-8">
+            <div className="w-full max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-16 relative z-10">
 
-                    {/* Label section */}
-                    <div className="mt-4 mb-6">
-                        <div className="inline-flex items-center gap-3">
+                {/* Label section */}
+                {contentMiniBar && (
+                    <div className="mb-3 sm:mb-5">
+                        <div className="inline-flex items-center gap-2.5 sm:gap-3 flex-wrap">
                             {/* Ligne décorative */}
                             <div
                                 data-hero="line"
-                                className="w-10 h-[2px] bg-[#0086C8]"
+                                className="w-7 sm:w-10 h-[2px] bg-[#0086C8] shrink-0"
                             />
                             <span
                                 data-hero="label"
-                                className="font-['Raleway',sans-serif] uppercase font-bold text-xs tracking-widest text-[#0086C8]"
+                                className="font-['Raleway',sans-serif] uppercase font-bold text-[10.5px] sm:text-xs tracking-[0.14em] sm:tracking-widest text-[#0086C8] break-words"
                             >
                                 {contentMiniBar}
                             </span>
                         </div>
                     </div>
+                )}
 
-                    {/* Titre principal — split word curtain */}
-                    <h1
-                        data-hero="h1"
-                        className="font-extrabold text-4xl sm:text-5xl md:text-7xl mb-8 max-w-[800px] leading-[1.05] font-['DM_Sans',sans-serif] text-black tracking-tight"
-                    >
-                        {firstTitle}
-                    </h1>
+                {/* Titre principal — split word curtain */}
+                <h1
+                    data-hero="h1"
+                    className="font-extrabold text-[28px] sm:text-4xl md:text-6xl lg:text-7xl mb-3 sm:mb-5 md:mb-6 max-w-[850px] leading-[1.12] sm:leading-[1.05] font-['DM_Sans',sans-serif] text-black tracking-tight break-words"
+                >
+                    {firstTitle}
+                </h1>
 
-                    {/* Sous-titre — curtain reveal */}
+                {/* Sous-titre — curtain reveal */}
+                {secondTitle && (
                     <h2
                         data-hero="h2"
-                        className="text-xl md:text-2xl lg:text-3xl text-slate-500 max-w-[700px] font-normal font-['Raleway',sans-serif] leading-relaxed"
+                        className="text-sm sm:text-lg md:text-2xl text-slate-500 max-w-[700px] font-normal font-['Raleway',sans-serif] leading-relaxed"
                     >
                         {secondTitle}
                     </h2>
+                )}
 
-                </div>
             </div>
         </section>
     );

@@ -17,6 +17,7 @@ export default function DemPro() {
         contentMiniBar="SOLUTIONS ENTREPRISES & E-COMMERCE"
         firstTitle="Organisez mieux, vendez plus."
         secondTitle="DEM Pro, votre logistique nouvelle génération."
+        watermark="PRO"
       />
 
       {/* ── 2. CE QUE VOUS GAGNEZ AVEC DEM PRO (AVANTAGES DU COMPTE) ── */}

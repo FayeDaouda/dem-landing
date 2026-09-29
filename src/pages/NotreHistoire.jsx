@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
 import SolutionPoint from '../components/sections/SolutionPoint.jsx';
-import coursierLambda from "../assets/coursierLambda1.png"
+import coursierLambda from "../assets/img/coursierLambda2.jpg"
 import PiliersSection from '../components/sections/PiliersSection.jsx';
 import { piliersData } from '../data/servicesData.js';
 
@@ -14,7 +14,7 @@ const SOLUTION_POINTS = [
     number: "1",
     category: "Le Coursier au Centre",
     title: "Une profession, pas un plan B",
-    description: "Chez DEM, le coursier n'est pas un sous-traitant jetable. C'est le premier maillon qu'on a structuré : rémunération transparente et hebdomadaire, équipement de protection complet, caisson isotherme normé, formation terrain rigoureuse et outils de navigation adaptés à Dakar. Quand le livreur est valorisé, toute la chaîne en profite.",
+    description: "Chez DEM, le coursier est au cœur du modèle. C'est le premier maillon qu'on a structuré, avec des revenus transparents, un équipement de protection, une formation terrain et des outils de navigation adaptés à Dakar. Quand le coursier est respecté, toute la chaîne en profite.",
     image: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85",
     imageAlt: "Coursier professionnel équipé DEM"
   },
@@ -123,7 +123,7 @@ export default function NotreHistoire() {
       <section
         id="constat"
         data-header-theme="white"
-        className="relative w-full pt-32 pb-24 lg:pt-40 lg:pb-32 px-6 lg:px-16 border-b border-black/10 bg-[#FAFCFD]"
+        className="relative w-full pt-32 pb-12 lg:pt-40 lg:pb-32 px-6 lg:px-16 border-b border-black/10 bg-[#FAFCFD]"
       >
         <div className="max-w-[1400px] mx-auto">
 
@@ -132,22 +132,27 @@ export default function NotreHistoire() {
 
             {/* Colonne Gauche : Titre + Texte constat DEM */}
             <div className="lg:col-span-6 space-y-6">
-              <MiniTitleWithBar content="01 · LE CONSTAT" color="cyan-2" />
+              <MiniTitleWithBar content="1 · LE CONSTAT" color="cyan-2" />
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#021520] leading-[1.05]">
-                LE CONSTAT D'UN SYSTÈME DE MOBILITÉ URBAINE <br className="hidden sm:inline" />
-                <span className="text-[#0086C8]">NON STRUCTURÉ</span>
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-cyan-2 leading-[1.05]">
+                DES MOTOS PARTOUT, <br className="hidden sm:inline" />
+                <span className="text-dark-3">UN SYSTÈME STRUCTURÉ NULLE PART</span>
               </h1>
 
               <div className="space-y-4 text-base sm:text-lg text-slate-700 font-['Poppins',sans-serif] leading-relaxed pt-2">
                 <p>
-                  Dakar figure parmi les métropoles les plus dynamiques d'Afrique de l'Ouest. Ses commerçants innovent, ses boutiques vendent sur les réseaux sociaux et sa population consomme à toute vitesse. Des solutions de livraison existaient déjà, mais pour les coursiers, elles restaient <strong>un véritable casse-tête financier, pensé sans eux et rarement adapté à leur réalité</strong>.
+                  Dakar figure parmi les métropoles les plus dynamiques d'Afrique de l'Ouest. Le mobile money l'a prouvé : il a transformé notre façon de payer et d'encaisser.
+
+                  Mais la logistique attend encore sa structuration. Les solutions de livraison existantes ont été pensées sans les coursiers : commissions élevées, paiements en retard, aucun suivi, un service client quasi absent.
+
                 </p>
                 <p>
-                  Commissions trop élevées, reversements tardifs, aucune visibilité sur les gains de la journée, zéro couverture en cas de litige : les livreurs portaient le système sur leurs épaules sans en tirer un revenu juste. Côté commerçants, le résultat se faisait sentir, retards chroniques, coursiers démotivés, encaissements opaques et confiance client qui s'effritait à chaque colis.
+                  Pour les pros, l'enjeu va plus loin. Chaque livraison porte leur nom. Sans professionnalisme, un seul retard suffit, et c'est leur marque que le client retient.
+
                 </p>
                 <p>
-                  Les motos ne manquaient pas à Dakar, et les plateformes non plus. Ce qui manquait, c'était un modèle qui prenne enfin en compte le coursier, qui sécurise ses revenus, simplifie son quotidien et transforme un métier subi en véritable profession.
+                  Il manquait un modèle qui structure le secteur et place enfin le coursier au centre : des revenus sécurisés, un vrai métier. Et un client qui en a enfin pour son argent.
+
                 </p>
               </div>
             </div>
@@ -184,7 +189,7 @@ export default function NotreHistoire() {
                     ÉTAT DES LIEUX
                   </span>
                   <p className="text-xs font-black uppercase leading-tight m-0 font-['DM_Sans',sans-serif]">
-                    Passer de l'anarchie urbaine à la synchronisation en temps réel.
+                    Passer de l'anarchie urbaine à une logistique structurée
                   </p>
                 </div>
 
@@ -199,7 +204,7 @@ export default function NotreHistoire() {
 
               <div className="p-8 lg:p-10 flex flex-col justify-center text-left">
                 <span className="font-['DM_Sans',sans-serif] text-4xl sm:text-6xl font-black text-[#00D2FF] block mb-2 tracking-tight">
-                  +4h
+                  +2h
                 </span>
                 <span className="text-xs font-bold uppercase tracking-widest text-white/80 block">
                   Délai moyen antérieur sans DEM
@@ -208,19 +213,19 @@ export default function NotreHistoire() {
 
               <div className="p-8 lg:p-10 flex flex-col justify-center text-left">
                 <span className="font-['DM_Sans',sans-serif] text-4xl sm:text-6xl font-black text-white block mb-2 tracking-tight">
-                  &lt; 25%
+                  &lt; 30%
                 </span>
                 <span className="text-xs font-bold uppercase tracking-widest text-white/80 block">
-                  Taux de satisfaction inférieur à 25%
+                  Taux de satisfaction client inférieur à 30%  sans DEM
                 </span>
               </div>
 
               <div className="p-8 lg:p-10 flex flex-col justify-center text-left">
                 <span className="font-['DM_Sans',sans-serif] text-4xl sm:text-6xl font-black text-[#0086C8] block mb-2 tracking-tight">
-                  35%
+                  45%
                 </span>
                 <span className="text-xs font-bold uppercase tracking-widest text-white/80 block">
-                  Taux moyen d'échec ou d'annulation
+                  Taux moyen d'échec ou d'annulation sans DEM
                 </span>
               </div>
 
@@ -231,7 +236,7 @@ export default function NotreHistoire() {
           <div className="mt-2 pt-8 border-t border-black/10">
             <div className="mb-5">
               <span className="text-xs uppercase tracking-widest font-bold text-[#0086C8] block mb-2">
-                Enquête de Terrain · Dakar
+                Au contact des acteurs
               </span>
               <h3 className="text-2xl sm:text-3xl font-black uppercase text-[#021520] tracking-tight">
                 Témoignages ressortis de l'étude de marché
@@ -245,15 +250,15 @@ export default function NotreHistoire() {
               <div className="p-8 flex flex-col justify-between hover:bg-slate-50 transition-colors">
                 <div>
                   <div className="text-xs font-mono uppercase tracking-widest text-[#0086C8] mb-4">
-                    /01 · E-Commerce
+                    1 · E-Commerçant physique & e-commerçant
                   </div>
                   <blockquote className="font-serif italic text-base sm:text-lg text-slate-800 leading-snug mb-6">
-                    « Avant DEM, chaque livraison était une angoisse. Les coursiers ne répondaient plus, arrivaient avec 4 heures de retard, et les clientes finissaient par annuler la commande. »
+                    « Avant DEM, dès que tu n'arrivais pas à joindre le coursier, c'était le stress. Il arrivait en retard, et parfois le client finissait par annuler la commande. »
                   </blockquote>
                 </div>
                 <div className="pt-4 border-t border-slate-200">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Aïssatou N.</div>
-                  <div className="text-[11px] text-slate-500 font-['Poppins',sans-serif]">Boutique Mode & Cosmétiques, Almadies</div>
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Momar F.</div>
+                  <div className="text-[11px] text-slate-500 font-['Poppins',sans-serif]">Produits utilitaires</div>
                 </div>
               </div>
 
@@ -261,31 +266,32 @@ export default function NotreHistoire() {
               <div className="p-8 flex flex-col justify-between hover:bg-slate-50 transition-colors">
                 <div>
                   <div className="text-xs font-mono uppercase tracking-widest text-[#0086C8] mb-4">
-                    /02 · Restauration
+                    2 · Consommateur
                   </div>
                   <blockquote className="font-serif italic text-base sm:text-lg text-slate-800 leading-snug mb-6">
-                    « Livrer des repas chauds à Dakar tenait du miracle. Sans caisson étanche ni localisation précise, la nourriture arrivait froide et le client refusait d'encaisser. »
+                    « Le coursier qui m'appelle pour savoir où je suis alors qu'il a ma localisation, celui qui n'a pas la monnaie et me dit de me débrouiller, ou celui qui me fait décaler mon programme parce qu'il fait d'autres courses en même temps… Franchement, ça fatiguait. »
                   </blockquote>
                 </div>
                 <div className="pt-4 border-t border-slate-200">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Mamadou D.</div>
-                  <div className="text-[11px] text-slate-500 font-['Poppins',sans-serif]">Gérant d'enseigne, Plateau</div>
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Oumou D.</div>
+                  <div className="text-[11px] text-slate-500 font-['Poppins',sans-serif]">Acheteuse active, Plateau</div>
                 </div>
               </div>
+
 
               {/* Témoignage 3 */}
               <div className="p-8 flex flex-col justify-between hover:bg-slate-50 transition-colors">
                 <div>
                   <div className="text-xs font-mono uppercase tracking-widest text-[#0086C8] mb-4">
-                    /03 · Consommateur
+                    3 · Restaurateur
                   </div>
                   <blockquote className="font-serif italic text-base sm:text-lg text-slate-800 leading-snug mb-6">
-                    « Le livreur qui m'appelle 5 fois pour demander "vous êtes vers où ?", qui n'a pas la monnaie sur 10 000 FCFA et qui se pointe quand je suis déjà repartie... C'était invivable. »
+                    « Avant, livrer un plat chaud à Dakar, c'était compliqué. Le coursier enchaînait plusieurs courses avant de passer chez nous, l'adresse était mal comprise, et le repas arrivait froid. Parfois, le client refusait même de payer. »
                   </blockquote>
                 </div>
                 <div className="pt-4 border-t border-slate-200">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Yacine S.</div>
-                  <div className="text-[11px] text-slate-500 font-['Poppins',sans-serif]">Acheteuse active, Mermoz</div>
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Aïssatou S.</div>
+                  <div className="text-[11px] text-slate-500 font-['Poppins',sans-serif]">Traiteur, Ouakam</div>
                 </div>
               </div>
 
@@ -293,14 +299,14 @@ export default function NotreHistoire() {
               <div className="p-8 flex flex-col justify-between hover:bg-slate-50 transition-colors">
                 <div>
                   <div className="text-xs font-mono uppercase tracking-widest text-[#0086C8] mb-4">
-                    /04 · Coursier
+                    4 · Coursier
                   </div>
                   <blockquote className="font-serif italic text-base sm:text-lg text-slate-800 leading-snug mb-6">
-                    « On roulait 12 heures par jour sans contrat, sans équipement de pluie ni casque sécurisé, à négocier chaque course sans garantie d'être payé en fin de semaine. »
+                    « On roulait dix heures par jour, sans contrat, sans tenue de pluie ni casque correct. Et vu les prix, chaque course, il fallait la négocier. »
                   </blockquote>
                 </div>
                 <div className="pt-4 border-t border-slate-200">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Ibrahima T.</div>
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#021520]">Demba B.</div>
                   <div className="text-[11px] text-slate-500 font-['Poppins',sans-serif]">Coursier Moto (ex-informel)</div>
                 </div>
               </div>
@@ -327,14 +333,14 @@ export default function NotreHistoire() {
 
           {/* Petit texte de récap */}
           <div className="max-w-3xl mb-16">
-            <MiniTitleWithBar content="02 · NOTRE CAP STRATÉGIQUE" color="cyan-2" />
+            <MiniTitleWithBar content="2 · NOTRE CAP STRATÉGIQUE" color="cyan-2" />
 
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#021520] tracking-tight leading-[1.08] mt-4 mb-6">
-              Notre Vision, notre ambition, nos actions
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-cyan-deep tracking-tight leading-[1.08] mt-4 mb-6">
+              Vision, ambition <br />& actions
             </h2>
 
             <p className="text-base sm:text-lg text-slate-700 font-['Poppins',sans-serif] leading-relaxed">
-              Face à un écosystème qui oubliait ceux qui le font tourner, DEM a été créé avec une mission claire : repenser la mobilité urbaine dakaroise en plaçant le coursier au centre — avec une infrastructure technologique fiable, des revenus sécurisés et une considération humaine à chaque maillon. Notre cap s'articule autour de trois piliers fondamentaux.
+              DEM est né avec une mission claire : structurer la mobilité urbaine à Dakar. Une technologie fiable, des revenus sécurisés, du respect à chaque étape. Notre cap repose sur trois piliers.
             </p>
           </div>
 
@@ -349,88 +355,100 @@ export default function NotreHistoire() {
               <div className="w-full lg:w-[68%] xl:w-[62%] relative bg-white border border-black/10 border-l-4 border-l-[#0086C8] p-8 sm:p-10 lg:p-12 shadow-sm hover:shadow-xl hover:border-black/20 transition-all duration-300 group overflow-hidden">
                 {/* Numéro géant en filigrane */}
                 <span className="absolute -top-4 right-4 text-7xl sm:text-9xl font-serif italic text-slate-100 select-none pointer-events-none group-hover:text-[#0086C8]/10 transition-colors">
-                  1
+                  VISION
                 </span>
 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <span className="font-serif italic text-xl sm:text-2xl text-[#0086C8] font-normal">
-                      /1 · Notre Vision
+                      1 · Notre Vision
                     </span>
-                    
+
                   </div>
 
                   <h3 className="text-xl sm:text-2xl font-black uppercase text-[#021520] tracking-tight leading-snug mb-4">
-                    Bâtir le premier écosystème de mobilité commerciale en Afrique de l'Ouest
+                    Structurer un écosystème de mobilité de référence en Afrique de l'Ouest
                   </h3>
 
                   <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif] mb-6">
-                    Bâtir un écosystème qui valorise autant le coursier que le commerçant. Un modèle où chaque livreur dispose d'outils dignes de ce nom, et où chaque commerce, de la créatrice indépendante au grand compte, accède à une logistique de classe mondiale.
+                    Un modèle où chacun y gagne. Le coursier roule avec des outils dignes de ce nom et garde ce qu'il gagne. Le commerçant et l'e-commerçant livrent sans craindre pour leur image. Le client reçoit ce qu'il a commandé, à l'heure. Chez DEM, un service de qualité n'est pas un luxe. C'est le minimum.
                   </p>
 
-                  
+
                 </div>
               </div>
             </div>
 
-            
+
 
             {/* ── PALIER 02 : NOTRE AMBITION (Aligné à DROITE) ── */}
             <div className="relative flex justify-end">
               <div className="w-full lg:w-[68%] xl:w-[62%] relative bg-white border border-black/10 border-r-4 border-r-[#0086C8] p-8 sm:p-10 lg:p-12 shadow-sm hover:shadow-xl hover:border-black/20 transition-all duration-300 group overflow-hidden">
                 {/* Numéro géant en filigrane */}
                 <span className="absolute -top-4 left-4 text-7xl sm:text-9xl font-serif italic text-slate-100 select-none pointer-events-none group-hover:text-[#0086C8]/10 transition-colors">
-                  2
+                  AMBITION
                 </span>
 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <span className="font-serif italic text-xl sm:text-2xl text-[#0086C8] font-normal">
-                      /2 · Notre Ambition
+                      2 · Notre Ambition
                     </span>
-                    
+
                   </div>
 
                   <h3 className="text-xl sm:text-2xl font-black uppercase text-[#021520] tracking-tight leading-snug mb-4">
-                    Devenir le réflexe Same-Day incontournable à Dakar et dans la sous-région
+                    Devenir le partenaire logistique sur lequel on peut compter, à Dakar et en Afrique subsaharienne
                   </h3>
 
                   <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif] mb-6">
-                    Prouver qu'un coursier bien équipé et justement rémunéré livre mieux. Notre standard d'excellence : 99,4% de taux de réussite, des délais records de 20 à 45 minutes et une digitalisation intégrale des flux financiers.
+                    Prouver qu'un coursier bien équipé et justement rémunéré livre mieux. Notre standard d'excellence : des délais de 10 à 25 minutes et une digitalisation intégrale de la logistique.
                   </p>
 
-                  
+
                 </div>
               </div>
             </div>
 
-            
+
 
             {/* ── PALIER 03 : NOS ACTIONS (Aligné à GAUCHE) ── */}
             <div className="relative flex justify-start">
               <div className="w-full lg:w-[68%] xl:w-[62%] relative bg-white border border-black/10 border-l-4 border-l-[#0086C8] p-8 sm:p-10 lg:p-12 shadow-sm hover:shadow-xl hover:border-black/20 transition-all duration-300 group overflow-hidden">
                 {/* Numéro géant en filigrane */}
                 <span className="absolute -top-4 right-4 text-7xl sm:text-9xl font-serif italic text-slate-100 select-none pointer-events-none group-hover:text-[#0086C8]/10 transition-colors">
-                  3
+                  ACTIONS
                 </span>
 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <span className="font-serif italic text-xl sm:text-2xl text-[#0086C8] font-normal">
-                      /3 · Nos Actions
+                      3 · Nos Actions
                     </span>
-                    
+
                   </div>
 
                   <h3 className="text-xl sm:text-2xl font-black uppercase text-[#021520] tracking-tight leading-snug mb-4">
-                    Technologie contextuelle & sécurisation financière au quotidien
+                    Une technologie et un système pensés pour le terrain africain
                   </h3>
 
                   <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif] mb-6">
-                    Développer des algorithmes contextuels adaptés à la réalité du terrain dakarois, sécuriser les revenus de nos coursiers avec des reversements automatiques sous 24h et équiper chacun avec du matériel professionnel homologué.
+                    Nous avons créé une app pensée pour le terrain. Elle connaît les quartiers, les adresses et les prix par zone.
+                  </p>
+                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif] mb-6">
+                    Autour d'elle, nous avons bâti un système complet. Chaque acteur y bénéficie d'un suivi personnalisé. L'app et le système fonctionnent en parfaite synergie. Ce qui se passe dans l'app se vit sur le terrain.
+                  </p>
+                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif] mb-6">
+                    Nous formons et équipons chaque coursier avant qu'il roule. Son matériel est de qualité et homologué.
+                  </p>
+                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif] mb-6">
+                    Avec DEM Pro, le commerçant gère ses ventes et ses livraisons. Son image est entre de bonnes mains.
+                  </p>
+                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif] mb-6">
+                    Pour le client, tout est simple. Quelques clics, un prix connu tout de suite, une course suivie en temps réel.
                   </p>
 
-                  
+
                 </div>
               </div>
             </div>
@@ -453,7 +471,7 @@ export default function NotreHistoire() {
 
           {/* Grand titre affiché : LA SOLUTION DEM */}
           <div className="max-w-3xl mb-24 lg:mb-32">
-            <MiniTitleWithBar content="03 · NOTRE RÉPONSE TECHNOLOGIQUE & OPÉRATIONNELLE" color="cyan-2" />
+            <MiniTitleWithBar content="3 · NOTRE RÉPONSE TECHNOLOGIQUE & OPÉRATIONNELLE" color="cyan-2" />
             <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black uppercase text-[#021520] tracking-tight leading-none mt-4">
               LA SOLUTION <span className="text-[#0086C8]">DEM</span>
             </h2>
@@ -496,7 +514,7 @@ export default function NotreHistoire() {
         <div className="max-w-[1400px] mx-auto relative z-10">
 
           <div className="max-w-3xl mb-16">
-            <MiniTitleWithBar content="04 · PERSPECTIVES & DÉVELOPPEMENT" color="cyan-2" />
+            <MiniTitleWithBar content="4 · PERSPECTIVES & DÉVELOPPEMENT" color="cyan-2" />
 
             <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight text-[#021520] leading-[1.05] mt-4 mb-6">
               Le potentiel de la mobilité <br className="hidden sm:inline" />
@@ -514,7 +532,7 @@ export default function NotreHistoire() {
             <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors">
               <div>
                 <span className="font-serif italic text-xl text-[#0086C8] block mb-4">
-                  01 · Saturation & Géographie
+                  1 · Saturation & Géographie
                 </span>
                 <h3 className="text-xl font-bold uppercase text-[#021520] mb-4">
                   La presqu'île en entonnoir
@@ -528,7 +546,7 @@ export default function NotreHistoire() {
             <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors">
               <div>
                 <span className="font-serif italic text-xl text-[#0086C8] block mb-4">
-                  02 · Commerce Numérique
+                  2 · Commerce Numérique
                 </span>
                 <h3 className="text-xl font-bold uppercase text-[#021520] mb-4">
                   L'explosion du Social Commerce
@@ -542,7 +560,7 @@ export default function NotreHistoire() {
             <div className="p-8 lg:p-12 flex flex-col justify-between hover:bg-slate-50 transition-colors">
               <div>
                 <span className="font-serif italic text-xl text-[#0086C8] block mb-4">
-                  03 · Fintech & Inclusion
+                  3 · Fintech & Inclusion
                 </span>
                 <h3 className="text-xl font-bold uppercase text-[#021520] mb-4">
                   L'interconnexion Mobile Money
@@ -558,7 +576,7 @@ export default function NotreHistoire() {
         </div>
       </section>
 
-      
+
 
 
       {/* ══════════════════════════════════════════════════════════════════════

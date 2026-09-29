@@ -75,6 +75,7 @@ export default function Actualites() {
         contentMiniBar="OBSERVATOIRE DE LA MOBILITÉ & VIE DE DEM"
         firstTitle="L'actualité de la livraison urbaine à Dakar."
         secondTitle="Mises à jour opérationnelles, réalité du trafic dakarois, astuces métiers et feuille de route technologique certifiée."
+        watermark="ACTU"
       />
 
       {/* ── 2. BANDEAU DE REPÈRES VÉRIFIÉS (ZÉRO CHIFFRE INVENTÉ) ── */}

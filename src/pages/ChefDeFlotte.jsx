@@ -29,7 +29,7 @@ import {
 export default function ChefDeFlotte() {
   // Simulateur d'exploitation Chef de Flotte Externe
   const [motosCount, setMotosCount] = useState(5); // 3 à 10 motos éligibles
-  const [selectedOffer, setSelectedOffer] = useState('month'); // '5days', '20days', 'month'
+  const [selectedOffer, setSelectedOffer] = useState('month'); // '5days', '15days', 'month'
   const [activeScenario, setActiveScenario] = useState('reference'); // 'reference' (14 500 F/j) ou 'prudent' (6 000 F/j)
   const [openFaq, setOpenFaq] = useState(null);
 
@@ -44,11 +44,11 @@ export default function ChefDeFlotte() {
       role: 'Engagement court, idéal pour tester ou ajuster',
       savingsVsMarket: '-31%'
     },
-    '20days': {
-      name: 'Forfait 20 jours',
-      days: 20,
+    '15days': {
+      name: 'Forfait 15 jours',
+      days: 15,
       pricePerDay: 1400,
-      totalPerCourier: 28000,
+      totalPerCourier: 21000,
       badge: 'Le plus équilibré',
       role: 'Engagement moyen, prix/jour fortement réduit',
       savingsVsMarket: '-49%'
@@ -239,14 +239,14 @@ export default function ChefDeFlotte() {
 
   // Tableau officiel de projection du revenu Pass par flotte / mois (Page 5 du dossier)
   const PROJECTION_TABLE = [
-    { count: 3, pass5: 28500, pass20: 84000, passMonth: 117000, miseRel: 46800 },
-    { count: 4, pass5: 38000, pass20: 112000, passMonth: 156000, miseRel: 62400 },
-    { count: 5, pass5: 47500, pass20: 140000, passMonth: 195000, miseRel: 78000 },
-    { count: 6, pass5: 57000, pass20: 168000, passMonth: 234000, miseRel: 93600 },
-    { count: 7, pass5: 66500, pass20: 196000, passMonth: 273000, miseRel: 109200 },
-    { count: 8, pass5: 76000, pass20: 224000, passMonth: 312000, miseRel: 124800 },
-    { count: 9, pass5: 85500, pass20: 252000, passMonth: 351000, miseRel: 140400 },
-    { count: 10, pass5: 95000, pass20: 280000, passMonth: 390000, miseRel: 156000 },
+    { count: 3, pass5: 28500, pass15: 63000, passMonth: 117000, miseRel: 46800 },
+    { count: 4, pass5: 38000, pass15: 84000, passMonth: 156000, miseRel: 62400 },
+    { count: 5, pass5: 47500, pass15: 105000, passMonth: 195000, miseRel: 78000 },
+    { count: 6, pass5: 57000, pass15: 126000, passMonth: 234000, miseRel: 93600 },
+    { count: 7, pass5: 66500, pass15: 147000, passMonth: 273000, miseRel: 109200 },
+    { count: 8, pass5: 76000, pass15: 168000, passMonth: 312000, miseRel: 124800 },
+    { count: 9, pass5: 85500, pass15: 189000, passMonth: 351000, miseRel: 140400 },
+    { count: 10, pass5: 95000, pass15: 210000, passMonth: 390000, miseRel: 156000 },
   ];
 
   return (
@@ -256,7 +256,7 @@ export default function ChefDeFlotte() {
       <PageHeroSection
         contentMiniBar="PROGRAMME PARTENAIRES · CHEF DE FLOTTE EXTERNE"
         firstTitle="Estimez vos revenus en intégrant le réseau DEM."
-        data-hero-h1="hero-h1"
+        watermark="FLOTTE"
       />
 
       {/* ── 5. SIMULATEUR DYNAMIQUE DE RENTABILITÉ FLOTTE (OFFICIEL DOSSIER) ── */}
@@ -346,7 +346,7 @@ export default function ChefDeFlotte() {
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       { key: '5days', label: '5 jours', price: '9 500 F', sub: '1 900 F/j' },
-                      { key: '20days', label: '20 jours', price: '28 000 F', sub: '1 400 F/j' },
+                      { key: '15days', label: '15 jours', price: '21 000 F', sub: '1 400 F/j' },
                       { key: 'month', label: '1 mois (30j)', price: '39 000 F', sub: '1 300 F/j' }
                     ].map((plan) => (
                       <button
@@ -648,7 +648,7 @@ export default function ChefDeFlotte() {
               </div>
             </div>
 
-            {/* Offre 2 : Forfait 20 jours */}
+            {/* Offre 2 : Forfait 15 jours */}
             <div data-cdf="offer-card" className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors bg-slate-50/50">
               <div>
                 <div className="flex justify-between items-center mb-6">
@@ -656,15 +656,15 @@ export default function ChefDeFlotte() {
                     Engagement Moyen
                   </span>
                   <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/20 text-[#0086C8]">
-                    20 jours
+                    15 jours
                   </span>
                 </div>
 
                 <h3 className="text-2xl font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
-                  Forfait 20 jours
+                  Forfait 15 jours
                 </h3>
                 <p className="text-xs text-slate-500 mb-6 font-['Poppins',sans-serif]">
-                  Le compromis équilibré : couverture sur un cycle de travail standard avec un coût journalier nettement allégé.
+                  Le compromis équilibré : couverture sur deux semaines avec un coût journalier nettement allégé.
                 </p>
 
                 <div className="py-6 border-t border-b border-black/10 mb-6 space-y-2">
@@ -674,7 +674,7 @@ export default function ChefDeFlotte() {
                   </div>
                   <div className="flex items-baseline justify-between">
                     <span className="text-xs uppercase tracking-wider text-[#0086C8] font-bold">Total / coursier :</span>
-                    <span className="text-2xl font-black text-dark font-['DM_Sans',sans-serif]">28 000 FCFA</span>
+                    <span className="text-2xl font-black text-dark font-['DM_Sans',sans-serif]">21 000 FCFA</span>
                   </div>
                   <div className="text-right">
                     <span className="text-[11px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5">
@@ -706,10 +706,10 @@ export default function ChefDeFlotte() {
               <div className="pt-8">
                 <button
                   type="button"
-                  onClick={() => { setSelectedOffer('20days'); handleApplyFromSimulator(); }}
+                  onClick={() => { setSelectedOffer('15days'); handleApplyFromSimulator(); }}
                   className="w-full py-3.5 uppercase font-bold tracking-widest text-xs border border-[#0086C8] bg-[#0086C8] text-white hover:bg-dark hover:border-dark transition-colors cursor-pointer"
                 >
-                  Choisir le 20 jours →
+                  Choisir le 15 jours →
                 </button>
               </div>
             </div>
@@ -888,7 +888,7 @@ export default function ChefDeFlotte() {
 
                   <div className="p-5 flex justify-between items-center hover:bg-slate-50 transition-colors">
                     <div>
-                      <span className="font-bold text-dark block">DEM — Forfait 20 jours</span>
+                      <span className="font-bold text-dark block">DEM — Forfait 15 jours</span>
                       <span className="text-xs text-slate-500">1 400 FCFA / jour</span>
                     </div>
                     <div className="flex gap-8 items-center text-right font-mono">
@@ -951,7 +951,7 @@ export default function ChefDeFlotte() {
                 <tr className="bg-dark text-white border-b border-black/10 text-xs uppercase font-['Raleway',sans-serif] tracking-wider">
                   <th className="p-4 lg:p-5 font-bold">Motos / Coursiers</th>
                   <th className="p-4 lg:p-5 font-bold">Tous en 5 jours (9 500 F)</th>
-                  <th className="p-4 lg:p-5 font-bold">Tous en 20 jours (28 000 F)</th>
+                  <th className="p-4 lg:p-5 font-bold">Tous en 15 jours (21 000 F)</th>
                   <th className="p-4 lg:p-5 font-bold bg-[#0086C8] text-white">Tous en 1 mois (39 000 F)</th>
                   <th className="p-4 lg:p-5 font-bold text-slate-300">Mise en relation est. (100 F/c)</th>
                 </tr>
@@ -975,7 +975,7 @@ export default function ChefDeFlotte() {
                       {row.pass5.toLocaleString('fr-FR')} FCFA
                     </td>
                     <td className="p-4 lg:p-5 text-slate-700">
-                      {row.pass20.toLocaleString('fr-FR')} FCFA
+                      {row.pass15.toLocaleString('fr-FR')} FCFA
                     </td>
                     <td className="p-4 lg:p-5 font-bold text-[#0086C8] bg-cyan/5">
                       {row.passMonth.toLocaleString('fr-FR')} FCFA
@@ -1232,7 +1232,7 @@ export default function ChefDeFlotte() {
               },
               {
                 q: "Comment fonctionne le système de pass prépayé ?",
-                a: "Vous achetez à l'avance le forfait de votre choix (5 jours, 20 jours ou 1 mois/30 jours) pour vos coursiers. Vos livreurs roulent sur ce crédit de jours. À épuisement, vous rechargez librement avec l'offre adaptée à votre trésorerie. Zéro découvert, zéro impayé."
+                a: "Vous achetez à l'avance le forfait de votre choix (5 jours, 15 jours ou 1 mois/30 jours) pour vos coursiers. Vos livreurs roulent sur ce crédit de jours. À épuisement, vous rechargez librement avec l'offre adaptée à votre trésorerie. Zéro découvert, zéro impayé."
               },
               {
                 q: "DEM prend-il une commission sur les courses de mes livreurs ?",
@@ -1248,7 +1248,7 @@ export default function ChefDeFlotte() {
               },
               {
                 q: "Puis-je changer d'offre de pass d'un cycle à l'autre ?",
-                a: "Oui, totalement. Les 3 offres (5 jours, 20 jours, 30 jours) sont indépendantes. Vous pouvez par exemple prendre une offre 5 jours au démarrage pour évaluer vos équipes, puis basculer sur l'offre 30 jours pour maximiser votre marge à 1 300 F/jour."
+                a: "Oui, totalement. Les 3 offres (5 jours, 15 jours, 30 jours) sont indépendantes. Vous pouvez par exemple prendre une offre 5 jours au démarrage pour évaluer vos équipes, puis basculer sur l'offre 30 jours pour maximiser votre marge à 1 300 F/jour."
               }
             ].map((faq, idx) => (
               <div key={idx} data-cdf="faq-item" className="p-6 lg:p-8 bg-white/[0.03] hover:bg-white/[0.07] transition-colors">
@@ -1286,7 +1286,7 @@ export default function ChefDeFlotte() {
         bullets={[
           "Sélectionnez le profil « Chef de flotte » lors de l'inscription",
           "Validation des pièces justificatives de votre flotte sous 48h",
-          "Achat de vos pass prépayés (5j, 20j ou 30j) par Wave ou Orange Money",
+          "Achat de vos pass prépayés (5j, 15j ou 30j) par Wave ou Orange Money",
           "Dotation tee-shirts DEM offerte et activation immédiate des coursiers"
         ]}
         id="download"

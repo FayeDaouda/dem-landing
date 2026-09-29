@@ -37,7 +37,7 @@ export default function PiliersSection({ piliers = [] }) {
                   {/* Top indicator & number */}
                   <div className="flex items-center justify-between mb-6">
                     <span className="font-serif italic text-2xl font-light text-[#00D2FF]">
-                      /{pilier.number}
+                      {pilier.number}
                     </span>
                     <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 border bg-white/5 text-white/60 border-white/10">
                       {pilier.tag}

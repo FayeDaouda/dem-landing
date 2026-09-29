@@ -1,6 +1,7 @@
 import React, { useCallback, useLayoutEffect, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { gsap } from 'gsap';
+import { socialsData as defaultSocials } from '../../data/socialsData.js';
 
 export const StaggeredMenu = ({
   isOpen = false,
@@ -8,8 +9,9 @@ export const StaggeredMenu = ({
   position = 'right',
   colors = ['#B497CF', '#5227FF'],
   items = [],
-  // socialItems = [],
-  // displaySocials = true,
+  socialItems = defaultSocials,
+  displaySocials = true,
+  socialTitle = 'Réseaux',
   displayItemNumbering = true,
   accentColor = '#5227FF',
   closeOnClickAway = true,
@@ -270,6 +272,29 @@ export const StaggeredMenu = ({
                   </li>
                 )}
               </ul>
+
+              {displaySocials && socialItems && socialItems.length > 0 && (
+                <div className="sm-socials">
+                  {socialTitle && (
+                    <span className="sm-socials-title">{socialTitle}</span>
+                  )}
+                  <ul className="sm-socials-list" role="list">
+                    {socialItems.map((social, idx) => (
+                      <li key={social.name || social.label || idx} className="sm-socials-item">
+                        <a
+                          href={social.url || social.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="sm-socials-link"
+                          aria-label={social.label || social.name}
+                        >
+                          {social.label || social.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </aside>
         </div>,
@@ -322,11 +347,11 @@ export const StaggeredMenu = ({
 }
 .sm-scope .sm-panel-item {
   position: relative; color: #000; font-weight: 600;
-  font-size: clamp(2.5rem, 8vw, 4rem);
-  cursor: pointer; line-height: 1;
-  letter-spacing: -2px; text-transform: uppercase;
+  font-size: clamp(2.2rem, 7vw, 3.5rem);
+  cursor: pointer; line-height: 1.1;
+  letter-spacing: -1.5px; text-transform: uppercase;
   display: inline-block; text-decoration: none;
-  padding-right: 1.4em;
+  padding-right: 2.2rem;
   transition: color 0.2s ease;
 }
 .sm-scope .sm-panel-item:hover { color: var(--sm-accent, #000); }
@@ -338,29 +363,31 @@ export const StaggeredMenu = ({
 .sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after {
   counter-increment: smItem;
   content: counter(smItem, decimal-leading-zero);
-  position: absolute; top: 0.1em; right: 3.2em;
-  font-size: 18px; font-weight: 400;
+  position: absolute; top: 0.15em; right: 0;
+  font-size: 16px; font-weight: 600;
   color: var(--sm-accent, #000);
   letter-spacing: 0; pointer-events: none; user-select: none;
   opacity: var(--sm-num-opacity, 0);
 }
 .sm-scope .sm-socials {
   margin-top: auto; padding-top: 2rem;
-  display: flex; flex-direction: column; gap: 0.75rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
 }
 .sm-scope .sm-socials-title {
-  margin: 0; font-size: 1rem; font-weight: 500;
+  margin: 0; font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--sm-accent, #000);
 }
 .sm-scope .sm-socials-list {
   list-style: none; margin: 0; padding: 0;
   display: flex; flex-direction: row; align-items: center;
-  gap: 1rem; flex-wrap: wrap;
+  gap: 1.25rem; flex-wrap: wrap;
 }
 .sm-scope .sm-socials-link {
-  font-size: 1.2rem; font-weight: 500; color: #111;
+  font-size: 1rem; font-weight: 600; color: #111;
   text-decoration: none; display: inline-block;
   padding: 2px 0;
+  text-transform: uppercase; letter-spacing: 0.05em;
   transition: color 0.3s ease, opacity 0.3s ease;
 }
 .sm-scope .sm-socials-link:hover { color: var(--sm-accent, #000); }

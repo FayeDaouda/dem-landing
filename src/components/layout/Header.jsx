@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { StaggeredMenu } from "./StaggeredMenu";
+import { socialsData } from "../../data/socialsData";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -162,6 +163,7 @@ export default function Header() {
                 accentColor="#00D2FF"
                 colors={['#021520', '#0A2233', '#005A8C']}
                 displaySocials={true}
+                socialItems={socialsData}
                 items={[
                     { label: 'Accueil', ariaLabel: 'Accueil', link: '/' },
                     { label: 'Notre Histoire', ariaLabel: 'Notre Histoire', link: '/notre-histoire' },
@@ -169,7 +171,7 @@ export default function Header() {
                     { label: 'Actualités', ariaLabel: 'Actualités', link: '/actualites' },
                     { label: 'DEM PRO', ariaLabel: 'DEM PRO', link: '/dem-pro' },
                     { label: 'Chef de Flotte', ariaLabel: 'Chef de Flotte', link: '/chef-de-flotte' },
-                    { label: 'Devenir Coursier', ariaLabel: 'Devenir Coursier', link: '/coursiers' },
+                    // { label: 'Devenir Coursier', ariaLabel: 'Devenir Coursier', link: '/coursiers' },
                     { label: 'Contact', ariaLabel: 'Contact', link: '/contact' },
                 ]}
             />

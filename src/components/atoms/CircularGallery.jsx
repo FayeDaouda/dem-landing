@@ -67,6 +67,7 @@ class Title {
 
     createMesh() {
         const { texture, width, height } = createTextTexture(this.gl, this.text, this.font, this.textColor);
+        this.textAspect = width / height;
         const geometry = new Plane(this.gl);
         const program = new Program(this.gl, {
             vertex: `
@@ -95,12 +96,31 @@ class Title {
             transparent: true
         });
         this.mesh = new Mesh(this.gl, { geometry, program });
-        const aspect = width / height;
-        const textHeightScaled = this.plane.scale.y * 0.15;
-        const textWidthScaled = textHeightScaled * aspect;
-        this.mesh.scale.set(textWidthScaled, textHeightScaled, 1);
-        this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeightScaled * 0.5 - 0.05;
         this.mesh.setParent(this.plane);
+        this.onResize();
+    }
+
+    onResize() {
+        if (!this.mesh) return;
+        const aspect = this.textAspect || 1;
+        const isMobile = (window.innerWidth || 1024) < 768;
+        
+        let sy = isMobile ? 0.11 : 0.13;
+        const planeScaleX = Math.max(this.plane.scale.x || 1, 0.001);
+        const planeScaleY = Math.max(this.plane.scale.y || 1, 0.001);
+        let sx = sy * aspect * (planeScaleY / planeScaleX);
+        
+        const maxSx = isMobile ? 1.25 : 1.15;
+        if (sx > maxSx) {
+            const factor = maxSx / sx;
+            sx = maxSx;
+            sy = sy * factor;
+        }
+        
+        this.mesh.scale.set(sx, sy, 1);
+        this.mesh.position.x = 0;
+        this.mesh.position.y = -0.5 - sy * 0.5 - 0.06;
+        this.mesh.position.z = 0.02;
     }
 }
 
@@ -247,16 +267,20 @@ class Media {
         const x = this.plane.position.x;
         const H = this.viewport.width / 2;
 
-        if (this.bend === 0) {
+        const isMobile = this.screen.width < 640;
+        const isTablet = this.screen.width >= 640 && this.screen.width < 1024;
+        const effectiveBend = isMobile ? this.bend * 0.32 : (isTablet ? this.bend * 0.6 : this.bend);
+
+        if (effectiveBend === 0) {
             this.plane.position.y = 0;
             this.plane.rotation.z = 0;
         } else {
-            const B_abs = Math.abs(this.bend);
+            const B_abs = Math.abs(effectiveBend);
             const R = (H * H + B_abs * B_abs) / (2 * B_abs);
             const effectiveX = Math.min(Math.abs(x), H);
 
             const arc = R - Math.sqrt(R * R - effectiveX * effectiveX);
-            if (this.bend > 0) {
+            if (effectiveBend > 0) {
                 this.plane.position.y = -arc;
                 this.plane.rotation.z = -Math.sign(x) * Math.asin(effectiveX / R);
             } else {
@@ -291,14 +315,33 @@ class Media {
                 this.plane.program.uniforms.uViewportSizes.value = [this.viewport.width, this.viewport.height];
             }
         }
-        this.scale = this.screen.height / 1500;
-        this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
-        this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
+
+        const isMobile = this.screen.width < 640;
+        const isTablet = this.screen.width >= 640 && this.screen.width < 1024;
+
+        if (isMobile) {
+            this.plane.scale.x = this.viewport.width * 0.54;
+            this.plane.scale.y = this.plane.scale.x * 1.22;
+            this.padding = this.plane.scale.x * 0.16;
+        } else if (isTablet) {
+            this.plane.scale.x = this.viewport.width * 0.38;
+            this.plane.scale.y = this.plane.scale.x * 1.24;
+            this.padding = this.plane.scale.x * 0.18;
+        } else {
+            this.scale = this.screen.height / 1500;
+            this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
+            this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
+            this.padding = 2;
+        }
+
         this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
-        this.padding = 2;
         this.width = this.plane.scale.x + this.padding;
         this.widthTotal = this.width * this.length;
         this.x = this.width * this.index;
+
+        if (this.title) {
+            this.title.onResize();
+        }
     }
 }
 
@@ -403,18 +446,37 @@ class App {
     onTouchDown(e) {
         this.isDown = true;
         this.scroll.position = this.scroll.current;
-        this.start = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        const touch = 'touches' in e ? e.touches[0] : e;
+        this.start = touch.clientX;
+        this.startY = touch.clientY;
+        this.isDraggingHorizontal = null;
     }
 
     onTouchMove(e) {
         if (!this.isDown) return;
-        const x = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        const touch = 'touches' in e ? e.touches[0] : e;
+        const x = touch.clientX;
+        const y = touch.clientY;
+
+        if (this.isDraggingHorizontal === null && 'touches' in e) {
+            const diffX = Math.abs(this.start - x);
+            const diffY = Math.abs((this.startY || y) - y);
+            if (diffX > 6 || diffY > 6) {
+                this.isDraggingHorizontal = diffX > diffY;
+            }
+        }
+
+        if (this.isDraggingHorizontal === false) {
+            return;
+        }
+
         const distance = (this.start - x) * (this.scrollSpeed * 0.025);
         this.scroll.target = (this.scroll.position ?? 0) + distance;
     }
 
     onTouchUp() {
         this.isDown = false;
+        this.isDraggingHorizontal = null;
         if (!this.autoRotate) {
             this.onCheck();
         }
@@ -476,27 +538,30 @@ class App {
         this.boundOnTouchDown = this.onTouchDown.bind(this);
         this.boundOnTouchMove = this.onTouchMove.bind(this);
         this.boundOnTouchUp = this.onTouchUp.bind(this);
+
         window.addEventListener('resize', this.boundOnResize);
-        window.addEventListener('mousewheel', this.boundOnWheel);
-        window.addEventListener('wheel', this.boundOnWheel);
-        window.addEventListener('mousedown', this.boundOnTouchDown);
+        if (this.container) {
+            this.container.addEventListener('wheel', this.boundOnWheel, { passive: true });
+            this.container.addEventListener('mousedown', this.boundOnTouchDown);
+            this.container.addEventListener('touchstart', this.boundOnTouchDown, { passive: true });
+        }
         window.addEventListener('mousemove', this.boundOnTouchMove);
+        window.addEventListener('touchmove', this.boundOnTouchMove, { passive: true });
         window.addEventListener('mouseup', this.boundOnTouchUp);
-        window.addEventListener('touchstart', this.boundOnTouchDown);
-        window.addEventListener('touchmove', this.boundOnTouchMove);
         window.addEventListener('touchend', this.boundOnTouchUp);
     }
 
     destroy() {
         window.cancelAnimationFrame(this.raf);
         window.removeEventListener('resize', this.boundOnResize);
-        window.removeEventListener('mousewheel', this.boundOnWheel);
-        window.removeEventListener('wheel', this.boundOnWheel);
-        window.removeEventListener('mousedown', this.boundOnTouchDown);
+        if (this.container) {
+            this.container.removeEventListener('wheel', this.boundOnWheel);
+            this.container.removeEventListener('mousedown', this.boundOnTouchDown);
+            this.container.removeEventListener('touchstart', this.boundOnTouchDown);
+        }
         window.removeEventListener('mousemove', this.boundOnTouchMove);
-        window.removeEventListener('mouseup', this.boundOnTouchUp);
-        window.removeEventListener('touchstart', this.boundOnTouchDown);
         window.removeEventListener('touchmove', this.boundOnTouchMove);
+        window.removeEventListener('mouseup', this.boundOnTouchUp);
         window.removeEventListener('touchend', this.boundOnTouchUp);
         if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
             this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
@@ -535,5 +600,5 @@ export default function CircularGallery({
         };
     }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase, autoRotate, autoRotateSpeed]);
 
-    return <div className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing" ref={containerRef} />;
+    return <div className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing select-none" style={{ touchAction: 'pan-y' }} ref={containerRef} />;
 }
