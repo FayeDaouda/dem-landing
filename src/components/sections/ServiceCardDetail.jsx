@@ -12,6 +12,7 @@ export default function ServiceCardDetail({
   methodeTravail,
   valeurAjoutee,
   highlights = [],
+  points = [],
   keys = [],
   img,
   linkText,
@@ -55,9 +56,10 @@ export default function ServiceCardDetail({
               </div>
             </div>
 
-            <p className="text-base sm:text-lg text-slate-700 font-['Poppins',sans-serif] leading-relaxed m-0">
-              {summary}
-            </p>
+            <p 
+              className="text-base sm:text-lg text-slate-700 font-['Poppins',sans-serif] leading-relaxed m-0 whitespace-pre-line"
+              dangerouslySetInnerHTML={{ __html: summary }}
+            />
 
             <p className="text-sm sm:text-base text-slate-600 font-['Poppins',sans-serif] leading-relaxed m-0">
               {detailedDescription}
@@ -132,22 +134,37 @@ export default function ServiceCardDetail({
               </div>
             )}
 
-            {/* Indicateurs chiffrés / Highlights */}
-            {highlights?.length > 0 && (
+            {/* Indicateurs chiffrés / Points / Highlights */}
+            {(highlights?.length > 0 || points?.length > 0) && (
               <div className="border border-black/10 bg-[#FAFCFD] divide-y divide-black/10">
                 <div className="p-4 bg-slate-100 text-[11px] font-bold uppercase tracking-wider text-slate-600 font-['Raleway',sans-serif]">
-                  Standards & Indicateurs DEM
+                  {points?.length > 0 ? "Avantages & Engagement DEM" : "Standards & Indicateurs DEM"}
                 </div>
-                {highlights.map((item, idx) => (
-                  <div key={idx} className="p-4 flex items-center justify-between">
-                    <span className="text-xs uppercase font-medium text-slate-500 font-['Raleway',sans-serif]">
-                      {item.label}
-                    </span>
-                    <span className="text-sm font-bold text-[#021520] font-['DM_Sans',sans-serif]">
-                      {item.value}
-                    </span>
+                {points?.length > 0 ? (
+                  <div className="p-0">
+                    <ul className="list-none p-0 m-0 divide-y divide-black/10">
+                      {points.map((point, idx) => (
+                        <li key={idx} className="p-4 flex items-start gap-3">
+                          <span className="w-1.5 h-1.5 bg-[#0086C8] rounded-none mt-1.5 shrink-0" />
+                          <span className="text-sm font-semibold text-[#021520] font-['DM_Sans',sans-serif]">
+                            {point}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                ))}
+                ) : (
+                  highlights.map((item, idx) => (
+                    <div key={idx} className="p-4 flex items-center justify-between">
+                      <span className="text-xs uppercase font-medium text-slate-500 font-['Raleway',sans-serif]">
+                        {item.label}
+                      </span>
+                      <span className="text-sm font-bold text-[#021520] font-['DM_Sans',sans-serif]">
+                        {item.value}
+                      </span>
+                    </div>
+                  ))
+                )}
               </div>
             )}
 

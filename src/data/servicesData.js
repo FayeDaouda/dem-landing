@@ -4,40 +4,63 @@
 export const servicesData = [
   {
     id: "coursiers",
-    number: "01",
+    number: "1",
     title: "Coursiers",
     subtitle: "SERVICE 01 · RECRUTEMENT, ÉQUIPEMENT & REVENUS",
     badge: "Coursiers d'abord",
-    audience: "Livreurs indépendants, conducteurs de moto & candidats livreurs",
-    summary: "Rejoignez le réseau DEM : application avec repères dakarois réels, reversement transparent des gains, équipements complets et fin des négociations au téléphone.",
-    detailedDescription: "DEM replace le coursier au centre de l'équation logistique. Fini le harcèlement téléphonique, les litiges de monnaie et les pertes de temps. Grâce à notre application dédiée, chaque coursier reçoit des missions claires, guidées par les repères urbains de Dakar, avec une tarification juste et des gains versés chaque semaine sur Wave ou Orange Money.",
-    methodeTravail: "Affectation intelligente selon la position réelle, validation des étapes par code OTP confidentiel et simulateur de gains intégré pour une visibilité totale sur vos revenus.",
+    audience: "Coursiers indépendants, & candidats coursiers",
+    summary: "Rejoignez le réseau DEM \n<strong>ACTIVE TON PASS. ROULE. GAGNE. GARDE TOUT.</strong>",
+    detailedDescription: "Chez DEM, tu n'es pas de passage. Tu es un coursier professionnel. On te forme, on te suit et on te donne les outils pour faire de ton métier une expérience valorisante. Toi, tu roules. Le reste, on s'en occupe.",
     valeurAjoutee: "Protection financière, valorisation du métier, équipements de sécurité fournis et autonomie complète.",
-    highlights: [
-      { label: "Versement des gains", value: "Hebdomadaire Wave / OM" },
-      { label: "Pourboires", value: "100% au coursier" },
-      { label: "Équipements", value: "Casque & caisson fournis" },
-      { label: "Modèle", value: "Pass fixe sans commission" }
+    points: [
+      "Une application simple, pensée pour toi",
+      "Des courses dans tout Dakar, dès que tu es en ligne",
+      "100 % de tes gains de course, zéro commission",
+      "Des prix fixés par zone, sans surprise",
+      "Une formation terrain",
+      "Une formation service client",
+      "Une équipe joignable avant, pendant et après chaque course"
     ],
-    keys: [
-      "Formation des coursiers",
-      "Application mobile fluide avec navigation par repères dakarois",
-      "Paiement garanti chaque semaine sur Wave ou Orange Money",
-      "Zéro commission par course grâce aux formules de pass",
-      "Équipements de sécurité et caissons professionnels fournis",
-      "Assistance opérationnelle directe en cas d'imprévu sur la route"
-    ],
+    
     hasSimulator: true,
     simulator: {
-      ratePerDelivery: 1200
+      ratePerDelivery: 1300
     },
     img: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=1600&auto=format&fit=crop&q=85",
-    linkText: "Rejoindre la flotte DEM",
-    linkUrl: "/coursiers"
+    linkText: "",
+    linkUrl: "/contact"
+  },
+  {
+    id: "dem-pro",
+    number: "2",
+    title: "DEM Pro : Marchands & E-Commerce",
+    subtitle: "SERVICE 03 · COMMERÇANTS & VENTE EN LIGNE",
+    badge: "Marchands & E-Commerce",
+    audience: "Boutiques Instagram, TikTok, WhatsApp, créateurs de mode & commerçants",
+    summary: "Les commerçants et e-commerçants ayant rejoint le réseau DEM Pro propulsent leurs ventes et sécurisent leur trésorerie : ramassages programmés, livraisons Same-Day, encaissement Cash on Delivery et reversement garanti sous 24h.",
+    detailedDescription: "DEM Pro transforme la livraison en levier de conversion commerciale. Nous collectons vos colis directement à votre boutique ou atelier pour les livrer le jour même à vos clients partout à Dakar. Vos clients sont notifiés par SMS, et vos encaissements à la livraison sont sécurisés dans votre portefeuille numérique avec virement sous 24h ouvrées.",
+    methodeTravail: "Portail de commande groupée, notification SMS automatique de l'acheteur avant livraison pour convenir de l'horaire et réconciliation financière quotidienne automatique.",
+    valeurAjoutee: "Baisse de plus de 30% des refus de colis, trésorerie disponible sous 24h et gain de plusieurs heures de gestion chaque jour.",
+    highlights: [
+      { label: "Livraison Same-Day", value: "Le jour même" },
+      { label: "Taux de succès", value: "99,4%" },
+      { label: "Reversement COD", value: "< 24h ouvrées" },
+      { label: "Gestion des envois", value: "Portail dédié" }
+    ],
+    keys: [
+      "Ramassages quotidiens programmés à votre boutique ou domicile",
+      "Notification automatique de l'acheteur par SMS",
+      "Encaissement exact des fonds à la livraison (Wave, OM, Espèces)",
+      "Reversement garanti sous 24h ouvrées sur votre compte mobile money",
+      "Tableau de bord complet pour piloter commandes et trésorerie"
+    ],
+    img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1600&auto=format&fit=crop&q=85",
+    linkText: "Découvrir DEM Pro",
+    linkUrl: "/dem-pro"
   },
   {
     id: "clients-express",
-    number: "02",
+    number: "3",
     title: "Clients & Service Client 7j/7",
     subtitle: "SERVICE 02 · EXPÉRIENCE CLIENT & SERVICE CLIENT DÉDIÉ",
     badge: "Service Client Dédié",
@@ -47,7 +70,7 @@ export const servicesData = [
     methodeTravail: "Régulation proactive par notre équipe d'assistance à Dakar, canal WhatsApp direct 7j/7, guidage contextuel dakarois sans blocage d'adresse et validation obligatoire par code OTP.",
     valeurAjoutee: "Assistance humaine disponible 7j/7, temps de réponse sous 2 minutes, zéro litige grâce au code OTP et tranquillité d'esprit garantie.",
     statsHeader: "SERVICE CLIENT LOCAL DAKAR · ENGAGEMENTS & PERFORMANCE",
-    
+
     dynamicStats: [
       {
         value: "< 2 min",
@@ -105,36 +128,8 @@ export const servicesData = [
     linkUrl: "/#download"
   },
   {
-    id: "dem-pro",
-    number: "03",
-    title: "DEM Pro : Marchands & E-Commerce",
-    subtitle: "SERVICE 03 · COMMERÇANTS & VENTE EN LIGNE",
-    badge: "Marchands & E-Commerce",
-    audience: "Boutiques Instagram, TikTok, WhatsApp, créateurs de mode & commerçants",
-    summary: "Les commerçants et e-commerçants ayant rejoint le réseau DEM Pro propulsent leurs ventes et sécurisent leur trésorerie : ramassages programmés, livraisons Same-Day, encaissement Cash on Delivery et reversement garanti sous 24h.",
-    detailedDescription: "DEM Pro transforme la livraison en levier de conversion commerciale. Nous collectons vos colis directement à votre boutique ou atelier pour les livrer le jour même à vos clients partout à Dakar. Vos clients sont notifiés par SMS, et vos encaissements à la livraison sont sécurisés dans votre portefeuille numérique avec virement sous 24h ouvrées.",
-    methodeTravail: "Portail de commande groupée, notification SMS automatique de l'acheteur avant livraison pour convenir de l'horaire et réconciliation financière quotidienne automatique.",
-    valeurAjoutee: "Baisse de plus de 30% des refus de colis, trésorerie disponible sous 24h et gain de plusieurs heures de gestion chaque jour.",
-    highlights: [
-      { label: "Livraison Same-Day", value: "Le jour même" },
-      { label: "Taux de succès", value: "99,4%" },
-      { label: "Reversement COD", value: "< 24h ouvrées" },
-      { label: "Gestion des envois", value: "Portail dédié" }
-    ],
-    keys: [
-      "Ramassages quotidiens programmés à votre boutique ou domicile",
-      "Notification automatique de l'acheteur par SMS",
-      "Encaissement exact des fonds à la livraison (Wave, OM, Espèces)",
-      "Reversement garanti sous 24h ouvrées sur votre compte mobile money",
-      "Tableau de bord complet pour piloter commandes et trésorerie"
-    ],
-    img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1600&auto=format&fit=crop&q=85",
-    linkText: "Découvrir DEM Pro",
-    linkUrl: "/dem-pro"
-  },
-  {
     id: "chef-de-flotte",
-    number: "04",
+    number: "4",
     title: "Espace Chefs de Flotte & Gestionnaires",
     subtitle: "SERVICE 04 · GESTIONNAIRES DE PARCS & INVESTISSEURS",
     badge: "Chefs de Flotte",

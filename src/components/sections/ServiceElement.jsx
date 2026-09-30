@@ -116,6 +116,7 @@ export default function ServiceElement({
     methodeTravail,
     valeurAjoutee,
     highlights = [],
+    points = [],
     keys = [],
     dynamicStats = [],
     statsHeader,
@@ -256,7 +257,7 @@ export default function ServiceElement({
                     <div ref={sectionHeader} className={`flex flex-wrap pt-20 pb-4 bg-white ${paddingClass}`}>
                         <div className="w-full md:w-2/3 pl-0">
                             <div className="flex items-center gap-3 mb-2">
-                                
+
                                 {badge && (
                                     <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
                                         {badge}
@@ -280,18 +281,21 @@ export default function ServiceElement({
                     <div className="w-full h-6 bg-gradient-to-b from-white via-white/80 to-transparent pointer-events-none" />
                 </div>
 
+                
+
                 {/* ── CONTENT SECTION (DÉFILE SOUS LE HEADER PINNÉ) ── */}
                 <div className="w-full pt-4">
                     <div className={`flex flex-wrap justify-between relative ${paddingClass}`}>
-                        
+
                         {/* Colonne gauche : Description & Pitch */}
                         <div className="w-full md:w-1/2 relative pl-0 mb-6 md:mb-0 pr-0 md:pr-8">
-                            <p className="m-0 font-['Poppins',sans-serif] text-base sm:text-lg leading-relaxed text-dark max-w-[550px]">
-                                {mainContent}
-                            </p>
-                            
+                            <p 
+                                className="m-0 font-['Poppins',sans-serif] text-base sm:text-lg leading-relaxed text-dark max-w-[550px] whitespace-pre-line"
+                                dangerouslySetInnerHTML={{ __html: mainContent }}
+                            />
+
                             {/* Méthode de travail intégrée */}
-                            {methodeTravail && (
+                            {/* {methodeTravail && (
                                 <div className="mt-6 pt-5">
                                     <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-1.5">
                                         Notre méthode de travail
@@ -300,7 +304,7 @@ export default function ServiceElement({
                                         {methodeTravail}
                                     </p>
                                 </div>
-                            )}
+                            )} */}
                         </div>
 
                         {/* Colonne droite : Keys & Points d'engagement */}
@@ -313,15 +317,13 @@ export default function ServiceElement({
                                             <span>{key}</span>
                                         </h3>
                                     ))
-                                ) : (
-                                    <h3 className="font-semibold text-base text-muted my-1 keys font-['Raleway',sans-serif]">
-                                        Standards d'excellence opérationnelle
-                                    </h3>
+                                ) : (<></>
+                                    
                                 )}
                             </div>
 
                             {/* Encadré Valeur Ajoutée DEM */}
-                            {valeurAjoutee && (
+                            {/* {valeurAjoutee && (
                                 <div className="mt-6 p-5 bg-[#021520] text-white border border-black/10">
                                     <span className="font-serif italic text-xs text-[#00D2FF] block mb-1">
                                         La valeur ajoutée DEM
@@ -330,9 +332,61 @@ export default function ServiceElement({
                                         {valeurAjoutee}
                                     </p>
                                 </div>
-                            )}
+                            )} */}
                         </div>
 
+                    </div>
+                </div>
+            </div>
+
+            {/* ── SIMULATEUR DES COURSIERS (INTÉGRÉ DIRECTEMENT AU SERVICE DES COURSIERS) ── */}
+            {(hasSimulator || id === "flotte-dediee" || id === "coursiers-dem") && (
+                <div className={`mt-5 pt-4  ${paddingClass}`}>
+                    <div className="mb-4">
+                        <span className="font-serif italic text-sm text-[#0086C8] block mb-1">
+                            Transparence & Rémunération
+                        </span>
+                        <h3 className="text-xl sm:text-2xl font-black uppercase text-dark tracking-tight font-['DM_Sans',sans-serif] m-0">
+                            Simulateur de revenus coursier DEM
+                        </h3>
+                    </div>
+                    <CoursierSimulator
+                        ratePerDelivery={simulator?.ratePerDelivery || 1200}
+                        subtitle="Ajustez le curseur selon le nombre de jours d'activité"
+                    />
+                </div>
+            )}
+            <div className="w-full pt-4">
+                <div className={`flex flex-wrap justify-between relative ${paddingClass}`}>
+
+                    {/* Colonne gauche : Description & Pitch */}
+                    <div className="w-full md:w-1/2 relative pl-0 mb-6 md:mb-0 pr-0 md:pr-8">
+                        {/* Méthode de travail intégrée */}
+                        {methodeTravail && (
+                            <div className="mt-6 pt-5">
+                                <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-1.5">
+                                    Notre méthode de travail
+                                </span>
+                                <p className="text-xs sm:text-sm text-slate-700 font-['Poppins',sans-serif] leading-relaxed m-0">
+                                    {methodeTravail}
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                    {/* Colonne droite : Keys & Points d'engagement */}
+                    <div  className="w-full md:w-1/2 pl-0 flex flex-col justify-between">
+
+                        {/* Encadré Valeur Ajoutée DEM */}
+                        {valeurAjoutee && (
+                            <div className="mt-6 p-5 bg-[#021520] text-white border border-black/10">
+                                <span className="font-serif italic text-xs text-[#00D2FF] block mb-1">
+                                    La valeur ajoutée DEM
+                                </span>
+                                <p className="text-xs sm:text-sm font-bold text-white font-['DM_Sans',sans-serif] leading-snug m-0">
+                                    {valeurAjoutee}
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -371,41 +425,36 @@ export default function ServiceElement({
                         </div>
                     </div>
 
-                    {highlights?.length > 0 && (
+                    {(highlights?.length > 0 || points?.length > 0) && (
                         <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
-                            {highlights.map((item, idx) => (
-                                <div key={idx} className="p-4 rounded-none bg-slate-50 border border-slate-200 flex items-center justify-between">
-                                    <span className="text-xs uppercase tracking-wider font-semibold text-slate-500 font-['Raleway',sans-serif]">
-                                        {item.label}
-                                    </span>
-                                    <span className="text-sm font-bold text-dark font-['DM_Sans',sans-serif]">
-                                        {item.value}
-                                    </span>
-                                </div>
-                            ))}
+                            {points?.length > 0 ? (
+                                <ul className="list-none p-0 m-0 space-y-3">
+                                    {points.map((point, idx) => (
+                                        <li key={idx} className="p-4 bg-slate-50 border border-slate-200 flex items-start gap-3">
+                                            <span className="text-sm font-semibold text-dark font-['DM_Sans',sans-serif]">
+                                                {point}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                highlights.map((item, idx) => (
+                                    <div key={idx} className="p-4 rounded-none bg-slate-50 border border-slate-200 flex items-center justify-between">
+                                        <span className="text-xs uppercase tracking-wider font-semibold text-slate-500 font-['Raleway',sans-serif]">
+                                            {item.label}
+                                        </span>
+                                        <span className="text-sm font-bold text-dark font-['DM_Sans',sans-serif]">
+                                            {item.value}
+                                        </span>
+                                    </div>
+                                ))
+                            )}
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* ── SIMULATEUR DES COURSIERS (INTÉGRÉ DIRECTEMENT AU SERVICE DES COURSIERS) ── */}
-            {(hasSimulator || id === "flotte-dediee" || id === "coursiers-dem") && (
-                <div className={`mt-10 pt-8 border-t border-black/10 ${paddingClass}`}>
-                    <div className="mb-4">
-                        <span className="font-serif italic text-sm text-[#0086C8] block mb-1">
-                            Transparence & Rémunération
-                        </span>
-                        <h3 className="text-xl sm:text-2xl font-black uppercase text-dark tracking-tight font-['DM_Sans',sans-serif] m-0">
-                            Simulateur de revenus coursier DEM
-                        </h3>
-                    </div>
-                    <CoursierSimulator
-                        ratePerDelivery={simulator?.ratePerDelivery || 1200}
-                        title="Calculateur de gains en direct"
-                        subtitle="Ajustez le curseur selon le nombre de livraisons par jour pour projeter vos revenus réels à Dakar"
-                    />
-                </div>
-            )}
+
         </div>
     );
 }
