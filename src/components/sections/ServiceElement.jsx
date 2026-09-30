@@ -308,7 +308,7 @@ export default function ServiceElement({
                         </div>
 
                         {/* Colonne droite : Keys & Points d'engagement */}
-                        <div ref={keysRef} className="w-full md:w-1/2 pl-0 flex flex-col justify-between">
+                        {/* <div ref={keysRef} className="w-full md:w-1/2 pl-0 flex flex-col justify-between">
                             <div className="font-['Raleway',sans-serif]">
                                 {keys?.length > 0 ? (
                                     keys.map((key, index) => (
@@ -321,19 +321,7 @@ export default function ServiceElement({
                                     
                                 )}
                             </div>
-
-                            {/* Encadré Valeur Ajoutée DEM */}
-                            {/* {valeurAjoutee && (
-                                <div className="mt-6 p-5 bg-[#021520] text-white border border-black/10">
-                                    <span className="font-serif italic text-xs text-[#00D2FF] block mb-1">
-                                        La valeur ajoutée DEM
-                                    </span>
-                                    <p className="text-xs sm:text-sm font-bold text-white font-['DM_Sans',sans-serif] leading-snug m-0">
-                                        {valeurAjoutee}
-                                    </p>
-                                </div>
-                            )} */}
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>
