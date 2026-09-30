@@ -76,7 +76,7 @@ export default function Contact() {
             <div className="p-6 rounded-none bg-white/[0.04] border border-white/10">
               <span className="text-xs font-bold uppercase tracking-wider text-cyan block mb-1">Siège Principal</span>
               <div className="text-sm font-semibold text-white">
-                Sicap Mermoz
+                Mermoz
               </div>
               <p className="text-xs text-white/60 mt-1">Dakar, Sénégal</p>
             </div>

@@ -191,7 +191,7 @@ const sections = [
       <ul style={{ paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
         <li style={{ color: 'rgba(255,255,255,0.7)' }}>E-mail : <a href="mailto:privacy@dem.sn" style={{ color: C.cyan }}>privacy@dem.sn</a></li>
         <li style={{ color: 'rgba(255,255,255,0.7)' }}>Téléphone / WhatsApp : <a href="tel:+221784448524" style={{ color: C.cyan }}>+221 78 444 85 24</a></li>
-        <li style={{ color: 'rgba(255,255,255,0.7)' }}>Adresse : Sicap Mermoz, Dakar, Sénégal</li>
+        <li style={{ color: 'rgba(255,255,255,0.7)' }}>Adresse : Mermoz, Dakar, Sénégal</li>
       </ul>
     ),
   },

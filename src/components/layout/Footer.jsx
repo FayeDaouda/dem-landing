@@ -176,7 +176,7 @@ export default function Footer() {
                             Siège Principal
                         </span>
                         <span className="text-xs sm:text-sm font-sans font-medium text-white tracking-wide uppercase">
-                            SICAP MERMOZ · DAKAR, SÉNÉGAL
+                            MERMOZ · DAKAR, SÉNÉGAL
                         </span>
                     </div>
 
