@@ -11,7 +11,7 @@ export default function ServicesHero({ services = [] }) {
   return (
     <section className="relative w-full pt-32 pb-16 lg:pt-40 lg:pb-24 bg-[#FAFCFD] border-b border-black/10 overflow-hidden">
       {/* Background subtle grid pattern */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage: 'radial-gradient(#021520 1px, transparent 1px)',
@@ -23,14 +23,16 @@ export default function ServicesHero({ services = [] }) {
 
         {/* Layout principal du Hero : Phrase d'entrée + Déclaration */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-          
+
           {/* Colonne Gauche : La Phrase d'Entrée Maîtresse */}
           <div className="lg:col-span-8">
-            
+
             <h1 className="font-['DM_Sans',sans-serif] text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#021520] tracking-tight leading-[1.08] m-0">
-              « Nous ne faisons pas beaucoup de choses : <br className="hidden sm:inline" />
-              <span className="text-[#0086C8]">nous faisons une seule chose,</span> <br className="hidden sm:inline" />
-              mais nous la faisons bien. »
+              « PLUSIEURS SERVICES. UNE SEULE EXIGENCE : <br className="hidden sm:inline" />
+              <span className="text-[#0086C8]">
+                BIEN FAIRE.{" "}
+              </span>
+              »
             </h1>
           </div>
 

@@ -195,56 +195,58 @@ export const piliersData = [
     id: "service-client",
     number: "1",
     tag: "Proximité & Réactivité",
-    title: "Service Client Réactif & Localisé à Dakar",
+    title: "Un service client local, joignable et réactif",
     isFeatured: true,
-    description: "Une équipe d'assistance dédiée basée au cœur de Dakar, joignable directement par téléphone et WhatsApp 7j/7. Nous assurons la régulation proactive des courses et intervenons en temps réel pour résoudre les imprévus d'adresses ou les aléas de circulation.",
+    description: "Une équipe basée à Dakar, joignable directement par téléphone et WhatsApp, 7j/7. Adja, notre assistant IA entraîné à la réalité de Dakar, répond en quelques secondes, et un humain reste toujours prêt à intervenir. Nous suivons les courses en direct et intervenons tout de suite en cas de souci d'adresse ou d'imprévu sur la route.",
     points: [
-      "Hotline téléphonique et support WhatsApp direct 7j/7",
-      "Équipe locale maîtrisant les quartiers et repères dakarois",
-      "Intervention proactive dès qu'un ralentissement est détecté",
-      "Médiation humaine bienveillante entre expéditeur et destinataire"
+      "Téléphone et WhatsApp direct, 7j / 7",
+      "Adja, notre assistant IA, avec un humain toujours prêt à intervenir",
+      "Une équipe locale qui connaît les quartiers et les repères de Dakar",
+      "Une intervention rapide dès qu'une course prend du retard",
+      "Une médiation humaine et bienveillante entre l'expéditeur et le destinataire"
     ]
   },
   {
     id: "securite-otp",
     number: "2",
-    tag: "Confiance & Contrôle",
-    title: "Sécurité & Traçabilité OTP Systématique",
+    tag: "Sécurité & contrôle",
+    title: "Des courses suivies et prouvées",
     isFeatured: false,
-    description: "Finies les disparitions et contestations de colis. Chaque remise physique et chaque collecte de fonds est scellée par la saisie d'un code OTP unique et confidentiel reçu par le destinataire sur son téléphone.",
+    description: "Finie l'incertitude sur vos colis. Grâce à notre technologie, nous savons à chaque instant où se trouve le coursier, du retrait jusqu'à la livraison. Une fois le colis remis, le coursier peut envoyer une photo comme preuve de livraison. Et dans votre compte, vous retrouvez un rapport détaillé de chacune de vos courses.",
     points: [
-      "Code OTP généré à chaque étape d'acheminement",
-      "Impossibilité de clore une livraison sans validation du destinataire",
-      "Horodatage et géolocalisation certifiés de la transaction",
-      "Historique complet téléchargeable pour vos archives"
+      "Un suivi en temps réel de chaque course",
+      "Une photo de preuve de livraison envoyée par le coursier",
+      "Un rapport détaillé de chaque course dans votre compte",
+      "Des coursiers identifiés, formés et équipés par DEM"
     ]
   },
   {
     id: "routage-terrain",
     number: "3",
-    tag: "Technologie Adaptée",
-    title: "Cartographie Contextuelle & Maîtrise du Terrain",
+    tag: "Technologie adaptée",
+    title: "Cartographie contextuelle & maîtrise du terrain",
     isFeatured: false,
-    description: "Une technologie d'assignation intelligente pensée pour les spécificités de Dakar : repères visuels coutumiers, contournement prédictif des embouteillages de la VDN, de la Corniche et de l'autoroute à péage.",
+    description: "Une technologie pensée pour les réalités de Dakar. La navigation se fait par repères et carrefours dakarois, et l'app anticipe les embouteillages de la VDN, de la Corniche et de l'autoroute à péage pour les contourner. Chaque course est confiée au coursier le plus proche.",
     points: [
-      "Navigation par repères et carrefours dakarois",
-      "Algorithme d'assignation tenant compte des flux réels de trafic",
-      "Couverture intégrale de Dakar-Plateau jusqu'à la grande banlieue",
-      "Réduction drastique des temps morts et de la consommation d'énergie"
+      "Une navigation par repères et carrefours dakarois",
+      "Un contournement anticipé des embouteillages",
+      "Le coursier le plus proche assigné à chaque course",
+      "Une couverture de toute la région de Dakar, du Plateau à la grande banlieue",
+      "Moins de temps perdu, pour le coursier comme pour le client"
     ]
   },
   {
     id: "valorisation-coursiers",
     number: "4",
-    tag: "Éthique & Humain",
-    title: "Valorisation & Professionnalisation des Coursiers",
+    tag: "Éthique & humain",
+    title: "Valorisation & professionnalisation des coursiers",
     isFeatured: false,
-    description: "Les livreurs sont le visage de DEM et de votre entreprise auprès de vos clients. Nous assurons leur sécurité, leur équipement complet aux normes et une rémunération hebdomadaire transparente et garantie.",
+    description: "Nos coursiers sont le visage de DEM et le reflet de notre service. Si vous êtes un pro, ils sont aussi le visage de votre entreprise auprès de vos clients. C'est pour ça qu'on les forme, qu'on les équipe avant qu'ils roulent, et qu'ils gardent 100 % de leurs courses.",
     points: [
-      "Casques normés, gilets haute visibilité et caissons isothermes",
-      "Formation continue à la sécurité routière et à l'accueil client",
-      "Versement hebdomadaire ponctuel des gains sur Wave / Orange Money",
-      "Pourboires clients reversés à 100% aux coursiers"
+      "Un équipement complet fourni avant la première course",
+      "Une formation terrain à la sécurité routière et à l'accueil client",
+      "100 % des gains de course pour le coursier",
+      "Des prix par zone, clairs et justes, connus à l'avance"
     ]
   }
 ];

@@ -16,12 +16,12 @@ export default function PiliersSection({ piliers = [] }) {
         <div className="max-w-3xl mb-16 lg:mb-20">
 
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white leading-[1.08] m-0 font-['DM_Sans',sans-serif]">
-            Nos Piliers d'Excellence <br />
-            <span className="text-[#00D2FF]">à Dakar</span>
+            Nos Piliers  <br />
+            <span className="text-[#00D2FF]">d'Excellence</span>
           </h2>
 
           <p className="mt-5 text-base sm:text-lg text-white/70 font-['Poppins',sans-serif] leading-relaxed m-0">
-            Une exécution logistique irréprochable ne doit rien au hasard. Voici les quatre principes non négociables qui guident chaque coursier, chaque algorithme et chaque interaction chez DEM.
+            Une exécution logistique irréprochable ne doit rien au hasard. Quatre principes non négociables guident chez DEM chaque procédure, chaque algorithme, chaque coursier et chaque échange.
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export default function PiliersSection({ piliers = [] }) {
                 {/* Points clés d'engagement */}
                 <div className="pt-6 border-t border-white/10">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-white/40 block mb-3 font-['Raleway',sans-serif]">
-                    Engagements réels :
+                    NOS Engagements :
                   </span>
                   <ul className="space-y-2 p-0 m-0 list-none">
                     {pilier.points.map((pt, idx) => (

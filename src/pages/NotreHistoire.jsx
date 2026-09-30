@@ -517,12 +517,12 @@ export default function NotreHistoire() {
             <MiniTitleWithBar content="4 · PERSPECTIVES & DÉVELOPPEMENT" color="cyan-2" />
 
             <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight text-[#021520] leading-[1.05] mt-4 mb-6">
-              Le potentiel de la mobilité <br className="hidden sm:inline" />
-              <span className="text-[#0086C8]">urbaine à Dakar</span>
+              <span className="text-[#0086C8]">Dakar,</span><br className="hidden sm:inline" />
+              laboratoire de la mobilité africaine de demain
             </h2>
 
             <p className="text-base sm:text-lg text-slate-700 font-['Poppins',sans-serif] leading-relaxed">
-              Dakar concentre près de 25% de la population nationale et 80% des activités économiques du Sénégal sur une presqu'île de 550 km². Cette densité crée une demande massive de livraison. Pour les coursiers, c'est à la fois une opportunité immense et un défi quotidien que DEM transforme en levier de croissance.
+              Sur une presqu'île de 550 km², Dakar concentre près d'un quart de la population du Sénégal et l'essentiel de son activité économique. Là où beaucoup voient des embouteillages, nous voyons l'une des villes les plus prometteuses du continent. Si un modèle de livraison fonctionne à Dakar, il peut fonctionner partout en Afrique. Nous avons vu. Nous avons compris. Nous avons créé.
             </p>
           </div>
 
@@ -538,7 +538,7 @@ export default function NotreHistoire() {
                   La presqu'île en entonnoir
                 </h3>
                 <p className="text-sm text-slate-600 font-['Poppins',sans-serif] leading-relaxed mb-6">
-                  Axes saturés, embouteillages chroniques : le deux-roues reste le seul moyen de garantir des flux rapides entre le Plateau, les Almadies, la banlieue et Diamniadio. Les coursiers qui maîtrisent ce terrain sont la colonne vertébrale de la logistique dakaroise.
+                  Axes saturés, trafic imprévisible : Dakar est un terrain exigeant. C'est justement ce qui en fait le meilleur terrain d'entraînement. Chaque course nous apprend à anticiper, à optimiser et à livrer plus vite. Ce savoir-faire, forgé dans l'une des villes les plus denses d'Afrique de l'Ouest, deviendra notre avantage partout où nous irons.
                 </p>
               </div>
             </div>
@@ -552,7 +552,7 @@ export default function NotreHistoire() {
                   L'explosion du Social Commerce
                 </h3>
                 <p className="text-sm text-slate-600 font-['Poppins',sans-serif] leading-relaxed mb-6">
-                  Des milliers de commerces vendent via WhatsApp, Instagram et TikTok. Chaque vente doit être livrée dans l'heure. Pour le coursier, c'est un volume de courses en croissance constante, à condition d'avoir les bons outils pour le capter.
+                  Des milliers de commerces vendent aujourd'hui sur WhatsApp, Instagram et TikTok. Demain, ils seront des dizaines de milliers. Nous voulons être l'infrastructure qui leur permet de grandir : un partenaire logistique fiable, qui transforme chaque boutique en ligne en vraie entreprise.
                 </p>
               </div>
             </div>
@@ -563,10 +563,10 @@ export default function NotreHistoire() {
                   3 · Fintech & Inclusion
                 </span>
                 <h3 className="text-xl font-bold uppercase text-[#021520] mb-4">
-                  L'interconnexion Mobile Money
+                  L'essor du mobile money
                 </h3>
                 <p className="text-sm text-slate-600 font-['Poppins',sans-serif] leading-relaxed mb-6">
-                  Wave et Orange Money permettent enfin de synchroniser le déplacement du colis et le transfert d'argent. Pour le coursier, c'est la fin des litiges sur les espèces et la garantie d'être payé rapidement, sans intermédiaire opaque.
+                  Le Sénégal a prouvé qu'il savait adopter une technologie à grande vitesse. Le paiement mobile a changé la façon dont les Sénégalais échangent de l'argent. Nous croyons que la logistique vit le même tournant, et nous voulons en être le moteur.
                 </p>
               </div>
             </div>
@@ -590,12 +590,31 @@ export default function NotreHistoire() {
         <div className="max-w-[1200px] mx-auto text-center relative z-10">
 
           <blockquote className="text-3xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight leading-[1.05] text-white max-w-5xl mx-auto">
-            « Nous ne déplaçons pas seulement des colis. <br className="hidden sm:inline" />
+            « DERRIÈRE CHAQUE{" "}
             <span className="text-[#00D2FF]">
-              Nous donnons aux coursiers
-            </span>{' '}
-            les moyens de transformer <br className="hidden sm:inline" />
-            Dakar, <span className="text-transparent" style={{ WebkitTextStroke: '1.5px #FFFFFF' }}>course après course.</span> »
+              COLIS,{" "}
+            </span>
+
+            UN{" "}
+            <span className="text-[#00D2FF]">
+              COURSIER.{" "}
+            </span>
+            DERRIÈRE CHAQUE{" "}
+            <span className="text-[#00D2FF]">
+              COURSIER,{" "}
+            </span>UNE{" "}
+            <span className="text-transparent" style={{ WebkitTextStroke: '1.5px #FFFFFF' }}>
+              LOGISTIQUE.{" "}
+            </span>
+            DERRIÈRE CETTE{" "}
+            <span className="text-transparent" style={{ WebkitTextStroke: '1.5px #FFFFFF' }}>
+              LOGISTIQUE,{" "}
+            </span>
+            <span className="text-[#00D2FF]">
+              DEM.
+            </span>
+            »
+
           </blockquote>
 
           <div className="w-16 h-[2px] bg-[#00D2FF] mx-auto mt-12" />
