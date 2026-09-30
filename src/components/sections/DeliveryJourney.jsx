@@ -49,27 +49,15 @@ function LivreurTopDown({ size = 95 }) {
           <stop offset="70%" stopColor="#071d2b" />
           <stop offset="100%" stopColor="#020e16" />
         </radialGradient>
-
-        {/* Ombre portée réaliste sous la moto */}
-        <filter id="bike-shadow-hero" x="-40%" y="-30%" width="180%" height="160%">
-          <feDropShadow dx="0" dy="12" stdDeviation="14" floodColor="#000000" floodOpacity="0.85" />
-        </filter>
-
-        {/* Glow cyan pour les LED */}
-        <filter id="led-glow-hero" x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
       </defs>
 
-      {/* Faisceau de phare projeté sur la route */}
       <polygon
         points="60,35 5,-20 115,-20"
         fill="url(#beam-grad-hero)"
         style={{ pointerEvents: 'none' }}
       />
 
-      <g filter="url(#bike-shadow-hero)">
+      <g>
         {/* ================= ROUE AVANT ================= */}
         <rect x="54" y="16" width="12" height="30" rx="6" fill="#080d12" stroke="#1c2b36" strokeWidth="1.5" />
         <line x1="60" y1="20" x2="60" y2="42" stroke="#00D2FF" strokeWidth="1.5" opacity="0.6" strokeDasharray="3 2" />
@@ -96,7 +84,8 @@ function LivreurTopDown({ size = 95 }) {
         <line x1="97" y1="39" x2="94" y2="43" stroke="#486577" strokeWidth="1.5" />
 
         {/* Phare LED central avant */}
-        <ellipse cx="60" cy="38" rx="8" ry="3.2" fill="#FFFFFF" filter="url(#led-glow-hero)" />
+        <ellipse cx="60" cy="38" rx="10" ry="4" fill="rgba(0, 210, 255, 0.4)" />
+        <ellipse cx="60" cy="38" rx="8" ry="3.2" fill="#FFFFFF" />
         <ellipse cx="60" cy="38" rx="5" ry="1.8" fill="#00D2FF" />
 
         {/* ================= CHÂSSIS & CARÉNAGE MOTO ================= */}
@@ -168,7 +157,6 @@ function LivreurTopDown({ size = 95 }) {
         <path
           d="M50 56 Q60 51 70 56 Q60 59 50 56"
           fill="#00D2FF"
-          filter="url(#led-glow-hero)"
           opacity="0.95"
         />
 
@@ -215,7 +203,8 @@ function LivreurTopDown({ size = 95 }) {
         {/* ================= ROUE ARRIÈRE & FEU STOP ================= */}
         <rect x="54" y="142" width="12" height="28" rx="6" fill="#080d12" stroke="#1c2b36" strokeWidth="1.5" />
         <line x1="60" y1="145" x2="60" y2="166" stroke="#486577" strokeWidth="1.5" strokeDasharray="3 2" />
-        <rect x="52" y="140" width="16" height="3" rx="1.5" fill="#FF334B" filter="url(#led-glow-hero)" />
+        <rect x="50" y="138" width="20" height="7" rx="3.5" fill="rgba(255,51,75,0.4)" />
+        <rect x="52" y="140" width="16" height="3" rx="1.5" fill="#FF334B" />
       </g>
     </svg>
   );
@@ -511,10 +500,17 @@ export default function DeliveryJourney() {
             justifyContent: 'center',
             zIndex: 35,
             transformOrigin: 'center 35%',
-            filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.9)) drop-shadow(0 0 32px rgba(0,210,255,0.6))',
+            willChange: 'transform',
           }}
         >
-          <LivreurTopDown size={145} />
+          {/* Fausse ombre performante avec radial-gradient au lieu d'un filtre CSS */}
+          <div 
+            className="absolute inset-0 translate-y-6 scale-90 opacity-80" 
+            style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,210,255,0.3) 40%, rgba(0,0,0,0) 70%)' }} 
+          />
+          <div className="relative z-10">
+            <LivreurTopDown size={145} />
+          </div>
         </div>
 
         {WAYPOINTS.map((wp, index) => {
