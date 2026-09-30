@@ -204,10 +204,10 @@ export default function NotreHistoire() {
 
               <div className="p-8 lg:p-10 flex flex-col justify-center text-left">
                 <span className="font-['DM_Sans',sans-serif] text-4xl sm:text-6xl font-black text-[#00D2FF] block mb-2 tracking-tight">
-                  +2h
+                  +1h
                 </span>
                 <span className="text-xs font-bold uppercase tracking-widest text-white/80 block">
-                  Délai moyen antérieur sans DEM
+                  Délai moyen de livraison sans DEM
                 </span>
               </div>
 
