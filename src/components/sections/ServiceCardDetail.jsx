@@ -61,9 +61,10 @@ export default function ServiceCardDetail({
               dangerouslySetInnerHTML={{ __html: summary }}
             />
 
-            <p className="text-sm sm:text-base text-slate-600 font-['Poppins',sans-serif] leading-relaxed m-0">
-              {detailedDescription}
-            </p>
+            <p 
+              className="text-sm sm:text-base text-slate-600 font-['Poppins',sans-serif] leading-relaxed m-0"
+              dangerouslySetInnerHTML={{ __html: detailedDescription }}
+            />
 
             {/* Encadré Méthode de Travail DEM */}
             <div className="p-6 bg-[#FAFCFD] border-l-4 border-[#0086C8] border-y border-r border-slate-200">

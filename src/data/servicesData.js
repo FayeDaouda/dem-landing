@@ -11,7 +11,7 @@ export const servicesData = [
     audience: "Coursiers indépendants, & candidats coursiers",
     summary: "Rejoignez le réseau DEM \n<strong>ACTIVE TON PASS. ROULE. GAGNE. GARDE TOUT.</strong>",
     detailedDescription: "Chez DEM, tu n'es pas de passage. Tu es un coursier professionnel. On te forme, on te suit et on te donne les outils pour faire de ton métier une expérience valorisante. Toi, tu roules. Le reste, on s'en occupe.",
-    valeurAjoutee: "Protection financière, valorisation du métier, équipements de sécurité fournis et autonomie complète.",
+    valeurAjoutee: "Des revenus qui te reviennent, un métier valorisé, un équipement fourni et une liberté totale.",
     points: [
       "Une application simple, pensée pour toi",
       "Des courses dans tout Dakar, dès que tu es en ligne",
@@ -21,7 +21,7 @@ export const servicesData = [
       "Une formation service client",
       "Une équipe joignable avant, pendant et après chaque course"
     ],
-    
+
     hasSimulator: true,
     simulator: {
       ratePerDelivery: 1300
@@ -33,19 +33,24 @@ export const servicesData = [
   {
     id: "dem-pro",
     number: "2",
-    title: "DEM Pro : Marchands & E-Commerce",
+    title: "DEM PRO : MARCHANDS, E-COMMERCANTS & ARTISANS",
     subtitle: "SERVICE 02 · COMMERÇANTS & VENTE EN LIGNE",
-    badge: "Marchands & E-Commerce",
+    badge: "Les professionnels",
     audience: "Commerçants & E-commerçants",
-    summary: "Propulsez vos ventes en rejoignant le réseau <b>DEM.</b>",
-    detailedDescription: "DEM Pro transforme la livraison en levier de conversion commerciale. Nous collectons vos colis directement à votre boutique ou atelier pour les livrer le jour même à vos clients partout à Dakar. Vos clients sont notifiés par SMS, et vos encaissements à la livraison sont sécurisés dans votre portefeuille numérique avec virement sous 24h ouvrées.",
+    summary: "Le coursier est le dernier contact avec votre client, il est donc formé pour être à la hauteur : ponctuel, présentable et courtois. Et derrière lui, le profil DEM Pro vous simplifie la gestion au quotidien, bien au-delà de la livraison.",
+    detailedDescription: "Avec le Compte DEM Pro votre business devient plus simple.",
     methodeTravail: "Portail de commande groupée, notification SMS automatique de l'acheteur avant livraison pour convenir de l'horaire et réconciliation financière quotidienne automatique.",
-    valeurAjoutee: "Baisse de plus de 30% des refus de colis, trésorerie disponible sous 24h et gain de plusieurs heures de gestion chaque jour.",
-    highlights: [
-      { label: "Livraison Same-Day", value: "Le jour même" },
-      { label: "Taux de succès", value: "99,4%" },
-      { label: "Reversement COD", value: "< 24h ouvrées" },
-      { label: "Gestion des envois", value: "Portail dédié" }
+    valeurAjoutee: "Des clients mieux servis, une image de marque soignée et des heures de gestion gagnées chaque jour.",
+    points: [
+      "Envoyez plusieurs colis en un clic, ou programmez-les pour plus tard",
+      "Vos performances en chiffres, pour piloter votre stratégie",
+      "Un catalogue produits à partager, plus besoin de site",
+      "L'historique de vos ventes, jour après jour",
+      "Un support dédié",
+      "Toute votre équipe sur un seul compte",
+      "Des factures personnalisables",
+      "Vous avez déjà un site ? Branchez-le à DEM et déléguez toutes vos livraisons",
+      "Un wallet intégré pour vos encaissements"
     ],
     keys: [
       "Ramassages quotidiens programmés à votre boutique ou domicile",
@@ -62,57 +67,54 @@ export const servicesData = [
     number: "3",
     title: "Clients & Service Client 7j/7",
     subtitle: "SERVICE 03 · EXPÉRIENCE CLIENT & SERVICE CLIENT DÉDIÉ",
-    badge: "Service Client Dédié",
+    badge: "Service Client De qualité",
     audience: "Clients particuliers, résidents dakarois & destinataires exigeants",
-    summary: "Vos envois et livraisons du quotidien soutenus par un service client réactif basé à Dakar. Traçabilité GPS en direct, intervention humaine proactive en cas d'imprévu et remise scellée par code OTP.",
-    detailedDescription: "Chez DEM, l'expérience client repose sur une promesse claire : un service client humain, réactif et basé au cœur de Dakar, joignable directement par téléphone et WhatsApp 7j/7. Fini les coursiers perdus et les livraisons sans nouvelles : nos régulateurs surveillent vos courses en direct, vous informent en temps réel et interviennent immédiatement pour guider le livreur. Chaque colis est remis en main propre et validé par un code OTP confidentiel.",
-    methodeTravail: "Régulation proactive par notre équipe d'assistance à Dakar, canal WhatsApp direct 7j/7, guidage contextuel dakarois sans blocage d'adresse et validation obligatoire par code OTP.",
-    valeurAjoutee: "Assistance humaine disponible 7j/7, temps de réponse sous 2 minutes, zéro litige grâce au code OTP et tranquillité d'esprit garantie.",
+    summary: "Envoyez l'esprit tranquille. Vos colis du quotidien sont livrés le jour même, partout à Dakar. Vous suivez chaque course en temps réel, vous connaissez votre prix dès la commande, et notre service client, basé à Dakar, intervient à la moindre difficulté. Une fois le colis livré, le coursier peut vous envoyer une photo comme preuve. Vous n'avez plus à vous inquiéter : on s'occupe de tout.",
+    detailedDescription: "Être bien servi une fois sur deux, ce n'est pas normal. Être bien servi à chaque fois, c'est <b>DEM.</b>",
+    methodeTravail: "Régulation proactive par notre équipe d'assistance à Dakar, canal WhatsApp direct 7j/7, guidage contextuel dakarois sans blocage d'adresse.",
+    valeurAjoutee: "Un service de qualité, et vos colis en sécurité. Une assistance disponible 7j/7, des réponses en quelques secondes grâce à Adja, notre assistant IA, un humain toujours prêt à intervenir et la sérénité à chaque envoi. Chaque course est suivie en temps réel, et nos agents prennent le relais dès que vous avez besoin d'eux.",
     statsHeader: "SERVICE CLIENT LOCAL DAKAR · ENGAGEMENTS & PERFORMANCE",
 
     dynamicStats: [
       {
-        value: "< 2 min",
-        target: 2,
-        prefix: "< ",
+        value: "1 min",
+        target: 1,
         suffix: " min",
         decimals: 0,
-        label: "Temps de réponse support",
-        desc: "Assistance WhatsApp direct & Hotline 7j/7",
-        progress: 96
-      },
-      {
-        value: "98.7%",
-        target: 98.7,
-        decimals: 1,
-        suffix: "%",
-        label: "Satisfaction client",
-        desc: "Résolution immédiate dès le premier échange",
-        progress: 98.7
-      },
-      {
-        value: "7j / 7",
-        target: 7,
-        suffix: "j / 7",
-        decimals: 0,
-        label: "Disponibilité assistance",
-        desc: "De 08h00 à 22h00 sans interruption",
+        label: "TEMPS D'ATTENTE MOYEN",
+        desc: "Pour trouver un coursier à proximité",
         progress: 100
       },
       {
-        value: "99.4%",
-        target: 99.4,
-        decimals: 1,
+        value: "73%",
+        target: 73,
+        decimals: 0,
         suffix: "%",
-        label: "Remises validées OTP",
-        desc: "Preuve de livraison sans litige ni contestation",
-        progress: 99.4
+        label: "SATISFACTION CLIENT",
+        desc: "Mesurée auprès de nos clients",
+        progress: 73
+      },
+      {
+        value: "24h / 24",
+        target: 24,
+        suffix: "h / 24",
+        decimals: 0,
+        label: "ASSISTANCE 7j / 7",
+        desc: "Adja répond tout de suite, un humain dans la minute de 8h à 22h",
+        progress: 100
+      },
+      {
+        value: "0",
+        target: 0,
+        decimals: 0,
+        label: "COLIS PERDU",
+        desc: "Depuis le lancement de DEM",
+        progress: 100
       }
     ],
     highlights: [
       { label: "Support Client", value: "7j/7 Hotline & WhatsApp" },
       { label: "Temps de réponse", value: "< 2 minutes" },
-      { label: "Validation remise", value: "Code OTP confidentiel" },
       { label: "Équipe support", value: "100% basée à Dakar" }
     ],
     keys: [
@@ -127,21 +129,52 @@ export const servicesData = [
     linkUrl: "/#download"
   },
   {
+    id: "coursiers-pour-entreprises",
+    number: "04",
+    title: "COURSIERS DÉDIÉS · SANS APPLICATION",
+    subtitle: "SERVICE 04 · ENTREPRISES, TOURNÉES & LOGISTIQUE PLANIFIÉE",
+    badge: "Entreprises & Tournées",
+    audience: " PME, grossistes, traiteurs, pharmacies et toute entreprise qui livre régulièrement",
+    summary: "Un appel, et on s'occupe de tout.",
+    detailedDescription: "Idéal pour les entreprises qui livrent tous les jours, le matin ou l'après-midi. Vous nous envoyez vos adresses par le canal qui vous arrange, et on s'occupe du reste : l'organisation, la livraison et le suivi.",
+    methodeTravail: "Un interlocuteur unique chez DEM, des coursiers formés qui connaissent votre activité, et des tournées organisées zone par zone pour livrer plus vite.",
+    valeurAjoutee: "Plus de gestion de coursiers ni de recrutement : vous avez une équipe de livraison, sans aucun salaire à votre charge.",
+    highlights: [
+      { label: "Coursiers dédiés", value: "Affectés à votre entreprise" },
+      { label: "Zéro application", value: "Un appel ou un message suffit" },
+      { label: "Tournées organisées", value: "Zone par zone" },
+      { label: "Facturation", value: "Une seule facture, regroupée" }
+    ],
+    keys: [
+      "Importation simple de listes d'adresses multiples",
+      "Optimisation automatique de l'itinéraire par secteur urbain",
+      "Respect strict des plages horaires avec chaque destinataire",
+      "Suivi de progression étape par étape en direct",
+      "Facturation consolidée adaptée aux entreprises"
+    ],
+    img: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=1600&auto=format&fit=crop&q=85",
+    linkText: "Demander un devis personnalisé",
+    linkUrl: "/contact"
+  },
+  {
     id: "chef-de-flotte",
-    number: "4",
-    title: "Espace Chefs de Flotte & Gestionnaires",
-    subtitle: "SERVICE 04 · GESTIONNAIRES DE PARCS & INVESTISSEURS",
+    number: "5",
+    title: "GESTIONNAIRES & CHEFS DE FLOTTE",
+    subtitle: "SERVICE 05 · GESTIONNAIRES DE PARCS & INVESTISSEURS",
     badge: "Chefs de Flotte",
     audience: "Propriétaires de motos, responsables d'équipes de livraison & investisseurs",
-    summary: "Les chefs de flotte ayant rejoint le réseau DEM maximisent la rentabilité de leur parc : formules de pass prépayé sans commission cachée, affectation intelligente des courses et supervision en temps réel.",
+    summary: "Vos motos roulent, mais savez-vous vraiment ce qui se passe sur le terrain ? En intégrant le réseau DEM, un réseau déjà structuré, vous professionnalisez enfin votre flotte, sans stress. Depuis votre téléphone ou votre ordinateur, vous voyez votre flotte en temps réel et vous agissez directement sur elle. Où sont vos coursiers, combien de courses ils font, comment ils travaillent : tout est entre vos mains.",
     detailedDescription: "Vous possédez une ou plusieurs motos à Dakar et souhaitez rentabiliser votre investissement sans friction. DEM met à votre disposition un portail de gestion complet pour suivre vos coursiers, surveiller le volume de courses en temps réel, optimiser leur journée de travail et éliminer les kilomètres à vide.",
     methodeTravail: "Supervision cartographique en direct de votre équipe, répartition algorithmique équitable des commandes et tarification claire par abonnement ou pass journalier/hebdomadaire.",
-    valeurAjoutee: "Rentabilité prévisible par moto, visibilité totale sur l'activité des conducteurs et réduction drastique des temps d'inactivité.",
+    valeurAjoutee: "Le contrôle total de votre flotte, une vision claire sur chaque coursier et des revenus plus prévisibles. Vous gérez, DEM vous donne les outils.",
     highlights: [
-      { label: "Modèle tarifaire", value: "Pass fixe sans commission" },
-      { label: "Supervision", value: "Temps réel sur carte" },
-      { label: "Rentabilité", value: "Maximale par moto" },
-      { label: "Gestion", value: "Portail multi-coursiers" }
+      { label: "Formation", value: "Vos coursiers formés à la méthode DEM" },
+      { label: "Courses", value: "Envoyées automatiquement au coursier le plus proche" },
+      { label: "Pass", value: "Formules prépayées dégressives" },
+      { label: "Performance", value: "Suivie coursier par coursier" },
+      { label: "Revenus", value: "Plus prévisibles par moto" },
+      { label: "Réseau", value: "Accès à toute la demande DEM à Dakar" },
+      { label: "Support", value: "Une équipe joignable à chaque course" }
     ],
     keys: [
       "Suivi cartographique de l'ensemble de votre flotte en temps réel",
@@ -153,34 +186,6 @@ export const servicesData = [
     img: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=1600&auto=format&fit=crop&q=85",
     linkText: "Accéder à l'espace Chef de Flotte",
     linkUrl: "/chef-de-flotte"
-  },
-  {
-    id: "courses-programmees",
-    number: "05",
-    title: "Courses Programmées & Tournées Multi-Destinations",
-    subtitle: "SERVICE 05 · ENTREPRISES, TOURNÉES & LOGISTIQUE PLANIFIÉE",
-    badge: "Entreprises & Tournées",
-    audience: "PME, grossistes, traiteurs, pharmacies & distribution récurrente",
-    summary: "Planification anticipée de tournées de livraison et distribution groupée vers plusieurs adresses à Dakar en un seul ordre de mission optimisé.",
-    detailedDescription: "Idéal pour les structures qui expédient des volumes réguliers chaque matin ou chaque après-midi. Vous saisissez l'ensemble de vos adresses, et notre moteur logistique calcule la séquence de passage la plus fluide pour optimiser le temps de parcours, limiter les kilomètres superflus et respecter les créneaux convenus.",
-    methodeTravail: "Découpage par zones géographiques dakaroises, ordonnancement logique des étapes et affectation d'un coursier dédié pour toute la durée de la tournée.",
-    valeurAjoutee: "Coût unitaire réduit par point de livraison, ponctualité exemplaire et simplification complète de votre logistique récurrente.",
-    highlights: [
-      { label: "Saisie groupée", value: "Multi-adresses en 1 clic" },
-      { label: "Routage", value: "Optimisé par zone urbaine" },
-      { label: "Planification", value: "Jusqu'à 7 jours à l'avance" },
-      { label: "Facturation", value: "Consolidée à la tournée" }
-    ],
-    keys: [
-      "Importation simple de listes d'adresses multiples",
-      "Optimisation automatique de l'itinéraire par secteur urbain",
-      "Respect strict des plages horaires avec chaque destinataire",
-      "Suivi de progression étape par étape en direct",
-      "Facturation consolidée adaptée aux entreprises"
-    ],
-    img: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=1600&auto=format&fit=crop&q=85",
-    linkText: "Planifier une tournée d'entreprise",
-    linkUrl: "/contact"
   }
 ];
 

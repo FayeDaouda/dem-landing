@@ -14,20 +14,23 @@ export default function DemPro() {
       
       {/* ── 1. HERO SECTION (PHRASE F RETENUE) ── */}
       <PageHeroSection
-        contentMiniBar="SOLUTIONS ENTREPRISES & E-COMMERCE"
+        contentMiniBar="DEM PRO · LA SOLUTION DES VRAIS PROS"
         firstTitle="Organisez mieux, vendez plus."
-        secondTitle="DEM Pro, votre logistique nouvelle génération."
-        watermark="PRO"
+        secondTitle="Avec DEM Pro, vous gérez vos ventes et vos livraisons au même endroit. Moins de temps perdu, des clients mieux servis, et une image à la hauteur de votre marque."
+        watermark="DEM PRO"
+        buttonText={"Voir nos formules"}
+        buttonLink={"/tarifs"}
       />
 
       {/* ── 2. CE QUE VOUS GAGNEZ AVEC DEM PRO (AVANTAGES DU COMPTE) ── */}
       <AvantagesDemProSection />
 
-      {/* ── 3. COMPARATIF EN 2 COLONNES : PROBLÈMES TERRAIN VS SOLUTIONS DEM ── */}
-      <TerrainVsDemSection />
 
       {/* ── 4. LES OFFRES DEM PRO (STARTER / BUSINESS / PREMIUM) & TABLEAU COMPARATIF ── */}
       <PricingDemPro onSelectPlan={(plan) => setSelectedPlan(plan)} />
+
+      {/* ── 3. COMPARATIF EN 2 COLONNES : PROBLÈMES TERRAIN VS SOLUTIONS DEM ── */}
+      <TerrainVsDemSection />
 
       {/* ── 5. SECTION TÉLÉCHARGEMENT & ONBOARDING DEM PRO ── */}
       <DownloadAppCTA

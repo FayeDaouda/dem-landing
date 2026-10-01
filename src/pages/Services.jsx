@@ -40,17 +40,19 @@ export default function Services() {
       <div data-header-theme="white">
         <ContactCTA
           theme="cyan-light"
-          watermark="SERVICES"
+          watermark="CONSEIL & DÉPLOIEMENT"
           title="Une formule de livraison adaptée à"
-          highlight="votre activité."
+          highlight="CHACUN."
           subtitle="Conseil & Déploiement"
-          description="Nos experts en logistique urbaine configurent la solution idéale pour votre flux d'envois : courses ponctuelles, tournées e-commerce ou coursiers dédiés."
-          secondaryBtnText="Contacter l'équipe"
+          description="Particulier, commerçant, entreprise, coursier ou chef de flotte : chez DEM, chacun a sa formule. Dites-nous qui vous êtes et ce dont vous avez besoin, notre équipe vous oriente vers la solution qui vous correspond."
+          secondaryBtnText="Contactez nous"
           secondaryBtnLink="/contact"
           bullets={[
-            "Devis personnalisé sans engagement sous 24h",
-            "Intégration API & Liens d'achats digitaux",
-            "Couverture intégrale de Dakar & banlieue"
+            "Un accompagnement personnalisé, sans engagement",
+            "Une formule pour chaque profil : particulier, pro, entreprise, coursier ou chef de flotte",
+            "Une équipe basée à Dakar, qui connaît le terrain",
+            "Des coursiers formés et équipés",
+            "Zéro commission pour les coursiers"
           ]}
         />
       </div>

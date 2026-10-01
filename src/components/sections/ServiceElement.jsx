@@ -397,15 +397,16 @@ export default function ServiceElement({
                 <MiniTitleWithBar content={miniTitleWithBar || "EXCELLENCE OPÉRATIONNELLE DAKAR"} />
                 <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                     <div className="lg:col-span-7 flex flex-col gap-6">
-                        <p className="font-['Poppins',sans-serif] text-base md:text-lg leading-relaxed text-dark/80 m-0">
-                            {detailedDescription || mainContent}
-                        </p>
+                        <p 
+                            className="font-['Poppins',sans-serif] text-base md:text-lg leading-relaxed text-dark/80 m-0"
+                            dangerouslySetInnerHTML={{ __html: detailedDescription || mainContent }}
+                        />
                         <div className="pt-2">
                             <Link
                                 to={linkUrl || "/contact"}
                                 className="inline-flex items-center gap-3 uppercase tracking-wider text-xs sm:text-sm font-bold px-6 py-3.5 rounded-none border border-[#0086C8] text-[#0086C8] hover:bg-[#0086C8] hover:text-white transition-all duration-200 cursor-pointer"
                             >
-                                <span>{linkText ? `EN SAVOIR PLUS — ${linkText}` : "EN SAVOIR PLUS"}</span>
+                                <span>{linkText ? `${linkText}` : "EN SAVOIR PLUS"}</span>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                     <path d="M5 12h14M12 5l7 7-7 7" />
                                 </svg>

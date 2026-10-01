@@ -97,7 +97,7 @@ export default function PricingDemPro({ onSelectPlan }) {
       key: 'starter',
       name: 'DEM Pro Starter',
       tagline: 'Le tremplin',
-      priceK: '2 000',
+      priceK: '2 300',
       priceUnit: 'FCFA / semaine',
       badge: 'PRODUIT D\'APPEL',
       isFeatured: false,
@@ -120,7 +120,7 @@ export default function PricingDemPro({ onSelectPlan }) {
       key: 'business',
       name: 'DEM Pro Business',
       tagline: 'Le best-seller',
-      priceK: '3 000',
+      priceK: '3 200',
       priceUnit: 'FCFA / semaine',
       badge: 'LE PLUS CHOISI',
       isFeatured: true,
@@ -144,7 +144,7 @@ export default function PricingDemPro({ onSelectPlan }) {
       key: 'premium',
       name: 'DEM Pro Premium',
       tagline: 'L’offre complète',
-      priceK: '6 000',
+      priceK: '6 400',
       priceUnit: 'FCFA / semaine',
       badge: 'VOLUME ILLIMITÉ & API',
       isFeatured: false,
@@ -465,14 +465,14 @@ export default function PricingDemPro({ onSelectPlan }) {
                     Fonctionnalité
                   </th>
                   <th className="py-5 px-6 font-bold text-xs uppercase tracking-wider text-center w-1/5 font-['DM_Sans',sans-serif]">
-                    Starter (2 000 F)
+                    Starter (2 300 F)
                   </th>
                   <th className="py-5 px-6 font-bold text-xs uppercase tracking-wider text-center w-1/5 bg-cyan text-dark font-['DM_Sans',sans-serif] relative">
-                    <span className="block font-black">Business (3 000 F)</span>
+                    <span className="block font-black">Business (3 200 F)</span>
                     <span className="text-[10px] tracking-widest block font-bold uppercase">LE PLUS CHOISI</span>
                   </th>
                   <th className="py-5 px-6 font-bold text-xs uppercase tracking-wider text-center w-1/5 font-['DM_Sans',sans-serif]">
-                    Premium (6 000 F)
+                    Premium (6 400 F)
                   </th>
                 </tr>
               </thead>
@@ -612,7 +612,7 @@ export default function PricingDemPro({ onSelectPlan }) {
                   DEM Pro Starter
                 </span>
                 <span className="text-xl font-black text-dark block mb-1">
-                  2 000 FCFA <span className="text-xs font-normal text-slate-500">/ sem</span>
+                  2 300 FCFA <span className="text-xs font-normal text-slate-500">/ sem</span>
                 </span>
                 <p className="text-xs text-slate-600 m-0 leading-relaxed">
                   Produit d'appel, accessible à tous pour démarrer sans risque.
@@ -624,10 +624,10 @@ export default function PricingDemPro({ onSelectPlan }) {
                   DEM Pro Business (Cible)
                 </span>
                 <span className="text-xl font-black text-dark block mb-1">
-                  3 000 FCFA <span className="text-xs font-normal text-slate-500">/ sem</span>
+                  3 200 FCFA <span className="text-xs font-normal text-slate-500">/ sem</span>
                 </span>
                 <p className="text-xs text-slate-700 m-0 leading-relaxed font-semibold">
-                  Le meilleur rapport — seulement +1 000 F pour débloquer toute la vente en ligne.
+                  Le meilleur rapport — seulement +900 F pour débloquer toute la vente en ligne.
                 </p>
               </div>
 
@@ -636,7 +636,7 @@ export default function PricingDemPro({ onSelectPlan }) {
                   DEM Pro Premium
                 </span>
                 <span className="text-xl font-black text-dark block mb-1">
-                  6 000 FCFA <span className="text-xs font-normal text-slate-500">/ sem</span>
+                  6 400 FCFA <span className="text-xs font-normal text-slate-500">/ sem</span>
                 </span>
                 <p className="text-xs text-slate-600 m-0 leading-relaxed">
                   Ancre haute, gros comptes ayant besoin de l'API et du volume illimité.
@@ -645,7 +645,7 @@ export default function PricingDemPro({ onSelectPlan }) {
             </div>
 
             <p className="text-xs text-slate-500 mt-4 m-0 leading-relaxed italic font-['Poppins',sans-serif]">
-              * Logique d’ancrage : le Business (3 000 F) n’est que 1 000 F au-dessus du Starter mais débloque toute la vente en ligne — l’écart de prix paraît dérisoire face au gain. Le Premium (6 000 F) est au double du Business : assez haut pour ancrer le prix vers le haut et rendre le Business évident, sans décourager les gros comptes qui ont besoin de l’API et du volume illimité.
+              * Logique d’ancrage : le Business (3 200 F) n’est que 900 F au-dessus du Starter mais débloque toute la vente en ligne — l’écart de prix paraît dérisoire face au gain. Le Premium (6 400 F) est au double du Business : assez haut pour ancrer le prix vers le haut et rendre le Business évident, sans décourager les gros comptes qui ont besoin de l’API et du volume illimité.
             </p>
           </div>
 

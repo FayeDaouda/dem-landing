@@ -112,12 +112,12 @@ export default function TerrainVsDemSection() {
       // ── Heading split curtain ──
       const heading = sectionRef.current.querySelector('[data-tv="heading"]');
       if (heading) {
-        const words = heading.textContent.trim().split(' ');
+        const words = heading.textContent.trim().split(/\s+/);
         heading.innerHTML = words.map(w =>
           `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
-          `<span style="display:inline-block;" class="tv-word">${w}&nbsp;</span>` +
+          `<span style="display:inline-block;" class="tv-word">${w}</span>` +
           `</span>`
-        ).join('');
+        ).join(' ');
         gsap.fromTo(heading.querySelectorAll('.tv-word'),
           { yPercent: 110 },
           {

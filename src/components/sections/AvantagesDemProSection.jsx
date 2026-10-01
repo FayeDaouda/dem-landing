@@ -20,63 +20,63 @@ export default function AvantagesDemProSection() {
   const avantages = [
     {
       num: '/1',
-      domain: 'Gain de temps',
-      badge: 'Zéro appel',
-      icon: Clock,
-      title: 'Expéditions groupées & programmées',
-      desc: `Fini la perte de temps à négocier chaque course au téléphone. Enregistrez jusqu'à 8 livraisons simultanées ou planifiez vos envois plusieurs jours à l'avance en un clic.`,
+      domain: "VUE D'ENSEMBLE",
+      badge: 'Contrôle Total',
+      icon: TrendingUp,
+      title: "Vous voyez tout, clairement",
+      desc: "Vos ventes, vos livraisons, vos encaissements et décaissements, vos produits, vos stocks et vos meilleurs clients : tout au même endroit. Chaque jour, vos données de performance sont prêtes à être exploitées pour affiner encore et toujours votre stratégie.",
       benefitLabel: 'Bénéfice direct :',
-      benefitValue: '+3h gagnées par jour'
+      benefitValue: 'Vous gardez le contrôle'
     },
     {
       num: '/2',
-      domain: 'Trésorerie',
-      badge: '24h chrono',
-      icon: Wallet,
-      title: 'Encaissement COD & Reversement 24h',
-      desc: `Nos livreurs encaissent vos fonds à la livraison (Espèces, Wave ou OM). L'argent est crédité sur votre Wallet DEM Pro et reversé sous 24h ouvrées sur votre compte.`,
+      domain: 'IMAGE',
+      badge: 'Représentation',
+      icon: ShieldCheck,
+      title: 'Des coursiers qui vous représentent bien',
+      desc: "Le coursier est le dernier contact avec votre client. Chez DEM, il est formé au service client : ponctuel, présentable et courtois.",
       benefitLabel: 'Bénéfice direct :',
-      benefitValue: "0 risque d'impayé"
+      benefitValue: 'Vos clients reviennent'
     },
     {
       num: '/3',
-      domain: 'Vente en ligne',
-      badge: 'Mini-Boutique',
+      domain: 'VENTE EN LIGNE',
+      badge: 'E-commerce',
       icon: ShoppingBag,
-      title: 'Lien de commande & Catalogue digital',
-      desc: 'Créez vos catalogues produits avec prix et stocks. Partagez votre lien de commande sur Instagram, TikTok ou WhatsApp pour que vos clients achètent en toute autonomie.',
+      title: 'Votre boutique dans un lien',
+      desc: "Pas besoin de site. Créez votre catalogue, partagez votre lien sur WhatsApp, Instagram ou TikTok, et vos clients commandent tout seuls, même pendant que vous dormez.",
       benefitLabel: 'Bénéfice direct :',
-      benefitValue: '+40% de conversion'
+      benefitValue: 'Vous vendez 24h/24'
     },
     {
       num: '/4',
-      domain: 'Crédibilité',
-      badge: 'Image de marque',
-      icon: FileCheck,
-      title: 'Factures automatiques & NINEA',
-      desc: 'Émettez automatiquement après chaque vente des factures professionnelles avec votre logo et vos mentions légales pour rassurer vos clients et simplifier votre comptabilité.',
+      domain: 'PRIX CLAIRS',
+      badge: 'Transparence',
+      icon: Wallet,
+      title: 'Des prix justes, sans tracas',
+      desc: "Chaque livraison a un prix fixé par zone, connu avant d'envoyer. Vous l'annoncez à votre client dès la commande, et plus personne n'a de mauvaise surprise à l'arrivée. Des prix justes, pour vous comme pour vos clients.",
       benefitLabel: 'Bénéfice direct :',
-      benefitValue: 'Comptabilité simplifiée'
+      benefitValue: 'Vous maîtrisez vos coûts'
     },
     {
       num: '/5',
-      domain: 'Sécurité & Suivi',
-      badge: 'Live GPS & OTP',
-      icon: ShieldCheck,
-      title: 'Traçabilité temps réel & Preuve OTP',
-      desc: 'Offrez à vos acheteurs un lien de suivi en direct sur la carte. La livraison est validée par code de sécurité ou signature, éliminant les contestations et litiges.',
+      domain: 'FINANCES',
+      badge: 'Simplicité',
+      icon: FileCheck,
+      title: 'Votre comptabilité, enfin simple',
+      desc: "Plus d'argent éparpillé entre le cash et vos comptes mobile money : tout est regroupé, visible et exportable sur Excel ou PDF en un clic. Factures à votre logo et facture unique pour toutes vos livraisons. C'est tellement simple que vous pouvez faire votre comptabilité vous-même.",
       benefitLabel: 'Bénéfice direct :',
-      benefitValue: '-30% de retours colis'
+      benefitValue: 'Des finances claires, tout le temps'
     },
     {
       num: '/6',
-      domain: 'Croissance',
-      badge: 'CRM & Analytics',
-      icon: TrendingUp,
-      title: 'CRM Clients & Rapports d\'activité',
-      desc: 'Identifiez vos meilleurs clients, suivez la courbe de vos ventes par semaine et exportez facilement vos données (CSV/PDF) pour piloter votre croissance avec précision.',
+      domain: 'ASSISTANCE',
+      badge: 'Prioritaire',
+      icon: Clock,
+      title: 'Une assistance prioritaire',
+      desc: "En tant que pro, vous bénéficiez d'une assistance prioritaire. Un interlocuteur humain, qui connaît votre activité, vous répond et vous accompagne avant, pendant et après chaque vente et chaque livraison.",
       benefitLabel: 'Bénéfice direct :',
-      benefitValue: 'Fidélisation maximale'
+      benefitValue: 'Jamais seul face à un problème'
     }
   ];
 
@@ -158,16 +158,9 @@ export default function AvantagesDemProSection() {
               data-av="heading"
               className="font-extrabold text-3xl md:text-5xl lg:text-6xl font-['DM_Sans',sans-serif] text-dark leading-[1.05] tracking-tight"
             >
-              Transformez votre logistique en accélérateur de ventes
+              DEM Pro, c'est quoi?
             </h2>
           </div>
-
-          <p
-            data-av="sub"
-            className="mt-4 text-xs uppercase font-bold tracking-widest text-[#0086C8] font-['Raleway',sans-serif]"
-          >
-            Avantages Business & E-commerce
-          </p>
 
           <div className="mt-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <p className="text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif] m-0">

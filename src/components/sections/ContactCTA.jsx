@@ -285,6 +285,7 @@ export default function ContactCTA({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
               {bullets.map((bullet, idx) => {
                 const text = typeof bullet === 'string' ? bullet : bullet.text;
+                const isLastOdd = bullets.length % 2 !== 0 && idx === bullets.length - 1;
                 return (
                   <div
                     key={idx}
@@ -293,7 +294,7 @@ export default function ContactCTA({
                       isLight
                         ? 'bg-slate-50/90 border-slate-200 hover:bg-slate-100/90 text-dark'
                         : 'bg-white/[0.03] border-white/10 hover:bg-white/[0.06] text-white/90'
-                    }`}
+                    } ${isLastOdd ? 'sm:col-span-2 sm:w-[calc(50%-0.375rem)] sm:mx-auto w-full' : ''}`}
                   >
                     <span
                       className={`shrink-0 mt-0.5 p-1 ${

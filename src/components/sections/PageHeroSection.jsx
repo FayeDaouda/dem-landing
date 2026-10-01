@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -9,6 +10,8 @@ export default function PageHeroSection({
     firstTitle,
     secondTitle,
     watermark = 'DEM',
+    buttonText,
+    buttonLink = '#',
 }) {
     const sectionRef = useRef(null);
 
@@ -57,6 +60,15 @@ export default function PageHeroSection({
                 { scaleX: 0, transformOrigin: 'left center' },
                 { scaleX: 1, duration: 1.2, ease: 'expo.inOut', delay: 0.6 }
             );
+
+            // Bouton fade in
+            const btn = sectionRef.current?.querySelector('[data-hero="btn"]');
+            if (btn) {
+                gsap.fromTo(btn,
+                    { y: 20, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 1.0, ease: 'expo.out', delay: 0.7 }
+                );
+            }
 
         }, sectionRef);
 
@@ -118,6 +130,21 @@ export default function PageHeroSection({
                     >
                         {secondTitle}
                     </h2>
+                )}
+
+                {/* Bouton Optionnel */}
+                {buttonText && (
+                    <div data-hero="btn" className="mt-8 sm:mt-10">
+                        <Link
+                            to={buttonLink}
+                            className="inline-flex items-center justify-center gap-3 bg-[#021520] hover:bg-[#0086C8] text-white px-8 py-4 text-xs sm:text-sm font-bold uppercase tracking-widest transition-all duration-300"
+                        >
+                            <span className='text-white'>
+                                {buttonText}
+                            </span>
+
+                        </Link>
+                    </div>
                 )}
 
             </div>
