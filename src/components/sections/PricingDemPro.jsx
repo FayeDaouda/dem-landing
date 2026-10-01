@@ -97,22 +97,20 @@ export default function PricingDemPro({ onSelectPlan }) {
       key: 'starter',
       name: 'DEM Pro Starter',
       tagline: 'Le tremplin',
-      priceK: '2 300',
+      priceK: '2 400',
       priceUnit: 'FCFA / semaine',
       badge: 'PRODUIT D\'APPEL',
       isFeatured: false,
       desc: 'Pour démarrer, organiser ses courses et son catalogue privé.',
       highlights: [
-        'Course Simple + Groupée (3 max simultanées)',
-        'Course Programmée (2 max en même temps)',
-        '1 seul catalogue, 3 produits maximum',
-        'Gestion de stock activable sur chaque produit',
-        'Catalogue privé (visible par le Pro uniquement)',
-        'Suivi par statut + historique + recherche',
-        'Compte solo (1 utilisateur) · 2 adresses favorites',
-        'Facturation : infos entreprise + conformité NINEA',
-        'Support standard (appel / WhatsApp / email) + mode nuit',
-        'Vente en ligne, Wallet & Analytics non inclus (grisés)'
+        'Course simple incluse',
+        'Courses groupées (2 simultanées)',
+        'Courses programmées (3 simultanées)',
+        '1 catalogue · 3 produits',
+        'Analytics & filtres : 3 jours',
+        'Compte solo (1 utilisateur) · 1 adresse',
+        'Support Standard',
+        'Vente en ligne non incluse (grisé)'
       ],
       ctaText: 'Choisir Starter',
     },
@@ -126,17 +124,15 @@ export default function PricingDemPro({ onSelectPlan }) {
       isFeatured: true,
       desc: 'Vendre en ligne, encaisser, analyser. Tout ce qu’un commerçant sérieux veut vraiment.',
       highlights: [
-        'Courses groupées (8 max) & programmées (8 max)',
-        'Jusqu’à 8 catalogues / 50 produits (publics & partageables)',
-        'Lien de commande = mini-boutique customisable (logo + fond)',
-        'Paiement en ligne par le client & Wallet DEM Pro',
-        'Plafond de retrait de 100 000 FCFA / semaine',
-        'Commandes reçues dans une boîte de réception dédiée',
-        '3 vues débloquées : Ventes / Livraisons / Activité (3 mois)',
-        'Export comptable CSV + PDF en un clic',
-        'Mes clients : historique, contact, fidélisation, meilleur client',
-        'Factures automatiques après vente avec votre logo',
-        '3 personnes sur le compte · 10 adresses · Support prioritaire'
+        'Vente en ligne (lien + paiement)',
+        'Wallet (retrait 100 000 F / sem.)',
+        'Courses groupées (4) & programmées (6)',
+        '4 catalogues × 5 produits',
+        'Export CSV + PDF & Factures avec logo',
+        'Mes clients (CRM)',
+        'Analytics & filtres : 8 jours',
+        '3 utilisateurs · 3 adresses enregistrées',
+        'Support Prioritaire'
       ],
       ctaText: 'Choisir Business',
     },
@@ -146,21 +142,17 @@ export default function PricingDemPro({ onSelectPlan }) {
       tagline: 'L’offre complète',
       priceK: '6 400',
       priceUnit: 'FCFA / semaine',
-      badge: 'VOLUME ILLIMITÉ & API',
+      badge: 'VOLUME & API',
       isFeatured: false,
       desc: 'Volume illimité, API, service dédié. Pour les gros vendeurs et ceux qui ont déjà un site.',
       highlights: [
-        'Course Simple, Groupée & Programmée 100% illimitées',
-        'Catalogues illimités & produits illimités',
-        'Exclusif Premium : API DEM pour brancher votre boutique / site',
-        'Lien de commande customisable (logo + image de fond)',
-        'Paiement en ligne & Wallet (retraits 350 000 FCFA / semaine)',
-        'Boîte de réception des commandes reçues',
-        'Filtres jusqu’à 6 mois : Ventes / Livraisons / Activité',
-        'Export CSV + PDF & facturation groupée par lot',
-        'Mes clients : fidélisation et meilleur client',
-        '5 personnes sur le compte · Adresses favorites illimitées',
-        'Support premium, Account manager dédié & Priorité coursier'
+        'API DEM (brancher son site)',
+        'Courses groupées (8) & programmées (8)',
+        '8 catalogues × 8 produits',
+        'Wallet (retrait 250 000 F / sem.)',
+        'Analytics & filtres : 1 mois',
+        '6 utilisateurs · 5 adresses enregistrées',
+        'Support Dédié'
       ],
       ctaText: 'Choisir Premium',
     }
@@ -169,72 +161,22 @@ export default function PricingDemPro({ onSelectPlan }) {
   // Matrice complète des fonctionnalités du tableau comparatif
   const comparisonSections = [
     {
-      category: 'LIVRAISONS',
+      category: 'FONCTIONNALITÉS',
       rows: [
-        { name: 'Course Simple', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
-        { name: 'Course Groupée (simultanées)', starter: '3 max en même temps', business: '8 max en même temps', premium: 'Illimitée' },
-        { name: 'Course Programmée (simultanées)', starter: '2 max en même temps', business: '8 max en même temps', premium: 'Illimitée' },
-        { name: 'Suivi par statut + historique + recherche', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
-      ]
-    },
-    {
-      category: 'CATALOGUE PRODUITS',
-      rows: [
-        { name: 'Nombre de catalogues', starter: '1 seul catalogue', business: 'Jusqu’à 8 catalogues', premium: 'Illimité' },
-        { name: 'Nombre de produits', starter: '3 produits max', business: '50 produits max', premium: 'Illimité' },
-        { name: 'Gestion de stock activable', starter: 'Inclus (par produit)', business: 'Inclus (par produit)', premium: 'Inclus (par produit)' },
-        { name: 'Visibilité catalogue', starter: 'Privé (visible Pro uniquement)', business: 'Public (partageable)', premium: 'Public (partageable)' },
-      ]
-    },
-    {
-      category: 'VENTE EN LIGNE — LE CŒUR DE L\'OFFRE',
-      rows: [
-        { name: 'Lien de commande (mini-boutique sans app)', starter: false, business: 'Inclus', premium: 'Inclus' },
-        { name: 'Lien customisable (logo + image de fond)', starter: false, business: 'Inclus', premium: 'Inclus' },
-        { name: 'Paiement en ligne par le client', starter: false, business: 'Inclus', premium: 'Inclus' },
-        { name: 'Wallet DEM Pro (solde, historique, retraits)', starter: false, business: '100 000 F / semaine', premium: '350 000 F / semaine' },
-        { name: 'Boîte de réception des commandes reçues', starter: false, business: 'Inclus', premium: 'Inclus' },
-      ]
-    },
-    {
-      category: 'CONNEXION EXTERNE — EXCLUSIF PREMIUM',
-      rows: [
-        { name: 'API DEM (brancher son propre site / e-shop)', starter: false, business: false, premium: 'Inclus (Clé API dédiée)' },
-        { name: 'Création automatique de course par commande site', starter: false, business: false, premium: 'Inclus' },
-      ]
-    },
-    {
-      category: 'FINANCES / ANALYTICS',
-      rows: [
-        { name: 'Filtres de période disponibles', starter: 'Jour et Semaine uniquement', business: 'Jour / Semaine / Mois / 3 mois', premium: 'Jour / Sem / Mois / 3 mois / 6 mois' },
-        { name: 'Vues débloquées (Ventes / Livraisons / Activité)', starter: 'Grisé (popup upgrade)', business: 'Inclus (taux réussite, courbes)', premium: 'Inclus (analytics complets)' },
-        { name: 'Export comptable CSV + PDF', starter: 'Grisé (popup upgrade)', business: 'Inclus', premium: 'Inclus' },
-      ]
-    },
-    {
-      category: 'CLIENTS / CRM',
-      rows: [
-        { name: 'Mes clients (historique, contact)', starter: false, business: 'Inclus', premium: 'Inclus' },
-        { name: 'Meilleur client, fidélisation & courbes', starter: false, business: 'Inclus', premium: 'Inclus' },
-      ]
-    },
-    {
-      category: 'FACTURATION',
-      rows: [
-        { name: 'Factures générées après chaque vente (avec logo)', starter: false, business: 'Inclus', premium: 'Inclus' },
-        { name: 'Facturation groupée / par lot (gros volumes)', starter: false, business: false, premium: 'Inclus' },
-        { name: 'Infos entreprise + conformité NINEA', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
-      ]
-    },
-    {
-      category: 'UTILISATEURS & SERVICE',
-      rows: [
-        { name: 'Nombre d’utilisateurs sur le compte', starter: '1 seul (compte solo)', business: '3 personnes', premium: '5 personnes' },
-        { name: 'Adresses favorites enregistrées', starter: '2 maximum', business: '10 maximum', premium: 'Illimité' },
-        { name: 'Code promo activable', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
-        { name: 'Niveau de support client', starter: 'Standard (Appel/WhatsApp/Email) + nuit', business: 'Support prioritaire', premium: 'Support premium' },
-        { name: 'Account manager dédié', starter: false, business: false, premium: 'Inclus' },
-        { name: 'Priorité coursier aux heures de pointe', starter: false, business: false, premium: 'Inclus' },
+        { name: 'Course simple', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
+        { name: 'Courses groupées (simultanées)', starter: '2', business: '4', premium: '8' },
+        { name: 'Courses programmées (simultanées)', starter: '3', business: '6', premium: '8' },
+        { name: 'Catalogue produits', starter: '1 cat. · 3 produits', business: '4 cat. × 5 produits', premium: '8 cat. × 8 produits' },
+        { name: 'Vente en ligne (lien + paiement)', starter: false, business: 'Inclus', premium: 'Inclus' },
+        { name: 'Wallet, plafond de retrait', starter: false, business: '100 000 F / sem.', premium: '250 000 F / sem.' },
+        { name: 'Analytics & filtres (historique)', starter: '3 jours', business: '8 jours', premium: '1 mois' },
+        { name: 'Export CSV + PDF', starter: false, business: 'Inclus', premium: 'Inclus' },
+        { name: 'Mes clients (CRM)', starter: false, business: 'Inclus', premium: 'Inclus' },
+        { name: 'Factures avec logo', starter: false, business: 'Inclus', premium: 'Inclus' },
+        { name: 'API DEM (brancher son site)', starter: false, business: false, premium: 'Inclus' },
+        { name: 'Utilisateurs par compte', starter: '1', business: '3', premium: '6' },
+        { name: 'Adresses enregistrées', starter: '1', business: '3', premium: '5' },
+        { name: 'Support', starter: 'Standard', business: 'Prioritaire', premium: 'Dédié' },
       ]
     }
   ];
@@ -297,27 +239,15 @@ export default function PricingDemPro({ onSelectPlan }) {
               data-pr="heading"
               className="font-extrabold text-3xl md:text-5xl lg:text-6xl font-['DM_Sans',sans-serif] text-dark leading-[1.05] tracking-tight"
             >
-              Trois offres construites en escalier
+              Trois offres. Une seule règle : la transparence.
             </h2>
           </div>
-          <p className="mt-4 text-xs uppercase font-bold tracking-widest text-[#0086C8] font-['Raleway',sans-serif]">Transparence, E-commerce &amp; Rentabilité</p>
+          {/* <p className="mt-4 text-xs uppercase font-bold tracking-widest text-[#0086C8] font-['Raleway',sans-serif]">Transparence, E-commerce &amp; Rentabilité</p> */}
           <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
-            DEM Pro fonctionne sur un modèle <strong>100% transparent et rentable</strong>. Chaque palier lève les limites du précédent. L’offre <strong>Business</strong> est pensée pour être le choix évident : c’est elle qui débloque la vente en ligne, le lien de commande et l’encaissement Wallet, le cœur de valeur de DEM Pro.
+            Chaque formule débloque plus d'outils que la précédente. L'offre Business ouvre la vente en ligne, le lien de commande et le wallet : tout ce qu'il faut pour vendre sans limite.
           </p>
         </div>
 
-        {/* ── 2. RÈGLE COMMUNE À TOUTES LES OFFRES ── */}
-        <div data-pr="rule-box" className="mb-16 border border-black/10 bg-slate-50 relative overflow-hidden">
-          <div className="absolute top-0 left-0 bottom-0 w-2 bg-cyan" />
-          <div className="p-6 md:p-8 pl-8 md:pl-10">
-            <h3 className="text-lg md:text-xl font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
-              Règle commune à toutes les offres
-            </h3>
-            <p className="text-sm md:text-base text-slate-600 leading-relaxed m-0 font-['Poppins',sans-serif]">
-              Les <strong>100 FCFA de mise en relation</strong> restent facturés au client sur chaque course, quelle que soit l’offre. L’abonnement paie uniquement l’accès aux outils professionnels. Le coursier garde <strong>100% de sa course</strong>.
-            </p>
-          </div>
-        </div>
 
         {/* ── 3. LES 3 CARTES DE PRICING OFFICIELLES ── */}
         <div data-pr="plans-grid" className="grid grid-cols-1 lg:grid-cols-3 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-24">
@@ -329,33 +259,24 @@ export default function PricingDemPro({ onSelectPlan }) {
                 key={plan.key}
                 data-pr="plan-card"
                 className={`p-8 lg:p-12 flex flex-col justify-between relative transition-all duration-300 ${
-                  isFeatured
-                    ? 'bg-dark text-white shadow-2xl relative z-10 lg:-my-4 lg:border-t-4 lg:border-t-cyan border-cyan'
-                    : 'bg-white text-dark hover:bg-slate-50'
+                  plan.key === 'starter' ? 'bg-[#0B1A30] text-white' :
+                  plan.key === 'business' ? 'bg-[#006091] text-white shadow-2xl relative z-10 lg:-my-4 lg:border-t-4 lg:border-t-cyan border-cyan' :
+                  'bg-white text-dark border border-black/10 hover:bg-slate-50'
                 }`}
               >
-                {/* Badge Featured */}
-                {plan.badge && (
-                  <div className={`absolute top-0 right-0 text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 font-['DM_Sans',sans-serif] ${
-                    isFeatured ? 'bg-cyan text-dark' : 'bg-slate-100 text-slate-700 border-l border-b border-black/10'
-                  }`}>
-                    {isFeatured ? `★ ${plan.badge}` : plan.badge}
-                  </div>
-                )}
-
                 <div>
                   {/* Titre & Eyebrow élégant en Serif Italique */}
                   <div className="mb-6">
                     <span
                       className={`font-serif italic text-base lg:text-lg block mb-1.5 ${
-                        isFeatured ? 'text-cyan' : 'text-[#0086C8]'
+                        plan.key === 'business' ? 'text-cyan' : 'text-[#0086C8]'
                       }`}
                     >
                       {plan.tagline}
                     </span>
                     <h3
                       className={`text-2xl lg:text-3xl font-bold uppercase font-['DM_Sans',sans-serif] ${
-                        isFeatured ? 'text-white' : 'text-dark'
+                        plan.key === 'premium' ? 'text-dark' : 'text-white'
                       }`}
                     >
                       {plan.name}
@@ -367,14 +288,14 @@ export default function PricingDemPro({ onSelectPlan }) {
                     <div className="flex items-baseline gap-2">
                       <span
                         className={`text-4xl lg:text-5xl font-black font-['DM_Sans',sans-serif] tracking-tight ${
-                          isFeatured ? 'text-cyan' : 'text-dark'
+                          plan.key === 'business' ? 'text-cyan' : plan.key === 'starter' ? 'text-white' : 'text-dark'
                         }`}
                       >
                         {plan.priceK}
                       </span>
                       <span
                         className={`text-xs uppercase font-extrabold tracking-wider font-['DM_Sans',sans-serif] ${
-                          isFeatured ? 'text-white' : 'text-slate-600'
+                          plan.key === 'premium' ? 'text-slate-600' : 'text-white/90'
                         }`}
                       >
                         {plan.priceUnit}
@@ -382,7 +303,7 @@ export default function PricingDemPro({ onSelectPlan }) {
                     </div>
                     <p
                       className={`text-xs mt-3 leading-relaxed m-0 font-['Poppins',sans-serif] ${
-                        isFeatured ? 'text-white/80' : 'text-slate-600'
+                        plan.key === 'premium' ? 'text-slate-600' : 'text-white/80'
                       }`}
                     >
                       {plan.desc}
@@ -395,12 +316,12 @@ export default function PricingDemPro({ onSelectPlan }) {
                       <li
                         key={i}
                         className={`flex items-start gap-3 text-xs sm:text-sm font-medium font-['Poppins',sans-serif] leading-snug ${
-                          isFeatured ? 'text-white/90' : 'text-slate-700'
+                          plan.key === 'premium' ? 'text-slate-700' : 'text-white/90'
                         }`}
                       >
                         <span
                           className={`shrink-0 mt-0.5 font-bold ${
-                            isFeatured ? 'text-cyan' : 'text-[#0086C8]'
+                            plan.key === 'business' ? 'text-cyan' : 'text-[#0086C8]'
                           }`}
                         >
                           ✓
@@ -438,18 +359,12 @@ export default function PricingDemPro({ onSelectPlan }) {
           <div className="p-8 lg:p-12 border-b border-black/10 bg-slate-50">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <span className="font-serif italic text-base text-[#0086C8] block mb-1">
-                  Matrice comparative complète
-                </span>
                 <h3 className="text-2xl md:text-3xl font-bold uppercase text-dark font-['DM_Sans',sans-serif]">
                   Tableau comparatif des offres DEM Pro
                 </h3>
                 <p className="text-sm text-slate-600 mt-1 mb-0 font-['Poppins',sans-serif]">
                   Vue d’ensemble des trois offres, fonction par fonction.
                 </p>
-              </div>
-              <div className="text-xs text-slate-600 font-medium font-['Poppins',sans-serif]">
-                La colonne <span className="text-dark font-bold underline">Business</span> est mise en avant (« le plus choisi »)
               </div>
             </div>
           </div>
@@ -544,6 +459,23 @@ export default function PricingDemPro({ onSelectPlan }) {
 
         </div>
 
+        {/* ── 5. APPEL À L'ACTION ── */}
+        <div className="flex flex-col md:flex-row items-stretch justify-center gap-4 mt-12 mb-8 max-w-4xl mx-auto">
+          <a
+            href="https://play.google.com/store/apps/details?id=sn.dem.pro"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 px-6 py-5 bg-dark !text-white font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-3 hover:bg-cyan hover:!text-dark transition-colors text-center rounded-sm group"
+          >
+            <span>Demander mon essai gratuit business d’une semaine</span>
+          </a>
+          <a
+            href="#contact"
+            className="flex-1 px-6 py-5 border-2 border-dark text-dark font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-3 hover:bg-dark hover:!text-white transition-colors text-center rounded-sm group"
+          >
+            <span>Réserver un call avec un agent pour paramétrer mon catalogue</span>
+          </a>
+        </div>
 
 
 
