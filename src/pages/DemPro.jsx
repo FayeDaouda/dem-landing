@@ -3,6 +3,7 @@ import PageHeroSection from '../components/sections/PageHeroSection.jsx';
 import AvantagesDemProSection from '../components/sections/AvantagesDemProSection.jsx';
 import TerrainVsDemSection from '../components/sections/TerrainVsDemSection.jsx';
 import PricingDemPro from '../components/sections/PricingDemPro.jsx';
+import AncragePricingSection from '../components/sections/AncragePricingSection.jsx';
 import DownloadAppCTA from '../components/sections/DownloadAppCTA.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
 
@@ -31,6 +32,9 @@ export default function DemPro() {
 
       {/* ── 3. COMPARATIF EN 2 COLONNES : PROBLÈMES TERRAIN VS SOLUTIONS DEM ── */}
       <TerrainVsDemSection />
+      
+      {/* ── 4b. MÉCANIQUE D'ANCRAGE ── */}
+      <AncragePricingSection />
 
       {/* ── 5. SECTION TÉLÉCHARGEMENT & ONBOARDING DEM PRO ── */}
       <DownloadAppCTA

@@ -86,12 +86,33 @@ export default function AvantagesDemProSection() {
       // ── Header : label + titre split curtain ──
       const heading = sectionRef.current.querySelector('[data-av="heading"]');
       if (heading) {
-        const words = heading.textContent.trim().split(' ');
-        heading.innerHTML = words.map(w =>
-          `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
-          `<span style="display:inline-block;" class="av-word">${w}&nbsp;</span>` +
-          `</span>`
-        ).join('');
+        const walk = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT, null, false);
+        const textNodes = [];
+        let n;
+        while ((n = walk.nextNode())) textNodes.push(n);
+
+        textNodes.forEach(node => {
+          const text = node.nodeValue;
+          if (!text.trim()) return;
+          const words = text.split(/(\s+)/);
+          const fragment = document.createDocumentFragment();
+          words.forEach(w => {
+            if (!w.trim()) {
+              fragment.appendChild(document.createTextNode(w));
+            } else {
+              const outer = document.createElement('span');
+              outer.style.cssText = 'display:inline-block;overflow:hidden;vertical-align:bottom;';
+              const inner = document.createElement('span');
+              inner.style.cssText = 'display:inline-block;';
+              inner.className = 'av-word';
+              inner.textContent = w;
+              outer.appendChild(inner);
+              fragment.appendChild(outer);
+            }
+          });
+          node.parentNode.replaceChild(fragment, node);
+        });
+
         gsap.fromTo(heading.querySelectorAll('.av-word'),
           { yPercent: 110 },
           {
@@ -158,7 +179,7 @@ export default function AvantagesDemProSection() {
               data-av="heading"
               className="font-extrabold text-3xl md:text-5xl lg:text-6xl font-['DM_Sans',sans-serif] text-dark leading-[1.05] tracking-tight"
             >
-              DEM Pro, c'est quoi?
+              <span className='text-[#0086C8]'>DEM Pro,</span> c'est quoi?
             </h2>
           </div>
 
