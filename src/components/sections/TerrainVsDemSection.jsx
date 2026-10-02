@@ -184,7 +184,7 @@ export default function TerrainVsDemSection() {
 
         {/* En-tête de section */}
         <div className="mb-16">
-          <MiniTitleWithBar content="La valeur ajouté DEM Pro" />
+          <MiniTitleWithBar content="La valeur ajoutée DEM Pro" />
 
           {/* Titre animé */}
           <div className="mt-4 overflow-hidden">
