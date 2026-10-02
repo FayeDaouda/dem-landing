@@ -3,11 +3,11 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MiniTitleWithBar from '../atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../atoms/SectionHeading.jsx';
-import { 
-  XCircle, 
-  CheckCircle2, 
-  AlertTriangle, 
-  Sparkles, 
+import {
+  XCircle,
+  CheckCircle2,
+  AlertTriangle,
+  Sparkles,
   ArrowRight,
   UserX,
   UserCheck,
@@ -110,8 +110,8 @@ export default function TerrainVsDemSection() {
     const ctx = gsap.context(() => {
 
       // ── Heading split curtain ──
-      const heading = sectionRef.current.querySelector('[data-tv="heading"]');
-      if (heading) {
+      const headings = sectionRef.current.querySelectorAll('[data-tv="heading"]');
+      headings.forEach(heading => {
         const words = heading.textContent.trim().split(/\s+/);
         heading.innerHTML = words.map(w =>
           `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
@@ -125,7 +125,7 @@ export default function TerrainVsDemSection() {
             scrollTrigger: { trigger: heading, start: 'top 88%', once: true }
           }
         );
-      }
+      });
 
       // ── Headers colonnes : curtain expand ──
       gsap.fromTo('[data-tv="col-header"]',
@@ -181,10 +181,10 @@ export default function TerrainVsDemSection() {
   return (
     <section ref={sectionRef} className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-slate-50 font-['DM_Sans',sans-serif]" id="comparatif-terrain">
       <div className="max-w-[1400px] mx-auto">
-        
+
         {/* En-tête de section */}
         <div className="mb-16">
-          <MiniTitleWithBar content="RÉALITÉ DU MARCHÉ VS EXPÉRIENCE DEM" />
+          <MiniTitleWithBar content="La valeur ajouté DEM Pro" />
 
           {/* Titre animé */}
           <div className="mt-4 overflow-hidden">
@@ -192,21 +192,27 @@ export default function TerrainVsDemSection() {
               data-tv="heading"
               className="font-extrabold text-3xl md:text-5xl lg:text-6xl font-['DM_Sans',sans-serif] text-dark leading-[1.05] tracking-tight"
             >
-              Ce qui freine vos livraisons vs Le standard DEM Pro
+              CE QUE VOUS VIVEZ,
+            </h2>
+            <h2
+              data-tv="heading"
+              className="font-extrabold text-3xl md:text-5xl lg:text-6xl font-['DM_Sans',sans-serif] text-[#0086C8] leading-[1.05] tracking-tight"
+            >
+              CE QUE NOUS CHANGEONS.
             </h2>
           </div>
 
           <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
-            À Dakar et dans les métropoles africaines, la livraison informelle est le premier goulet d'étranglement des commerçants et e-commerçants. Découvrez concrètement le fossé qui sépare la débrouille quotidienne du standard professionnel DEM Pro.
+            À Dakar, vendre, livrer, encaisser et suivre ses clients reste un vrai casse-tête pour les commerçants, les e-commerçants et les restaurateurs. <br />Voici, concrètement, l'écart entre la débrouille du quotidien et le standard professionnel <b>DEM Pro</b>.
           </p>
         </div>
 
         {/* Tableau comparatif */}
         <div data-tv="table" className="border border-black/10 bg-white overflow-hidden shadow-sm">
-          
+
           {/* Header 2 colonnes */}
           <div className="grid grid-cols-1 lg:grid-cols-2 border-b border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10">
-            
+
             <div data-tv="col-header" className="p-8 lg:p-10 bg-rose-50/40">
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-rose-700 font-['DM_Sans',sans-serif]">
@@ -224,7 +230,7 @@ export default function TerrainVsDemSection() {
             <div data-tv="col-header" className="p-8 lg:p-10 bg-cyan/10">
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-[#0086C8] font-['DM_Sans',sans-serif]">
-                  Avec DEM Pro 
+                  Avec DEM Pro
                 </span>
               </div>
               <h3 className="text-2xl lg:text-3xl font-bold uppercase text-dark font-['DM_Sans',sans-serif] mb-2">
@@ -244,7 +250,7 @@ export default function TerrainVsDemSection() {
               const SolIcon = row.solution.icon;
 
               return (
-                <div 
+                <div
                   key={idx}
                   data-tv="row"
                   className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-black/10 group hover:bg-slate-50/50 transition-colors"
