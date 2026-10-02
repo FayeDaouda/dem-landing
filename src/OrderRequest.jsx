@@ -122,9 +122,9 @@ function formatFcfa(n) {
 }
 
 // Mêmes préfixes que isValidSenegalMobile côté app (senegal_phone.dart) —
-// Orange (77/78), Free (76/75), Expresso (70), 9 chiffres sans le +221.
+// Orange (71/77/78), Free (76/75), Expresso (70), 9 chiffres sans le +221.
 function isValidSenegalMobile(digits) {
-  return /^(70|75|76|77|78)\d{7}$/.test(digits)
+  return /^(70|71|75|76|77|78)\d{7}$/.test(digits)
 }
 
 const newSessionToken = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`
