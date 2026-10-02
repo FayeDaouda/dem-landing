@@ -19,9 +19,9 @@ export default function PricingDemPro({ onSelectPlan }) {
         const words = heading.textContent.trim().split(' ');
         heading.innerHTML = words.map(w =>
           `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;">` +
-          `<span style="display:inline-block;" class="pr-word">${w}\u00a0</span>` +
+          `<span style="display:inline-block;" class="pr-word">${w}</span>` +
           `</span>`
-        ).join('');
+        ).join(' ');
         gsap.fromTo(heading.querySelectorAll('.pr-word'),
           { yPercent: 110 },
           {
@@ -106,7 +106,7 @@ export default function PricingDemPro({ onSelectPlan }) {
         'Course simple incluse',
         'Courses groupées (2 simultanées)',
         'Courses programmées (3 simultanées)',
-        '1 catalogue · 3 produits',
+        '1 catalogue de 3 produits',
         'Analytics & filtres : 3 jours',
         'Compte solo (1 utilisateur) · 1 adresse',
         'Support Standard',
@@ -124,10 +124,12 @@ export default function PricingDemPro({ onSelectPlan }) {
       isFeatured: true,
       desc: 'Vendre en ligne, encaisser, analyser. Tout ce qu’un commerçant sérieux veut vraiment.',
       highlights: [
+        <>Toutes les fonctionnalités de l'offre <span className="font-bold text-cyan">Starter</span></>,
         'Vente en ligne (lien + paiement)',
         'Wallet (retrait 100 000 F / sem.)',
-        'Courses groupées (4) & programmées (6)',
-        '4 catalogues × 5 produits',
+        'Courses groupées (4 simultanées)',
+        'Courses programmées (6 simultanées)',
+        '4 catalogues de 5 produits chacun',
         'Export CSV + PDF & Factures avec logo',
         'Mes clients (CRM)',
         'Analytics & filtres : 8 jours',
@@ -146,9 +148,11 @@ export default function PricingDemPro({ onSelectPlan }) {
       isFeatured: false,
       desc: 'Volume illimité, API, service dédié. Pour les gros vendeurs et ceux qui ont déjà un site.',
       highlights: [
+        <>Toutes les fonctionnalités de l'offre <span className="font-bold text-[#0086C8]">Business</span></>,
         'API DEM (brancher son site)',
-        'Courses groupées (8) & programmées (8)',
-        '8 catalogues × 8 produits',
+        'Courses groupées (8 simultanées)',
+        'Courses programmées (8 simultanées)',
+        '8 catalogues de 8 produits chacun',
         'Wallet (retrait 250 000 F / sem.)',
         'Analytics & filtres : 1 mois',
         '6 utilisateurs · 5 adresses enregistrées',
@@ -166,7 +170,7 @@ export default function PricingDemPro({ onSelectPlan }) {
         { name: 'Course simple', starter: 'Inclus', business: 'Inclus', premium: 'Inclus' },
         { name: 'Courses groupées (simultanées)', starter: '2', business: '4', premium: '8' },
         { name: 'Courses programmées (simultanées)', starter: '3', business: '6', premium: '8' },
-        { name: 'Catalogue produits', starter: '1 cat. · 3 produits', business: '4 cat. × 5 produits', premium: '8 cat. × 8 produits' },
+        { name: 'Catalogue produits', starter: '1 catalogue de 3 produits', business: '4 catalogues de 5 produits chacun', premium: '8 catalogues de 8 produits chacun' },
         { name: 'Vente en ligne (lien + paiement)', starter: false, business: 'Inclus', premium: 'Inclus' },
         { name: 'Wallet, plafond de retrait', starter: false, business: '100 000 F / sem.', premium: '250 000 F / sem.' },
         { name: 'Analytics & filtres (historique)', starter: '3 jours', business: '8 jours', premium: '1 mois' },
@@ -236,15 +240,15 @@ export default function PricingDemPro({ onSelectPlan }) {
           <MiniTitleWithBar content="LE PRINCIPE TARIFAIRE DEM PRO" />
           <div className="mt-4 overflow-hidden">
             <h2
-              data-pr="heading"
+              data-tv="heading"
               className="font-extrabold text-3xl md:text-5xl lg:text-6xl font-['DM_Sans',sans-serif] text-dark leading-[1.05] tracking-tight"
             >
-              Trois offres. Une seule règle : la transparence.
+              Trois offres, chacune adaptée à votre niveau d'activité.
             </h2>
           </div>
           {/* <p className="mt-4 text-xs uppercase font-bold tracking-widest text-[#0086C8] font-['Raleway',sans-serif]">Transparence, E-commerce &amp; Rentabilité</p> */}
           <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
-            Chaque formule débloque plus d'outils que la précédente. L'offre Business ouvre la vente en ligne, le lien de commande et le wallet : tout ce qu'il faut pour vendre sans limite.
+            Chaque formule débloque plus d'outils pour développer votre business plus rapidement, et en toute simplicité : plus votre offre est complète, plus vendre et gérer devient simple.
           </p>
         </div>
 

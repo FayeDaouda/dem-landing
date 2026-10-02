@@ -105,7 +105,7 @@ export default function Home() {
       {/* ── DOWNLOAD APP CTA SECTION (Watermark DOWNLOAD) ── */}
       <DownloadAppCTA
         theme="white"
-        watermark="DOWNLOAD"
+        watermark="Télécharger"
         subtitle="Application Mobile"
         title="Votre livraison express au bout"
         highlight="des doigts."
