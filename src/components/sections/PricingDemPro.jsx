@@ -142,7 +142,7 @@ export default function PricingDemPro({ onSelectPlan }) {
       key: 'premium',
       name: 'DEM Pro Premium',
       tagline: 'L’offre complète',
-      priceK: '6 400',
+      priceK: '7 400',
       priceUnit: 'FCFA / semaine',
       badge: 'VOLUME & API',
       isFeatured: false,
@@ -391,7 +391,7 @@ export default function PricingDemPro({ onSelectPlan }) {
                     <span className="text-[10px] tracking-widest block font-bold uppercase">LE PLUS CHOISI</span>
                   </th>
                   <th className="py-5 px-6 font-bold text-xs uppercase tracking-wider text-center w-1/5 font-['DM_Sans',sans-serif]">
-                    Premium (6 400 F)
+                    Premium (7 400 F)
                   </th>
                 </tr>
               </thead>

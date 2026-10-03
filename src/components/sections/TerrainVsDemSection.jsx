@@ -4,11 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MiniTitleWithBar from '../atoms/MiniTitleWithBar.jsx';
 import SectionHeading from '../atoms/SectionHeading.jsx';
 import {
-  XCircle,
-  CheckCircle2,
-  AlertTriangle,
-  Sparkles,
-  ArrowRight,
   UserX,
   UserCheck,
   Banknote,
@@ -38,13 +33,13 @@ export default function TerrainVsDemSection() {
       num: "01",
       topic: "Qualité du coursier",
       problem: {
-        title: "Livreurs non formés & retards imprévisibles",
-        desc: "Coursiers indépendants sans engagement, joignables de manière aléatoire, retards chroniques et attitude négligée qui ternit l'image de votre marque.",
+        title: "TENSIONS AVEC VOS CLIENTS & COURSES MAL GÉRÉES",
+        desc: "Pas de monnaie au moment de payer, un ton déplacé, une course mal organisée : chaque incident à la livraison, c'est votre client qui le vit et votre marque qui en paie le prix.",
         icon: UserX
       },
       solution: {
-        title: "Livreurs professionnels, formés & certifiés",
-        desc: "Des coursiers formés aux standards du service client, habillés avec soin, ponctuels et respectueux, ambassadeurs fidèles de votre enseigne.",
+        title: "DES COURSIERS FORMÉS & UNE ÉQUIPE QUI VEILLE",
+        desc: "Des coursiers formés au service client : ponctuels, présentables et courtois, de vrais ambassadeurs de votre enseigne. Le client peut payer en mobile money, nos coursiers sont équipés pour rendre la monnaie, et en cas de souci, un agent DEM intervient directement pour le régler.",
         icon: UserCheck
       }
     },
@@ -52,27 +47,27 @@ export default function TerrainVsDemSection() {
       num: "02",
       topic: "Gestion financière",
       problem: {
-        title: "Encaissements COD opaques & trésorerie bloquée",
-        desc: "L'argent liquide circule sans reçu ni traçabilité pendant des jours. Risques élevés de perte, d'impayés et réconciliations manuelles épuisantes.",
+        title: "ENCAISSEMENTS FLOUS & TRÉSORERIE BLOQUÉE",
+        desc: "L'argent des livraisons circule en liquide, sans reçu ni traçabilité, parfois pendant des jours. Résultat : des pertes, des impayés et des comptes à refaire à la main.",
         icon: Banknote
       },
       solution: {
-        title: "Reversements COD sous 24h & Wallet sécurisé",
-        desc: "Encaissement sécurisé (Espèces, Wave, OM). Montants crédités immédiatement sur votre Wallet DEM Pro et reversés sous 24h ouvrées sur votre compte.",
+        title: "ENCAISSEMENTS SÉCURISÉS & WALLET CRÉDITÉ INSTANTANÉMENT",
+        desc: "Vos clients paient en mobile money, directement sur votre wallet DEM Pro, ou en espèces au coursier, qui vous les reverse directement après la course. Chaque paiement est sécurisé, tracé et visible à tout moment.",
         icon: Wallet
       }
     },
     {
       num: "03",
-      topic: "Visibilité & litiges",
+      topic: "SUIVI & LITIGES",
       problem: {
-        title: "Zéro visibilité & contestations permanentes",
-        desc: "Aucune géolocalisation. Vous passez vos journées à répondre « Où est ma commande ? », sans pouvoir prouver la remise effective du colis au client.",
+        title: "AUCUNE VISIBILITÉ & CONTESTATIONS À RÉPÉTITION",
+        desc: "Impossible de savoir où est le coursier. Vous passez vos journées à répondre « ma commande est où ? », sans pouvoir prouver que le colis a bien été remis.",
         icon: MapPinOff
       },
       solution: {
-        title: "Traçabilité GPS live & preuve par code OTP",
-        desc: "Lien de suivi temps réel sur carte envoyé à l'acheteur. Remise sécurisée obligatoirement verrouillée par code secret OTP ou signature : 0 litige.",
+        title: "SUIVI EN TEMPS RÉEL & HISTORIQUE COMPLET",
+        desc: "Vous savez à chaque instant où se trouve le coursier, et vous pouvez envoyer à votre client un lien pour qu'il suive sa commande lui-même. Une fois le colis remis, le coursier peut envoyer une photo comme preuve. Et votre historique garde une trace claire de chaque commande : le jour, l'heure, le produit et le mode de paiement.",
         icon: Navigation
       }
     },
@@ -80,13 +75,13 @@ export default function TerrainVsDemSection() {
       num: "04",
       topic: "Organisation opérationnelle",
       problem: {
-        title: "Perte de temps épuisante au téléphone",
-        desc: "Négocier chaque course au cas par cas, partager des repères approximatifs par messages vocaux WhatsApp et rappeler 5 livreurs différents.",
+        title: "DES HEURES PERDUES AU TÉLÉPHONE",
+        desc: "Négocier le prix de chaque course, expliquer l'adresse en vocal WhatsApp, rappeler plusieurs coursiers pour en trouver un de disponible.",
         icon: PhoneOff
       },
       solution: {
-        title: "Expéditions groupées & programmées en 1 clic",
-        desc: "Lancez jusqu'à 8 courses simultanées ou planifiez vos tournées sur toute la semaine depuis l'application, sans passer le moindre coup de fil.",
+        title: "EXPÉDITIONS GROUPÉES & PROGRAMMÉES EN 1 CLIC",
+        desc: "Préparez tranquillement vos commandes, puis lancez plusieurs courses d'un coup ou programmez vos livraisons à l'avance, directement depuis votre compte Pro. Le prix est fixé par zone, l'adresse est claire pour le coursier et vous suivez tout en temps réel. Vous restez concentré sur ce qui compte vraiment : faire grandir votre business.",
         icon: Zap
       }
     },
@@ -94,13 +89,13 @@ export default function TerrainVsDemSection() {
       num: "05",
       topic: "Vente & administration",
       problem: {
-        title: "Commandes manuelles & rupture de stock",
-        desc: "Prise de commande éparpillée dans les DM Instagram et WhatsApp, pas de facturation conforme, erreurs d'adresses et pertes régulières de commandes.",
+        title: "COMMANDES ÉPARPILLÉES & GESTION ARCHAÏQUE",
+        desc: "Des commandes qui arrivent de partout, dans les DM Instagram, TikTok, WhatsApp ou par appel, notées à la main sur un cahier ou dans un coin du téléphone, et qu'on finit par mélanger. Des clients qui attendent une réponse, des heures passées à tout recopier, et pas de vision précise sur ce qui a été vendu dans la journée, la semaine ou le mois.",
         icon: ShoppingBag
       },
       solution: {
-        title: "Mini-boutique en ligne & facturation automatique",
-        desc: "Lien de commande prêt à l'emploi avec gestion de stock en temps réel et émission instantanée de factures officielles portant votre logo et NINEA.",
+        title: "MINI-BOUTIQUE EN LIGNE & FACTURATION AUTOMATIQUE",
+        desc: "Un catalogue et un lien de commande prêts à partager sur Instagram, TikTok et WhatsApp : vos clients commandent tout seuls, chaque commande arrive rangée au même endroit et votre stock se met à jour automatiquement. Vos factures à votre logo se génèrent toutes seules, et vous suivez vos ventes jour après jour depuis votre compte Pro.",
         icon: FileCheck2
       }
     }
@@ -223,7 +218,7 @@ export default function TerrainVsDemSection() {
                 Les frictions rencontrées sur le terrain
               </h3>
               <p className="text-sm text-slate-600 font-['Poppins',sans-serif] m-0">
-                Ce qui vous coûte du temps, bloque votre trésorerie et détruit la confiance de vos acheteurs.
+                Ce qui vous coûte du temps, bloque votre trésorerie et détruit la confiance de vos clients.
               </p>
             </div>
 
