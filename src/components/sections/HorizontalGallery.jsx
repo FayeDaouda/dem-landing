@@ -124,7 +124,7 @@ export const HorizontalGallery = ({ services = DEFAULT_DEM_SERVICES, theme = 'da
             Une technologie de pointe combinée à un réseau humain rigoureux pour délivrer l'excellence logistique au Sénégal.
           </p>
           <a
-            href="#download"
+            href="download"
             className={`inline-flex items-center gap-3 px-6 py-3 font-bold text-sm tracking-wide uppercase transition-all duration-300 text-white ${isLight
                 ? ' bg-[#021520] hover:bg-[#0086C8] shadow-lg'
                 : 'text-white bg-[#00D2FF]/10 border border-[#00D2FF]/30 hover:bg-[#00D2FF]/20 shadow-[0_0_20px_rgba(0,210,255,0.15)]'

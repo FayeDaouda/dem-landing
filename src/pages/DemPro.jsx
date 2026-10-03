@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import PageHeroSection from '../components/sections/PageHeroSection.jsx';
 import AvantagesDemProSection from '../components/sections/AvantagesDemProSection.jsx';
 import TerrainVsDemSection from '../components/sections/TerrainVsDemSection.jsx';
@@ -9,6 +10,20 @@ import ContactCTA from '../components/sections/ContactCTA.jsx';
 
 export default function DemPro() {
   const [selectedPlan, setSelectedPlan] = useState('business');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
   return (
     <div className="w-full bg-white text-dark min-h-screen font-['DM_Sans',sans-serif] selection:bg-cyan selection:text-dark">
@@ -20,7 +35,7 @@ export default function DemPro() {
         secondTitle="Avec DEM Pro, vous gérez vos ventes et vos livraisons au même endroit. Moins de temps perdu, des clients mieux servis, et une image à la hauteur de votre marque."
         watermark="DEM PRO"
         buttonText={"Voir nos formules"}
-        buttonLink={"/tarifs"}
+        buttonLink={"/dem-pro/#tarifs"}
       />
 
       {/* ── 2. CE QUE VOUS GAGNEZ AVEC DEM PRO (AVANTAGES DU COMPTE) ── */}

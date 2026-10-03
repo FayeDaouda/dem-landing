@@ -466,15 +466,13 @@ export default function PricingDemPro({ onSelectPlan }) {
         {/* ── 5. APPEL À L'ACTION ── */}
         <div className="flex flex-col md:flex-row items-stretch justify-center gap-4 mt-12 mb-8 max-w-4xl mx-auto">
           <a
-            href="https://play.google.com/store/apps/details?id=sn.dem.pro"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/download"
             className="flex-1 px-6 py-5 bg-dark !text-white font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-3 hover:bg-cyan hover:!text-dark transition-colors text-center rounded-sm group"
           >
             <span>Demander mon essai gratuit business d’une semaine</span>
           </a>
           <a
-            href="#contact"
+            href="contact"
             className="flex-1 px-6 py-5 border-2 border-dark text-dark font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-3 hover:bg-dark hover:!text-white transition-colors text-center rounded-sm group"
           >
             <span>Réserver un call avec un agent pour paramétrer mon catalogue</span>

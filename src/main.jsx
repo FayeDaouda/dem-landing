@@ -13,10 +13,12 @@ import DemPro from './pages/DemPro.jsx'
 import ChefDeFlotte from './pages/ChefDeFlotte.jsx'
 import Contact from './pages/Contact.jsx'
 import Actualites from './pages/Actualites.jsx'
+import Download from './pages/Download.jsx'
 import Privacy from './Privacy.jsx'
 import Terms from './Terms.jsx'
 import DeleteAccount from './DeleteAccount.jsx'
 import OrderRequest from './OrderRequest.jsx'
+import NotFound from './pages/NotFound.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -32,18 +34,20 @@ createRoot(document.getElementById('root')).render(
           <Route path="/services" element={<Services />} />
           <Route path="/actualites" element={<Actualites />} />
           <Route path="/news" element={<Actualites />} />
-          <Route path="/coursiers" element={<Coursiers />} />
-          <Route path="/livreurs" element={<Coursiers />} />
+          {/* <Route path="/coursiers" element={<Coursiers />} />
+          <Route path="/livreurs" element={<Coursiers />} /> */}
           <Route path="/dem-pro" element={<DemPro />} />
           <Route path="/dempro" element={<DemPro />} />
           <Route path="/entreprises" element={<DemPro />} />
           <Route path="/chef-de-flotte" element={<ChefDeFlotte />} />
           <Route path="/flotte" element={<ChefDeFlotte />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/download" element={<Download />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/delete-account" element={<DeleteAccount />} />
           <Route path="/commander/:merchantId" element={<OrderRequest />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />

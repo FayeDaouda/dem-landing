@@ -125,8 +125,8 @@ export const servicesData = [
       "Paiements flexibles et sécurisés : Wave, Orange Money ou espèces à l'arrivée"
     ],
     img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=1600&auto=format&fit=crop&q=85",
-    linkText: "Commander avec suivi & assistance",
-    linkUrl: "/#download"
+    linkText: "Télécharger l'application",
+    linkUrl: "/download"
   },
   {
     id: "coursiers-pour-entreprises",
