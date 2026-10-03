@@ -217,7 +217,7 @@ const WAYPOINTS = [
     tag: 'Prise en charge & Collecte',
     titleMain: 'Le coursier récupère',
     titleHighlight: 'votre colis',
-    desc: "En quelques secondes sur l'application DEM, la commande est validée. Le coursier le plus proche en patrouille est instantanément assigné et file à l'adresse de départ pour la collecte immédiate.",
+    desc: "En quelques secondes sur l'app DEM, votre mission est acceptée. Le coursier le plus proche est aussitôt assigné et se dirige vers l'adresse de départ pour récupérer votre colis.",
     color: '#00D2FF',
     isLast: false,
     markerOnRight: true,
@@ -226,9 +226,9 @@ const WAYPOINTS = [
     id: 'destinataire',
     label: 'Destinataire',
     tag: 'Acheminement & Remise sécurisée',
-    titleMain: 'Livraison confirmée',
-    titleHighlight: 'par code OTP',
-    desc: "Le coursier DEM achemine le colis jusqu'au destinataire via l'itinéraire le plus rapide. Arrivé à destination, la remise en main propre est sécurisée par code OTP confidentiel.",
+    titleMain: 'LIVRAISON SUIVIE ',
+    titleHighlight: '& PROUVÉE',
+    desc: "Votre coursier DEM file vers le destinataire en évitant les embouteillages. Vous suivez la mission en temps réel, votre destinataire aussi grâce au lien de suivi, et une fois le colis remis en main propre, le coursier peut envoyer une photo comme preuve de livraison.",
     color: '#00E08C',
     isLast: true,
     markerOnRight: false,
@@ -443,8 +443,8 @@ export default function DeliveryJourney() {
       {/* Main Header */}
       <div className="relative z-10 max-w-4xl mx-auto text-center mb-20">
         <SectionHeading
-          title="La course de votre"
-          highlight="coursier DEM"
+          title="Du clic à la"
+          highlight="réception"
           subtitle="Vue du ciel · Suivi en direct"
           titleColor="text-white"
           highlightClassName="text-[#00D2FF]"
@@ -452,8 +452,8 @@ export default function DeliveryJourney() {
           titleSize="text-3xl md:text-5xl lg:text-6xl"
           subtitleSize="text-2xl md:text-3xl lg:text-4xl"
         />
-        <p className="text-slate-400 mt-4 max-w-lg mx-auto text-sm md:text-base leading-relaxed">
-          En patrouille dans Dakar — votre coursier se déplace vers le client pour la collecte, puis file livrer le destinataire.
+        <p className="text-slate-200 mt-4 max-w-lg mx-auto text-sm md:text-base leading-relaxed">
+          Partout dans Dakar, votre coursier DEM récupère votre colis là où vous êtes, puis file directement chez votre destinataire.
         </p>
       </div>
 

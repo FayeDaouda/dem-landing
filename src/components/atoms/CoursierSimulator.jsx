@@ -13,11 +13,12 @@ export default function CoursierSimulator({
   const depenseMensuelle = daysPerMonth * passPrice;
   const gagneParJour = avgCoursesPerDay * ratePerDelivery;
   const estimatedMonthly = (gagneParJour ) * daysPerMonth;
+  const beneficeMonthly = (gagneParJour -passPrice ) * daysPerMonth;
 
   const presets = [
-    { label: "Temps partiel", value: 12, tag: "12j/mois" },
-    { label: "Temps plein", value: 22, tag: "22j/mois" },
-    { label: "Performeur", value: 26, tag: "26j/mois" },
+    { label: "Temps partiel", value: 5, tag: "5j/mois" },
+    { label: "Temps plein", value: 20, tag: "20j/mois" },
+    { label: "Intensif", value: 28, tag: "30/mois" },
   ];
 
   return (
@@ -70,7 +71,7 @@ export default function CoursierSimulator({
             <input
               type="range"
               min="1"
-              max="30"
+              max="28"
               step="1"
               value={daysPerMonth}
               onChange={(e) => setDaysPerMonth(Number(e.target.value))}
@@ -103,8 +104,8 @@ export default function CoursierSimulator({
 
           <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center gap-4">
             <Link
-              to="/coursiers#simulateur"
-              className="inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-[#00D2FF] text-[#021520] text-xs font-black uppercase tracking-wider hover:bg-white transition-colors"
+              to="/contact"
+              className="inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-cyan-2 text-[#021520] text-xs font-black uppercase tracking-wider hover:bg-cyan-deep transition-colors"
             >
               <span>Postuler comme coursier DEM</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -123,7 +124,7 @@ export default function CoursierSimulator({
           <div className="p-4 sm:p-5 bg-white/[0.03] border border-white/10 flex items-center justify-between">
             <div>
               <span className="text-[11px] font-mono uppercase tracking-widest text-white/60 block mb-0.5">
-                Dépense chez DEM
+                Dépensé chez DEM
               </span>
               <small className="text-[10px] text-white/40">Sur {daysPerMonth} jours (pass journalier)</small>
             </div>
@@ -132,7 +133,7 @@ export default function CoursierSimulator({
             </span>
           </div>
 
-          <div className="p-4 sm:p-5 bg-white/[0.03] border border-white/10 flex items-center justify-between">
+          {/* <div className="p-4 sm:p-5 bg-white/[0.03] border border-white/10 flex items-center justify-between">
             <div>
               <span className="text-[11px] font-mono uppercase tracking-widest text-white/60 block mb-0.5">
                 Gagné par jour grâce à DEM
@@ -142,25 +143,42 @@ export default function CoursierSimulator({
             <span className="text-xl sm:text-2xl font-black text-white font-['DM_Sans',sans-serif]">
               {gagneParJour.toLocaleString('fr-FR')} FCFA
             </span>
-          </div>
+          </div> */}
 
           {/* Carte vedette Mensuel */}
-          <div className="p-5 sm:p-6 bg-gradient-to-r from-[#00D2FF]/20 to-[#0086C8]/15 border-2 border-[#00D2FF] flex items-center justify-between">
+          <div className="p-5 sm:p-6 bg-gradient-to-r from-[#0086C8]/20 to-[#00D2FF]/15 border-2 border-[#0086C8] flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="px-1.5 py-0.5 bg-[#0086C8] text-white text-[9px] font-mono font-bold uppercase tracking-wider">
+                  NET GÉNÉRÉ
+                </span>
+                <span className="text-xs font-bold uppercase tracking-widest text-white/90 font-['Raleway',sans-serif]">
+                  Total estimé sur {daysPerMonth} jours
+                </span>
+              </div>
+              <small className="text-[10px] text-white/50 block mt-1">
+                Gains bruts générés
+              </small>
+            </div>
+            <span className="text-xl sm:text-2xl lg:text-3xl font-black text-[#0086C8] font-['DM_Sans',sans-serif] shrink-0 ml-4">
+              {estimatedMonthly.toLocaleString('fr-FR')} <span className="text-xs font-normal">FCFA</span>
+            </span>
+          </div>
+          
+          <div className="p-5 sm:p-6 bg-gradient-to-r from-[#00D2FF]/20 to-[#0086C8]/15 border-2 border-[#00D2FF] flex items-center justify-between mt-4">
             <div>
               <div className="flex items-center gap-2">
                 <span className="px-1.5 py-0.5 bg-[#00D2FF] text-[#021520] text-[9px] font-mono font-bold uppercase tracking-wider">
-                  NET REVERSÉ
+                  BÉNÉFICE NET
                 </span>
                 <span className="text-xs font-bold uppercase tracking-widest text-white font-['Raleway',sans-serif]">
-                  Total estimé par mois
+                  Réel dans votre poche
                 </span>
               </div>
-              <small className="text-[10px] text-white/70 block mt-1">
-                Base {daysPerMonth} jours · Gains 100% conservés
-              </small>
+              
             </div>
             <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#00D2FF] font-['DM_Sans',sans-serif] shrink-0 ml-4">
-              {estimatedMonthly.toLocaleString('fr-FR')} <span className="text-sm">FCFA</span>
+              {beneficeMonthly.toLocaleString('fr-FR')} <span className="text-sm">FCFA</span>
             </span>
           </div>
 

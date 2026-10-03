@@ -13,7 +13,7 @@ const DEFAULT_DEM_SERVICES = [
     category: 'Vitesse & Fiabilité',
     badge: 'Point à Point',
     image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=1200&auto=format&fit=crop',
-    description: 'Une course directe et prioritaire à moto. Enlèvement et livraison en moins de 45 minutes partout à Dakar et sa banlieue.',
+    description: 'Une course sans détour. Votre colis est récupéré et livré en moins de 45 minutes, partout à Dakar.',
   },
   {
     slug: 'tracabilite-gps',
@@ -21,7 +21,7 @@ const DEFAULT_DEM_SERVICES = [
     category: 'Technologie Connectée',
     badge: 'GPS en Direct',
     image: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?q=80&w=1200&auto=format&fit=crop',
-    description: 'Suivez votre coursier en temps réel sur la carte. Alertes SMS/WhatsApp à chaque étape et confirmation sécurisée à l’arrivée.',
+    description: 'Suivez votre coursier en temps réel sur la carte et soyez informé à chaque étape de la course grâce aux notifications. Partagez le lien de suivi à votre destinataire, et une fois le colis remis, le coursier peut envoyer une photo comme preuve de livraison.',
   },
   {
     slug: 'impact-social',
@@ -29,15 +29,15 @@ const DEFAULT_DEM_SERVICES = [
     category: 'Impact Social',
     badge: 'Chauffeurs & Flotte',
     image: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?q=80&w=1200&auto=format&fit=crop',
-    description: 'Revenus équitables et garantis pour nos coursiers. Formations, équipements de sécurité certifiés et opportunités d’évolution en chef de flotte.',
+    description: 'Des revenus justes pour nos coursiers. Ils gardent 100 % de leurs courses, sont formés, équipés en matériel homologué, et accompagnés par une équipe à leurs côtés à chaque course.',
   },
   {
     slug: 'solution-entreprises',
-    title: 'Solution Entreprises',
+    title: 'Solution Business',
     category: 'B2B & E-Commerce',
     badge: 'Portail Pro & API',
     image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop',
-    description: 'Automatisez vos expéditions régulières avec notre tableau de bord marchand, encaissement Mobile Money et facturation centralisée.',
+    description: 'Programmez vos expéditions régulières, encaissez en mobile money et retrouvez toutes vos factures au même endroit, depuis votre compte DEM Pro.',
   },
 ];
 
@@ -168,11 +168,7 @@ export const HorizontalGallery = ({ services = DEFAULT_DEM_SERVICES, theme = 'da
                     <span>{zone.subtitle}</span>
                   </div>
 
-                  <div className="py-1 px-3 bg-white/[0.08] backdrop-blur-sm border border-white/10">
-                    <span className="text-xs font-mono text-[#00E08C] font-bold">
-                      {zone.badge}
-                    </span>
-                  </div>
+                  
                 </div>
 
                 <div>

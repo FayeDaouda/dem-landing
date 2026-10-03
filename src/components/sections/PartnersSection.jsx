@@ -1,28 +1,20 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { Link } from 'react-router-dom';
-import {
-    Smartphone,
-    ShoppingBag,
-    UtensilsCrossed,
-    Building2,
-    Store,
-    CreditCard,
-    Truck,
-    PackageCheck,
-    HeartPulse
-} from 'lucide-react';
 import SectionHeading from '../atoms/SectionHeading.jsx';
+import lisca from "../../assets/img/logoPartenaires/lisca.png"
+import samirpay from "../../assets/img/logoPartenaires/samirpay.png"
+import sonatel from "../../assets/img/logoPartenaires/sonatel.jpg"
 
 const PARTNERS = [
-    { name: "Wave Money", category: "Paiement Mobile", icon: Smartphone },
-    { name: "Orange Money", category: "Paiement Digital", icon: CreditCard },
-    { name: "Restaurants Dakar", category: "Restauration Express", icon: UtensilsCrossed },
-    { name: "E-Commerce & Boutiques", category: "Vente en ligne", icon: ShoppingBag },
-    { name: "Pharmacies de Garde", category: "Santé & Urgence", icon: HeartPulse },
-    { name: "PME & Entreprises", category: "Logistique B2B", icon: Building2 },
-    { name: "Marchands & Artisans", category: "Commerce Local", icon: Store },
-    { name: "Hubs de Distribution", category: "Dépôts & Stockage", icon: PackageCheck },
+    { name: "Wave Money", category: "Paiement Mobile", image: lisca },
+    { name: "Orange Money", category: "Paiement Digital", image: sonatel },
+    { name: "Restaurants Dakar", category: "Restauration Express", image: sonatel },
+    { name: "E-Commerce & Boutiques", category: "Vente en ligne", image: "https://placehold.co/120x60/0a2538/00D2FF?text=E-Shop" },
+    { name: "Pharmacies de Garde", category: "Santé & Urgence", image: "https://placehold.co/120x60/0a2538/00D2FF?text=Pharma" },
+    { name: "PME & Entreprises", category: "Logistique B2B", image: "https://placehold.co/120x60/0a2538/00D2FF?text=B2B" },
+    { name: "Marchands & Artisans", category: "Commerce Local", image: "https://placehold.co/120x60/0a2538/00D2FF?text=Marchands" },
+    { name: "Hubs de Distribution", category: "Dépôts & Stockage", image: "https://placehold.co/120x60/0a2538/00D2FF?text=Hubs" },
 ];
 
 export default function PartnersSection() {
@@ -84,22 +76,21 @@ export default function PartnersSection() {
                     className="flex items-center gap-12 md:gap-24 w-max px-8"
                 >
                     {duplicatedPartners.map((partner, index) => {
-                        const Icon = partner.icon;
                         return (
                             <div
                                 key={index}
                                 className="flex items-center gap-4 text-slate-400 hover:text-[#00D2FF] transition-all duration-300 cursor-pointer py-3 px-6 bg-white/[0.02] border border-white/[0.05] hover:border-[#00D2FF]/30 group"
                             >
-                                <div className="w-10 h-10 flex items-center justify-center bg-[#00D2FF]/10 text-[#00D2FF] group-hover:scale-110 transition-transform">
-                                    <Icon size={22} strokeWidth={1.75} />
+                                <div className="w-16 h-12 flex items-center justify-center bg-white/5 p-1.5 group-hover:scale-105 transition-transform overflow-hidden rounded">
+                                    <img src={partner.image} alt={partner.name} className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100" />
                                 </div>
                                 <div className="text-left">
                                     <span className="font-sans font-bold tracking-wider uppercase text-sm md:text-base text-white block group-hover:text-[#00D2FF] transition-colors">
                                         {partner.name}
                                     </span>
-                                    <span className="text-[11px] text-slate-400 block font-medium">
+                                    {/* <span className="text-[11px] text-slate-400 block font-medium">
                                         {partner.category}
-                                    </span>
+                                    </span> */}
                                 </div>
                             </div>
                         );

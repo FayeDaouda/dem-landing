@@ -124,7 +124,7 @@ export default function PricingDemPro({ onSelectPlan }) {
       isFeatured: true,
       desc: 'Vendre en ligne, encaisser, analyser. Tout ce qu’un commerçant sérieux veut vraiment.',
       highlights: [
-        <>Toutes les fonctionnalités de l'offre <span className="font-bold text-cyan">Starter</span></>,
+        <span className="bg-dark text-white px-2 py-0.5 font-bold tracking-tight">Toutes les fonctionnalités de l'offre <span className="font-bold text-cyan">Starter</span></span>,
         'Vente en ligne (lien + paiement)',
         'Wallet (retrait 100 000 F / sem.)',
         'Courses groupées (4 simultanées)',
@@ -148,7 +148,7 @@ export default function PricingDemPro({ onSelectPlan }) {
       isFeatured: false,
       desc: 'Volume illimité, API, service dédié. Pour les gros vendeurs et ceux qui ont déjà un site.',
       highlights: [
-        <>Toutes les fonctionnalités de l'offre <span className="font-bold text-[#0086C8]">Business</span></>,
+        <span className="bg-[#006091] text-white px-2 py-0.5 font-bold tracking-tight">Toutes les fonctionnalités de l'offre <span className="font-bold text-[#99d9fa]">Business</span></span>,
         'API DEM (brancher son site)',
         'Courses groupées (8 simultanées)',
         'Courses programmées (8 simultanées)',

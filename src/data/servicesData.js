@@ -77,8 +77,8 @@ export const servicesData = [
 
     dynamicStats: [
       {
-        value: "1 min",
-        target: 1,
+        value: "2 min",
+        target: 2,
         suffix: " min",
         decimals: 0,
         label: "TEMPS D'ATTENTE MOYEN",
@@ -184,7 +184,7 @@ export const servicesData = [
       "Rapports d'activité et de performance téléchargeables"
     ],
     img: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=1600&auto=format&fit=crop&q=85",
-    linkText: "Accéder à l'espace Chef de Flotte",
+    linkText: "En savoir plus",
     linkUrl: "/chef-de-flotte"
   }
 ];

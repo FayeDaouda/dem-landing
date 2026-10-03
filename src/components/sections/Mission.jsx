@@ -31,7 +31,7 @@ const Mission = ({
                 <div className="col-span-1 md:col-span-2">
                     <HorizontalCurtainReveal curtainColor={curtainBg}>
                         <p className="font-sans text-2xl md:text-3xl lg:text-[38px] leading-[1.3] tracking-tight font-medium">
-                            <span className="text-[#00D2FF] font-bold">DEM (Delivery Express Mobility)</span> réinvente la logistique et la livraison urbaine en Afrique de l'Ouest. Grâce à une technologie connectée en temps réel, nous propulsons une flotte de coursiers qualifiés pour relier commerçants, entreprises et particuliers avec une rapidité record de <span className="underline decoration-[#00D2FF] decoration-2 underline-offset-4">moins de 45 minutes</span> partout à Dakar.
+                        <span className="text-[#00D2FF] font-bold">DEM</span> réinvente la livraison urbaine à Dakar. Grâce à une technologie connectée en temps réel, nous mettons une flotte de coursiers formés au service des commerçants, des entreprises et des particuliers, partout à Dakar. Et demain, dans toute l'Afrique de l'Ouest.
                         </p>
                     </HorizontalCurtainReveal>
                 </div>

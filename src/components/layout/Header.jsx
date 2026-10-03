@@ -89,6 +89,7 @@ export default function Header() {
                         <HeaderLink 
                             to="/services" 
                             label="Nos Services" 
+                            hoverLabel="de qualité" className="flex-[1.15] min-w-[145px] xl:min-w-[165px]"
                         />
                         <HeaderLink 
                             to="/actualites" 
@@ -124,14 +125,14 @@ export default function Header() {
                             className="absolute w-full px-2 translate-y-[250%] text-center text-[11px] sm:text-xs font-black tracking-[0.16em] text-cyan transition-transform duration-500 uppercase group-hover:translate-y-0 whitespace-nowrap"
                             style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
                         >
-                            Service de qualité
+                            Tu cliques, on bouge !
                         </p>
                     </NavLink>
 
                     {/* --- DROITE (Desktop uniquement) --- */}
                     <div className="hidden lg:flex flex-1 h-full items-center justify-end border-l border-[var(--header-border,rgba(0,210,255,0.25))]">
-                        <HeaderLink to="/dem-pro" label="DEM PRO" hoverLabel="Pour les entreprises" className="flex-[1.15] min-w-[145px] xl:min-w-[165px]" />
-                        <HeaderLink to="/chef-de-flotte" label="Chef de Flotte" hoverLabel="Nos partenaires" className="flex-[1.05] min-w-[135px] xl:min-w-[155px]" />
+                        <HeaderLink to="/dem-pro" label="DEM PRO" hoverLabel="Pour les pro" className="flex-[1.15] min-w-[145px] xl:min-w-[165px]" />
+                        <HeaderLink to="/chef-de-flotte" label="Chef de Flotte" hoverLabel="gestionnaires de flotte" className="flex-[1.05] min-w-[135px] xl:min-w-[155px]" />
                         <HeaderLink to="/contact" label="Contact" className="flex-[0.9] min-w-[110px] xl:min-w-[130px] px-5 xl:px-7" />
                     </div>
 

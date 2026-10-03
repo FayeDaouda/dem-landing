@@ -33,7 +33,7 @@ export default function AncragePricingSection() {
                   3 200 FCFA <span className="text-xs font-normal text-slate-500">/ sem</span>
                 </span>
                 <p className="text-xs text-slate-700 m-0 leading-relaxed font-semibold">
-                  Le meilleur rapport — seulement +900 F pour débloquer toute la vente en ligne.
+                  Le meilleur rapport — seulement +900 F pour passer à la vitesse supérieure.
                 </p>
               </div>
 
@@ -45,13 +45,13 @@ export default function AncragePricingSection() {
                   7 400 FCFA <span className="text-xs font-normal text-slate-500">/ sem</span>
                 </span>
                 <p className="text-xs text-slate-600 m-0 leading-relaxed">
-                  Ancre haute, gros comptes ayant besoin de l'API et du volume illimité.
+                  Pour les gros vendeurs et ceux qui ont déjà un site : l'API DEM, le plus de volume et un support dédié.
                 </p>
               </div>
             </div>
 
             <p className="text-xs text-slate-500 mt-4 m-0 leading-relaxed italic font-['Poppins',sans-serif]">
-              * Logique d’ancrage : le Business (3 200 F) n’est que 900 F au-dessus du Starter mais débloque toute la vente en ligne — l’écart de prix paraît dérisoire face au gain. Le Premium (7 400 F) est au double du Business : assez haut pour ancrer le prix vers le haut et rendre le Business évident, sans décourager les gros comptes qui ont besoin de l’API et du volume illimité.
+              Chaque formule s'adapte à votre activité. Prenez celle dont vous avez besoin aujourd'hui, et DEM vous accompagne à chaque étape. À votre rythme, avec DEM à vos côtés.
             </p>
           </div>
         </div>

@@ -70,7 +70,7 @@ export default function Home() {
       {/* <ScrollExpandSection /> */}
 
       {/* ── VISUAL GALLERY SHOWCASE ── */}
-      <section className="relative w-full py-20 px-4 overflow-hidden border-t border-b border-slate-200" style={{ background: '#FFFFFF' }}>
+      {/* <section className="relative w-full py-20 px-4 overflow-hidden border-t border-b border-slate-200" style={{ background: '#FFFFFF' }}>
         <div className="max-w-5xl mx-auto text-center mb-8">
           <SectionHeading
             title="DEM en"
@@ -97,21 +97,10 @@ export default function Home() {
             autoRotateSpeed={0.65}
           />
         </div>
-      </section>
+      </section> */}
 
       {/* ── PARTNERS SECTION ── */}
       <PartnersSection />
-
-      {/* ── DOWNLOAD APP CTA SECTION (Watermark DOWNLOAD) ── */}
-      <DownloadAppCTA
-        theme="white"
-        watermark="Télécharger"
-        subtitle="Application Mobile"
-        title="Votre livraison express au bout"
-        highlight="des doigts."
-        description="Téléchargez gratuitement l’application DEM sur iPhone et Android. Commandez en 30 secondes, suivez votre coursier en direct sur la carte et payez en toute sécurité."
-        id="download"
-      />
 
       {/* ── CONTACT CTA SECTION (Watermark CONTACT) ── */}
       <ContactCTA
@@ -120,14 +109,23 @@ export default function Home() {
         subtitle="Contactez-nous"
         title="Faites le premier pas vers"
         highlight="l'excellence."
-        description="Que vous soyez un particulier, un commerçant ou une entreprise, profitez du réseau de livraison le plus rapide et fiable de Dakar."
+        description="Que vous soyez un particulier, un commerçant ou une entreprise, profitez d'un réseau de livraison structuré pour aller vite, et bien."
         primaryBtnText="Prendre contact"
         primaryBtnLink="/contact"
         primaryBtnIcon="arrow"
-        secondaryBtnText="Ouvrir un compte Pro"
-        secondaryBtnLink="/dem-pro"
-        secondaryBtnIcon="external"
+        
       />
+      {/* ── DOWNLOAD APP CTA SECTION (Watermark DOWNLOAD) ── */}
+      <DownloadAppCTA
+        theme="white"
+        watermark="Télécharger"
+        subtitle="Application Mobile"
+        title="Votre livraison express au bout"
+        highlight="des doigts."
+        description="Téléchargez gratuitement l’application DEM sur iPhone et Android. Commandez, suivez votre coursier en direct sur la carte et payez en toute sécurité."
+        id="download"
+      />
+
 
     </div>
   );

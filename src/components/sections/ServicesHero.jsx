@@ -25,10 +25,11 @@ export default function ServicesHero({ services = [] }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
 
           {/* Colonne Gauche : La Phrase d'Entrée Maîtresse */}
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-12">
 
             <h1 className="font-['DM_Sans',sans-serif] text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#021520] tracking-tight leading-[1.08] m-0">
-              « PLUSIEURS SERVICES. UNE SEULE EXIGENCE : <br className="hidden sm:inline" />
+              « PLUSIEURS SERVICES. <br />
+              UNE SEULE EXIGENCE, <br />
               <span className="text-[#0086C8]">
                 BIEN FAIRE.{" "}
               </span>

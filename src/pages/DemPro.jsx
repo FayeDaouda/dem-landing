@@ -40,21 +40,21 @@ export default function DemPro() {
       <DownloadAppCTA
         theme="white"
         watermark="DEM PRO"
-        subtitle="Application Marchands & Entreprises"
+        subtitle="N'attendez pas !"
         title="Rejoignez les marques qui"
-        highlight="livrent avec DEM."
+        highlight="collaborent avec DEM."
         description="Téléchargez l’application DEM sur iOS ou Android, sélectionnez le profil « DEM Pro / Entreprise » lors de votre inscription et accédez immédiatement à votre portail d'expédition."
         bullets={[
           "Sélectionnez le profil « DEM Pro » lors de la création de votre compte",
           "Accès immédiat à la grille tarifaire professionnelle dégressive",
-          "Encaissement Cash on Delivery & reversements Wave/OM sous 24h",
-          "Gestion des expéditions multiples et suivi GPS en direct"
+          "Encaissements : Cash reversé par nos coursiers ou Mobile Money instantané sur votre Wallet Pro",
+          "Gestion des expéditions multiples et suivi en direct"
         ]}
         id="download"
       />
 
       {/* ── 6. SECTION INFO & CTA PERSONNALISÉ DEM PRO (PARAMÉTRABLE) ── */}
-      <ContactCTA
+      {/* <ContactCTA
         theme="cyan-deep"
         watermark="DEM PRO"
         subtitle="Accélérez vos ventes"
@@ -64,7 +64,7 @@ export default function DemPro() {
         primaryBtnText="Télécharger l'App DEM"
         primaryBtnLink="#download"
         primaryBtnIcon="download"
-      />
+      /> */}
 
     </div>
   );

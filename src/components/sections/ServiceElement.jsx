@@ -339,7 +339,6 @@ export default function ServiceElement({
                         </h3>
                     </div>
                     <CoursierSimulator
-                        ratePerDelivery={simulator?.ratePerDelivery || 1200}
                         subtitle="Ajustez le curseur selon le nombre de jours d'activité"
                     />
                 </div>

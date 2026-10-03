@@ -35,20 +35,20 @@ export default function ChefDeFlotte() {
 
   // Définition des 3 offres officielles de Pass Prépayé
   const OFFERS = {
-    '5days': {
-      name: 'Forfait 5 jours',
-      days: 5,
-      pricePerDay: 1900,
-      totalPerCourier: 9500,
-      badge: 'Flexibilité maximale',
-      role: 'Engagement court, idéal pour tester ou ajuster',
-      savingsVsMarket: '-31%'
-    },
-    '15days': {
-      name: 'Forfait 15 jours',
-      days: 15,
-      pricePerDay: 1400,
-      totalPerCourier: 21000,
+    // '5days': {
+    //   name: 'Forfait 5 jours',
+    //   days: 5,
+    //   pricePerDay: 1900,
+    //   totalPerCourier: 9500,
+    //   badge: 'Flexibilité maximale',
+    //   role: 'Engagement court, idéal pour tester ou ajuster',
+    //   savingsVsMarket: '-31%'
+    // },
+    '10days': {
+      name: 'Forfait 10 jours',
+      days: 10,
+      pricePerDay: 1200,
+      totalPerCourier: 12000,
       badge: 'Le plus équilibré',
       role: 'Engagement moyen, prix/jour fortement réduit',
       savingsVsMarket: '-49%'
@@ -56,7 +56,7 @@ export default function ChefDeFlotte() {
     'month': {
       name: 'Forfait 1 mois (30j)',
       days: 30,
-      pricePerDay: 1300,
+      pricePerDay: 1000,
       totalPerCourier: 39000,
       badge: 'Rentabilité maximale',
       role: 'Engagement long, tarif le plus bas du marché',
@@ -67,10 +67,10 @@ export default function ChefDeFlotte() {
   const currentOffer = OFFERS[selectedOffer];
 
   // Calculs économiques
-  // Scénario Référence : 14 500 FCFA/jour/coursier (moyenne observée à Dakar)
+  // Scénario Référence : 11 600 FCFA/jour/coursier (8 courses à 1450 FCFA)
   // Scénario Prudent : 3 courses/jour à 2 000 FCFA sur 20 jours (soit 6 000 FCFA/jour/coursier)
   const activeDays = currentOffer.days;
-  const caPerDayPerCourier = activeScenario === 'reference' ? 14500 : 6000;
+  const caPerDayPerCourier = activeScenario === 'reference' ? 11600 : 6000;
 
   // Si scénario prudent, calcul sur 20 jours effectifs même en forfait mensuel
   const effectiveWorkingDays = activeScenario === 'prudent' ? Math.min(activeDays, 20) : activeDays;
@@ -254,7 +254,7 @@ export default function ChefDeFlotte() {
 
       {/* ── 1. HERO SECTION AWWWARDS ── */}
       <PageHeroSection
-        contentMiniBar="PROGRAMME PARTENAIRES · CHEF DE FLOTTE EXTERNE"
+        contentMiniBar="PARTENAIRES · CHEF DE FLOTTE EXTERNE"
         firstTitle="Estimez vos revenus en intégrant le réseau DEM."
         watermark="FLOTTE"
       />
@@ -267,18 +267,18 @@ export default function ChefDeFlotte() {
             <MiniTitleWithBar content="SIMULATEUR DE RENTABILITÉ FLOTTE" />
             <SectionHeading
               align="left"
-              title="Calculez précisément les gains"
-              highlight="et la part conservée par votre flotte"
-              subtitle="Transparence Totale · Données Dossier Interne"
+              title="CALCULEZ PRÉCISÉMENT VOS GAINS ET "
+              highlight="CE QUE VOTRE FLOTTE VOUS RAPPORTE"
+              subtitle="Contrôle total · Simple · Transparent · Sans commission"
               titleColor="text-dark"
               highlightColor="var(--color-cyan-2, #0086C8)"
               scriptColor="text-cyan-2"
               titleSize="text-3xl md:text-5xl lg:text-6xl"
               className="mt-4"
             />
-            <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
+            {/* <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
               Le principe est simple : <strong>ce que votre flotte génère vs ce que vous payez à DEM</strong>. Vous constatez immédiatement le reste à charge minimal et la marge disponible pour rémunérer vos coursiers, l'entretien et votre bénéfice.
-            </p>
+            </p> */}
           </div>
 
         <div data-cdf="simulator" className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 bg-white shadow-sm">
@@ -345,9 +345,8 @@ export default function ChefDeFlotte() {
                   </span>
                   <div className="grid grid-cols-3 gap-2">
                     {[
-                      { key: '5days', label: '5 jours', price: '9 500 F', sub: '1 900 F/j' },
-                      { key: '15days', label: '15 jours', price: '21 000 F', sub: '1 400 F/j' },
-                      { key: 'month', label: '1 mois (30j)', price: '39 000 F', sub: '1 300 F/j' }
+                      { key: '10days', label: '10 jours', price: '12 000 F', sub: '1 200 F/j' },
+                      { key: 'month', label: '26j + 4 dimanches offets', price: '36 000 F', sub: '1 200 F/j' }
                     ].map((plan) => (
                       <button
                         key={plan.key}
@@ -386,7 +385,7 @@ export default function ChefDeFlotte() {
                         <span className="text-xs font-bold uppercase">Scénario Référence</span>
                         {activeScenario === 'reference' && <Check size={14} className="text-emerald-600" />}
                       </div>
-                      <span className="text-xs text-slate-600 block">14 500 FCFA / jour / coursier (~6-8 courses/j)</span>
+                      <span className="text-xs text-slate-600 block">11 600 FCFA / jour / coursier (8 courses/j)</span>
                     </button>
 
                     <button
@@ -421,9 +420,7 @@ export default function ChefDeFlotte() {
               <div>
 
                 <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
-                  <span className="font-serif italic text-lg text-cyan">
-                    Bilan d'exploitation flotte
-                  </span>
+                
                   <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 bg-white/10 text-white font-mono">
                     {motosCount} motos · {currentOffer.name}
                   </span>
@@ -433,76 +430,78 @@ export default function ChefDeFlotte() {
                 <div className="space-y-4">
 
                   {/* CA Brut de la Flotte */}
-                  <div className="p-4 bg-white/[0.04] border border-white/10 flex justify-between items-center">
+                  <div className="p-4 sm:p-5 bg-white/[0.02] border border-white/10 flex items-center justify-between">
                     <div>
-                      <span className="text-xs uppercase tracking-wider text-white/70 font-['Raleway',sans-serif] block">
-                        CA généré par la flotte
-                      </span>
-                      <small className="text-[10px] text-white/50">
+                      <div className="flex items-center gap-2">
+                        <span className="px-1.5 py-0.5 bg-white/10 text-white/80 text-[9px] font-mono font-bold uppercase tracking-wider">
+                          CHIFFRE D'AFFAIRES
+                        </span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-white/90 font-['Raleway',sans-serif]">
+                          Total généré
+                        </span>
+                      </div>
+                      <small className="text-[10px] text-white/50 block mt-1">
                         {motosCount} coursiers × {caPerDayPerCourier.toLocaleString('fr-FR')} F × {effectiveWorkingDays} jours
                       </small>
                     </div>
-                    <span className="text-xl lg:text-2xl font-bold text-white font-mono">
-                      {totalFleetCA.toLocaleString('fr-FR')} FCFA
+                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-white/90 font-['DM_Sans',sans-serif] shrink-0 ml-4">
+                      {totalFleetCA.toLocaleString('fr-FR')} <span className="text-xs font-normal">FCFA</span>
                     </span>
                   </div>
 
                   {/* Coût Pass DEM */}
-                  <div className="p-4 bg-red-500/10 border border-red-500/30 flex justify-between items-center">
+                  <div className="p-4 sm:p-5 bg-red-500/10 border border-red-500/20 flex items-center justify-between">
                     <div>
-                      <span className="text-xs uppercase tracking-wider text-red-200 font-['Raleway',sans-serif] block">
-                        Coût Pass DEM (prépayé)
-                      </span>
-                      <small className="text-[10px] text-red-300/80">
-                        {motosCount} coursiers × {currentOffer.totalPerCourier.toLocaleString('fr-FR')} FCFA
+                      <div className="flex items-center gap-2">
+                        <span className="px-1.5 py-0.5 bg-red-500/20 text-red-200 text-[9px] font-mono font-bold uppercase tracking-wider">
+                          COÛT PASS DEM
+                        </span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-red-100/90 font-['Raleway',sans-serif]">
+                          Prépayé
+                        </span>
+                      </div>
+                      <small className="text-[10px] text-red-200/50 block mt-1">
+                        {motosCount} coursiers × {currentOffer.totalPerCourier.toLocaleString('fr-FR')} FCFA ({passSharePercent}% du CA)
                       </small>
                     </div>
-                    <div className="text-right">
-                      <span className="text-xl lg:text-2xl font-bold text-red-400 font-mono">
-                        − {totalPassCost.toLocaleString('fr-FR')} FCFA
-                      </span>
-                      <span className="text-[10px] text-red-300 block font-mono">
-                        ne pèse que {passSharePercent}% du CA
-                      </span>
-                    </div>
+                    <span className="text-xl sm:text-2xl font-black text-red-400 font-['DM_Sans',sans-serif] shrink-0 ml-4">
+                      − {totalPassCost.toLocaleString('fr-FR')} <span className="text-xs font-normal">FCFA</span>
+                    </span>
                   </div>
 
                   {/* Reste Net Chef de Flotte (Grande Boîte Cyan) */}
-                  <div className="p-6 bg-cyan/15 border border-cyan/40">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div>
-                        <span className="text-xs uppercase tracking-widest text-cyan font-bold block font-['Raleway',sans-serif]">
-                          Reste au chef de flotte
+                  <div className="p-5 sm:p-6 bg-gradient-to-r from-[#00D2FF]/20 to-[#0086C8]/15 border-2 border-[#00D2FF] flex items-center justify-between mt-4">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="px-1.5 py-0.5 bg-[#00D2FF] text-[#021520] text-[9px] font-mono font-bold uppercase tracking-wider">
+                          RESTE AU CHEF
                         </span>
-                        <small className="text-[11px] text-white/70 block">
-                          Pour payer vos coursiers, l'entretien et votre marge
-                        </small>
-                        <span className="inline-block mt-2 text-xs font-mono font-bold text-dark bg-cyan px-2.5 py-0.5">
-                          Vous conservez {chefKeepsPercent}% du CA !
+                        <span className="text-xs font-bold uppercase tracking-widest text-white font-['Raleway',sans-serif]">
+                          Marge conservée : {chefKeepsPercent}% du CA
                         </span>
                       </div>
-                      <div className="text-left sm:text-right">
-                        <span className="text-3xl lg:text-4xl font-black text-cyan font-['DM_Sans',sans-serif] block">
-                          {netRemainingForChef.toLocaleString('fr-FR')} FCFA
-                        </span>
-                        <span className="text-xs text-white/70 font-mono">
-                          soit ~{Math.round(netRemainingForChef / motosCount).toLocaleString('fr-FR')} FCFA / moto
-                        </span>
-                      </div>
+                      <small className="text-[10px] text-white/70 block mt-1">
+                        Soit ~{Math.round(netRemainingForChef / motosCount).toLocaleString('fr-FR')} FCFA / moto
+                      </small>
                     </div>
+                    <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#00D2FF] font-['DM_Sans',sans-serif] shrink-0 ml-4">
+                      {netRemainingForChef.toLocaleString('fr-FR')} <span className="text-sm">FCFA</span>
+                    </span>
                   </div>
 
                   {/* Estimation complémentaire : Mise en relation client (Page 5 dossier) */}
-                  <div className="p-4 bg-white/[0.02] border border-white/5 flex justify-between items-center text-xs">
+                  <div className="p-4 bg-white/[0.02] border border-white/5 flex items-center justify-between mt-2">
                     <div>
-                      <span className="text-white/60 block font-['Raleway',sans-serif] uppercase text-[10px] tracking-wider">
-                        Mise en relation collectée par DEM (estimée) :
-                      </span>
-                      <span className="text-[11px] text-white/40">
-                        100 F × {estimatedCoursesPerMonth.toLocaleString('fr-FR')} courses/mois (payé par le client, 0 F ponctionné sur vous)
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-white/60 block font-['Raleway',sans-serif] uppercase text-[10px] tracking-wider">
+                          MISE EN RELATION CLIENT
+                        </span>
+                      </div>
+                      <small className="text-[10px] text-white/40 block mt-1">
+                        100 F × {estimatedCoursesPerMonth.toLocaleString('fr-FR')} courses (payé par le client, 0 F ponctionné)
+                      </small>
                     </div>
-                    <span className="font-mono text-white/70 font-bold">
+                    <span className="text-sm font-bold text-white/70 font-mono shrink-0 ml-4">
                       ~{estimatedMiseEnRelation.toLocaleString('fr-FR')} FCFA
                     </span>
                   </div>
@@ -537,7 +536,7 @@ export default function ChefDeFlotte() {
           {[
             { num: "0%", label: "Commission sur les courses", sub: "Principe intangible : vos coursiers gardent 100% de leurs revenus" },
             { num: "-53%", label: "Écart vs commissions marché", sub: "1 300 F/j chez DEM contre ~2 755 F/j sur le marché à 19%" },
-            { num: "3 à 10", label: "Motos par flotte externe", sub: "Règle 1:1 (1 moto = 1 coursier). Extension soumise à validation DEM" },
+            { num: "3 à 10", label: "Motos par flotte externe", sub: "Un coursier par moto inscrite. Tout agrandissement du parc nécessite l'accord de DEM." },
             { num: "100%", label: "Prépayé & Zéro impayé", sub: "Le chef achète son pass d'avance. Trésorerie saine et autonomie totale" }
           ].map((item, idx) => (
             <div key={idx} className="p-8 lg:p-10 flex flex-col justify-between hover:bg-white/[0.02] transition-colors">
@@ -842,7 +841,7 @@ export default function ChefDeFlotte() {
                 className="mt-4"
               />
               <p className="mt-6 text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-                Le marché de l'intermédiation prend en moyenne <strong>19% de commission sur chaque course</strong>. Pour un coursier qui réalise 14 500 FCFA/jour, cela représente <strong>2 755 FCFA/jour prélevés</strong> (14 500 × 19%).
+                Le marché de l'intermédiation prend en moyenne <strong>19% de commission sur chaque course</strong>. Pour un coursier qui réalise 11 600 FCFA/jour, cela représente <strong>2 204 FCFA/jour prélevés</strong> (11 600 × 19%).
               </p>
               <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
                 Les trois offres DEM se situent toutes largement sous ce seuil — et surtout, <strong>DEM ne prend rien sur les courses supplémentaires réalisées</strong>. Plus votre flotte roule, plus votre marge grandit.
@@ -868,7 +867,7 @@ export default function ChefDeFlotte() {
                       <span className="text-xs text-slate-500">Commission de 19% sur le CA journalier</span>
                     </div>
                     <div className="flex gap-8 items-center text-right font-mono">
-                      <span className="font-bold text-slate-800">2 755 FCFA</span>
+                      <span className="font-bold text-slate-800">2 204 FCFA</span>
                       <span className="w-24 text-slate-400 font-sans font-bold">—</span>
                     </div>
                   </div>
@@ -914,7 +913,7 @@ export default function ChefDeFlotte() {
                 </div>
 
                 <div className="p-4 bg-slate-50 border-t border-black/10 text-[11px] text-slate-500 font-['Poppins',sans-serif]">
-                  * Calcul basé sur un chiffre d'affaires moyen de 14 500 FCFA par coursier et par jour constaté sur le marché de la livraison express à Dakar.
+                  * Calcul basé sur un chiffre d'affaires moyen de 11 600 FCFA par coursier et par jour constaté sur le marché de la livraison express à Dakar.
                 </div>
               </div>
             </div>
