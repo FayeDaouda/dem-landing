@@ -1,0 +1,42 @@
+[
+  {
+    "id": "10days",
+    "name": "Forfait 10 jours",
+    "days": 10,
+    "pricePerDay": 1200,
+    "totalPerCourier": 12000,
+    "badge": "Engagement Court",
+    "badgeLabel": "10 jours",
+    "description": "Idéal pour démarrer, tester la réactivité de ses équipes ou piloter avec une trésorerie très courte.",
+    "savingsVsMarket": "-45%",
+    "marketSavingsText": "-45% vs commission marché (19%)",
+    "features": [
+      "Facturation par coursier inscrit (1 moto = 1 coursier)",
+      "Accès complet au cockpit télématique DEM",
+      "Tee-shirts officiels DEM inclus pour vos livreurs",
+      "Crédit prépayé : zéro risque d'impayé"
+    ],
+    "btnText": "Choisir le 10 jours →",
+    "theme": "light"
+  },
+  {
+    "id": "month",
+    "name": "Forfait 1 mois (26j + 4 dimanches offerts)",
+    "days": 30,
+    "pricePerDay": 1200,
+    "totalPerCourier": 36000,
+    "badge": "Engagement Long",
+    "badgeLabel": "30 jours",
+    "description": "La rentabilité maximale. Le tarif journalier le plus bas pour exploiter sa flotte sur un mois plein.",
+    "savingsVsMarket": "-45%",
+    "marketSavingsText": "-45% vs commission marché (19%)",
+    "features": [
+      "Facturation par coursier inscrit (1 moto = 1 coursier)",
+      "Accès complet au cockpit télématique DEM",
+      "Tee-shirts officiels DEM inclus pour vos livreurs",
+      "Seulement 9% du chiffre d'affaires généré"
+    ],
+    "btnText": "Choisir le 1 mois →",
+    "theme": "dark"
+  }
+]

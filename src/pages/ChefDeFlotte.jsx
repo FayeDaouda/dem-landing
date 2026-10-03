@@ -25,6 +25,7 @@ import {
   Lock,
   ChevronDown
 } from 'lucide-react';
+import offersData from '../data/offersFlotte.json';
 
 export default function ChefDeFlotte() {
   // Simulateur d'exploitation Chef de Flotte Externe
@@ -540,211 +541,85 @@ export default function ChefDeFlotte() {
             </p>
           </div>
 
-          {/* Grille des 3 Cartes Offres Awwwards Sharp */}
-          <div data-cdf="offers-grid" className="grid grid-cols-1 lg:grid-cols-3 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-12">
-
-            {/* Offre 1 : Forfait 5 jours */}
-            <div data-cdf="offer-card" className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors">
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <span className="font-serif italic text-base text-[#0086C8]">
-                    Engagement Court
-                  </span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-slate-100 text-slate-700">
-                    5 jours
-                  </span>
-                </div>
-
-                <h3 className="text-2xl font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
-                  Forfait 5 jours
-                </h3>
-                <p className="text-xs text-slate-500 mb-6 font-['Poppins',sans-serif]">
-                  Idéal pour démarrer, tester la réactivité de ses équipes ou piloter avec une trésorerie très courte.
-                </p>
-
-                <div className="py-6 border-t border-b border-black/10 mb-6 space-y-2">
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs uppercase tracking-wider text-slate-500 font-bold">Prix / jour :</span>
-                    <span className="text-xl font-bold text-dark font-mono">1 900 FCFA</span>
+          {/* Grille des Cartes Offres Awwwards Sharp */}
+          <div data-cdf="offers-grid" className="grid grid-cols-1 lg:grid-cols-2 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-12">
+            {offersData.map((offer) => (
+              <div 
+                key={offer.id} 
+                data-cdf="offer-card" 
+                className={`p-8 lg:p-10 flex flex-col justify-between relative transition-colors ${
+                  offer.theme === 'dark' 
+                    ? 'bg-dark text-white' 
+                    : 'hover:bg-slate-50'
+                }`}
+              >
+                {offer.theme === 'dark' && (
+                  <div className="absolute top-0 right-0 bg-cyan text-dark text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 font-['DM_Sans',sans-serif]">
+                    PRIX / JOUR MINI
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs uppercase tracking-wider text-[#0086C8] font-bold">Total / coursier :</span>
-                    <span className="text-2xl font-black text-dark font-['DM_Sans',sans-serif]">9 500 FCFA</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-[11px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5">
-                      -31% vs commission marché (19%)
+                )}
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <span className={`font-serif italic text-base ${offer.theme === 'dark' ? 'text-cyan' : 'text-[#0086C8]'}`}>
+                      {offer.badge}
+                    </span>
+                    <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 ${offer.theme === 'dark' ? 'bg-white/10 text-cyan' : 'bg-slate-100 text-slate-700'}`}>
+                      {offer.badgeLabel}
                     </span>
                   </div>
+
+                  <h3 className={`text-2xl font-bold uppercase mb-2 font-['DM_Sans',sans-serif] ${offer.theme === 'dark' ? 'text-white' : 'text-dark'}`}>
+                    {offer.name}
+                  </h3>
+                  <p className={`text-xs mb-6 font-['Poppins',sans-serif] ${offer.theme === 'dark' ? 'text-white/70' : 'text-slate-500'}`}>
+                    {offer.description}
+                  </p>
+
+                  <div className={`py-6 border-t border-b mb-6 space-y-2 ${offer.theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+                    <div className="flex items-baseline justify-between">
+                      <span className={`text-xs uppercase tracking-wider font-bold ${offer.theme === 'dark' ? 'text-white/60' : 'text-slate-500'}`}>Prix / jour :</span>
+                      <span className={`text-xl font-bold font-mono ${offer.theme === 'dark' ? 'text-cyan' : 'text-dark'}`}>
+                        {offer.pricePerDay.toLocaleString('fr-FR')} FCFA
+                      </span>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className={`text-xs uppercase tracking-wider font-bold ${offer.theme === 'dark' ? 'text-cyan' : 'text-[#0086C8]'}`}>Total / coursier :</span>
+                      <span className={`text-2xl font-black font-['DM_Sans',sans-serif] ${offer.theme === 'dark' ? 'text-white' : 'text-dark'}`}>
+                        {offer.totalPerCourier.toLocaleString('fr-FR')} FCFA
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className={`text-[11px] font-mono font-bold px-2 py-0.5 ${offer.theme === 'dark' ? 'text-cyan bg-white/10' : 'text-emerald-600 bg-emerald-50'}`}>
+                        {offer.marketSavingsText}
+                      </span>
+                    </div>
+                  </div>
+
+                  <ul className={`space-y-3 text-xs font-['Poppins',sans-serif] ${offer.theme === 'dark' ? 'text-white/90' : 'text-slate-700'}`}>
+                    {offer.features.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-2.5">
+                        <Check size={15} className={`shrink-0 mt-0.5 ${offer.theme === 'dark' ? 'text-cyan' : 'text-[#0086C8]'}`} />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                <ul className="space-y-3 text-xs text-slate-700 font-['Poppins',sans-serif]">
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
-                    <span>Facturation par coursier inscrit (1 moto = 1 coursier)</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
-                    <span>Accès complet au cockpit télématique DEM</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
-                    <span>Tee-shirts officiels DEM inclus pour vos livreurs</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
-                    <span>Crédit prépayé : zéro risque d'impayé</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="pt-8">
-                <button
-                  type="button"
-                  onClick={() => { setSelectedOffer('5days'); handleApplyFromSimulator(); }}
-                  className="w-full py-3.5 uppercase font-bold tracking-widest text-xs border border-dark text-dark hover:bg-dark hover:text-white transition-colors cursor-pointer"
-                >
-                  Choisir le 5 jours →
-                </button>
-              </div>
-            </div>
-
-            {/* Offre 2 : Forfait 15 jours */}
-            <div data-cdf="offer-card" className="p-8 lg:p-10 flex flex-col justify-between hover:bg-slate-50 transition-colors bg-slate-50/50">
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <span className="font-serif italic text-base text-[#0086C8]">
-                    Engagement Moyen
-                  </span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan/20 text-[#0086C8]">
-                    15 jours
-                  </span>
+                <div className="pt-8">
+                  <button
+                    type="button"
+                    onClick={() => { setSelectedOffer(offer.id); handleApplyFromSimulator(); }}
+                    className={`w-full py-3.5 uppercase font-bold tracking-widest text-xs cursor-pointer transition-colors ${
+                      offer.theme === 'dark'
+                        ? 'bg-cyan text-dark hover:bg-white border border-cyan'
+                        : 'border border-dark text-dark hover:bg-dark hover:text-white'
+                    }`}
+                  >
+                    {offer.btnText}
+                  </button>
                 </div>
-
-                <h3 className="text-2xl font-bold uppercase text-dark mb-2 font-['DM_Sans',sans-serif]">
-                  Forfait 15 jours
-                </h3>
-                <p className="text-xs text-slate-500 mb-6 font-['Poppins',sans-serif]">
-                  Le compromis équilibré : couverture sur deux semaines avec un coût journalier nettement allégé.
-                </p>
-
-                <div className="py-6 border-t border-b border-black/10 mb-6 space-y-2">
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs uppercase tracking-wider text-slate-500 font-bold">Prix / jour :</span>
-                    <span className="text-xl font-bold text-dark font-mono">1 400 FCFA</span>
-                  </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs uppercase tracking-wider text-[#0086C8] font-bold">Total / coursier :</span>
-                    <span className="text-2xl font-black text-dark font-['DM_Sans',sans-serif]">21 000 FCFA</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-[11px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5">
-                      -49% vs commission marché (19%)
-                    </span>
-                  </div>
-                </div>
-
-                <ul className="space-y-3 text-xs text-slate-700 font-['Poppins',sans-serif]">
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
-                    <span>Facturation par coursier inscrit (1 moto = 1 coursier)</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
-                    <span>Accès complet au cockpit télématique DEM</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
-                    <span>Tee-shirts officiels DEM inclus pour vos livreurs</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-[#0086C8] shrink-0 mt-0.5" />
-                    <span>Économie de 500 F/jour par rapport au pass 5j</span>
-                  </li>
-                </ul>
               </div>
-
-              <div className="pt-8">
-                <button
-                  type="button"
-                  onClick={() => { setSelectedOffer('15days'); handleApplyFromSimulator(); }}
-                  className="w-full py-3.5 uppercase font-bold tracking-widest text-xs border border-[#0086C8] bg-[#0086C8] text-white hover:bg-dark hover:border-dark transition-colors cursor-pointer"
-                >
-                  Choisir le 15 jours →
-                </button>
-              </div>
-            </div>
-
-            {/* Offre 3 : Forfait 1 mois (30 jours) */}
-            <div data-cdf="offer-card" className="p-8 lg:p-10 flex flex-col justify-between bg-dark text-white relative">
-              <div className="absolute top-0 right-0 bg-cyan text-dark text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 font-['DM_Sans',sans-serif]">
-                PRIX / JOUR MINI
-              </div>
-
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <span className="font-serif italic text-base text-cyan">
-                    Engagement Long
-                  </span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-white/10 text-cyan">
-                    30 jours
-                  </span>
-                </div>
-
-                <h3 className="text-2xl font-bold uppercase text-white mb-2 font-['DM_Sans',sans-serif]">
-                  Forfait 1 mois (30 j)
-                </h3>
-                <p className="text-xs text-white/70 mb-6 font-['Poppins',sans-serif]">
-                  La rentabilité maximale. Le tarif journalier le plus bas pour exploiter sa flotte sur un mois plein.
-                </p>
-
-                <div className="py-6 border-t border-b border-white/10 mb-6 space-y-2">
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs uppercase tracking-wider text-white/60 font-bold">Prix / jour :</span>
-                    <span className="text-xl font-bold text-cyan font-mono">1 300 FCFA</span>
-                  </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs uppercase tracking-wider text-cyan font-bold">Total / coursier :</span>
-                    <span className="text-2xl font-black text-white font-['DM_Sans',sans-serif]">39 000 FCFA</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-[11px] font-mono text-cyan font-bold bg-white/10 px-2 py-0.5">
-                      -53% vs commission marché (19%)
-                    </span>
-                  </div>
-                </div>
-
-                <ul className="space-y-3 text-xs text-white/90 font-['Poppins',sans-serif]">
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-cyan shrink-0 mt-0.5" />
-                    <span>Facturation par coursier inscrit (1 moto = 1 coursier)</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-cyan shrink-0 mt-0.5" />
-                    <span>Accès complet au cockpit télématique DEM</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-cyan shrink-0 mt-0.5" />
-                    <span>Tee-shirts officiels DEM inclus pour vos livreurs</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={15} className="text-cyan shrink-0 mt-0.5" />
-                    <span>Seulement 9% du chiffre d'affaires généré</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="pt-8">
-                <button
-                  type="button"
-                  onClick={() => { setSelectedOffer('month'); handleApplyFromSimulator(); }}
-                  className="w-full py-3.5 uppercase font-bold tracking-widest text-xs bg-cyan text-dark hover:bg-white transition-colors cursor-pointer border border-cyan"
-                >
-                  Choisir le 1 mois →
-                </button>
-              </div>
-            </div>
-
+            ))}
           </div>
 
           {/* Bandeau d'explication : Mise en relation & Principe Intangible */}
@@ -779,175 +654,6 @@ export default function ChefDeFlotte() {
                 </p>
               </div>
             </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── 4. POSITIONNEMENT FACE AU MARCHÉ (BENCHMARK COMMISSION 19%) ── */}
-      <section className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-slate-50">
-        <div className="max-w-[1400px] mx-auto">
-
-          <div data-cdf="bench-wrap" className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div data-cdf="bench-col-l" className="lg:col-span-5">
-              <MiniTitleWithBar content="AVANTAGE COMPÉTITIF ÉCRASANT" />
-              <SectionHeading
-                align="left"
-                title="Pourquoi DEM bat"
-                highlight="les modèles à commission"
-                subtitle="Comparatif Face au Marché"
-                titleColor="text-dark"
-                highlightColor="var(--color-cyan-2, #0086C8)"
-                scriptColor="text-cyan-2"
-                titleSize="text-3xl md:text-5xl"
-                className="mt-4"
-              />
-              <p className="mt-6 text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-                Le marché de l'intermédiation prend en moyenne <strong>19% de commission sur chaque course</strong>. Pour un coursier qui réalise 11 600 FCFA/jour, cela représente <strong>2 204 FCFA/jour prélevés</strong> (11 600 × 19%).
-              </p>
-              <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-                Les trois offres DEM se situent toutes largement sous ce seuil — et surtout, <strong>DEM ne prend rien sur les courses supplémentaires réalisées</strong>. Plus votre flotte roule, plus votre marge grandit.
-              </p>
-            </div>
-
-            <div data-cdf="bench-col-r" className="lg:col-span-7">
-              <div className="border border-black/10 bg-white shadow-sm">
-                <div className="p-6 border-b border-black/10 bg-dark text-white flex justify-between items-center">
-                  <span className="text-xs uppercase font-bold tracking-wider font-['Raleway',sans-serif]">
-                    Modèle / Offre
-                  </span>
-                  <div className="flex gap-8 text-right text-xs uppercase font-bold tracking-wider font-['Raleway',sans-serif]">
-                    <span>Coût / jour / coursier</span>
-                    <span className="w-24">Écart vs marché</span>
-                  </div>
-                </div>
-
-                <div className="divide-y divide-black/10 text-xs sm:text-sm">
-                  <div className="p-5 flex justify-between items-center bg-slate-100/70">
-                    <div>
-                      <span className="font-bold text-dark block">Marché classique</span>
-                      <span className="text-xs text-slate-500">Commission de 19% sur le CA journalier</span>
-                    </div>
-                    <div className="flex gap-8 items-center text-right font-mono">
-                      <span className="font-bold text-slate-800">2 204 FCFA</span>
-                      <span className="w-24 text-slate-400 font-sans font-bold">—</span>
-                    </div>
-                  </div>
-
-                  <div className="p-5 flex justify-between items-center hover:bg-slate-50 transition-colors">
-                    <div>
-                      <span className="font-bold text-dark block">DEM — Forfait 5 jours</span>
-                      <span className="text-xs text-slate-500">1 900 FCFA / jour</span>
-                    </div>
-                    <div className="flex gap-8 items-center text-right font-mono">
-                      <span className="font-bold text-dark">1 900 FCFA</span>
-                      <span className="w-24 text-emerald-600 font-bold bg-emerald-50 px-2 py-1 text-xs font-sans">
-                        −31%
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-5 flex justify-between items-center hover:bg-slate-50 transition-colors">
-                    <div>
-                      <span className="font-bold text-dark block">DEM — Forfait 15 jours</span>
-                      <span className="text-xs text-slate-500">1 400 FCFA / jour</span>
-                    </div>
-                    <div className="flex gap-8 items-center text-right font-mono">
-                      <span className="font-bold text-dark">1 400 FCFA</span>
-                      <span className="w-24 text-emerald-600 font-bold bg-emerald-50 px-2 py-1 text-xs font-sans">
-                        −49%
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-5 flex justify-between items-center bg-cyan/10 font-medium">
-                    <div>
-                      <span className="font-bold text-dark block">DEM — Forfait 1 mois (30 j)</span>
-                      <span className="text-xs text-slate-600">1 300 FCFA / jour · Meilleur taux</span>
-                    </div>
-                    <div className="flex gap-8 items-center text-right font-mono">
-                      <span className="font-black text-dark text-base">1 300 FCFA</span>
-                      <span className="w-24 text-emerald-700 font-black bg-emerald-100 px-2 py-1 text-xs font-sans">
-                        −53%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-slate-50 border-t border-black/10 text-[11px] text-slate-500 font-['Poppins',sans-serif]">
-                  * Calcul basé sur un chiffre d'affaires moyen de 11 600 FCFA par coursier et par jour constaté sur le marché de la livraison express à Dakar.
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── 6. PROJECTION OFFICIELLE PAR TAILLE DE FLOTTE (TABLEAU DOSSIER PAGE 5) ── */}
-      <section className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-white">
-        <div className="max-w-[1400px] mx-auto">
-
-          <div className="mb-14">
-            <MiniTitleWithBar content="PROJECTION COMPLÈTE 3 À 10 COURSIERS" />
-            <SectionHeading
-              align="left"
-              title="Tableau de revenu pass"
-              highlight="par taille de flotte"
-              subtitle="Revenu ferme garanti & encaissé d'avance"
-              titleColor="text-dark"
-              highlightColor="var(--color-cyan-2, #0086C8)"
-              scriptColor="text-cyan-2"
-              titleSize="text-3xl md:text-5xl"
-              className="mt-4"
-            />
-            <p className="mt-4 text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
-              Relevé officiel du dossier interne. Une flotte pleine (10 coursiers) coûte à l'achat du pass entre 95 000 FCFA (tous en 5j) et 390 000 FCFA/mois (tous en 1 mois) — garanti, encaissé d'avance et sans commission variable imprévue.
-            </p>
-          </div>
-
-          <div data-cdf="proj-table" className="border border-black/10 overflow-x-auto bg-white">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-dark text-white border-b border-black/10 text-xs uppercase font-['Raleway',sans-serif] tracking-wider">
-                  <th className="p-4 lg:p-5 font-bold">Motos / Coursiers</th>
-                  <th className="p-4 lg:p-5 font-bold">Tous en 5 jours (9 500 F)</th>
-                  <th className="p-4 lg:p-5 font-bold">Tous en 15 jours (21 000 F)</th>
-                  <th className="p-4 lg:p-5 font-bold bg-[#0086C8] text-white">Tous en 1 mois (39 000 F)</th>
-                  <th className="p-4 lg:p-5 font-bold text-slate-300">Mise en relation est. (100 F/c)</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-black/10 text-xs sm:text-sm font-mono">
-                {PROJECTION_TABLE.map((row) => (
-                  <tr
-                    key={row.count}
-                    className={`hover:bg-slate-50 transition-colors ${motosCount === row.count ? 'bg-cyan/10 font-bold' : ''
-                      }`}
-                  >
-                    <td className="p-4 lg:p-5 font-sans font-bold text-dark flex items-center gap-2">
-                      <span>{row.count} motos</span>
-                      {motosCount === row.count && (
-                        <span className="text-[10px] font-sans font-bold uppercase px-2 py-0.5 bg-[#0086C8] text-white">
-                          Sélection
-                        </span>
-                      )}
-                    </td>
-                    <td className="p-4 lg:p-5 text-slate-700">
-                      {row.pass5.toLocaleString('fr-FR')} FCFA
-                    </td>
-                    <td className="p-4 lg:p-5 text-slate-700">
-                      {row.pass15.toLocaleString('fr-FR')} FCFA
-                    </td>
-                    <td className="p-4 lg:p-5 font-bold text-[#0086C8] bg-cyan/5">
-                      {row.passMonth.toLocaleString('fr-FR')} FCFA
-                    </td>
-                    <td className="p-4 lg:p-5 text-slate-500 font-sans text-xs">
-                      +{row.miseRel.toLocaleString('fr-FR')} FCFA (payé client)
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </div>
 
         </div>
@@ -1050,132 +756,17 @@ export default function ChefDeFlotte() {
         </div>
       </section>
 
-      {/* ── 8. COCKPIT LOGICIEL & TECHNOLOGIE FLOTTE (CE QUE DEM MET À DISPOSITION) ── */}
-      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white">
-        <div className="max-w-[1400px] mx-auto">
-
-          <div className="mb-16">
-            <MiniTitleWithBar content="FONCTIONNALITÉS LOGICIELLES INCLUSES" />
-            <SectionHeading
-              align="left"
-              title="Ce que vous permet"
-              highlight="le cockpit DEM Flotte"
-              subtitle="Technologie embarquée · Sans frais supplémentaires"
-              titleColor="text-dark"
-              highlightColor="var(--color-cyan-2, #0086C8)"
-              scriptColor="text-cyan-2"
-              titleSize="text-3xl md:text-5xl lg:text-6xl"
-              className="mt-4"
-            />
-          </div>
-
-          <div data-cdf="cockpit-grid" className="grid grid-cols-1 md:grid-cols-12 gap-8">
-
-            {/* Bloc 1 : Télémétrie Live */}
-            <div data-cdf="cockpit-block" className="md:col-span-8 p-8 lg:p-12 bg-white border border-black/10 flex flex-col justify-between">
-              <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] mb-4 block">
-                  /01 · Télémétrie Live
-                </span>
-                <h3 className="text-2xl lg:text-3xl font-bold uppercase text-dark mb-4 font-['DM_Sans',sans-serif]">
-                  Géolocalisation & Geofencing temps réel
-                </h3>
-                <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-2xl font-['Poppins',sans-serif]">
-                  Visualisez chaque moto de votre parc sur la carte interactive de Dakar. Configurez des alertes de zones, analysez les trajets empruntés et surveillez les temps d'arrêt pour une utilisation optimale de vos actifs.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 pt-8 border-t border-slate-100 mt-8">
-                <div>
-                  <span className="text-xs uppercase text-slate-500 font-bold block">Précision GPS</span>
-                  <span className="text-lg md:text-xl font-bold text-dark font-mono">± 3 mètres</span>
-                </div>
-                <div>
-                  <span className="text-xs uppercase text-slate-500 font-bold block">Fréquence ping</span>
-                  <span className="text-lg md:text-xl font-bold text-dark font-mono">Toutes les 5s</span>
-                </div>
-                <div>
-                  <span className="text-xs uppercase text-slate-500 font-bold block">Historique</span>
-                  <span className="text-lg md:text-xl font-bold text-dark font-mono">90 jours</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Bloc 2 : Gestion des Pass & Consommation */}
-            <div data-cdf="cockpit-block" className="md:col-span-4 p-8 lg:p-10 bg-dark text-white border border-black/10 flex flex-col justify-between">
-              <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-cyan mb-4 block">
-                  /02 · Gestion des Pass
-                </span>
-                <h3 className="text-xl font-bold uppercase text-white mb-3 font-['DM_Sans',sans-serif]">
-                  Recharge Prépayée & Consommation Directe
-                </h3>
-                <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-['Poppins',sans-serif]">
-                  Rechargez en un clic les pass de vos livreurs par Wave ou Orange Money. Suivez en temps réel les jours restants pour chaque coursier et réapprovisionnez sans coupure de service.
-                </p>
-              </div>
-
-              <div className="p-4 bg-white/[0.04] border border-white/10 mt-6">
-                <span className="text-[11px] uppercase tracking-widest text-cyan font-bold block mb-1">Modes de recharge</span>
-                <span className="text-base font-bold text-white">Wave Pro · OM Pro · Virement</span>
-              </div>
-            </div>
-
-            {/* Bloc 3 : Dispatch & Attribution */}
-            <div data-cdf="cockpit-block" className="md:col-span-4 p-8 lg:p-10 bg-white border border-black/10 flex flex-col justify-between">
-              <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] mb-4 block">
-                  /03 · Dispatch
-                </span>
-                <h3 className="text-xl font-bold uppercase text-dark mb-3 font-['DM_Sans',sans-serif]">
-                  Flux Continu de Courses B2B
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-                  Vos livreurs ont accès aux commandes des entreprises et marchands DEM Pro de Dakar : alimentation, mode, documents urgents et e-commerce sans temps mort.
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-slate-100 mt-4">
-                <span className="text-xs font-bold text-[#0086C8] uppercase tracking-wider font-mono">Algorithme d'attribution optimisé</span>
-              </div>
-            </div>
-
-            {/* Bloc 4 : Accords Garage & Remises Flotte */}
-            <div data-cdf="cockpit-block" className="md:col-span-8 p-8 lg:p-12 bg-white border border-black/10 flex flex-col justify-between">
-              <div>
-                <span className="font-serif italic text-lg sm:text-xl font-light text-[#0086C8] mb-4 block">
-                  /04 · Écosystème
-                </span>
-                <h3 className="text-2xl lg:text-3xl font-bold uppercase text-dark mb-4 font-['DM_Sans',sans-serif]">
-                  Accords d'Entretien & Tarifs Pièces Négociés
-                </h3>
-                <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-2xl font-['Poppins',sans-serif]">
-                  En tant que chef de flotte partenaire DEM, accédez à notre réseau d'ateliers mécaniques agréés à Dakar pour vos vidanges, pneumatiques et révisions à tarifs préférentiels négociés.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-4 pt-6 border-t border-slate-100 mt-6 text-xs font-semibold text-slate-700">
-                <span className="px-3 py-1.5 bg-slate-100">Jusqu'à -20% sur les pièces d'usure</span>
-                <span className="px-3 py-1.5 bg-slate-100">Priorité en atelier partenaire</span>
-                <span className="px-3 py-1.5 bg-slate-100">Contrat cadre assurance flotte</span>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
 
       {/* ── 9. QUESTIONS FRÉQUENTES CHEF DE FLOTTE ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-t border-b border-white/10 bg-cyan-deep text-white">
         <div className="max-w-[1000px] mx-auto">
 
-          <div data-cdf="faq-h" className="mb-14 text-center">
+          <div className="mb-14 text-center">
             <SectionHeading
               align="center"
-              title="Tout ce que vous devez savoir"
-              highlight="sur le statut Chef de Flotte Externe"
-              subtitle="Questions & Modalités Pratiques"
+              title="Tout savoir sur le profil"
+              highlight="Chef de Flotte"
+              subtitle="Foire aux Questions"
               titleColor="text-white"
               highlightColor="var(--cyan, #00D2FF)"
               highlightClassName="text-[#00D2FF]"
@@ -1193,7 +784,7 @@ export default function ChefDeFlotte() {
               },
               {
                 q: "Comment fonctionne le système de pass prépayé ?",
-                a: "Vous achetez à l'avance le forfait de votre choix (5 jours, 15 jours ou 1 mois/30 jours) pour vos coursiers. Vos livreurs roulent sur ce crédit de jours. À épuisement, vous rechargez librement avec l'offre adaptée à votre trésorerie. Zéro découvert, zéro impayé."
+                a: "Vous achetez à l'avance le forfait de votre choix (10 jours ou 1 mois/30 jours) pour vos coursiers. Vos livreurs roulent sur ce crédit de jours. À épuisement, vous rechargez librement avec l'offre adaptée à votre trésorerie. Zéro découvert, zéro impayé."
               },
               {
                 q: "DEM prend-il une commission sur les courses de mes livreurs ?",
@@ -1209,7 +800,7 @@ export default function ChefDeFlotte() {
               },
               {
                 q: "Puis-je changer d'offre de pass d'un cycle à l'autre ?",
-                a: "Oui, totalement. Les 3 offres (5 jours, 15 jours, 30 jours) sont indépendantes. Vous pouvez par exemple prendre une offre 5 jours au démarrage pour évaluer vos équipes, puis basculer sur l'offre 30 jours pour maximiser votre marge à 1 300 F/jour."
+                a: "Oui, totalement. Les 2 offres (10 jours, 30 jours) sont indépendantes. Vous pouvez par exemple prendre une offre 10 jours au démarrage pour évaluer vos équipes, puis basculer sur l'offre 30 jours pour maximiser votre marge à 1 000 F/jour."
               }
             ].map((faq, idx) => (
               <div key={idx} data-cdf="faq-item" className="p-6 lg:p-8 bg-white/[0.03] hover:bg-white/[0.07] transition-colors">
@@ -1240,30 +831,17 @@ export default function ChefDeFlotte() {
       <DownloadAppCTA
         theme="white"
         watermark="FLOTTE"
-        subtitle="Application Gestionnaire de Parc Externe"
+        subtitle="Profil Gestionnaire de Parc Externe"
         title="Enregistrez votre parc de motos"
         highlight="sur le réseau DEM."
         description="Téléchargez l’application DEM sur iOS ou Android. Sélectionnez le profil « Chef de flotte », téléversez les pièces de vos véhicules et de vos coursiers (3 à 10 motos), et activez vos pass prépayés pour commencer à rouler."
         bullets={[
           "Sélectionnez le profil « Chef de flotte » lors de l'inscription",
           "Validation des pièces justificatives de votre flotte sous 48h",
-          "Achat de vos pass prépayés (5j, 15j ou 30j) par Wave ou Orange Money",
+          "Achat de vos pass prépayés (10j ou 30j) par Wave ou Orange Money",
           "Dotation tee-shirts DEM offerte et activation immédiate des coursiers"
         ]}
         id="download"
-      />
-
-      {/* ── 11. SECTION ENGAGEMENT & IMPACT CHEF DE FLOTTE ── */}
-      <ContactCTA
-        theme="cyan-deep"
-        watermark="FLOTTE"
-        subtitle="Partenariat d'excellence"
-        title="Développez la rentabilité de votre parc"
-        highlight="sans commission imprévue."
-        description="Connectez vos motos sur une infrastructure technologique robuste, offrez à vos coursiers un volume continu de commandes e-commerce à Dakar et conservez jusqu'à 91% du chiffre d'affaires généré."
-        primaryBtnText="Télécharger l'App DEM"
-        primaryBtnLink="#download"
-        primaryBtnIcon="download"
       />
 
     </div>
