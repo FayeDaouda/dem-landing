@@ -367,44 +367,6 @@ export default function ChefDeFlotte() {
                   </div>
                 </div>
 
-                {/* Sélecteur 3 : Scénario d'activité (Référence vs Prudent) */}
-                <div className="pt-6 border-t border-black/10">
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-3">
-                    Scénario de Chiffre d'Affaires
-                  </span>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setActiveScenario('reference')}
-                      className={`p-3 text-left border transition-all cursor-pointer ${activeScenario === 'reference'
-                        ? 'border-emerald-600 bg-emerald-50/70 text-emerald-950'
-                        : 'border-black/10 bg-white text-slate-700 hover:bg-slate-50'
-                        }`}
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-bold uppercase">Scénario Référence</span>
-                        {activeScenario === 'reference' && <Check size={14} className="text-emerald-600" />}
-                      </div>
-                      <span className="text-xs text-slate-600 block">11 600 FCFA / jour / coursier (8 courses/j)</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setActiveScenario('prudent')}
-                      className={`p-3 text-left border transition-all cursor-pointer ${activeScenario === 'prudent'
-                        ? 'border-amber-600 bg-amber-50/70 text-amber-950'
-                        : 'border-black/10 bg-white text-slate-700 hover:bg-slate-50'
-                        }`}
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-bold uppercase">Scénario Prudent</span>
-                        {activeScenario === 'prudent' && <Check size={14} className="text-amber-600" />}
-                      </div>
-                      <span className="text-xs text-slate-600 block">3 courses/jour à 2 000 F (sur 20 jours)</span>
-                    </button>
-                  </div>
-                </div>
-
               </div>
 
               <div className="pt-8 mt-8 border-t border-black/10">
