@@ -36,32 +36,23 @@ export default function ChefDeFlotte() {
 
   // Définition des 3 offres officielles de Pass Prépayé
   const OFFERS = {
-    // '5days': {
-    //   name: 'Forfait 5 jours',
-    //   days: 5,
-    //   pricePerDay: 1900,
-    //   totalPerCourier: 9500,
-    //   badge: 'Flexibilité maximale',
-    //   role: 'Engagement court, idéal pour tester ou ajuster',
-    //   savingsVsMarket: '-31%'
-    // },
     '10days': {
-      name: 'Forfait 10 jours',
+      name: 'Formule 10 jours',
       days: 10,
       pricePerDay: 1200,
       totalPerCourier: 12000,
-      badge: 'Le plus équilibré',
-      role: 'Engagement moyen, prix/jour fortement réduit',
-      savingsVsMarket: '-49%'
+      badge: 'Pour démarrer',
+      role: 'Engagement léger',
+      savingsVsMarket: '-45%'
     },
     'month': {
-      name: 'Forfait 1 mois (30j)',
-      days: 30,
-      pricePerDay: 1000,
-      totalPerCourier: 39000,
-      badge: 'Rentabilité maximale',
-      role: 'Engagement long, tarif le plus bas du marché',
-      savingsVsMarket: '-53%'
+      name: 'Formule 1 mois',
+      days: 30, // Utilisé pour le calcul de totalCA (même si 26 payés + 4 dimanches)
+      pricePerDay: 1040,
+      totalPerCourier: 31200,
+      badge: 'Pour faire tourner votre flotte',
+      role: 'Tarif le plus avantageux',
+      savingsVsMarket: '-45%'
     }
   };
 
@@ -585,95 +576,80 @@ export default function ChefDeFlotte() {
               className="mt-4"
             />
             <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
-              Suivez chaque coursier en temps réel, sur téléphone, tablette ou ordinateur
-              Vos performances en chiffres, coursier par coursier
-              Agissez directement sur votre flotte, depuis votre compte
-              Les courses arrivent toutes seules, au coursier le plus proche
-              Vos coursiers formés à la méthode DEM
-              Zéro commission : vos coursiers gardent 100 % de leurs courses
-              Toute votre flotte sur un seul compte
-              Des pass prépayés dégressifs : plus votre flotte grandit, moins vous payez
-              Un support dédié, toujours joignable
+              Prépayez la formule de votre choix, et vos coursiers roulent sans interruption. Vous suivez tout en direct, et notre équipe évalue l'activité et intervient au besoin. Chaque formule est complète, sans frais cachés ni jour à payer à l'unité.
             </p>
           </div>
 
           {/* Grille des Cartes Offres Awwwards Sharp */}
-          <div data-cdf="offers-grid" className="grid grid-cols-1 lg:grid-cols-2 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-white mb-12">
+          <div data-cdf="offers-grid" className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
             {offersData.map((offer) => (
               <div 
                 key={offer.id} 
                 data-cdf="offer-card" 
-                className={`p-8 lg:p-10 flex flex-col justify-between relative transition-colors ${
+                className={`p-8 lg:p-10 flex flex-col relative transition-colors border ${
                   offer.theme === 'dark' 
-                    ? 'bg-dark text-white' 
-                    : 'hover:bg-slate-50'
+                    ? 'bg-[#000424] text-white border-white/10' 
+                    : 'bg-[#f4f7f9] text-dark border-black/10'
                 }`}
               >
-                {offer.theme === 'dark' && (
+                {offer.badgeLabel && (
                   <div className="absolute top-0 right-0 bg-cyan text-dark text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 font-['DM_Sans',sans-serif]">
-                    PRIX / JOUR MINI
+                    {offer.badgeLabel}
                   </div>
                 )}
-                <div>
-                  <div className="flex justify-between items-center mb-6">
-                    <span className={`font-serif italic text-base ${offer.theme === 'dark' ? 'text-cyan' : 'text-[#0086C8]'}`}>
-                      {offer.badge}
-                    </span>
-                    <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 ${offer.theme === 'dark' ? 'bg-white/10 text-cyan' : 'bg-slate-100 text-slate-700'}`}>
-                      {offer.badgeLabel}
-                    </span>
-                  </div>
-
-                  <h3 className={`text-2xl font-bold uppercase mb-2 font-['DM_Sans',sans-serif] ${offer.theme === 'dark' ? 'text-white' : 'text-dark'}`}>
+                
+                <div className="mb-6">
+                  <span className={`font-bold text-sm mb-2 block ${offer.theme === 'dark' ? 'text-cyan/80' : 'text-[#0086C8]'}`}>
+                    {offer.badge}
+                  </span>
+                  <h3 className={`text-3xl lg:text-4xl font-black mb-6 font-['DM_Sans',sans-serif] ${offer.theme === 'dark' ? 'text-white' : 'text-[#000424]'}`}>
                     {offer.name}
                   </h3>
-                  <p className={`text-xs mb-6 font-['Poppins',sans-serif] ${offer.theme === 'dark' ? 'text-white/70' : 'text-slate-500'}`}>
+                  
+                  <div className={`p-4 mb-6 text-sm ${offer.theme === 'dark' ? 'bg-white/5 text-white/80 border border-white/10' : 'bg-white text-slate-700 border border-black/5'}`}>
+                    {offer.integrationFee}
+                  </div>
+                  
+                  <p className={`text-sm leading-relaxed font-['Poppins',sans-serif] ${offer.theme === 'dark' ? 'text-white/70' : 'text-slate-600'}`}>
                     {offer.description}
                   </p>
+                </div>
 
-                  <div className={`py-6 border-t border-b mb-6 space-y-2 ${offer.theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
-                    <div className="flex items-baseline justify-between">
-                      <span className={`text-xs uppercase tracking-wider font-bold ${offer.theme === 'dark' ? 'text-white/60' : 'text-slate-500'}`}>Prix / jour :</span>
-                      <span className={`text-xl font-bold font-mono ${offer.theme === 'dark' ? 'text-cyan' : 'text-dark'}`}>
-                        {offer.pricePerDay.toLocaleString('fr-FR')} FCFA
-                      </span>
-                    </div>
-                    <div className="flex items-baseline justify-between">
-                      <span className={`text-xs uppercase tracking-wider font-bold ${offer.theme === 'dark' ? 'text-cyan' : 'text-[#0086C8]'}`}>Total / coursier :</span>
-                      <span className={`text-2xl font-black font-['DM_Sans',sans-serif] ${offer.theme === 'dark' ? 'text-white' : 'text-dark'}`}>
-                        {offer.totalPerCourier.toLocaleString('fr-FR')} FCFA
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <span className={`text-[11px] font-mono font-bold px-2 py-0.5 ${offer.theme === 'dark' ? 'text-cyan bg-white/10' : 'text-emerald-600 bg-emerald-50'}`}>
-                        {offer.marketSavingsText}
-                      </span>
-                    </div>
+                <div className="mb-8">
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className={`text-4xl lg:text-5xl font-black font-['DM_Sans',sans-serif] ${offer.theme === 'dark' ? 'text-white' : 'text-[#000424]'}`}>
+                      {offer.priceMain}
+                    </span>
+                    <span className={`text-sm lg:text-base font-medium ${offer.theme === 'dark' ? 'text-white/60' : 'text-slate-500'}`}>
+                      {offer.priceSuffix}
+                    </span>
                   </div>
-
-                  <ul className={`space-y-3 text-xs font-['Poppins',sans-serif] ${offer.theme === 'dark' ? 'text-white/90' : 'text-slate-700'}`}>
-                    {offer.features.map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2.5">
-                        <Check size={15} className={`shrink-0 mt-0.5 ${offer.theme === 'dark' ? 'text-cyan' : 'text-[#0086C8]'}`} />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className={`text-sm font-bold font-['DM_Sans',sans-serif] ${offer.theme === 'dark' ? 'text-white/80' : 'text-[#000424]'}`}>
+                    {offer.priceSub}
+                  </div>
                 </div>
 
-                <div className="pt-8">
-                  <button
-                    type="button"
-                    onClick={() => { setSelectedOffer(offer.id); handleApplyFromSimulator(); }}
-                    className={`w-full py-3.5 uppercase font-bold tracking-widest text-xs cursor-pointer transition-colors ${
-                      offer.theme === 'dark'
-                        ? 'bg-cyan text-dark hover:bg-white border border-cyan'
-                        : 'border border-dark text-dark hover:bg-dark hover:text-white'
-                    }`}
-                  >
-                    {offer.btnText}
-                  </button>
+                <ul className={`space-y-4 text-sm font-['Poppins',sans-serif] mb-8 flex-1 ${offer.theme === 'dark' ? 'text-white/90' : 'text-slate-700'}`}>
+                  {offer.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className={`mt-0.5 w-5 h-5 flex items-center justify-center shrink-0 ${offer.theme === 'dark' ? 'bg-cyan text-[#000424]' : 'bg-[#000424] text-white'}`}>
+                        <Check size={12} strokeWidth={3} />
+                      </div>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className={`p-4 mb-8 border ${offer.theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-[#e7f6f8] border-[#c0eef4]'}`}>
+                  <div className={`font-bold text-sm mb-1 ${offer.theme === 'dark' ? 'text-white' : 'text-[#000424]'}`}>
+                    {offer.bonusTitle}
+                  </div>
+                  <div className={`text-xs ${offer.theme === 'dark' ? 'text-white/50' : 'text-slate-500'}`}>
+                    {offer.bonusSub}
+                  </div>
                 </div>
+
+                
               </div>
             ))}
           </div>
@@ -747,9 +723,9 @@ export default function ChefDeFlotte() {
               },
               {
                 num: "05",
-                title: "Principe Intangible",
-                rule: "100% pour les coursiers",
-                desc: "Les coursiers gardent l'intégralité de leurs gains de courses. Les 100 FCFA de mise en relation sont réglés par le client, jamais ponctionnés."
+                title: "Discipline & Qualité",
+                rule: "Standards DEM exigés",
+                desc: "Tout coursier ne respectant pas les standards de qualité ou les règles de sécurité s'expose à une suspension temporaire ou définitive du réseau."
               },
               {
                 num: "06",

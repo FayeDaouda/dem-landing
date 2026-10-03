@@ -65,7 +65,7 @@ export const servicesData = [
   {
     id: "clients-express",
     number: "3",
-    title: "Clients & Service Client 7j/7",
+    title: "Clients",
     subtitle: "SERVICE 03 · EXPÉRIENCE CLIENT & SERVICE CLIENT DÉDIÉ",
     badge: "Service Client De qualité",
     audience: "Clients particuliers, résidents dakarois & destinataires exigeants",

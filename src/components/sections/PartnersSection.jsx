@@ -5,16 +5,15 @@ import SectionHeading from '../atoms/SectionHeading.jsx';
 import lisca from "../../assets/img/logoPartenaires/lisca.png"
 import samirpay from "../../assets/img/logoPartenaires/samirpay.png"
 import sonatel from "../../assets/img/logoPartenaires/sonatel.jpg"
+import foodByNight from "../../assets/img/logoPartenaires/foodByNight.jpg"
+import terangaXTrading from "../../assets/img/logoPartenaires/terangaXTrading.jpg"
 
 const PARTNERS = [
-    { name: "Wave Money", category: "Paiement Mobile", image: lisca },
-    { name: "Orange Money", category: "Paiement Digital", image: sonatel },
-    { name: "Restaurants Dakar", category: "Restauration Express", image: sonatel },
-    { name: "E-Commerce & Boutiques", category: "Vente en ligne", image: "https://placehold.co/120x60/0a2538/00D2FF?text=E-Shop" },
-    { name: "Pharmacies de Garde", category: "Santé & Urgence", image: "https://placehold.co/120x60/0a2538/00D2FF?text=Pharma" },
-    { name: "PME & Entreprises", category: "Logistique B2B", image: "https://placehold.co/120x60/0a2538/00D2FF?text=B2B" },
-    { name: "Marchands & Artisans", category: "Commerce Local", image: "https://placehold.co/120x60/0a2538/00D2FF?text=Marchands" },
-    { name: "Hubs de Distribution", category: "Dépôts & Stockage", image: "https://placehold.co/120x60/0a2538/00D2FF?text=Hubs" },
+    { name: "Lisca", category: "Paiement Mobile", image: lisca },
+    { name: "SamirPay", category: "Paiement Digital", image: samirpay },
+    { name: "Sonatel", category: "Restauration Express", image: sonatel },
+    { name: "Food By Night", category: "Restauration Express", image: foodByNight },
+    { name: "Teranga X Trading", category: "Restauration Express", image: terangaXTrading },
 ];
 
 export default function PartnersSection() {
@@ -46,7 +45,9 @@ export default function PartnersSection() {
         };
     }, []);
 
-    const duplicatedPartners = [...PARTNERS, ...PARTNERS];
+    // Puisqu'il n'y a que 3 partenaires, on les répète plusieurs fois pour remplir l'écran
+    const basePartners = [...PARTNERS, ...PARTNERS, ...PARTNERS, ...PARTNERS];
+    const duplicatedPartners = [...basePartners, ...basePartners];
 
     return (
         <section className="bg-[#021520] py-24 text-white border-t border-b border-white/[0.06] overflow-hidden relative">
@@ -81,8 +82,8 @@ export default function PartnersSection() {
                                 key={index}
                                 className="flex items-center gap-4 text-slate-400 hover:text-[#00D2FF] transition-all duration-300 cursor-pointer py-3 px-6 bg-white/[0.02] border border-white/[0.05] hover:border-[#00D2FF]/30 group"
                             >
-                                <div className="w-16 h-12 flex items-center justify-center bg-white/5 p-1.5 group-hover:scale-105 transition-transform overflow-hidden rounded">
-                                    <img src={partner.image} alt={partner.name} className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100" />
+                                <div className="w-16 h-12 flex items-center justify-center  p-1.5  overflow-hidden rounded">
+                                    <img src={partner.image} alt={partner.name} className="max-w-full max-h-full object-contain" />
                                 </div>
                                 <div className="text-left">
                                     <span className="font-sans font-bold tracking-wider uppercase text-sm md:text-base text-white block group-hover:text-[#00D2FF] transition-colors">
