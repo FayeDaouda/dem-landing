@@ -492,7 +492,6 @@ export default function ChefDeFlotte() {
         </div>
       </section>
 
-
       {/* ── 2. BANDEAU DE MÉTRIQUES B2B & PRINCIPES CLÉS (SHARP HUD) ── */}
       <section className="border-t border-b border-black/10 bg-dark text-white">
         <div data-cdf="metrics-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
@@ -518,6 +517,55 @@ export default function ChefDeFlotte() {
           ))}
         </div>
       </section>
+      
+      {/* ── NOUVELLE SECTION : IMAGES À GAUCHE, CONTENU À DROITE ── */}
+      <section className="py-24 bg-white overflow-hidden border-b border-black/10">
+        <div className="w-full max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            
+            {/* Colonne de gauche : Images */}
+            <div className="relative w-full aspect-square bg-gray-100 flex items-center justify-center border border-black/5">
+              {/* Espace réservé pour les images */}
+              <span className="text-dark/40 font-mono text-sm uppercase tracking-widest">Zone pour vos images</span>
+            </div>
+
+            {/* Colonne de droite : Contenu */}
+            <div className="flex flex-col gap-8 lg:pr-12">
+              <div className="inline-block border border-black px-3 py-1 bg-black text-white text-[10px] font-bold tracking-widest uppercase self-start">
+                Avantages
+              </div>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-dark leading-[0.9] uppercase tracking-tight font-['DM_Sans',sans-serif]">
+                LE CONTRÔLE TOTAL SUR <span className="text-cyan">VOTRE FLOTTE</span>
+              </h2>
+              <p className="text-dark/70 text-lg md:text-xl font-['DM_Sans',sans-serif] leading-relaxed max-w-2xl">
+                Un ensemble d'outils et de garanties pensés pour maximiser votre rentabilité et simplifier votre gestion au quotidien.
+              </p>
+              
+              <ul className="space-y-4 pt-2">
+                {[
+                  "Suivez chaque coursier en temps réel, sur téléphone, tablette ou ordinateur",
+                  "Vos performances en chiffres, coursier par coursier",
+                  "Agissez directement sur votre flotte, depuis votre compte",
+                  "Les courses arrivent toutes seules, au coursier le plus proche",
+                  "Vos coursiers formés à la méthode DEM",
+                  "Zéro commission : vos coursiers gardent 100 % de leurs courses",
+                  "Toute votre flotte sur un seul compte",
+                  "Des pass prépayés dégressifs : plus votre flotte grandit, moins vous payez",
+                  "Un support dédié, toujours joignable"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <div className="mt-1 w-5 h-5 bg-cyan rounded-none flex items-center justify-center shrink-0">
+                      <Check size={12} className="text-dark" strokeWidth={3} />
+                    </div>
+                    <span className="text-dark/80 font-medium leading-tight">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
       {/* ── 3. LE MODÈLE EN UN COUP D'ŒIL & LES 3 OFFRES DE PASS ── */}
       <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white" id="offres">
@@ -527,9 +575,9 @@ export default function ChefDeFlotte() {
             <MiniTitleWithBar content="TARIFICATION & OFFRES DE PASS" />
             <SectionHeading
               align="left"
-              title="Trois forfaits indépendants"
-              highlight="adaptés à votre trésorerie"
-              subtitle="Ce que DEM encaisse · Zéro commission cachée"
+              title="DEUX FORMULES"
+              highlight="À LA MESURE DE VOTRE FLOTTE"
+              subtitle="Zéro commission cachée"
               titleColor="text-dark"
               highlightColor="var(--color-cyan-2, #0086C8)"
               scriptColor="text-cyan-2"
@@ -537,7 +585,15 @@ export default function ChefDeFlotte() {
               className="mt-4"
             />
             <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl leading-relaxed font-['Poppins',sans-serif]">
-              Le chef de flotte externe achète son crédit de pass à l'avance pour ses coursiers inscrits. Ses coursiers roulent sur ce crédit ; à épuisement, le chef recharge avec l'offre de son choix. <strong>Chaque offre est un forfait complet</strong> : pas de rallonge ni de jours à l'unité.
+              Suivez chaque coursier en temps réel, sur téléphone, tablette ou ordinateur
+              Vos performances en chiffres, coursier par coursier
+              Agissez directement sur votre flotte, depuis votre compte
+              Les courses arrivent toutes seules, au coursier le plus proche
+              Vos coursiers formés à la méthode DEM
+              Zéro commission : vos coursiers gardent 100 % de leurs courses
+              Toute votre flotte sur un seul compte
+              Des pass prépayés dégressifs : plus votre flotte grandit, moins vous payez
+              Un support dédié, toujours joignable
             </p>
           </div>
 
@@ -623,37 +679,19 @@ export default function ChefDeFlotte() {
           </div>
 
           {/* Bandeau d'explication : Mise en relation & Principe Intangible */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 divide-y lg:divide-y-0 lg:divide-x divide-black/10 bg-slate-50">
-            <div className="lg:col-span-4 p-6 lg:p-8 flex flex-col justify-between">
-              <div>
-                <span className="text-[11px] font-mono font-bold text-[#0086C8] uppercase block mb-1">
-                  Mise en relation automatique
-                </span>
-                <h4 className="text-lg font-bold text-dark uppercase font-['DM_Sans',sans-serif] mb-2">
-                  100 FCFA / course
-                </h4>
-                <p className="text-xs text-slate-600 leading-relaxed font-['Poppins',sans-serif] m-0">
-                  Ajoutée automatiquement au prix de chaque livraison et prélevée à la source par DEM. Revenu variable selon le volume de courses. <strong>Aucune action du chef, aucune ponction sur le coursier.</strong>
-                </p>
-              </div>
+          <div className="border border-black/10 bg-cyan/10 p-8 lg:p-10 flex flex-col items-center text-center">
+            <div className="flex items-center justify-center gap-2 text-dark mb-4">
+              <ShieldCheck size={20} className="text-[#0086C8]" />
+              <span className="text-xs font-bold uppercase tracking-widest font-['Raleway',sans-serif]">
+                MISE EN RELATION · 100 F / COURSE
+              </span>
             </div>
-
-            <div className="lg:col-span-8 p-6 lg:p-8 bg-cyan/10 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-2 text-dark mb-2">
-                  <ShieldCheck size={18} className="text-[#0086C8]" />
-                  <span className="text-xs font-bold uppercase tracking-widest font-['Raleway',sans-serif]">
-                    Principe intangible non-négociable
-                  </span>
-                </div>
-                <h4 className="text-lg font-bold text-dark uppercase font-['DM_Sans',sans-serif] mb-2">
-                  Les coursiers gardent 100% de leurs courses
-                </h4>
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-['Poppins',sans-serif] m-0">
-                  Les 100 FCFA de mise en relation sont un ajout au prix côté client, <strong>jamais une ponction sur le gain du coursier</strong>. DEM ne prend aucune commission en pourcentage. Le chef de flotte reste entièrement libre de sa gestion interne (versement fixe ou salaire avec ses coursiers).
-                </p>
-              </div>
-            </div>
+            <h4 className="text-xl md:text-3xl font-black text-dark uppercase font-['DM_Sans',sans-serif] mb-4">
+              ZÉRO COMMISSION SUR VOS COURSES
+            </h4>
+            <p className="text-sm md:text-base text-slate-700 leading-relaxed font-['Poppins',sans-serif] max-w-3xl mx-auto m-0">
+              Les 100 F de mise en relation sont payés par le client, en plus du prix de la livraison. DEM ne prend rien sur les courses : <strong>100 % du montant revient à votre flotte</strong>. Vos motos, vos coursiers, votre organisation : vous gérez comme vous l'entendez.
+            </p>
           </div>
 
         </div>
