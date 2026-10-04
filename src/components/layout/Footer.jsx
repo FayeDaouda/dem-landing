@@ -9,7 +9,7 @@ export default function Footer() {
     return (
         <footer className="w-full bg-dark text-white border-t border-white/10 relative z-10 overflow-hidden">
             {/* Conteneur Principal */}
-            <div className="w-full max-w-[1400px] mx-auto px-6 sm:px-8 md:px-12 lg:px-16 pt-10 md:pt-14 pb-6 relative z-10">
+            <div className="w-full max-w-[1800px] mx-auto px-6 sm:px-8 md:px-12 lg:px-16 pt-10 md:pt-14 pb-6 relative z-10">
 
                 {/* ── 1. SECTION DU HAUT : BRANDING & NAVIGATION ── */}
                 <div className="flex flex-col lg:flex-row justify-between gap-8 lg:gap-12 mb-8 md:mb-12 relative">
@@ -76,7 +76,7 @@ export default function Footer() {
                                 <Link to="/notre-histoire" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Notre Histoire</Link>
                                 <Link to="/services" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Nos Services</Link>
                                 <Link to="/actualites" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Actualités</Link>
-                                <a href="/#download" className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Télécharger</a>
+                                <a href="/download" className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Télécharger</a>
                             </div>
 
                             {/* Colonne 2 : REJOINDRE */}
@@ -86,7 +86,7 @@ export default function Footer() {
                                 </span>
                                 <Link to="/dem-pro" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">DEM PRO</Link>
                                 <Link to="/chef-de-flotte" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Chef de Flotte</Link>
-                                <Link to="/coursiers" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Devenir Coursier</Link>
+                                {/* <Link to="/coursiers" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Devenir Coursier</Link> */}
                             </div>
 
                             {/* Colonne 3 : ÉCHANGER */}
