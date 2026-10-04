@@ -31,11 +31,38 @@ export function getTitleForPath(pathname) {
 }
 
 export default function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useLayoutEffect(() => {
     // Met à jour le titre du document selon la page
     document.title = getTitleForPath(pathname);
+
+    if (hash) {
+      const targetId = hash.replace(/^#/, '');
+      const scrollToHash = () => {
+        const element = document.getElementById(targetId) || document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          return true;
+        }
+        return false;
+      };
+
+      // Exécute immédiatement et planifie des retentatives pour absorber le rendu des images et de GSAP
+      if (!scrollToHash()) {
+        const t1 = setTimeout(scrollToHash, 100);
+        const t2 = setTimeout(scrollToHash, 300);
+        const t3 = setTimeout(scrollToHash, 600);
+        return () => {
+          clearTimeout(t1);
+          clearTimeout(t2);
+          clearTimeout(t3);
+        };
+      } else {
+        const t = setTimeout(scrollToHash, 250);
+        return () => clearTimeout(t);
+      }
+    }
 
     // Désactive temporairement le smooth scroll
     document.documentElement.style.scrollBehavior = "auto";
@@ -43,10 +70,11 @@ export default function ScrollToTop() {
     document.documentElement.scrollTop = 0;
 
     // Remet le smooth scroll après un micro délai si besoin
-    setTimeout(() => {
+    const resetTimer = setTimeout(() => {
       document.documentElement.style.scrollBehavior = "";
     }, 0);
-  }, [pathname]);
+    return () => clearTimeout(resetTimer);
+  }, [pathname, hash]);
 
   return null;
 }

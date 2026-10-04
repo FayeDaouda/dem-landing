@@ -1,17 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const SUBJECT_OPTIONS = [
   "Devenir Coursier DEM",
-  "Je suis marchand",
+  "Je suis DEM Pro",
   "Investir",
   "Programme Chef de Flotte",
-  "Suivi de commande & Réclamation",
-  "Renseignement général"
+  "Suivi de commande, Renseignement & Réclamation",
+  "Demander un appel avec un agent"
 ];
 
 export default function Contact() {
+  const [searchParams] = useSearchParams();
+  const initialSubject = searchParams.get('subject') || '';
+  const initialMessage = searchParams.get('message') || '';
+
   const [sent, setSent] = useState(false);
-  const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState(initialSubject);
+  const [message, setMessage] = useState(initialMessage);
+
+  useEffect(() => {
+    const urlSub = searchParams.get('subject');
+    const urlMsg = searchParams.get('message');
+    if (urlSub) setSelectedSubject(urlSub);
+    if (urlMsg) setMessage(urlMsg);
+  }, [searchParams]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -152,7 +165,14 @@ export default function Contact() {
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-white/70 mb-2">Votre Message</label>
-                  <textarea required rows={4} placeholder="Détaillez votre demande ici..." className="w-full px-4 py-3 rounded-none bg-white/[0.06] border border-white/15 text-white placeholder-white/40 focus:outline-none focus:border-cyan text-sm"></textarea>
+                  <textarea
+                    required
+                    rows={4}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Détaillez votre demande ici..."
+                    className="w-full px-4 py-3 rounded-none bg-white/[0.06] border border-white/15 text-white placeholder-white/40 focus:outline-none focus:border-cyan text-sm"
+                  ></textarea>
                 </div>
 
                 {/* Bouton d'envoi bloqué si aucun objet n'est choisi */}

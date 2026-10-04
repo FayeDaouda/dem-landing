@@ -14,6 +14,7 @@ import ChefDeFlotte from './pages/ChefDeFlotte.jsx'
 import Contact from './pages/Contact.jsx'
 import Actualites from './pages/Actualites.jsx'
 import Download from './pages/Download.jsx'
+import EssaiGratuitDemPro from './pages/EssaiGratuitDemPro.jsx'
 import Privacy from './Privacy.jsx'
 import Terms from './Terms.jsx'
 import DeleteAccount from './DeleteAccount.jsx'
@@ -43,6 +44,8 @@ createRoot(document.getElementById('root')).render(
           <Route path="/flotte" element={<ChefDeFlotte />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/download" element={<Download />} />
+          <Route path="/essai-gratuit-dem-pro" element={<EssaiGratuitDemPro />} />
+          <Route path="/essai-gratuit" element={<EssaiGratuitDemPro />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/delete-account" element={<DeleteAccount />} />

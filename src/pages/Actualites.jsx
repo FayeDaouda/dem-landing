@@ -1075,7 +1075,7 @@ export default function Actualites() {
         highlight="partenariat stratégique ?"
         description="Nos équipes communication et développement commercial répondent à vos sollicitations sous 24 heures pour toute demande d'interview ou de collaboration logistique."
         primaryBtnText="Contacter l'équipe Presse"
-        primaryBtnLink="mailto:[EMAIL_ADDRESS]"
+        primaryBtnLink="mailto:contact@dem.sn"
         primaryBtnIcon="arrow"
         secondaryBtnText="Découvrir DEM PRO"
         secondaryBtnLink="/dem-pro"

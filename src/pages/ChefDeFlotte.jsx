@@ -282,7 +282,7 @@ export default function ChefDeFlotte() {
       />
 
       {/* ── 5. SIMULATEUR DYNAMIQUE DE RENTABILITÉ FLOTTE (OFFICIEL DOSSIER) ── */}
-      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white" id="simulateur">
+      <section className="py-20 lg:py-32 px-6 lg:px-16 border-b border-black/10 bg-white scroll-mt-20 lg:scroll-mt-24" id="simulateur">
         <div className="max-w-[1400px] mx-auto">
 
           <div className="mb-16">
@@ -303,28 +303,28 @@ export default function ChefDeFlotte() {
             </p> */}
           </div>
 
-        <div data-cdf="simulator" className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 bg-white shadow-sm">
+        <div data-cdf="simulator" className="grid grid-cols-1 lg:grid-cols-12 border border-black/10 shadow-lg overflow-hidden">
 
-            {/* Colonne Gauche : Commandes & Paramètres */}
-            <div className="lg:col-span-6 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-black/10 flex flex-col justify-between">
+            {/* Colonne Gauche : Commandes & Paramètres (Fond Sombre) */}
+            <div className="lg:col-span-6 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-between bg-[#021520] text-white">
               <div>
 
                 {/* Sélecteur 1 : Nombre de motos (3 à 10) */}
                 <div className="mb-8">
                   <div className="flex justify-between items-end mb-4">
                     <div>
-                      <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-1">
+                      <span className="text-xs font-bold uppercase tracking-widest text-[#00D2FF] font-['Raleway',sans-serif] block mb-1">
                         Éligibilité Chef de Flotte
                       </span>
-                      <h3 className="text-xl sm:text-2xl font-bold text-dark font-['DM_Sans',sans-serif]">
+                      <h3 className="text-xl sm:text-2xl font-bold text-white font-['DM_Sans',sans-serif]">
                         Nombre de motos (coursiers)
                       </h3>
                     </div>
                     <div className="text-right">
-                      <span className="text-3xl sm:text-4xl font-black text-dark font-['DM_Sans',sans-serif]">
+                      <span className="text-3xl sm:text-4xl font-black text-white font-['DM_Sans',sans-serif]">
                         {motosCount}
                       </span>
-                      <span className="text-xs text-slate-500 block font-mono">
+                      <span className="text-xs text-white/50 block font-mono">
                         {motosCount > 1 ? 'motos inscrites' : 'moto inscrite'}
                       </span>
                     </div>
@@ -336,7 +336,7 @@ export default function ChefDeFlotte() {
                     max="10"
                     value={motosCount}
                     onChange={(e) => setMotosCount(Number(e.target.value))}
-                    className="w-full accent-[#0086C8] cursor-pointer h-2 bg-slate-200 rounded-none"
+                    className="w-full accent-[#00D2FF] cursor-pointer h-2 bg-white/20 rounded-none"
                   />
 
                   {/* Boutons rapides 3 à 10 */}
@@ -346,41 +346,43 @@ export default function ChefDeFlotte() {
                         key={count}
                         type="button"
                         onClick={() => setMotosCount(count)}
-                        className={`text-xs font-mono font-bold px-3 py-1.5 transition-colors cursor-pointer border ${motosCount === count
-                          ? 'bg-[#0086C8] text-white border-[#0086C8]'
-                          : 'bg-slate-50 text-slate-700 border-black/10 hover:border-[#0086C8]'
-                          }`}
+                        className={`text-xs font-mono font-bold px-3 py-1.5 transition-colors cursor-pointer border ${
+                          motosCount === count
+                            ? 'bg-[#00D2FF] text-[#021520] border-[#00D2FF]'
+                            : 'bg-white/5 text-white/80 border-white/10 hover:border-[#00D2FF] hover:text-white'
+                        }`}
                       >
                         {count}
                       </button>
                     ))}
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-2 italic font-['Poppins',sans-serif]">
+                  <p className="text-[11px] text-white/50 mt-2 italic font-['Poppins',sans-serif]">
                     * Éligibilité standard : 3 à 10 motos. Au-delà de 10 motos, extension soumise à validation préalable de la direction DEM.
                   </p>
                 </div>
 
                 {/* Sélecteur 2 : Choix du Pass */}
-                <div className="mb-8 pt-6 border-t border-black/10">
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#0086C8] font-['Raleway',sans-serif] block mb-3">
+                <div className="mb-8 pt-6 border-t border-white/10">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#00D2FF] font-['Raleway',sans-serif] block mb-3">
                     Offre de Pass DEM choisie
                   </span>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 gap-3">
                     {[
                       { key: '10days', label: '10 jours', price: '12 000 F', sub: '1 200 F/j' },
-                      { key: 'month', label: '26j + 4 dimanches offets', price: '36 000 F', sub: '1 200 F/j' }
+                      { key: 'month', label: '26j + 4 dimanches offerts', price: '31 200 F', sub: '1 040 F/j' }
                     ].map((plan) => (
                       <button
                         key={plan.key}
                         type="button"
                         onClick={() => setSelectedOffer(plan.key)}
-                        className={`p-3 text-left border transition-all cursor-pointer ${selectedOffer === plan.key
-                          ? 'bg-dark text-white border-dark'
-                          : 'bg-white text-dark border-black/10 hover:bg-slate-50'
-                          }`}
+                        className={`p-3.5 text-left border transition-all cursor-pointer ${
+                          selectedOffer === plan.key
+                            ? 'bg-white text-[#021520] border-white shadow-md'
+                            : 'bg-white/[0.04] text-white border-white/10 hover:border-white/30 hover:bg-white/[0.08]'
+                        }`}
                       >
                         <span className="text-xs font-bold uppercase block">{plan.label}</span>
-                        <span className={`text-sm font-bold font-mono block ${selectedOffer === plan.key ? 'text-cyan' : 'text-[#0086C8]'}`}>
+                        <span className={`text-sm font-bold font-mono block ${selectedOffer === plan.key ? 'text-[#0086C8]' : 'text-[#00D2FF]'}`}>
                           {plan.price}
                         </span>
                         <span className="text-[10px] opacity-70 block">{plan.sub}</span>
@@ -391,21 +393,20 @@ export default function ChefDeFlotte() {
 
               </div>
 
-              <div className="pt-8 mt-8 border-t border-black/10">
-                <div className="flex items-center gap-2 text-slate-500 text-xs font-['Poppins',sans-serif]">
-                  <Lock size={14} className="text-[#0086C8]" />
+              <div className="pt-8 mt-8 border-t border-white/10">
+                <div className="flex items-center gap-2 text-white/60 text-xs font-['Poppins',sans-serif]">
+                  <Lock size={14} className="text-[#00D2FF]" />
                   <span>Crédit prépayé : le chef achète d'avance, aucun découvert possible.</span>
                 </div>
               </div>
             </div>
 
-            {/* Colonne Droite : Bilan Financier & Restant Chef (HUD Sombre) */}
-            <div className="lg:col-span-6 p-8 lg:p-12 bg-dark text-white flex flex-col justify-between">
+            {/* Colonne Droite : Bilan Financier & Restant Chef (Fond Blanc) */}
+            <div className="lg:col-span-6 p-8 lg:p-12 bg-white text-[#021520] flex flex-col justify-between">
               <div>
 
-                <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
-                
-                  <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 bg-white/10 text-white font-mono">
+                <div className="flex items-center justify-between pb-6 border-b border-black/10 mb-6">
+                  <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 bg-slate-100 text-slate-800 border border-slate-200 font-mono">
                     {motosCount} motos · {currentOffer.name}
                   </span>
                 </div>
@@ -414,78 +415,78 @@ export default function ChefDeFlotte() {
                 <div className="space-y-4">
 
                   {/* CA Brut de la Flotte */}
-                  <div className="p-4 sm:p-5 bg-white/[0.02] border border-white/10 flex items-center justify-between">
+                  <div className="p-4 sm:p-5 bg-slate-50 border border-black/10 flex items-center justify-between">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="px-1.5 py-0.5 bg-white/10 text-white/80 text-[9px] font-mono font-bold uppercase tracking-wider">
+                        <span className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-[9px] font-mono font-bold uppercase tracking-wider">
                           CHIFFRE D'AFFAIRES
                         </span>
-                        <span className="text-xs font-bold uppercase tracking-widest text-white/90 font-['Raleway',sans-serif]">
+                        <span className="text-xs font-bold uppercase tracking-widest text-[#021520] font-['Raleway',sans-serif]">
                           Total généré
                         </span>
                       </div>
-                      <small className="text-[10px] text-white/50 block mt-1">
+                      <small className="text-[10px] text-slate-500 block mt-1">
                         {motosCount} coursiers × {caPerDayPerCourier.toLocaleString('fr-FR')} F × {effectiveWorkingDays} jours
                       </small>
                     </div>
-                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-white/90 font-['DM_Sans',sans-serif] shrink-0 ml-4">
+                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-[#021520] font-['DM_Sans',sans-serif] shrink-0 ml-4">
                       {totalFleetCA.toLocaleString('fr-FR')} <span className="text-xs font-normal">FCFA</span>
                     </span>
                   </div>
 
                   {/* Coût Pass DEM */}
-                  <div className="p-4 sm:p-5 bg-red-500/10 border border-red-500/20 flex items-center justify-between">
+                  <div className="p-4 sm:p-5 bg-red-50/80 border border-red-200 flex items-center justify-between">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="px-1.5 py-0.5 bg-red-500/20 text-red-200 text-[9px] font-mono font-bold uppercase tracking-wider">
+                        <span className="px-1.5 py-0.5 bg-red-100 text-red-800 text-[9px] font-mono font-bold uppercase tracking-wider">
                           COÛT PASS DEM
                         </span>
-                        <span className="text-xs font-bold uppercase tracking-widest text-red-100/90 font-['Raleway',sans-serif]">
+                        <span className="text-xs font-bold uppercase tracking-widest text-red-900 font-['Raleway',sans-serif]">
                           Prépayé
                         </span>
                       </div>
-                      <small className="text-[10px] text-red-200/50 block mt-1">
+                      <small className="text-[10px] text-red-700/70 block mt-1">
                         {motosCount} coursiers × {currentOffer.totalPerCourier.toLocaleString('fr-FR')} FCFA ({passSharePercent}% du CA)
                       </small>
                     </div>
-                    <span className="text-xl sm:text-2xl font-black text-red-400 font-['DM_Sans',sans-serif] shrink-0 ml-4">
+                    <span className="text-xl sm:text-2xl font-black text-red-600 font-['DM_Sans',sans-serif] shrink-0 ml-4">
                       − {totalPassCost.toLocaleString('fr-FR')} <span className="text-xs font-normal">FCFA</span>
                     </span>
                   </div>
 
                   {/* Reste Net Chef de Flotte (Grande Boîte Cyan) */}
-                  <div className="p-5 sm:p-6 bg-gradient-to-r from-[#00D2FF]/20 to-[#0086C8]/15 border-2 border-[#00D2FF] flex items-center justify-between mt-4">
+                  <div className="p-5 sm:p-6 bg-gradient-to-r from-[#00D2FF]/20 to-[#0086C8]/10 border-2 border-[#0086C8] flex items-center justify-between mt-4 shadow-sm">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="px-1.5 py-0.5 bg-[#00D2FF] text-[#021520] text-[9px] font-mono font-bold uppercase tracking-wider">
+                        <span className="px-1.5 py-0.5 bg-[#0086C8] text-white text-[9px] font-mono font-bold uppercase tracking-wider">
                           RESTE AU CHEF
                         </span>
-                        <span className="text-xs font-bold uppercase tracking-widest text-white font-['Raleway',sans-serif]">
+                        <span className="text-xs font-bold uppercase tracking-widest text-[#021520] font-['Raleway',sans-serif]">
                           Marge conservée : {chefKeepsPercent}% du CA
                         </span>
                       </div>
-                      <small className="text-[10px] text-white/70 block mt-1">
+                      <small className="text-[10px] text-slate-600 block mt-1">
                         Soit ~{Math.round(netRemainingForChef / motosCount).toLocaleString('fr-FR')} FCFA / moto
                       </small>
                     </div>
-                    <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#00D2FF] font-['DM_Sans',sans-serif] shrink-0 ml-4">
+                    <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0086C8] font-['DM_Sans',sans-serif] shrink-0 ml-4">
                       {netRemainingForChef.toLocaleString('fr-FR')} <span className="text-sm">FCFA</span>
                     </span>
                   </div>
 
                   {/* Estimation complémentaire : Mise en relation client (Page 5 dossier) */}
-                  <div className="p-4 bg-white/[0.02] border border-white/5 flex items-center justify-between mt-2">
+                  <div className="p-4 bg-slate-50/70 border border-black/5 flex items-center justify-between mt-2">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-white/60 block font-['Raleway',sans-serif] uppercase text-[10px] tracking-wider">
+                        <span className="text-slate-500 block font-['Raleway',sans-serif] uppercase text-[10px] tracking-wider">
                           MISE EN RELATION CLIENT
                         </span>
                       </div>
-                      <small className="text-[10px] text-white/40 block mt-1">
+                      <small className="text-[10px] text-slate-400 block mt-1">
                         100 F × {estimatedCoursesPerMonth.toLocaleString('fr-FR')} courses (payé par le client, 0 F ponctionné)
                       </small>
                     </div>
-                    <span className="text-sm font-bold text-white/70 font-mono shrink-0 ml-4">
+                    <span className="text-sm font-bold text-slate-700 font-mono shrink-0 ml-4">
                       ~{estimatedMiseEnRelation.toLocaleString('fr-FR')} FCFA
                     </span>
                   </div>
@@ -495,11 +496,11 @@ export default function ChefDeFlotte() {
               </div>
 
               {/* Bouton d'action direct */}
-              <div className="pt-8 mt-8 border-t border-white/10">
+              <div className="pt-8 mt-8 border-t border-black/10">
                 <button
                   type="button"
                   onClick={handleApplyFromSimulator}
-                  className="w-full py-4 uppercase font-bold tracking-widest text-xs sm:text-sm bg-cyan text-dark hover:bg-white transition-all duration-250 cursor-pointer border border-cyan rounded-none flex items-center justify-center gap-2"
+                  className="w-full py-4 uppercase font-bold tracking-widest text-xs sm:text-sm bg-[#021520] text-white hover:bg-[#0086C8] transition-all duration-250 cursor-pointer border border-[#021520] hover:border-[#0086C8] rounded-none flex items-center justify-center gap-2 shadow-md"
                 >
                   <span>Brancher ma flotte de {motosCount} moto{motosCount > 1 ? 's' : ''} sur DEM</span>
                   <ArrowRight size={16} />

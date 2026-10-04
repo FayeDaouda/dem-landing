@@ -27,8 +27,8 @@ export const servicesData = [
       ratePerDelivery: 1300
     },
     img: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=1600&auto=format&fit=crop&q=85",
-    linkText: "",
-    linkUrl: "/contact"
+    linkText: "Rejoindre le réseau",
+    linkUrl: `/contact?subject=${encodeURIComponent("Devenir Coursier DEM")}&message=${encodeURIComponent("Bonjour, je souhaite rejoindre le réseau DEM en tant que coursier partenaire et obtenir des informations sur l'activation de mon pass.")}`
   },
   {
     id: "dem-pro",
@@ -154,7 +154,7 @@ export const servicesData = [
     ],
     img: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=1600&auto=format&fit=crop&q=85",
     linkText: "Demander un devis personnalisé",
-    linkUrl: "/contact"
+    linkUrl: `/contact?subject=${encodeURIComponent("Suivi de commande, Renseignement & Réclamation")}&message=${encodeURIComponent("Bonjour, je souhaite obtenir des renseignements et un devis personnalisé pour des coursiers dédiés en entreprise.")}`
   },
   {
     id: "chef-de-flotte",
@@ -185,7 +185,7 @@ export const servicesData = [
     ],
     img: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=1600&auto=format&fit=crop&q=85",
     linkText: "En savoir plus",
-    linkUrl: "/chef-de-flotte"
+    linkUrl: "/chef-de-flotte#simulateur"
   }
 ];
 

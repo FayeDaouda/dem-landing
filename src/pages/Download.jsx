@@ -17,9 +17,8 @@ export default function Download() {
       {/* ── 1. HERO SECTION ── */}
       <PageHeroSection
         contentMiniBar="TÉLÉCHARGEZ NOTRE APPLICATION"
-        firstTitle="Un réseau de livraison structuré"
-        secondTitle="pour aller vite, et bien."
-        description="Que vous soyez un particulier, un e-commerçant ou une entreprise, profitez du meilleur réseau de coursiers de Dakar directement depuis votre téléphone."
+        firstTitle="Téléchargez l'application DEM."
+        secondTitle="Un réseau de livraison structuré pour aller vite, et bien."
         watermark="APP"
       />
 
@@ -30,7 +29,7 @@ export default function Download() {
         subtitle="Rejoignez nous !"
         title="Votre livraison express au bout"
         highlight="des doigts."
-        description="Téléchargez gratuitement l’application DEM sur iPhone et Android. Commandez, suivez votre coursier en direct sur la carte et payez en toute sécurité."
+        description=" "
         id="download"
       />
 
