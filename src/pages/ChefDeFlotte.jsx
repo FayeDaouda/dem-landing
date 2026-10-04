@@ -2,7 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-import imgBoth from "../assets/img/intChefDeFlotte/both.jpeg"
+import imgBoth from "../assets/img/intChefDeFlotte/both.jpeg";
+import imgDashboard from "../assets/img/intChefDeFlotte/dashboard.jpeg";
+import imgDashboardMobile from "../assets/img/intChefDeFlotte/dashboardMobile.jpeg";
 
 gsap.registerPlugin(ScrollTrigger);
 import PageHeroSection from '../components/sections/PageHeroSection.jsx';
@@ -35,6 +37,32 @@ export default function ChefDeFlotte() {
   const [selectedOffer, setSelectedOffer] = useState('month'); // '5days', '15days', 'month'
   const [activeScenario, setActiveScenario] = useState('reference'); // 'reference' (14 500 F/j) ou 'prudent' (6 000 F/j)
   const [openFaq, setOpenFaq] = useState(null);
+  const [activeFleetView, setActiveFleetView] = useState('both');
+
+  const fleetViews = [
+    {
+      id: 'both',
+      label: "Vue d'ensemble",
+      caption: "Dashboard PC & Application mobile",
+      image: imgBoth,
+      alt: "Interface combinée Chef de Flotte DEM"
+    },
+    {
+      id: 'desktop',
+      label: 'Dashboard Web',
+      caption: 'Vue ordinateur pour grands écrans',
+      image: imgDashboard,
+      alt: 'Dashboard Web Chef de Flotte DEM sur ordinateur'
+    },
+    {
+      id: 'mobile',
+      label: 'App Mobile',
+      caption: 'Application smartphone sur le terrain',
+      image: imgDashboardMobile,
+      alt: 'Application Mobile Chef de Flotte DEM sur smartphone'
+    }
+  ];
+  const currentView = fleetViews.find(v => v.id === activeFleetView) || fleetViews[0];
 
   // Définition des 3 offres officielles de Pass Prépayé
   const OFFERS = {
@@ -516,13 +544,71 @@ export default function ChefDeFlotte() {
         <div className="w-full max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
             
-            {/* Colonne de gauche : Images */}
-            <div className="relative w-full flex items-center justify-center">
-              <img
-                src={imgBoth}
-                alt="Interface Chef de Flotte DEM"
-                className="w-full h-auto object-contain max-h-[600px]"
-              />
+            {/* Colonne de gauche : Visualiseur interactif des 3 images */}
+            <div className="flex flex-col gap-4">
+              
+              {/* Sélecteur d'onglets au sommet */}
+              <div className="flex items-center gap-2 p-1.5 bg-slate-100 border border-black/10">
+                {fleetViews.map((view) => {
+                  const isActive = activeFleetView === view.id;
+                  return (
+                    <button
+                      key={view.id}
+                      type="button"
+                      onClick={() => setActiveFleetView(view.id)}
+                      className={`flex-1 py-2.5 px-2.5 text-xs font-bold uppercase tracking-wider font-['DM_Sans',sans-serif] transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                        isActive
+                          ? 'bg-[#021520] text-white shadow-md'
+                          : 'bg-transparent text-slate-600 hover:text-[#021520] hover:bg-white/60'
+                      }`}
+                    >
+                      <span className="text-[11px] opacity-90">{view.badge}</span>
+                      <span className="truncate">{view.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Affichage principal de l'image sélectionnée */}
+              <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] bg-slate-50 border border-black/10 flex items-center justify-center p-4 sm:p-6 overflow-hidden shadow-sm transition-all">
+                <img
+                  key={currentView.id}
+                  src={currentView.image}
+                  alt={currentView.alt}
+                  className="w-full h-full object-contain animate-fadeIn"
+                />
+              </div>
+
+              {/* Miniatures interactives */}
+              <div className="grid grid-cols-3 gap-3">
+                {fleetViews.map((view) => {
+                  const isActive = activeFleetView === view.id;
+                  return (
+                    <button
+                      key={view.id}
+                      type="button"
+                      onClick={() => setActiveFleetView(view.id)}
+                      className={`p-2 bg-white border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                        isActive
+                          ? 'border-[#0086C8] ring-2 ring-[#0086C8]/20 shadow-sm'
+                          : 'border-black/10 hover:border-black/30 opacity-70 hover:opacity-100'
+                      }`}
+                    >
+                      <div className="aspect-[16/10] w-full bg-slate-100 overflow-hidden mb-1.5 border border-black/5">
+                        <img
+                          src={view.image}
+                          alt={view.label}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#021520] truncate font-['DM_Sans',sans-serif] block">
+                        {view.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
             </div>
 
             {/* Colonne de droite : Contenu */}
