@@ -31,11 +31,20 @@ export function getTitleForPath(pathname) {
 }
 
 export default function ScrollToTop() {
-  const { pathname, hash } = useLocation();
+  const { pathname, search, hash } = useLocation();
 
   useLayoutEffect(() => {
     // Met à jour le titre du document selon la page
-    document.title = getTitleForPath(pathname);
+    const pageTitle = getTitleForPath(pathname);
+    document.title = pageTitle;
+
+    // Envoi de la vue de page à Google Analytics pour React SPA
+    if (typeof window.gtag === 'function') {
+      window.gtag('config', 'G-YGGB32JJXB', {
+        page_path: pathname + search,
+        page_title: pageTitle,
+      });
+    }
 
     if (hash) {
       const targetId = hash.replace(/^#/, '');
@@ -74,7 +83,7 @@ export default function ScrollToTop() {
       document.documentElement.style.scrollBehavior = "";
     }, 0);
     return () => clearTimeout(resetTimer);
-  }, [pathname, hash]);
+  }, [pathname, search, hash]);
 
   return null;
 }
