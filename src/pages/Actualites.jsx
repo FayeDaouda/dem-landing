@@ -119,8 +119,8 @@ export default function Actualites() {
       {/* ── 1. HERO SECTION EDITORIALE ── */}
       <PageHeroSection
         contentMiniBar="ACTUALITÉS & VIE DE DEM"
-        firstTitle="Nouveautés DEM, réalité du trafic dakarois, conseils pour les pros et les coursiers, et les coulisses de l'équipe."
-        secondTitle="L'actualité de la mobilité urbaine à Dakar."
+        firstTitle="L'actualité de la mobilité urbaine à Dakar."
+        secondTitle="Tout ce qui fait bouger Dakar."
         watermark="ACTUALITÉS"
       />
 
