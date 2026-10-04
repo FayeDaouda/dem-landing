@@ -109,7 +109,7 @@ export default function EssaiGratuitDemPro() {
               align="left"
               title="COMMENT DÉMARRER VOTRE "
               highlight="ESSAI GRATUIT ?"
-              subtitle="PARCOURS D'ACTIVATION ÉTAPE PAR ÉTAPE"
+              subtitle="Parcours d'activation étape par étape"
               titleColor="text-dark"
               highlightColor="var(--color-cyan-2, #0086C8)"
               scriptColor="text-cyan-2"
