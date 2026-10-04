@@ -204,9 +204,9 @@ export default function DemProInterfaceGallery() {
               {/* Méta / Titre */}
               <div className="pt-3 border-t border-slate-100">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-mono font-bold text-[#0086C8]">
+                  {/* <span className="text-xs font-mono font-bold text-[#0086C8]">
                     0{screen.id} · FONCTIONNALITÉ
-                  </span>
+                  </span> */}
                 </div>
                 <h3 className="text-base font-bold uppercase text-[#021520] font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors leading-snug m-0">
                   {screen.title}
