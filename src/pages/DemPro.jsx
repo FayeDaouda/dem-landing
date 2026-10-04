@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import PageHeroSection from '../components/sections/PageHeroSection.jsx';
+import DemProInterfaceGallery from '../components/sections/DemProInterfaceGallery.jsx';
 import AvantagesDemProSection from '../components/sections/AvantagesDemProSection.jsx';
 import TerrainVsDemSection from '../components/sections/TerrainVsDemSection.jsx';
 import PricingDemPro from '../components/sections/PricingDemPro.jsx';
@@ -37,6 +38,9 @@ export default function DemPro() {
         buttonText={"Voir nos formules"}
         buttonLink={"/dem-pro/#tarifs"}
       />
+
+      {/* ── 1b. APERÇU DE L'APPLICATION DEM PRO (5 CAPTURES D'ÉCRAN) ── */}
+      <DemProInterfaceGallery />
 
       {/* ── 2. CE QUE VOUS GAGNEZ AVEC DEM PRO (AVANTAGES DU COMPTE) ── */}
       <AvantagesDemProSection />

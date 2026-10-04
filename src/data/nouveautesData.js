@@ -6,124 +6,79 @@ export const nouveautesData = {
   // Fonctionnalités actuellement en production, disponibles dès aujourd'hui
   releasedFeatures: [
     {
-      id: "feat-live-tracking",
+      id: "feat-nouveau-site",
       status: "DISPONIBLE",
       statusColor: "emerald",
-      title: "Lien de suivi GPS en direct sans application requise",
+      title: "Un nouveau site pour DEM",
       version: "Déployé",
-      description: "Vos clients finaux reçoivent un lien web interactif par SMS leur permettant de suivre la progression du coursier sur la carte en temps réel, sans avoir à installer d'application.",
+      description: "DEM fait peau neuve. Nouvelle présentation de nos services, simulateur de gains pour les coursiers, offres détaillées pour les pros et les chefs de flotte : tout est plus clair, pour que chacun trouve sa formule en quelques clics.",
       benefits: [
-        "Consultable sur tout smartphone via un simple navigateur web",
-        "Estimation dynamique de l'heure d'arrivée du livreur",
-        "Suppression des appels anxiogènes des destinataires demandant 'où est mon colis ?'"
+        "Présentation claire et transparente de l'ensemble de nos services",
+        "Simulateur interactif de gains et de rentabilité pour coursiers et flottes",
+        "Accès rapide aux grilles tarifaires et formulaires d'adhésion"
       ],
-      badge: "Expérience Client"
+      badge: "Plateforme & Web"
     },
     {
-      id: "feat-otp-security",
+      id: "feat-dem-pro-formules",
       status: "DISPONIBLE",
       statusColor: "emerald",
-      title: "Validation de livraison par code secret OTP",
+      title: "DEM Pro : trois formules pour chaque activité",
       version: "Déployé",
-      description: "Protocole de sécurité garantissant que le colis est remis à la bonne personne. La course ne peut être clôturée qu'après saisie du code à 4 chiffres généré sur le téléphone du destinataire.",
+      description: "Starter, Business et Premium : DEM Pro évolue avec trois formules adaptées à chaque niveau d'activité, dès 2 300 F par semaine. Boutique en ligne, wallet intégré, factures à votre logo : choisissez celle dont vous avez besoin, et évoluez à votre rythme.",
       benefits: [
-        "Suppression totale des contestations de livraison",
-        "Preuve numérique horodatée enregistrée dans le portail",
-        "Sécurisation des commandes à forte valeur ajoutée"
+        "Trois formules souples (Starter, Business, Premium) dès 2 300 F / semaine",
+        "Lien de commande partageable et catalogue marchand en ligne",
+        "Wallet intégré, factures automatisées et historique complet des ventes"
       ],
-      badge: "Sécurité & Traçabilité"
+      badge: "DEM Pro & E-Commerce"
     },
     {
-      id: "feat-cod-instant-reversal",
+      id: "feat-adja-ia-support",
       status: "DISPONIBLE",
       statusColor: "emerald",
-      title: "Reversement automatisé COD sous 24h ouvrées",
+      title: "Adja, notre assistante IA, rejoint le service client",
       version: "Déployé",
-      description: "Les fonds collectés lors des livraisons en espèces ou mobile money sont réconciliés et reversés sur votre compte Wave ou Orange Money sous 24 heures ouvrées.",
+      description: "Une question sur une course ? Adja, notre assistant IA entraîné à la réalité de Dakar, répond en quelques secondes. Et un humain reste toujours prêt à prendre le relais.",
       benefits: [
-        "Préservation de la trésorerie et du fonds de roulement",
-        "Rapprochement ligne par ligne des commandes encaissées",
-        "Fin des manipulations fastidieuses de liquidités en fin de journée"
+        "Réponse instantanée 24/7 sur le statut et le suivi de vos courses",
+        "Entraînée sur la toponymie dakaroise et les spécificités locales",
+        "Passation fluide vers un conseiller humain à tout moment"
       ],
-      badge: "Fintech & Trésorerie"
+      badge: "Service Client & IA"
     },
     {
-      id: "feat-multi-drop-dispatch",
+      id: "feat-flotte-formules",
       status: "DISPONIBLE",
       statusColor: "emerald",
-      title: "Expédition multi-adresses DEM PRO",
+      title: "Chefs de flotte : deux nouvelles formules",
       version: "Déployé",
-      description: "Pour les boutiques en ligne gérant des volumes quotidiens importants, planification de tournées de ramassage groupé en un seul clic vers de multiples points de livraison à Dakar.",
+      description: "Formule 10 jours pour démarrer, formule 1 mois avec 4 dimanches offerts : les chefs de flotte peuvent désormais rejoindre DEM avec la formule qui correspond à leur flotte.",
       benefits: [
-        "Saisie rapide de plusieurs adresses de livraison dans une même tournée",
-        "Tarification dégressive avantageuse dès la 3e expédition",
-        "Un seul coursier dédié affecté au ramassage de toutes vos commandes de la matinée"
+        "Formule 10 jours pour tester et démarrer sans engagement lourd",
+        "Formule 1 mois avantageuse avec 4 dimanches offerts",
+        "Compte chef de flotte pour suivre chaque moto et coursier en temps réel"
       ],
-      badge: "E-Commerce & Pro"
+      badge: "Partenariat Flotte"
     }
   ],
 
   // Fonctionnalités en cours de développement, strictement étiquetées COMING SOON
   comingSoonFeatures: [
     {
-      id: "feat-cs-woocommerce-shopify",
+      id: "feat-agrandissement-flotte",
       status: "COMING SOON",
       statusColor: "amber",
-      title: "Plugins d'intégration directe WooCommerce & Shopify",
-      phase: "En cours de développement technique",
-      availability: "Arrivée progressive",
-      description: "Synchronisation automatique de votre catalogue et de vos commandes e-commerce directement vers DEM. Dès qu'un client passe commande sur votre site, la course de livraison DEM est pré-générée.",
+      title: "La flotte DEM va s'agrandir",
+      phase: "En déploiement prochain",
+      availability: "Très bientôt",
+      description: "De nouvelles motos électriques vont bientôt rejoindre la flotte DEM. Plus de coursiers sur la route, c'est plus de disponibilité partout à Dakar. On vous en dit plus très vite.",
       benefits: [
-        "Zéro ressaisie manuelle des adresses et numéros de téléphone",
-        "Affichage des options de livraison DEM directement dans votre panier d'achat",
-        "Transmission instantanée du numéro de suivi au client final"
+        "Arrivée prochaine de nouvelles motos électriques 100 % silencieuses et écologiques",
+        "Disponibilité accrue et délais d'intervention réduits dans tous les quartiers de Dakar",
+        "Formation renforcée des nouveaux coursiers à la méthode et aux standards DEM"
       ],
-      badge: "Intégration CMS"
-    },
-    {
-      id: "feat-cs-scheduled-tours",
-      status: "COMING SOON",
-      statusColor: "amber",
-      title: "Planification récurrente automatisée des ramassages",
-      phase: "Phase de prototypage & tests bêta",
-      availability: "En conception",
-      description: "Pour les entreprises et ateliers ayant des expéditions quotidiennes fixes, mise en place d'un créneau récurrent automatique de passage coursier sans devoir relancer une commande chaque jour.",
-      benefits: [
-        "Heure de passage quotidienne garantie à votre atelier ou boutique",
-        "Priorité d'assignation automatique de votre flotte habituelle",
-        "Facturation mensuelle consolidée simplifiée"
-      ],
-      badge: "Automatisation Pro"
-    },
-    {
-      id: "feat-cs-analytics-dashboard",
-      status: "COMING SOON",
-      statusColor: "amber",
-      title: "Tableau de bord analytique des délais par commune",
-      phase: "En cours de conception UX/UI",
-      availability: "À venir",
-      description: "Visualisation cartographique détaillée de vos zones de vente à Dakar, des délais moyens de livraison par quartier et du taux d'encaissement de vos commandes.",
-      benefits: [
-        "Identification de vos quartiers les plus rentables et les plus denses",
-        "Mesure de l'impact des créneaux horaires sur la satisfaction client",
-        "Export de données structurées pour votre comptabilité de fin de mois"
-      ],
-      badge: "Data & Analyse"
-    },
-    {
-      id: "feat-cs-dem-wallet",
-      status: "COMING SOON",
-      statusColor: "amber",
-      title: "Portefeuille DEM Wallet pour paiements instantanés",
-      phase: "En phase d'étude de conformité",
-      availability: "Étude réglementaire",
-      description: "Portefeuille numérique d'entreprise prépayé permettant de régler l'ensemble de vos courses en un clic, de gérer des sous-comptes d'expédition pour vos collaborateurs et de fluidifier vos dépenses logistiques.",
-      benefits: [
-        "Recharge directe par Wave, Orange Money ou virement bancaire",
-        "Contrôle budgétaire en temps réel avec plafonds paramétrables",
-        "Génération automatique d'un reçu fiscal certifié à chaque débit"
-      ],
-      badge: "Fintech Entreprise"
+      badge: "Flotte Électrique"
     }
   ]
 };
@@ -132,3 +87,4 @@ export const nouveautesData = {
 export const featuresRoadmapData = nouveautesData;
 
 export default nouveautesData;
+

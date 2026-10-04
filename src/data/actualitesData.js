@@ -3,7 +3,7 @@
 // ══════════════════════════════════════════════════════════════════════════
 // INDEX DE L'ARTICLE PRINCIPAL (À LA UNE)
 // Modifiez simplement ce chiffre pour mettre n'importe quel article en principal :
-// 0 = Sécurisation des remises OTP
+// 0 = Dakar passe à l'électrique (100 premiers taxis)
 // 1 = Voirie et embouteillages (VDN / Corniche)
 // 2 = Reversement COD Wave & Orange Money
 // 3 = Infrastructures urbaines & couloirs BRT / TER
@@ -11,37 +11,39 @@
 // 5 = Vie de la flotte & Ateliers sécurité routière
 // ══════════════════════════════════════════════════════════════════════════
 export const FEATURED_ARTICLE_INDEX = 0;
+import img1 from "../assets/img/actu/img1.jpeg"
 
 // ── ACTUALITÉS DEM & MOBILITÉ URBAINE À DAKAR ──
 // Rythme de mise à jour : Tous les 10 jours
 // Règle d'intégrité : Aucune statistique inventée, aucune mention directe de concurrents.
 export const actualitesDakarData = [
   {
-    id: "actu-otp-securisation",
-    slug: "generalisation-code-otp-securisation-remise",
-    title: "Sécurisation des remises : Déploiement systématique de la validation par code OTP à Dakar",
-    category: "Vie DEM & Flotte",
+    id: "actu-taxis-electriques-dakar",
+    slug: "dakar-passe-a-lelectrique-100-premiers-taxis-sur-les-routes",
+    title: "Dakar passe à l'électrique : 100 premiers taxis sur les routes",
+    category: "DAKAR · ACTUALITÉ MOBILITÉ",
     date: "Édition du 20 Septembre",
     readTime: "3 min de lecture",
     featured: true,
-    image: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=1200&auto=format&fit=crop&q=85",
-    excerpt: "Pour protéger acheteurs, commerçants et coursiers des litiges de livraison, DEM généralise la validation par mot de passe unique (OTP) envoyé par SMS au destinataire avant la remise physique du colis.",
+    image: img1,
+    excerpt: "Le 24 septembre au CICES, 100 taxis électriques ont été remis aux transporteurs dakarois. Première étape d'un programme de 1 000 véhicules porté par le FDTT pour une mobilité propre et structurée à Dakar.",
     author: {
-      name: "Équipe Opérations DEM",
-      role: "Pôle Sécurité & Qualité",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80"
+      name: "Journal du Sénégal",
+      role: "Transition Écologique & Transports",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+      url: "https://journaldusenegal.com/taxis-electriques-senegal-100-vehicules-dakar-programme-1000/"
     },
-    tags: ["Sécurité", "OTP", "Confiance", "Opérations", "Dakar"],
+    tags: ["Mobilité Électrique", "Taxis", "Dakar", "FDTT", "Transition Écologique"],
     content: [
-      "Dans l'écosystème de la livraison urbaine à Dakar, la contestation de livraison et les incertitudes à la réception ont longtemps constitué une source d'inquiétude pour les e-commerçants comme pour les clients particuliers.",
-      "Afin d'y apporter une réponse technique infaillible, DEM applique désormais un protocole strict de validation par code OTP (One-Time Password) généré automatiquement dès que le coursier signale son arrivée à l'adresse de destination.",
-      "Le destinataire reçoit instantanément son code par SMS ou WhatsApp. Le coursier ne peut clôturer la course dans son application mobile qu'après saisie de ce code à 4 chiffres. Ce mécanisme assure une traçabilité horodatée irréfutable et protège l'ensemble des parties prenantes.",
-      "Cette mise en conformité opérationnelle s'accompagne d'une sensibilisation continue de nos coursiers partenaires lors de leurs briefings hebdomadaires."
+      "Le 24 septembre, au CICES, 100 taxis électriques ont été remis à des professionnels du transport dakarois. C'est la première étape d'un programme de 1 000 véhicules, porté par le Fonds de Développement des Transports Terrestres (FDTT) et financé par la BCI.",
+      "L'objectif : une mobilité plus propre, moins dépendante des carburants classiques, et un secteur des transports plus structuré. Pour Bara Sow, administrateur du FDTT, l'initiative doit « renforcer la professionnalisation du secteur des transports terrestres ».",
+      "Ce que ça dit de Dakar :",
+      " La ville se structure, et la mobilité électrique n'est plus un projet lointain. Chez DEM, on partage la même conviction : nos coursiers roulent à l'électrique, sont formés avant leur première course et travaillent dans un cadre clair.Taxis, livraison, transport : tout le secteur avance dans la même direction, et c'est une bonne nouvelle pour Dakar."
     ],
     keyPoints: [
-      { title: "Génération automatique", desc: "Envoi immédiat au destinataire dès l'arrivée du coursier sur zone." },
-      { title: "Zéro clôture anticipée", desc: "L'application bloque la fin de mission tant que le code n'est pas validé." },
-      { title: "Protection marchand", desc: "Preuve irréfutable de remise protégeant le commerçant contre les réclamations abusives." }
+      { title: "100 premiers véhicules", desc: "Remise officielle au CICES pour lancer un programme total de 1 000 taxis électriques." },
+      { title: "Transition écologique", desc: "Une mobilité plus propre, réduisant la dépendance aux carburants classiques." },
+      { title: "Secteur en mouvement", desc: "Professionnalisation et modernisation de tout l'écosystème de transport à Dakar." }
     ]
   },
   {

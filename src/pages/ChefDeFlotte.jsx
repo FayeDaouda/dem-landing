@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+import imgBoth from "../assets/img/intChefDeFlotte/both.jpeg"
+
 gsap.registerPlugin(ScrollTrigger);
 import PageHeroSection from '../components/sections/PageHeroSection.jsx';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
@@ -515,9 +517,12 @@ export default function ChefDeFlotte() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
             
             {/* Colonne de gauche : Images */}
-            <div className="relative w-full aspect-square bg-gray-100 flex items-center justify-center border border-black/5">
-              {/* Espace réservé pour les images */}
-              <span className="text-dark/40 font-mono text-sm uppercase tracking-widest">Zone pour vos images</span>
+            <div className="relative w-full flex items-center justify-center">
+              <img
+                src={imgBoth}
+                alt="Interface Chef de Flotte DEM"
+                className="w-full h-auto object-contain max-h-[600px]"
+              />
             </div>
 
             {/* Colonne de droite : Contenu */}

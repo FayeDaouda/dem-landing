@@ -7,13 +7,38 @@ import samirpay from "../../assets/img/logoPartenaires/samirpay.png"
 import sonatel from "../../assets/img/logoPartenaires/sonatel.jpg"
 import foodByNight from "../../assets/img/logoPartenaires/foodByNight.jpg"
 import terangaXTrading from "../../assets/img/logoPartenaires/terangaXTrading.jpg"
+import arma from "../../assets/img/logoPartenaires/arma.jpeg"
+import biJuice from "../../assets/img/logoPartenaires/biJuice.jpeg"
+import cabinetIdac from "../../assets/img/logoPartenaires/cabinetIdac.jpeg"
+import athiasMadd from "../../assets/img/logoPartenaires/athiasMadd.jpeg"
+import kingCreperie from "../../assets/img/logoPartenaires/kingCreperie.jpeg"
+import maket from "../../assets/img/logoPartenaires/maket.jpeg"
+import nocesDeCana from "../../assets/img/logoPartenaires/nocesDeCana.jpeg"
+import revoo from "../../assets/img/logoPartenaires/revoo.jpeg"
+import spectro from "../../assets/img/logoPartenaires/spectro.jpeg"
+import wati from "../../assets/img/logoPartenaires/wati.png"
+import orange from "../../assets/img/logoPartenaires/orange.png"
+import maxIt from "../../assets/img/logoPartenaires/maxIt.png"
+
 
 const PARTNERS = [
     { name: "Lisca", category: "Paiement Mobile", image: lisca },
     { name: "SamirPay", category: "Paiement Digital", image: samirpay },
-    { name: "Sonatel", category: "Restauration Express", image: sonatel },
-    { name: "Food By Night", category: "Restauration Express", image: foodByNight },
-    { name: "Teranga X Trading", category: "Restauration Express", image: terangaXTrading },
+    { name: "Sonatel", category: "Télécoms", image: sonatel },
+    { name: "Orange", category: "Télécoms", image: orange },
+    { name: "Max It", category: "Application Mobile", image: maxIt },
+    { name: "Food By Night", category: "Restauration", image: foodByNight },
+    { name: "Teranga X Trading", category: "Distribution", image: terangaXTrading },
+    { name: "Arma", category: "Services", image: arma },
+    { name: "Bi Juice", category: "Boissons & Jus", image: biJuice },
+    { name: "Cabinet Idac", category: "Conseil & Audit", image: cabinetIdac },
+    { name: "Athias Madd", category: "Alimentation", image: athiasMadd },
+    { name: "King Creperie", category: "Restauration", image: kingCreperie },
+    { name: "Maket", category: "Distribution", image: maket },
+    { name: "Noces de Cana", category: "Événementiel", image: nocesDeCana },
+    { name: "Revoo", category: "Mobilité", image: revoo },
+    { name: "Spectro", category: "Technologie", image: spectro },
+    { name: "Wati", category: "Distribution", image: wati },
 ];
 
 export default function PartnersSection() {
@@ -27,7 +52,7 @@ export default function PartnersSection() {
         const totalWidth = track.scrollWidth / 2;
         animRef.current = gsap.to(track, {
             x: -totalWidth,
-            duration: 30,
+            duration: 40,
             ease: 'none',
             repeat: -1,
         });
@@ -45,9 +70,7 @@ export default function PartnersSection() {
         };
     }, []);
 
-    // Puisqu'il n'y a que 3 partenaires, on les répète plusieurs fois pour remplir l'écran
-    const basePartners = [...PARTNERS, ...PARTNERS, ...PARTNERS, ...PARTNERS];
-    const duplicatedPartners = [...basePartners, ...basePartners];
+    const duplicatedPartners = [...PARTNERS, ...PARTNERS];
 
     return (
         <section className="bg-[#021520] py-24 text-white border-t border-b border-white/[0.06] overflow-hidden relative">

@@ -93,7 +93,7 @@ export default function PageHeroSection({
                 </span>
             </div>
 
-            <div className="w-full max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-16 relative z-10">
+            <div className="w-full max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-16 relative z-10">
 
                 {/* Label section */}
                 {contentMiniBar && (
