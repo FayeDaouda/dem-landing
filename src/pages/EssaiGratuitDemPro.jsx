@@ -4,6 +4,7 @@ import { Check, ArrowRight, Smartphone, Store, ShieldCheck, Sparkles, HelpCircle
 import PageHeroSection from '../components/sections/PageHeroSection.jsx';
 import DownloadAppCTA from '../components/sections/DownloadAppCTA.jsx';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
+import SectionHeading from '../components/atoms/SectionHeading.jsx';
 import ContactCTA from '../components/sections/ContactCTA.jsx';
 
 export default function EssaiGratuitDemPro() {
@@ -15,28 +16,47 @@ export default function EssaiGratuitDemPro() {
 
   const onboardingSteps = [
     {
-      num: '01',
-      title: "Téléchargez l'application DEM",
-      desc: "Disponible gratuitement sur l'App Store (iPhone) et Google Play Store (Android).",
+      num: '1',
+      title: "Téléchargez l’application DEM",
+      desc: "Installez l’application DEM sur votre téléphone et ouvrez-la.",
       tag: "Étape 1"
     },
     {
-      num: '02',
-      title: "Choisissez le profil « DEM Pro »",
-      desc: "À l'ouverture du formulaire d'inscription, cochez le compte entreprise / marchand pour activer la suite pro.",
+      num: '2',
+      title: "Renseignez votre numéro de téléphone",
+      desc: "Entrez votre numéro afin de créer votre compte DEM.",
       tag: "Étape 2"
     },
     {
-      num: '03',
-      title: "Vos 7 jours Business sont activés",
-      desc: "Aucune carte bancaire requise. Vous bénéficiez de toutes les fonctionnalités Business dès la validation.",
+      num: '3',
+      title: "Validez votre numéro",
+      desc: "Un code OTP vous sera envoyé par SMS. Il devrait arriver dans les 30 secondes. Saisissez ce code dans l’application pour continuer.",
       tag: "Étape 3"
     },
     {
-      num: '04',
-      title: "Créez votre catalogue & expédiez",
-      desc: "Partagez votre boutique par lien WhatsApp / Instagram et programmez vos livraisons partout à Dakar.",
+      num: '4',
+      title: "Choisissez « DEM Pro »",
+      desc: "Lors du choix de votre type de compte, sélectionnez DEM Pro pour accéder aux fonctionnalités destinées aux professionnels.",
       tag: "Étape 4"
+    },
+    {
+      num: '5',
+      title: "Renseignez les informations demandées",
+      desc: "Complétez les informations concernant votre activité ou votre entreprise, puis envoyez votre demande.",
+      tag: "Étape 5"
+    },
+    {
+      num: '6',
+      title: "Attendez la validation de votre compte",
+      desc: "Notre équipe vérifie votre demande. La validation se fait généralement dans l’heure.",
+      tag: "Étape 6"
+    },
+    {
+      num: '7',
+      title: "Demandez votre essai gratuit",
+      desc: "Une fois votre compte DEM Pro validé, rendez-vous dans la section Business et demandez votre essai gratuit de 7 jours.",
+      tag: "Étape 7 · 7 Jours Offerts",
+      isHighlight: true
     }
   ];
 
@@ -82,49 +102,66 @@ export default function EssaiGratuitDemPro() {
         watermark="ESSAI PRO"
       />
 
-      {/* ── 2. SECTION ÉTAPES D'ONBOARDING ── */}
+      {/* ── 2. SECTION ÉTAPES D'ONBOARDING (7 ÉTAPES) ── */}
       <section className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-slate-50">
         <div className="max-w-[1400px] mx-auto">
           
-          <div className="mb-14 text-center max-w-3xl mx-auto">
-            <MiniTitleWithBar content="PARCOURS D'ACTIVATION RAPIDE" />
-            <h2 className="text-3xl sm:text-5xl font-black uppercase text-[#021520] tracking-tight mt-3 mb-4 font-['DM_Sans',sans-serif]">
-              Comment démarrer votre essai gratuit ?
-            </h2>
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
-              En moins de 3 minutes sur votre téléphone, votre compte DEM Pro est configuré et prêt pour vos expéditions.
+          <div className="mb-14">
+            {/* <MiniTitleWithBar content="PARCOURS D'ACTIVATION ÉTAPE PAR ÉTAPE" /> */}<SectionHeading
+              align="left"
+              title="COMMENT DÉMARRER VOTRE "
+              highlight="ESSAI GRATUIT ?"
+              subtitle="PARCOURS D'ACTIVATION ÉTAPE PAR ÉTAPE"
+              titleColor="text-dark"
+              highlightColor="var(--color-cyan-2, #0086C8)"
+              scriptColor="text-cyan-2"
+              titleSize="text-3xl md:text-5xl lg:text-6xl"
+              className="mt-4"
+            />
+            <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed font-['Poppins',sans-serif] max-w-3xl">
+              Suivez ces 7 étapes simples pour activer vos 7 jours d'essai Business et profiter de toute la puissance de DEM Pro.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {onboardingSteps.map((step, idx) => (
               <div
                 key={idx}
-                className="bg-white p-8 border border-black/10 hover:border-[#0086C8] hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative"
+                className={`p-7 sm:p-8 border transition-all duration-300 flex flex-col justify-between group relative ${
+                  step.isHighlight
+                    ? 'bg-gradient-to-br from-white via-white to-[#00D2FF]/15 border-[#0086C8] shadow-lg xl:col-span-2'
+                    : 'bg-white border-black/10 hover:border-[#0086C8] hover:shadow-xl'
+                }`}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="text-3xl font-black font-mono text-[#0086C8] group-hover:scale-110 transition-transform">
+                  <div className="flex items-center justify-between mb-5">
+                    <span className={`text-3xl font-black font-mono transition-transform group-hover:scale-110 ${
+                      step.isHighlight ? 'text-[#0086C8]' : 'text-[#0086C8]'
+                    }`}>
                       {step.num}
                     </span>
-                    <span className="text-[10px] uppercase font-bold font-mono px-2 py-1 bg-slate-100 text-slate-600 border border-slate-200">
+                    {/* <span className={`text-[10px] uppercase font-bold font-mono px-2.5 py-1 border ${
+                      step.isHighlight
+                        ? 'bg-[#00D2FF] text-[#021520] border-[#00D2FF]'
+                        : 'bg-slate-100 text-slate-600 border-slate-200'
+                    }`}>
                       {step.tag}
-                    </span>
+                    </span> */}
                   </div>
 
-                  <h3 className="text-xl font-bold uppercase text-[#021520] mb-3 leading-snug font-['DM_Sans',sans-serif]">
+                  <h3 className="text-lg sm:text-xl font-bold uppercase text-[#021520] mb-3 leading-snug font-['DM_Sans',sans-serif]">
                     {step.title}
                   </h3>
 
-                  <p className="text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif]">
+                  <p className="text-sm text-slate-600 leading-relaxed font-['Poppins',sans-serif] m-0">
                     {step.desc}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-[#0086C8] uppercase font-mono">
-                  <span>Étape vérifiée</span>
-                  <Check size={14} className="ml-1.5" />
-                </div>
+                {/* <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#0086C8] uppercase font-mono">
+                  <span>{step.isHighlight ? "Offre 7 jours activée" : "Étape validée"}</span>
+                  <Check size={16} className="text-[#0086C8]" />
+                </div> */}
               </div>
             ))}
           </div>
