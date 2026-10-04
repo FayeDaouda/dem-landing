@@ -35,8 +35,8 @@ const SOLUTION_POINTS = [
   {
     number: "3",
     category: "DEM PRO · Entreprise, commerce, E-commerce & Restaurateur",
-    title: "Portail marchand, catalogue digital et wallet instantané",
-    description: "Lien de commande partageable, wallet intégré, historique de toutes vos ventes et données exploitables.",
+    title: "Lien de commande partageable, wallet intégré, historique de toutes vos ventes et données exploitables.",
+    description: "Un seul espace pour piloter toutes vos ventes et vos livraisons. Lancez plusieurs courses en un clic, partagez votre lien de commande sur vos réseaux, et laissez vos factures se générer automatiquement, avec votre logo et votre NINEA si vous le souhaitez. Tout pour vendre plus, sans vous prendre la tête.",
     image: img3,
     imageAlt: "Portail DEM Pro et intégration e-commerce"
   },
