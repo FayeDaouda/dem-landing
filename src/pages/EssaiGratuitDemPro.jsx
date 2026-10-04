@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Check, ArrowRight, Smartphone, Store, ShieldCheck, Sparkles, HelpCircle } from 'lucide-react';
+import { Check, ArrowRight, Smartphone, Store, ShieldCheck, Sparkles, HelpCircle, X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import PageHeroSection from '../components/sections/PageHeroSection.jsx';
 import DownloadAppCTA from '../components/sections/DownloadAppCTA.jsx';
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx';
@@ -18,6 +18,7 @@ import finImg from '../assets/img/essaiGratuit/fin.jpeg';
 
 export default function EssaiGratuitDemPro() {
   const [selectedProfile, setSelectedProfile] = useState('pro');
+  const [modalIndex, setModalIndex] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -76,6 +77,18 @@ export default function EssaiGratuitDemPro() {
     }
   ];
 
+  // Gestion des touches clavier pour naviguer dans le modal
+  useEffect(() => {
+    if (modalIndex === null) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setModalIndex(null);
+      if (e.key === 'ArrowRight') setModalIndex((prev) => (prev < onboardingSteps.length - 1 ? prev + 1 : 0));
+      if (e.key === 'ArrowLeft') setModalIndex((prev) => (prev > 0 ? prev - 1 : onboardingSteps.length - 1));
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalIndex, onboardingSteps.length]);
+
   return (
     <div className="w-full bg-white text-[#021520] min-h-screen font-['DM_Sans',sans-serif] selection:bg-[#00D2FF] selection:text-[#021520]">
 
@@ -104,7 +117,7 @@ export default function EssaiGratuitDemPro() {
               className="mt-4"
             />
             <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed font-['Poppins',sans-serif] max-w-3xl">
-              Suivez ces 7 étapes simples pour activer vos 7 jours d'essai Business et profiter de toute la puissance de DEM Pro.
+              Suivez ces 7 étapes simples pour activer vos 7 jours d'essai Business et profiter de toute la puissance de DEM Pro. Cliquez sur une étape pour l'agrandir.
             </p>
           </div>
 
@@ -112,31 +125,38 @@ export default function EssaiGratuitDemPro() {
             {onboardingSteps.map((step, idx) => (
               <div
                 key={idx}
-                className={`p-5 sm:p-6 border transition-all duration-300 flex flex-col h-fit group relative ${
+                onClick={() => setModalIndex(idx)}
+                className={`p-5 sm:p-6 border transition-all duration-300 flex flex-col h-fit group relative cursor-pointer ${
                   step.isHighlight
-                    ? 'bg-gradient-to-br from-white via-white to-[#00D2FF]/10 border-[#0086C8] shadow-lg xl:col-span-2'
+                    ? 'bg-gradient-to-br from-white via-white to-[#00D2FF]/10 border-[#0086C8] shadow-lg hover:shadow-2xl xl:col-span-2'
                     : 'bg-white border-black/10 hover:border-[#0086C8] hover:shadow-xl'
                 }`}
               >
                 <div>
-                  {/* Visuel d'étape */}
+                  {/* Visuel d'étape avec indicateur de zoom au survol */}
                   {step.image && (
-                    <div className="relative w-full aspect-[4/5] overflow-hidden bg-slate-100 border border-black/5 mb-5">
+                    <div className="relative w-full aspect-[4/5] overflow-hidden bg-slate-100 border border-black/5 mb-5 group/img">
                       <img
                         src={step.image}
                         alt={step.title}
-                        className="w-full h-full object-contain p-2 group-hover:scale-[1.02] transition-transform duration-500"
+                        className="w-full h-full object-contain p-2 group-hover:scale-[1.03] transition-transform duration-500"
                       />
+                      <div className="absolute inset-0 bg-[#021520]/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span className="p-2.5 bg-[#021520]/90 text-white rounded-none border border-white/20 flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider shadow-lg">
+                          <ZoomIn size={14} className="text-[#00D2FF]" />
+                          <span>Agrandir</span>
+                        </span>
+                      </div>
                     </div>
                   )}
 
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-2xl sm:text-3xl font-black font-mono text-[#0086C8] transition-transform group-hover:scale-110">
-                      0{step.num}
+                      {step.num}
                     </span>
                   </div>
 
-                  <h3 className="text-base sm:text-lg font-bold uppercase text-[#021520] mb-2 leading-snug font-['DM_Sans',sans-serif]">
+                  <h3 className="text-base sm:text-lg font-bold uppercase text-[#021520] mb-2 leading-snug font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors">
                     {step.title}
                   </h3>
 
@@ -150,6 +170,104 @@ export default function EssaiGratuitDemPro() {
 
         </div>
       </section>
+
+      {/* ── MODAL LIGHTBOX INTERACTIF AVEC NAVIGATION PRÉCÉDENT / SUIVANT ── */}
+      {modalIndex !== null && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setModalIndex(null)}
+          className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 select-none"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-4xl w-full bg-[#021520] text-white border border-white/15 shadow-2xl overflow-hidden flex flex-col max-h-[94vh]"
+          >
+            {/* En-tête du modal */}
+            <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-white/10 bg-[#031c2b]">
+              <div className="flex items-center gap-3">
+                <span className="px-2.5 py-0.5 bg-[#00D2FF] text-[#021520] font-mono font-bold text-xs uppercase tracking-wider">
+                  Étape 0{modalIndex + 1}
+                </span>
+                <span className="text-white/60 font-mono text-xs">
+                  0{modalIndex + 1} / 0{onboardingSteps.length}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setModalIndex(null)}
+                aria-label="Fermer le modal"
+                className="w-9 h-9 flex items-center justify-center rounded-none bg-white/5 hover:bg-white/15 text-white/70 hover:text-white border border-white/10 transition-colors cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Corps avec image et flèches de navigation */}
+            <div className="relative flex-1 flex items-center justify-center p-4 sm:p-6 bg-[#021520] overflow-hidden min-h-[320px]">
+              {/* Bouton Précédent Flottant */}
+              <button
+                type="button"
+                onClick={() => setModalIndex((prev) => (prev > 0 ? prev - 1 : onboardingSteps.length - 1))}
+                aria-label="Étape précédente"
+                className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-10 w-10 sm:w-12 h-10 sm:h-12 flex items-center justify-center bg-[#021520]/80 hover:bg-[#00D2FF] hover:text-[#021520] text-white border border-white/20 transition-all cursor-pointer shadow-xl"
+              >
+                <ChevronLeft size={22} />
+              </button>
+
+              {/* Image haute résolution */}
+              <div className="max-h-[55vh] sm:max-h-[62vh] flex items-center justify-center">
+                <img
+                  src={onboardingSteps[modalIndex].image}
+                  alt={onboardingSteps[modalIndex].title}
+                  className="max-h-[55vh] sm:max-h-[62vh] w-auto max-w-full object-contain select-none shadow-2xl"
+                />
+              </div>
+
+              {/* Bouton Suivant Flottant */}
+              <button
+                type="button"
+                onClick={() => setModalIndex((prev) => (prev < onboardingSteps.length - 1 ? prev + 1 : 0))}
+                aria-label="Étape suivante"
+                className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 w-10 sm:w-12 h-10 sm:h-12 flex items-center justify-center bg-[#021520]/80 hover:bg-[#00D2FF] hover:text-[#021520] text-white border border-white/20 transition-all cursor-pointer shadow-xl"
+              >
+                <ChevronRight size={22} />
+              </button>
+            </div>
+
+            {/* Pied de page du modal avec titre, description et navigation */}
+            <div className="px-5 sm:px-6 py-4 border-t border-white/10 bg-[#031c2b] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="max-w-xl">
+                <h4 className="text-base sm:text-lg font-bold uppercase text-white font-['DM_Sans',sans-serif] m-0">
+                  {onboardingSteps[modalIndex].title}
+                </h4>
+                <p className="text-xs sm:text-sm text-white/70 font-['Poppins',sans-serif] mt-1 m-0">
+                  {onboardingSteps[modalIndex].desc}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setModalIndex((prev) => (prev > 0 ? prev - 1 : onboardingSteps.length - 1))}
+                  className="px-4 py-2 border border-white/20 hover:border-[#00D2FF] hover:text-[#00D2FF] text-white text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <ChevronLeft size={16} />
+                  <span>Précédent</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setModalIndex((prev) => (prev < onboardingSteps.length - 1 ? prev + 1 : 0))}
+                  className="px-4 py-2 bg-[#00D2FF] hover:bg-white text-[#021520] text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>Suivant</span>
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── 3. RÉSULTAT FINAL : VOTRE ESPACE PRO EST PRÊT ── */}
       <section className="py-20 lg:py-28 px-6 lg:px-16 border-b border-black/10 bg-white">
