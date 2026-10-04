@@ -7,6 +7,11 @@ import coursierLambda from "../assets/img/coursierLambda2.jpg"
 import PiliersSection from '../components/sections/PiliersSection.jsx';
 import { piliersData } from '../data/servicesData.js';
 
+import img1 from '../assets/img/notreHistoire/1.jpeg'
+import img2 from '../assets/img/notreHistoire/2.jpeg'
+import img3 from '../assets/img/notreHistoire/3.jpeg'
+import img4 from '../assets/img/notreHistoire/4.jpeg'
+
 gsap.registerPlugin(ScrollTrigger);
 
 const SOLUTION_POINTS = [
@@ -15,23 +20,24 @@ const SOLUTION_POINTS = [
     category: "Le Coursier au Centre",
     title: "Une profession, pas un plan B",
     description: "Chez DEM, le coursier est au cœur du modèle. C'est le premier maillon qu'on a structuré, avec des revenus transparents, un équipement de protection, une formation terrain et des outils de navigation adaptés à Dakar. Quand le coursier est respecté, toute la chaîne en profite.",
-    image: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=900&auto=format&fit=crop&q=85",
-    imageAlt: "Coursier professionnel équipé DEM"
+    image: img1,
+    imageAlt: "Coursier professionnel équipé DEM",
+    imagePosition: "object-top"
   },
   {
     number: "2",
     category: "L'Expérience Client",
     title: "SUIVI LIVE, PAIEMENT SÉCURISÉ ",
     description: "Suivez votre colis en temps réel sur la carte. Votre prix est connu dès la commande, et vous payez en ligne ou à la livraison, en toute confiance. À chaque étape, notre service client est à vos côtés en cas de besoin, de la commande jusqu'à la réception. Tout est clair, du départ à l'arrivée : une expérience au niveau des meilleurs, pensée pour Dakar.",
-    image: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=900&auto=format&fit=crop&q=85",
+    image: img2,
     imageAlt: "Expérience client suivi GPS et paiement sécurisé"
   },
   {
     number: "3",
-    category: "DEM Pro · Entreprises & E-Commerce",
+    category: "DEM PRO · Entreprise, commerce, E-commerce & Restaurateur",
     title: "Portail marchand, catalogue digital et wallet instantané",
-    description: "Un seul espace pour piloter toutes vos ventes et vos livraisons. Lancez plusieurs courses en un clic, partagez votre lien de commande sur vos réseaux, et laissez vos factures se générer automatiquement, avec votre logo et votre NINEA si vous le souhaitez. Tout pour vendre plus, sans vous prendre la tête.",
-    image: "https://images.unsplash.com/photo-1526367790999-0150786686a2?w=900&auto=format&fit=crop&q=85",
+    description: "Lien de commande partageable, wallet intégré, historique de toutes vos ventes et données exploitables.",
+    image: img3,
     imageAlt: "Portail DEM Pro et intégration e-commerce"
   },
   {
@@ -39,7 +45,7 @@ const SOLUTION_POINTS = [
     category: "Chef de Flotte",
     title: "Structurez votre flotte, développez votre activité",
     description: "Vous gérez déjà des coursiers ? DEM vous donne le cadre pour professionnaliser votre activité : des pass prépayés dégressifs, un dispatch automatique et des revenus plus prévisibles. Avec votre compte DEM Chef de flotte, vous suivez la performance de chaque coursier à tout instant, sur téléphone, tablette ou ordinateur. Et nous formons vos coursiers à notre méthode de travail. Votre flotte devient une vraie entreprise logistique.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=85",
+    image: img4,
     imageAlt: "Gestion de flotte et tableau de bord Chef de Flotte"
   }
 ];
@@ -488,6 +494,7 @@ export default function NotreHistoire() {
                 description={point.description}
                 image={point.image}
                 imageAlt={point.imageAlt}
+                imagePosition={point.imagePosition}
                 isReversed={index % 2 !== 0}
               />
             ))}

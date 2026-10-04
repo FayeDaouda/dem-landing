@@ -3,6 +3,10 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SectionHeading from '../atoms/SectionHeading.jsx';
+import min45 from '../../assets/img/horGallery/45min.jpeg'
+import tracabilite from '../../assets/img/horGallery/tracabilite.jpeg'
+import revenus from '../../assets/img/horGallery/revenus.jpeg'
+import business from '../../assets/img/horGallery/business.jpeg'
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,7 +16,7 @@ const DEFAULT_DEM_SERVICES = [
     title: '< 45 min Chrono',
     category: 'Vitesse & Fiabilité',
     badge: 'Point à Point',
-    image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=1200&auto=format&fit=crop',
+    image: min45,
     description: 'Une course sans détour. Votre colis est récupéré et livré en moins de 45 minutes, partout à Dakar.',
   },
   {
@@ -20,7 +24,7 @@ const DEFAULT_DEM_SERVICES = [
     title: '100% Traçabilité',
     category: 'Technologie Connectée',
     badge: 'GPS en Direct',
-    image: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?q=80&w=1200&auto=format&fit=crop',
+    image: tracabilite,
     description: 'Suivez votre coursier en temps réel sur la carte et soyez informé à chaque étape de la course grâce aux notifications. Partagez le lien de suivi à votre destinataire, et une fois le colis remis, le coursier peut envoyer une photo comme preuve de livraison.',
   },
   {
@@ -28,7 +32,7 @@ const DEFAULT_DEM_SERVICES = [
     title: 'Revenus & Dignité',
     category: 'Impact Social',
     badge: 'Chauffeurs & Flotte',
-    image: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?q=80&w=1200&auto=format&fit=crop',
+    image: revenus,
     description: 'Des revenus justes pour nos coursiers. Ils gardent 100 % de leurs courses, sont formés, équipés en matériel homologué, et accompagnés par une équipe à leurs côtés à chaque course.',
   },
   {
@@ -36,7 +40,7 @@ const DEFAULT_DEM_SERVICES = [
     title: 'Solution Business',
     category: 'B2B & E-Commerce',
     badge: 'Portail Pro & API',
-    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop',
+    image: business,
     description: 'Programmez vos expéditions régulières, encaissez en mobile money et retrouvez toutes vos factures au même endroit, depuis votre compte DEM Pro.',
   },
 ];
@@ -159,7 +163,7 @@ export const HorizontalGallery = ({ services = DEFAULT_DEM_SERVICES, theme = 'da
               <img
                 src={zone.image}
                 alt={zone.title}
-                className="w-full h-full object-cover object-center opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700 ease-out"
+                className="w-full h-full object-cover object-center  transition-all duration-700 ease-out"
               />
 
               <div className="absolute inset-0 bg-[#021520]/80 p-6 md:p-10 flex flex-col justify-between">

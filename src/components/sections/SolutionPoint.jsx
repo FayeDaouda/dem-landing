@@ -5,6 +5,7 @@ export default function SolutionPoint({
   description,
   image,
   imageAlt,
+  imagePosition = "object-center",
   isReversed = false,
 }) {
   return (
@@ -30,7 +31,7 @@ export default function SolutionPoint({
           <img
             src={image}
             alt={imageAlt || title}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            className={`w-full h-full object-cover ${imagePosition} hover:scale-105 transition-transform duration-500`}
           />
         </div>
       </div>

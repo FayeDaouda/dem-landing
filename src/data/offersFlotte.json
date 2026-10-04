@@ -34,9 +34,9 @@
     "badgeLabel": "LE MEILLEUR PRIX PAR JOUR",
     "integrationFee": "Frais d'intégration : 12 500 F par coursier, payés une seule fois (formation + tenue officielle)",
     "description": "26 jours payés, 4 dimanches offerts : le tarif le plus avantageux pour une flotte qui roule tout le mois.",
-    "priceMain": "31 200 F",
-    "priceSuffix": "par coursier / 30 jours",
-    "priceSub": "soit environ 1 040 F par jour",
+    "priceMain": "1 040 F",
+    "priceSuffix": "/ jour",
+    "priceSub": "31 200 F par coursier pour 1 mois",
     "features": [
       "Facturation par coursier inscrit (1 moto = 1 coursier)",
       "Accès aux courses DEM partout à Dakar, zéro commission",
