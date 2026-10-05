@@ -98,7 +98,7 @@ export default function PricingDemPro({ onSelectPlan }) {
       key: 'starter',
       name: 'DEM Pro Starter',
       tagline: 'Le tremplin',
-      priceK: '2 400',
+      priceK: '2 300',
       priceUnit: 'FCFA / semaine',
       badge: 'PRODUIT D\'APPEL',
       isFeatured: false,
@@ -109,7 +109,8 @@ export default function PricingDemPro({ onSelectPlan }) {
         'Courses programmées (3 simultanées)',
         '1 catalogue de 3 produits',
         'Analytics & filtres : 3 jours',
-        'Compte solo (1 utilisateur) · 1 adresse',
+        'Compte solo (1 utilisateur)',
+        '3 adresses enregistrées',
         'Support Standard',
         'Vente en ligne non incluse (grisé)'
       ],
@@ -134,7 +135,8 @@ export default function PricingDemPro({ onSelectPlan }) {
         'Export CSV + PDF & Factures avec logo',
         'Mes clients (CRM)',
         'Analytics & filtres : 8 jours',
-        '3 utilisateurs · 3 adresses enregistrées',
+        '3 utilisateurs par compte',
+        '5 adresses enregistrées',
         'Support Prioritaire'
       ],
       ctaText: 'Choisir Business',
@@ -156,7 +158,8 @@ export default function PricingDemPro({ onSelectPlan }) {
         '8 catalogues de 8 produits chacun',
         'Wallet (retrait 250 000 F / sem.)',
         'Analytics & filtres : 1 mois',
-        '6 utilisateurs · 5 adresses enregistrées',
+        '6 utilisateurs par compte',
+        '8 adresses enregistrées',
         'Support Dédié'
       ],
       ctaText: 'Choisir Premium',
@@ -180,7 +183,7 @@ export default function PricingDemPro({ onSelectPlan }) {
         { name: 'Factures avec logo', starter: false, business: 'Inclus', premium: 'Inclus' },
         { name: 'API DEM (brancher son site)', starter: false, business: false, premium: 'Inclus' },
         { name: 'Utilisateurs par compte', starter: '1', business: '3', premium: '6' },
-        { name: 'Adresses enregistrées', starter: '1', business: '3', premium: '5' },
+        { name: 'Adresses enregistrées', starter: '3', business: '5', premium: '8' },
         { name: 'Support', starter: 'Standard', business: 'Prioritaire', premium: 'Dédié' },
       ]
     }
@@ -458,7 +461,7 @@ export default function PricingDemPro({ onSelectPlan }) {
               </span>
             </div>
             <span className="text-slate-500 italic text-[11px]">
-              * Les tarifs s'entendent en FCFA TTC. Facturation hebdomadaire sans engagement.
+              * Tarifs par semaine en FCFA TTC, sans engagement. Les 100 F de mise en relation restent au client, le coursier garde 100 %.
             </span>
           </div>
 
