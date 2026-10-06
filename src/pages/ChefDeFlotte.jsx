@@ -27,7 +27,11 @@ import {
   HelpCircle,
   Zap,
   Lock,
-  ChevronDown
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  ZoomIn
 } from 'lucide-react';
 import offersData from '../data/offersFlotte.json';
 
@@ -38,6 +42,7 @@ export default function ChefDeFlotte() {
   const [activeScenario, setActiveScenario] = useState('reference'); // 'reference' (14 500 F/j) ou 'prudent' (6 000 F/j)
   const [openFaq, setOpenFaq] = useState(null);
   const [activeFleetView, setActiveFleetView] = useState('both');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fleetViews = [
     {
@@ -62,7 +67,40 @@ export default function ChefDeFlotte() {
       alt: 'Application Mobile Chef de Flotte DEM sur smartphone'
     }
   ];
-  const currentView = fleetViews.find(v => v.id === activeFleetView) || fleetViews[0];
+  const currentViewIndex = fleetViews.findIndex(v => v.id === activeFleetView);
+  const currentView = fleetViews[currentViewIndex >= 0 ? currentViewIndex : 0];
+
+  // Gestion clavier & Scroll Lock pour le modal Chef de Flotte
+  useEffect(() => {
+    if (!isModalOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setIsModalOpen(false);
+      if (e.key === 'ArrowRight') {
+        setActiveFleetView((prevId) => {
+          const idx = fleetViews.findIndex(v => v.id === prevId);
+          const nextIdx = idx < fleetViews.length - 1 ? idx + 1 : 0;
+          return fleetViews[nextIdx].id;
+        });
+      }
+      if (e.key === 'ArrowLeft') {
+        setActiveFleetView((prevId) => {
+          const idx = fleetViews.findIndex(v => v.id === prevId);
+          const prevIdx = idx > 0 ? idx - 1 : fleetViews.length - 1;
+          return fleetViews[prevIdx].id;
+        });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isModalOpen, fleetViews]);
 
   // Définition des 3 offres officielles de Pass Prépayé
   const OFFERS = {
@@ -571,13 +609,24 @@ export default function ChefDeFlotte() {
               </div>
 
               {/* Affichage principal de l'image sélectionnée */}
-              <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] bg-slate-50 border border-black/10 flex items-center justify-center p-4 sm:p-6 overflow-hidden shadow-sm transition-all">
+              <div
+                onClick={() => setIsModalOpen(true)}
+                className="relative w-full aspect-[4/3] sm:aspect-[16/11] bg-slate-50 border border-black/10 flex items-center justify-center p-4 sm:p-6 overflow-hidden shadow-sm transition-all cursor-pointer group/preview"
+              >
                 <img
                   key={currentView.id}
                   src={currentView.image}
                   alt={currentView.alt}
-                  className="w-full h-full object-contain animate-fadeIn"
+                  className="w-full h-full object-contain animate-fadeIn group-hover/preview:scale-[1.02] transition-transform duration-300"
                 />
+
+                {/* Badge Zoom / Agrandir au survol */}
+                <div className="absolute inset-0 bg-[#021520]/25 opacity-0 group-hover/preview:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span className="px-3 py-1.5 bg-[#021520]/90 text-white border border-white/20 flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider shadow-lg">
+                    <ZoomIn size={14} className="text-[#00D2FF]" />
+                    <span>Agrandir</span>
+                  </span>
+                </div>
               </div>
 
               {/* Miniatures interactives */}
@@ -611,6 +660,113 @@ export default function ChefDeFlotte() {
               </div>
 
             </div>
+
+            {/* Modal Lightbox Chef de Flotte */}
+            {isModalOpen && (
+              <div
+                role="dialog"
+                aria-modal="true"
+                onClick={() => setIsModalOpen(false)}
+                className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 select-none"
+              >
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className="relative max-w-5xl w-full bg-[#021520] text-white border border-white/15 shadow-2xl overflow-hidden flex flex-col max-h-[94vh]"
+                >
+                  {/* En-tête du modal */}
+                  <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-white/10 bg-[#031c2b]">
+                    <div className="flex items-center gap-3">
+                      <span className="px-2.5 py-0.5 bg-[#00D2FF] text-[#021520] font-mono font-bold text-xs uppercase tracking-wider">
+                        Chef de Flotte
+                      </span>
+                      <span className="text-white/60 font-mono text-xs">
+                        0{currentViewIndex + 1} / 0{fleetViews.length}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsModalOpen(false)}
+                      aria-label="Fermer le modal"
+                      className="w-9 h-9 flex items-center justify-center rounded-none bg-white/5 hover:bg-white/15 text-white/70 hover:text-white border border-white/10 transition-colors cursor-pointer"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+
+                  {/* Corps avec image et flèches de navigation */}
+                  <div className="relative flex-1 flex items-center justify-center p-4 sm:p-6 bg-[#021520] overflow-hidden min-h-[340px]">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const prevIdx = currentViewIndex > 0 ? currentViewIndex - 1 : fleetViews.length - 1;
+                        setActiveFleetView(fleetViews[prevIdx].id);
+                      }}
+                      aria-label="Vue précédente"
+                      className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-10 w-10 sm:w-12 h-10 sm:h-12 flex items-center justify-center bg-[#021520]/80 hover:bg-[#00D2FF] hover:text-[#021520] text-white border border-white/20 transition-all cursor-pointer shadow-xl"
+                    >
+                      <ChevronLeft size={22} />
+                    </button>
+
+                    <div className="max-h-[58vh] sm:max-h-[66vh] flex items-center justify-center">
+                      <img
+                        src={currentView.image}
+                        alt={currentView.alt}
+                        className="max-h-[58vh] sm:max-h-[66vh] w-auto max-w-full object-contain select-none shadow-2xl"
+                      />
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const nextIdx = currentViewIndex < fleetViews.length - 1 ? currentViewIndex + 1 : 0;
+                        setActiveFleetView(fleetViews[nextIdx].id);
+                      }}
+                      aria-label="Vue suivante"
+                      className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 w-10 sm:w-12 h-10 sm:h-12 flex items-center justify-center bg-[#021520]/80 hover:bg-[#00D2FF] hover:text-[#021520] text-white border border-white/20 transition-all cursor-pointer shadow-xl"
+                    >
+                      <ChevronRight size={22} />
+                    </button>
+                  </div>
+
+                  {/* Pied de page du modal */}
+                  <div className="px-5 sm:px-6 py-4 border-t border-white/10 bg-[#031c2b] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <h4 className="text-base sm:text-lg font-bold uppercase text-white font-['DM_Sans',sans-serif] m-0">
+                        {currentView.label}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-white/70 font-['Poppins',sans-serif] mt-1 m-0">
+                        {currentView.caption}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const prevIdx = currentViewIndex > 0 ? currentViewIndex - 1 : fleetViews.length - 1;
+                          setActiveFleetView(fleetViews[prevIdx].id);
+                        }}
+                        className="px-4 py-2 border border-white/20 hover:border-[#00D2FF] hover:text-[#00D2FF] text-white text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <ChevronLeft size={16} />
+                        <span>Précédent</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const nextIdx = currentViewIndex < fleetViews.length - 1 ? currentViewIndex + 1 : 0;
+                          setActiveFleetView(fleetViews[nextIdx].id);
+                        }}
+                        className="px-4 py-2 bg-[#00D2FF] hover:bg-white text-[#021520] text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <span>Suivant</span>
+                        <ChevronRight size={16} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Colonne de droite : Contenu */}
             <div className="flex flex-col gap-8 lg:pr-12">

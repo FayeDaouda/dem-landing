@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react';
 import img1 from '../../assets/img/intDemPro/img1.jpeg';
 import img2 from '../../assets/img/intDemPro/img2.jpeg';
 import img3 from '../../assets/img/intDemPro/img3.jpeg';
@@ -44,12 +44,33 @@ export default function DemProInterfaceGallery() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [modalIndex, setModalIndex] = useState(null);
 
   // Gestion du drag à la souris
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [hasMoved, setHasMoved] = useState(false);
+
+  // Clavier & Scroll Lock pour le modal
+  useEffect(() => {
+    if (modalIndex === null) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setModalIndex(null);
+      if (e.key === 'ArrowRight') setModalIndex((prev) => (prev < SCREENS.length - 1 ? prev + 1 : 0));
+      if (e.key === 'ArrowLeft') setModalIndex((prev) => (prev > 0 ? prev - 1 : SCREENS.length - 1));
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [modalIndex]);
 
   const checkScroll = useCallback(() => {
     const el = sliderRef.current;
@@ -163,8 +184,8 @@ export default function DemProInterfaceGallery() {
               L'application DEM Pro en action
             </h2>
             <p className="text-sm sm:text-base text-slate-600 font-['Poppins',sans-serif] m-0 mt-2 max-w-2xl leading-relaxed">
-              <span className="hidden lg:inline">Découvrez les 5 écrans clés de votre futur espace professionnel.</span>
-              <span className="lg:hidden">Faites glisser pour explorer les différents écrans de votre futur espace professionnel.</span>
+              <span className="hidden lg:inline">Cliquez sur un écran pour l'agrandir et découvrir les détails de votre espace pro.</span>
+              <span className="lg:hidden">Touchez un écran pour l'agrandir ou faites glisser pour explorer l'interface.</span>
             </p>
           </div>
 
@@ -206,7 +227,7 @@ export default function DemProInterfaceGallery() {
           </div>
         </div>
 
-        {/* Grille sur PC (5 colonnes directes sans carrousel) / Carrousel swipeable sur mobile & tablette */}
+        {/* Grille sur PC (5 colonnes directes) / Carrousel swipeable sur mobile & tablette */}
         <div
           ref={sliderRef}
           onMouseDown={handleMouseDown}
@@ -226,30 +247,38 @@ export default function DemProInterfaceGallery() {
             <div
               key={screen.id}
               onClick={() => {
-                if (!hasMoved) scrollToScreen(idx);
+                if (!hasMoved) {
+                  scrollToScreen(idx);
+                  setModalIndex(idx);
+                }
               }}
-              className={`screen-card w-[260px] sm:w-[300px] lg:w-full shrink-0 lg:shrink snap-start bg-white p-3.5 sm:p-4 border transition-all duration-300 shadow-sm hover:shadow-xl group flex flex-col justify-between cursor-pointer lg:cursor-default ${
+              className={`screen-card w-[260px] sm:w-[300px] lg:w-full shrink-0 lg:shrink snap-start bg-white p-3.5 sm:p-4 border transition-all duration-300 shadow-sm hover:shadow-xl group flex flex-col justify-between cursor-pointer ${
                 activeIndex === idx
                   ? 'border-[#0086C8] ring-2 ring-[#0086C8]/20 shadow-md lg:ring-0 lg:border-black/10'
                   : 'border-black/10 hover:border-[#0086C8]/60'
               }`}
             >
-              {/* Image Mobile Frame */}
-              <div className="relative aspect-[9/16] w-full overflow-hidden bg-slate-100 border border-black/5 mb-3.5">
+              {/* Image Mobile Frame avec indicateur Agrandir */}
+              <div className="relative aspect-[9/16] w-full overflow-hidden bg-slate-100 border border-black/5 mb-3.5 group/img">
                 <img
                   src={screen.image}
                   alt={screen.title}
                   draggable="false"
                   className="w-full h-full object-contain group-hover:scale-[1.03] transition-transform duration-500 pointer-events-none"
                 />
+
+                {/* Badge / Overlay d'agrandissement au survol */}
+                <div className="absolute inset-0 bg-[#021520]/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span className="px-3 py-1.5 bg-[#021520]/90 text-white rounded-none border border-white/20 flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider shadow-lg">
+                    <ZoomIn size={14} className="text-[#00D2FF]" />
+                    <span>Agrandir</span>
+                  </span>
+                </div>
               </div>
 
               {/* Méta / Titre */}
               <div className="pt-3 border-t border-slate-100 flex-1 flex flex-col justify-between">
                 <div>
-                  {/* <span className="text-[10px] sm:text-[11px] font-mono font-bold text-[#0086C8] block mb-1">
-                    0{idx + 1} · {screen.title.toUpperCase()}
-                  </span> */}
                   <h3 className="text-sm sm:text-base font-bold uppercase text-[#021520] font-['DM_Sans',sans-serif] group-hover:text-[#0086C8] transition-colors leading-snug m-0">
                     {screen.title}
                   </h3>
@@ -280,6 +309,104 @@ export default function DemProInterfaceGallery() {
         </div>
 
       </div>
+
+      {/* ── MODAL LIGHTBOX INTERACTIF (DEM PRO) ── */}
+      {modalIndex !== null && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setModalIndex(null)}
+          className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 select-none"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-4xl w-full bg-[#021520] text-white border border-white/15 shadow-2xl overflow-hidden flex flex-col max-h-[94vh]"
+          >
+            {/* En-tête du modal */}
+            <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-white/10 bg-[#031c2b]">
+              <div className="flex items-center gap-3">
+                <span className="px-2.5 py-0.5 bg-[#00D2FF] text-[#021520] font-mono font-bold text-xs uppercase tracking-wider">
+                  Écran 0{modalIndex + 1}
+                </span>
+                <span className="text-white/60 font-mono text-xs">
+                  0{modalIndex + 1} / 0{SCREENS.length}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setModalIndex(null)}
+                aria-label="Fermer le modal"
+                className="w-9 h-9 flex items-center justify-center rounded-none bg-white/5 hover:bg-white/15 text-white/70 hover:text-white border border-white/10 transition-colors cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Corps avec image et flèches de navigation */}
+            <div className="relative flex-1 flex items-center justify-center p-4 sm:p-6 bg-[#021520] overflow-hidden min-h-[340px]">
+              {/* Bouton Précédent Flottant */}
+              <button
+                type="button"
+                onClick={() => setModalIndex((prev) => (prev > 0 ? prev - 1 : SCREENS.length - 1))}
+                aria-label="Écran précédent"
+                className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-10 w-10 sm:w-12 h-10 sm:h-12 flex items-center justify-center bg-[#021520]/80 hover:bg-[#00D2FF] hover:text-[#021520] text-white border border-white/20 transition-all cursor-pointer shadow-xl"
+              >
+                <ChevronLeft size={22} />
+              </button>
+
+              {/* Image Mobile haute résolution */}
+              <div className="max-h-[55vh] sm:max-h-[64vh] flex items-center justify-center">
+                <img
+                  src={SCREENS[modalIndex].image}
+                  alt={SCREENS[modalIndex].title}
+                  className="max-h-[55vh] sm:max-h-[64vh] w-auto max-w-full object-contain select-none shadow-2xl"
+                />
+              </div>
+
+              {/* Bouton Suivant Flottant */}
+              <button
+                type="button"
+                onClick={() => setModalIndex((prev) => (prev < SCREENS.length - 1 ? prev + 1 : 0))}
+                aria-label="Écran suivant"
+                className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 w-10 sm:w-12 h-10 sm:h-12 flex items-center justify-center bg-[#021520]/80 hover:bg-[#00D2FF] hover:text-[#021520] text-white border border-white/20 transition-all cursor-pointer shadow-xl"
+              >
+                <ChevronRight size={22} />
+              </button>
+            </div>
+
+            {/* Pied de page du modal avec titre, description et navigation */}
+            <div className="px-5 sm:px-6 py-4 border-t border-white/10 bg-[#031c2b] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="max-w-xl">
+                <h4 className="text-base sm:text-lg font-bold uppercase text-white font-['DM_Sans',sans-serif] m-0">
+                  {SCREENS[modalIndex].title}
+                </h4>
+                <p className="text-xs sm:text-sm text-white/70 font-['Poppins',sans-serif] mt-1 m-0">
+                  {SCREENS[modalIndex].subtitle}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setModalIndex((prev) => (prev > 0 ? prev - 1 : SCREENS.length - 1))}
+                  className="px-4 py-2 border border-white/20 hover:border-[#00D2FF] hover:text-[#00D2FF] text-white text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <ChevronLeft size={16} />
+                  <span>Précédent</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setModalIndex((prev) => (prev < SCREENS.length - 1 ? prev + 1 : 0))}
+                  className="px-4 py-2 bg-[#00D2FF] hover:bg-white text-[#021520] text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>Suivant</span>
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
