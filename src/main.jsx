@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
@@ -7,6 +7,9 @@ import Privacy from './Privacy.jsx'
 import Terms from './Terms.jsx'
 import DeleteAccount from './DeleteAccount.jsx'
 import OrderRequest from './OrderRequest.jsx'
+
+// Chargé à la demande : la carte (Leaflet) n'alourdit pas le reste du site
+const Tracking = lazy(() => import('./Tracking.jsx'))
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -17,6 +20,10 @@ createRoot(document.getElementById('root')).render(
         <Route path="/terms" element={<Terms />} />
         <Route path="/delete-account" element={<DeleteAccount />} />
         <Route path="/commander/:merchantId" element={<OrderRequest />} />
+        <Route
+          path="/suivi/:id"
+          element={<Suspense fallback={<div style={{ minHeight: '100vh', background: '#f4f6fa' }} />}><Tracking /></Suspense>}
+        />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
