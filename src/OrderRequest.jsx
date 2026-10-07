@@ -1,702 +1,58 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import './shop/shop.css'
+import {
+  API_URL, Icon, MerchantAvatar, PAYMENT_METHODS,
+  formatFcfa, formatLocalPhone, isInZone, isValidSenegalMobile, localPhoneDigits,
+  recentOrders, rememberOrder, useLightPage,
+} from './shop/ui.jsx'
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://api.dem.sn'
+// Boutique publique d'un commerçant DEM Pro (dem.sn/commander/:id) — le
+// client final choisit ses articles, indique où livrer et comment il paiera
+// À LA RÉCEPTION, puis suit sa commande sur dem.sn/suivi/:id. Trois étapes,
+// un panier toujours visible (colonne à droite sur ordinateur, barre en bas
+// sur téléphone), et des garanties claires : rien n'est payé en ligne.
 
-const C = {
-  cyan: '#00D2FF',
-  cyan2: '#0086C8',
-  danger: '#FF5C5C',
-  success: '#00E08C',
-}
-
-// ── Icônes ligne, dessinées à la main (pas de dépendance externe, même
-// approche que App.jsx pour les logos App Store/Google Play) — évite le
-// registre "emoji partout" pour un rendu plus sobre et professionnel.
-const ICON_PATHS = {
-  bag: <><path d="M6 8h12l1 12H5L6 8z" /><path d="M9 8V6a3 3 0 016 0v2" /></>,
-  basket: <><path d="M4 8h16l-1.5 10.5a2 2 0 01-2 1.5H7.5a2 2 0 01-2-1.5L4 8z" /><path d="M8 8l1-4h6l1 4" /><path d="M9 12v4M12 12v4M15 12v4" /></>,
-  pin: <><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z" /><circle cx="12" cy="10" r="2.4" /></>,
-  crosshair: <><circle cx="12" cy="12" r="7" /><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" /></>,
-  card: <><rect x="3" y="6" width="18" height="13" rx="2.5" /><path d="M3 10.5h18" /><path d="M7 14.5h4" /></>,
-  user: <><circle cx="12" cy="8" r="3.6" /><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4" /></>,
-  box: <><path d="M3 8.5L12 4l9 4.5-9 4.5-9-4.5z" /><path d="M3 8.5V16l9 4.5 9-4.5V8.5" /><path d="M12 13v7.5" /></>,
-  check: <path d="M5 13l4 4L19 7" />,
-  phone: <><rect x="7" y="2" width="10" height="20" rx="2.2" /><path d="M11 18.4h2" /></>,
-  search: <><circle cx="11" cy="11" r="6.5" /><path d="M20 20l-4.5-4.5" /></>,
-  arrowLeft: <><path d="M19 12H5" /><path d="M11 6l-6 6 6 6" /></>,
-  linkOff: <><path d="M9 15l6-6" /><path d="M13 5l1.5-1.5a3.5 3.5 0 015 5L18 10" /><path d="M11 19l-1.5 1.5a3.5 3.5 0 01-5-5L6 14" /></>,
-}
-
-function Icon({ name, size = 18, color = 'currentColor', strokeWidth = 1.8, style }) {
-  return (
-    <svg
-      width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
-      strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round"
-      style={{ flexShrink: 0, ...style }}
-    >
-      {ICON_PATHS[name]}
-    </svg>
-  )
-}
-
-const inputStyle = {
-  width: '100%',
-  boxSizing: 'border-box',
-  background: 'rgba(255,255,255,0.05)',
-  border: '1px solid rgba(255,255,255,0.12)',
-  borderRadius: 12,
-  padding: '14px 16px',
-  fontSize: 15,
-  color: '#fff',
-  fontFamily: "'Inter', sans-serif",
-  outline: 'none',
-  transition: 'border-color .15s, box-shadow .15s',
-}
-
-const labelStyle = {
-  display: 'block',
-  fontSize: 13,
-  fontWeight: 600,
-  color: 'rgba(255,255,255,0.7)',
-  marginBottom: 8,
-}
-
-const sectionCardStyle = {
-  background: 'rgba(255,255,255,0.04)',
-  border: '1px solid rgba(255,255,255,0.1)',
-  borderRadius: 16,
-  padding: '20px 20px',
-  marginBottom: 20,
-}
-
-const sectionTitleStyle = {
-  fontSize: 15,
-  fontWeight: 800,
-  color: '#fff',
-  marginBottom: 14,
-  display: 'flex',
-  alignItems: 'center',
-  gap: 10,
-}
-
-function SectionTitle({ icon, children }) {
-  return (
-    <div style={sectionTitleStyle}>
-      <span style={{
-        width: 30, height: 30, borderRadius: 9, flexShrink: 0,
-        background: 'rgba(0,210,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}>
-        <Icon name={icon} size={16} color={C.cyan} />
-      </span>
-      {children}
-    </div>
-  )
-}
-
-const primaryBtnStyle = (enabled) => ({
-  width: '100%',
-  background: enabled ? `linear-gradient(135deg, ${C.cyan}, ${C.cyan2})` : 'rgba(255,255,255,0.08)',
-  color: enabled ? '#021520' : 'rgba(255,255,255,0.4)',
-  border: 'none',
-  borderRadius: 14,
-  padding: '16px',
-  fontSize: 15,
-  fontWeight: 800,
-  fontFamily: "'Inter', sans-serif",
-  cursor: enabled ? 'pointer' : 'not-allowed',
-  transition: 'transform .15s, box-shadow .15s',
-})
-
-function Field({ label, required, children }) {
-  return (
-    <div style={{ marginBottom: 18 }}>
-      <label style={labelStyle}>{label}{required && <span style={{ color: C.cyan }}> *</span>}</label>
-      {children}
-    </div>
-  )
-}
-
-function formatFcfa(n) {
-  return `${Math.round(n).toLocaleString('fr-FR')} FCFA`
-}
-
-// Mêmes préfixes que isValidSenegalMobile côté app (senegal_phone.dart) —
-// Orange (71/77/78), Free (76/75), Expresso (70), 9 chiffres sans le +221.
-function isValidSenegalMobile(digits) {
-  return /^(70|71|75|76|77|78)\d{7}$/.test(digits)
-}
-
+const STEPS = ['Articles', 'Livraison', 'Confirmation']
+// Carte chargée seulement à l'étape Livraison (Leaflet)
+const MapPicker = lazy(() => import('./shop/MapPicker.jsx'))
 const newSessionToken = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`
 
-// ── Vignette produit — image si le commerçant en a mis une, sinon l'icône
-// catalogue (jamais bloquant : la photo est optionnelle côté DEM Pro).
-function ProductThumb({ url, size = 44 }) {
-  const [failed, setFailed] = useState(false)
-  const base = {
-    width: size, height: size, borderRadius: 10, flexShrink: 0,
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    background: 'rgba(0,210,255,0.08)',
-  }
-  if (!url || failed) {
-    return <div style={base}><Icon name="bag" size={size * 0.45} color="rgba(255,255,255,0.35)" /></div>
-  }
-  return (
-    <img
-      src={url}
-      alt=""
-      onError={() => setFailed(true)}
-      style={{ ...base, background: undefined, objectFit: 'cover' }}
-    />
-  )
-}
-
-// ── Bannière "Ouvrir dans l'app" ────────────────────────────────────────────
-// Lien personnalisé (pas de vrai lien universel https pour l'instant) —
-// propose l'ouverture au tap, échoue silencieusement si l'app n'est pas
-// installée (compromis accepté, aucune détection d'installation possible
-// sans tooling supplémentaire).
-function OpenInAppBanner({ merchantId }) {
-  const [isMobile, setIsMobile] = useState(false)
-  useEffect(() => {
-    setIsMobile(/android|iphone|ipad|ipod/i.test(navigator.userAgent))
-  }, [])
-  if (!isMobile) return null
-  return (
-    <a
-      href={`dem://commander/${merchantId}`}
-      style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-        background: 'rgba(0,210,255,0.12)', borderBottom: '1px solid rgba(0,210,255,0.25)',
-        color: '#fff', textDecoration: 'none', padding: '12px 16px', fontSize: 13.5, fontWeight: 700,
-      }}
-    >
-      <Icon name="phone" size={15} color={C.cyan} /> Ouvrir dans l'app DEM
-    </a>
-  )
-}
-
-// ── Indicateur de progression (4 étapes) ────────────────────────────────────
-const STEP_LABELS = ['Catalogue', 'Adresse', 'Paiement', 'Résumé']
-
-function StepIndicator({ step, onBack }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
-      {step > 1 && (
-        <button
-          type="button"
-          onClick={onBack}
-          aria-label="Retour"
-          className="dem-icon-btn"
-          style={{
-            width: 34, height: 34, borderRadius: 10, flexShrink: 0, cursor: 'pointer',
-            background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
-            color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-        ><Icon name="arrowLeft" size={16} /></button>
-      )}
-      <div style={{ flex: 1 }}>
-        <div style={{ display: 'flex', gap: 6, marginBottom: 6 }}>
-          {[1, 2, 3, 4].map(n => (
-            <div
-              key={n}
-              style={{
-                flex: 1, height: 4, borderRadius: 2,
-                background: n <= step ? C.cyan : 'rgba(255,255,255,0.12)',
-                transition: 'background .2s',
-              }}
-            />
-          ))}
-        </div>
-        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', margin: 0, fontWeight: 600 }}>
-          Étape {step}/4 — {STEP_LABELS[step - 1]}
-        </p>
-      </div>
-    </div>
-  )
-}
-
-// ── Étape 1 : Catalogue ──────────────────────────────────────────────────────
-function CatalogueStep({ products, cart, cartItems, cartTotal, onChangeQty, onNext }) {
-  const categories = useMemo(() => {
-    const set = new Set()
-    for (const p of products) {
-      const cat = p.category?.trim()
-      if (cat) set.add(cat)
-    }
-    return [...set].sort()
-  }, [products])
-
-  const [selected, setSelected] = useState('Tous')
-  const [query, setQuery] = useState('')
-
-  const visibleProducts = useMemo(() => {
-    let list = selected === 'Tous'
-      ? products
-      : products.filter(p => (p.category?.trim() || 'Autres produits') === selected)
-    const q = query.trim().toLowerCase()
-    if (q) list = list.filter(p => p.name.toLowerCase().includes(q))
-    return list
-  }, [products, selected, query])
-
-  const canNext = cartItems.length > 0
-  const showSearch = products.length >= 8
-
-  return (
-    <div>
-      <div style={sectionCardStyle}>
-        <SectionTitle icon="bag">Catalogue</SectionTitle>
-
-        {products.length === 0 ? (
-          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', margin: 0 }}>
-            Ce commerçant n'a pas encore de produits dans son catalogue.
-          </p>
-        ) : (
-          <>
-            {showSearch && (
-              <div style={{ position: 'relative', marginBottom: 14 }}>
-                <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-                  <Icon name="search" size={16} color="rgba(255,255,255,0.4)" />
-                </span>
-                <input
-                  className="dem-input"
-                  style={{ ...inputStyle, padding: '12px 14px 12px 40px', fontSize: 14 }}
-                  value={query}
-                  onChange={e => setQuery(e.target.value)}
-                  placeholder="Rechercher un produit…"
-                />
-              </div>
-            )}
-
-            {categories.length > 0 && (
-              <div className="dem-chip-scroll" style={{ position: 'relative', marginBottom: 4 }}>
-                <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 12 }}>
-                  {['Tous', ...categories].map(cat => {
-                    const active = selected === cat
-                    return (
-                      <button
-                        key={cat}
-                        type="button"
-                        onClick={() => setSelected(cat)}
-                        style={{
-                          flexShrink: 0, padding: '8px 14px', borderRadius: 20, cursor: 'pointer',
-                          border: active ? `1.5px solid ${C.cyan}` : '1px solid rgba(255,255,255,0.14)',
-                          background: active ? 'rgba(0,210,255,0.14)' : 'rgba(255,255,255,0.04)',
-                          color: active ? C.cyan : 'rgba(255,255,255,0.7)',
-                          fontSize: 13, fontWeight: 700, fontFamily: "'Inter', sans-serif", whiteSpace: 'nowrap',
-                        }}
-                      >
-                        {cat}
-                      </button>
-                    )
-                  })}
-                </div>
-                <div className="dem-chip-fade" />
-              </div>
-            )}
-
-            {visibleProducts.length === 0 ? (
-              <p style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: '20px 0', margin: 0 }}>
-                Aucun produit ne correspond à votre recherche.
-              </p>
-            ) : (
-              <div style={{ maxHeight: '55vh', overflowY: 'auto', paddingRight: 4 }}>
-                {visibleProducts.map(p => {
-                  const qty = cart[p.id] || 0
-                  const atMax = p.quantity != null && qty >= p.quantity
-                  return (
-                    <div
-                      key={p.id}
-                      style={{
-                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                        padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.06)',
-                      }}
-                    >
-                      <ProductThumb url={p.image} />
-                      <div style={{ minWidth: 0, flex: 1, margin: '0 12px' }}>
-                        <p style={{ fontSize: 14.5, fontWeight: 600, color: '#fff', margin: 0 }}>{p.name}</p>
-                        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: '2px 0 0' }}>
-                          {p.defaultPrice != null ? formatFcfa(p.defaultPrice) : 'Prix sur demande'}
-                        </p>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-                        <button
-                          type="button"
-                          onClick={() => onChangeQty(p.id, Math.max(0, qty - 1))}
-                          disabled={qty === 0}
-                          style={qtyBtnStyle(qty === 0)}
-                        >−</button>
-                        <span style={{ fontSize: 14, fontWeight: 700, color: '#fff', minWidth: 16, textAlign: 'center' }}>{qty}</span>
-                        <button
-                          type="button"
-                          onClick={() => onChangeQty(p.id, qty + 1)}
-                          disabled={atMax}
-                          style={qtyBtnStyle(atMax)}
-                        >+</button>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-          </>
-        )}
-      </div>
-
-      {cartItems.length > 0 && (
-        <div style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          padding: '12px 16px', marginBottom: 14, borderRadius: 12,
-          background: 'rgba(0,210,255,0.08)', border: '1px solid rgba(0,210,255,0.2)',
-        }}>
-          <span style={{ fontSize: 13.5, color: '#fff', fontWeight: 600 }}>
-            {cartItems.length} article{cartItems.length > 1 ? 's' : ''}
-          </span>
-          <span style={{ fontSize: 15, fontWeight: 800, color: C.cyan }}>{formatFcfa(cartTotal)}</span>
-        </div>
-      )}
-
-      <button type="button" disabled={!canNext} className="dem-primary-btn" onClick={onNext} style={primaryBtnStyle(canNext)}>
-        Choisir l'adresse
-      </button>
-      {!canNext && (
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textAlign: 'center', marginTop: 12 }}>
-          Choisissez au moins un produit
-        </p>
-      )}
-    </div>
-  )
-}
-
-function qtyBtnStyle(disabled) {
-  return {
-    width: 30, height: 30, borderRadius: 8, border: '1px solid rgba(255,255,255,0.15)',
-    background: disabled ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.1)',
-    color: disabled ? 'rgba(255,255,255,0.3)' : '#fff',
-    fontSize: 16, fontWeight: 700, cursor: disabled ? 'default' : 'pointer',
-  }
-}
-
-// ── Étape 2 : Adresse (GPS ou saisie + suggestions) ──────────────────────────
-function AddressStep({ address, onAddressChange, onSelectPlace, onUseGps, gpsLoading, gpsError, onNext }) {
-  const [query, setQuery] = useState(address)
-  const [suggestions, setSuggestions] = useState([])
-  const [open, setOpen] = useState(false)
-  const sessionToken = useRef(newSessionToken())
-  const debounceRef = useRef(null)
-
-  useEffect(() => setQuery(address), [address])
-
-  function handleChange(v) {
-    setQuery(v)
-    onAddressChange(v)
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    if (v.trim().length < 3) { setSuggestions([]); setOpen(false); return }
-    debounceRef.current = setTimeout(async () => {
-      try {
-        const res = await fetch(
-          `${API_URL}/public/places/autocomplete?input=${encodeURIComponent(v)}&sessionToken=${sessionToken.current}`,
-        )
-        const data = await res.json()
-        setSuggestions(data.predictions || [])
-        setOpen(true)
-      } catch {
-        setSuggestions([])
-      }
-    }, 350)
-  }
-
-  async function pick(prediction) {
-    setOpen(false)
-    setQuery(prediction.description)
-    onAddressChange(prediction.description)
-    try {
-      const res = await fetch(
-        `${API_URL}/public/places/details?placeId=${prediction.place_id}&sessionToken=${sessionToken.current}`,
-      )
-      const data = await res.json()
-      if (data.lat != null && data.lng != null) {
-        onSelectPlace({ address: data.address || prediction.description, lat: data.lat, lng: data.lng })
-      }
-    } catch {
-      // best-effort — l'adresse texte reste renseignée même si la résolution échoue
-    }
-    sessionToken.current = newSessionToken()
-  }
-
-  const canNext = address.trim().length >= 4
-
-  return (
-    <div>
-      <div style={sectionCardStyle}>
-        <SectionTitle icon="pin">Adresse de livraison</SectionTitle>
-        <button
-          type="button"
-          onClick={onUseGps}
-          disabled={gpsLoading}
-          style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-            width: '100%', marginBottom: 8, padding: '12px 16px', borderRadius: 12,
-            border: '1px solid rgba(0,210,255,0.3)', background: 'rgba(0,210,255,0.08)',
-            color: C.cyan, fontSize: 14, fontWeight: 700, cursor: gpsLoading ? 'default' : 'pointer',
-            fontFamily: "'Inter', sans-serif",
-          }}
-        >
-          <Icon name="crosshair" size={16} color={C.cyan} />
-          {gpsLoading ? 'Localisation…' : 'Utiliser ma position actuelle'}
-        </button>
-        {gpsError && (
-          <p style={{ fontSize: 12.5, color: C.danger, margin: '0 0 14px' }}>{gpsError}</p>
-        )}
-        <div style={{ position: 'relative', marginTop: gpsError ? 0 : 6 }}>
-          <input
-            className="dem-input"
-            style={inputStyle}
-            value={query}
-            onChange={e => handleChange(e.target.value)}
-            onFocus={() => suggestions.length > 0 && setOpen(true)}
-            placeholder="Quartier, rue, numéro…"
-          />
-          {open && suggestions.length > 0 && (
-            <div style={{
-              position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 4, zIndex: 10,
-              background: '#0A2233', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 12,
-              overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
-            }}>
-              {suggestions.map(s => (
-                <div
-                  key={s.place_id}
-                  onClick={() => pick(s)}
-                  style={{ padding: '12px 16px', fontSize: 13.5, color: '#fff', cursor: 'pointer', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
-                >
-                  {s.description}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <button type="button" disabled={!canNext} className="dem-primary-btn" onClick={onNext} style={primaryBtnStyle(canNext)}>
-        Continuer
-      </button>
-      {!canNext && (
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textAlign: 'center', marginTop: 12 }}>
-          Renseignez l'adresse de livraison
-        </p>
-      )}
-    </div>
-  )
-}
-
-// ── Étape 3 : Mode de paiement + coordonnées ─────────────────────────────────
-// Pas de logos de marque (Wave/Orange Money/Free Money) — un badge de
-// couleur + le nom suffit à identifier le moyen de paiement sans dépendre
-// d'assets externes, même esprit "sobre" que le reste de la page.
-const PAYMENT_METHODS = [
-  { value: 'CASH', label: 'Espèces', color: '#00E08C' },
-  { value: 'WAVE', label: 'Wave', color: '#1DC8CE' },
-  { value: 'ORANGE_MONEY', label: 'Orange Money', color: '#FF7A00' },
-  { value: 'FREE_MONEY', label: 'Free Money', color: '#7B61FF' },
-]
-
-function PaymentStep({
-  paymentMethod, onChangePaymentMethod,
-  landmark, onChangeLandmark, notes, onChangeNotes,
-  customerName, onChangeName, customerPhone, onChangePhone,
-  onNext,
-}) {
-  const phoneDigits = customerPhone.replace(/\D/g, '')
-  const phoneValid = isValidSenegalMobile(phoneDigits)
-  const canNext = phoneValid
-
-  return (
-    <div>
-      <div style={sectionCardStyle}>
-        <SectionTitle icon="card">Mode de paiement à la livraison</SectionTitle>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-          {PAYMENT_METHODS.map(m => {
-            const active = paymentMethod === m.value
-            return (
-              <button
-                key={m.value}
-                type="button"
-                onClick={() => onChangePaymentMethod(m.value)}
-                style={{
-                  padding: '14px 12px', borderRadius: 12, cursor: 'pointer',
-                  border: active ? `1.5px solid ${C.cyan}` : '1px solid rgba(255,255,255,0.12)',
-                  background: active ? 'rgba(0,210,255,0.12)' : 'rgba(255,255,255,0.04)',
-                  color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: "'Inter', sans-serif",
-                  display: 'flex', alignItems: 'center', gap: 10,
-                }}
-              >
-                <span style={{ width: 10, height: 10, borderRadius: '50%', background: m.color, flexShrink: 0 }} />
-                {m.label}
-              </button>
-            )
-          })}
-        </div>
-      </div>
-
-      <div style={sectionCardStyle}>
-        <SectionTitle icon="box">Repère &amp; instructions</SectionTitle>
-        <Field label="Repère (optionnel)">
-          <input
-            className="dem-input"
-            style={inputStyle}
-            value={landmark}
-            onChange={e => onChangeLandmark(e.target.value)}
-            placeholder="Ex: face à la pharmacie, portail bleu…"
-          />
-        </Field>
-        <div style={{ marginBottom: 0 }}>
-          <label style={labelStyle}>Instructions pour le livreur (optionnel)</label>
-          <textarea
-            className="dem-input"
-            style={{ ...inputStyle, resize: 'vertical', minHeight: 60, fontFamily: "'Inter', sans-serif" }}
-            value={notes}
-            onChange={e => onChangeNotes(e.target.value)}
-            placeholder="Ex: m'appeler à l'arrivée…"
-          />
-        </div>
-      </div>
-
-      <div style={sectionCardStyle}>
-        <SectionTitle icon="user">Vos coordonnées</SectionTitle>
-        <Field label="Votre nom (optionnel)">
-          <input
-            className="dem-input"
-            style={inputStyle}
-            value={customerName}
-            onChange={e => onChangeName(e.target.value)}
-            placeholder="Prénom Nom"
-            autoComplete="name"
-          />
-        </Field>
-        <div style={{ marginBottom: 0 }}>
-          <label style={labelStyle}>Votre téléphone<span style={{ color: C.cyan }}> *</span></label>
-          <input
-            className="dem-input"
-            style={inputStyle}
-            value={customerPhone}
-            onChange={e => onChangePhone(e.target.value)}
-            placeholder="77 000 00 00"
-            type="tel"
-            autoComplete="tel"
-          />
-          {customerPhone.trim().length > 0 && !phoneValid && (
-            <p style={{ fontSize: 12.5, color: C.danger, margin: '8px 0 0' }}>
-              Numéro mobile invalide (7X XXX XX XX)
-            </p>
-          )}
-        </div>
-      </div>
-
-      <button type="button" disabled={!canNext} className="dem-primary-btn" onClick={onNext} style={primaryBtnStyle(canNext)}>
-        Finaliser ma commande
-      </button>
-      {!canNext && (
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textAlign: 'center', marginTop: 12 }}>
-          Renseignez un numéro de téléphone valide
-        </p>
-      )}
-    </div>
-  )
-}
-
-// ── Étape 4 : Résumé ─────────────────────────────────────────────────────────
-function ReviewStep({
-  cartItems, cartTotal, deliveryAddress, landmark, notes,
-  paymentMethod, customerName, customerPhone,
-  submitting, submitError, onSubmit,
-}) {
-  const payment = PAYMENT_METHODS.find(m => m.value === paymentMethod)
-  return (
-    <div>
-      <div style={sectionCardStyle}>
-        <SectionTitle icon="basket">Votre panier</SectionTitle>
-        {cartItems.map(item => (
-          <div key={item.productId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
-            <ProductThumb url={item.image} size={32} />
-            <div style={{ minWidth: 0, flex: 1, margin: '0 12px' }}>
-              <p style={{ fontSize: 14, color: '#fff', margin: 0 }}>{item.name} × {item.quantity}</p>
-            </div>
-            <span style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.7)' }}>{formatFcfa(item.price * item.quantity)}</span>
-          </div>
-        ))}
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 12, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-          <span style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>Total</span>
-          <span style={{ fontSize: 17, fontWeight: 800, color: C.cyan }}>{formatFcfa(cartTotal)}</span>
-        </div>
-      </div>
-
-      <div style={sectionCardStyle}>
-        <SectionTitle icon="pin">Livraison</SectionTitle>
-        <p style={{ fontSize: 14, color: '#fff', margin: 0 }}>{deliveryAddress}</p>
-        {landmark && <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '6px 0 0' }}>Repère : {landmark}</p>}
-        {notes && <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '4px 0 0' }}>Instructions : {notes}</p>}
-      </div>
-
-      <div style={sectionCardStyle}>
-        <SectionTitle icon="card">Paiement &amp; contact</SectionTitle>
-        <p style={{ fontSize: 14, color: '#fff', margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ width: 9, height: 9, borderRadius: '50%', background: payment?.color }} />
-          {payment?.label} — à la livraison
-        </p>
-        {customerName && <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '8px 0 0' }}>{customerName}</p>}
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: '4px 0 0' }}>{customerPhone}</p>
-      </div>
-
-      {submitError && (
-        <div style={{
-          background: 'rgba(255,92,92,0.1)', border: '1px solid rgba(255,92,92,0.3)',
-          borderRadius: 10, padding: '12px 16px', marginBottom: 16, fontSize: 13.5, color: '#FFB3B3',
-        }}>
-          {submitError}
-        </div>
-      )}
-
-      <button type="button" disabled={submitting} className="dem-primary-btn" onClick={onSubmit} style={primaryBtnStyle(!submitting)}>
-        {submitting ? 'Envoi en cours…' : `Envoyer ma commande — ${formatFcfa(cartTotal)}`}
-      </button>
-    </div>
-  )
-}
-
-// ── Écran principal ───────────────────────────────────────────────────────────
 export default function OrderRequest() {
   const { merchantId } = useParams()
+  useLightPage()
 
   const [merchant, setMerchant] = useState(null)
   const [loadState, setLoadState] = useState('loading') // loading | ready | notfound
-
-  const [products, setProducts] = useState([])
-  const [cart, setCart] = useState({}) // { [productId]: quantity }
-
+  const [products, setProducts] = useState(null) // null = en cours de chargement
+  const [cart, setCart] = useState({}) // { [productId]: quantité }
   const [step, setStep] = useState(1)
 
-  const [deliveryAddress, setDeliveryAddress] = useState('')
-  const [deliveryLat, setDeliveryLat] = useState(null)
-  const [deliveryLng, setDeliveryLng] = useState(null)
-  const [gpsLoading, setGpsLoading] = useState(false)
-  const [gpsError, setGpsError] = useState(null)
-
-  const [paymentMethod, setPaymentMethod] = useState('CASH')
-  const [customerName, setCustomerName] = useState('')
-  const [customerPhone, setCustomerPhone] = useState('')
+  const [address, setAddress] = useState('')
+  const [coords, setCoords] = useState(null) // { lat, lng } une fois localisée
   const [landmark, setLandmark] = useState('')
   const [notes, setNotes] = useState('')
-  const [website, setWebsite] = useState('')
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('') // 9 chiffres
+  const [payment, setPayment] = useState('CASH')
+  const [website, setWebsite] = useState('') // pot de miel anti-robot
+  const [touched, setTouched] = useState(false)
 
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
-  const [submitted, setSubmitted] = useState(false)
+  const [submitted, setSubmitted] = useState(null) // { id } une fois envoyée
 
   useEffect(() => {
     let cancelled = false
     fetch(`${API_URL}/public/dem-pro/${merchantId}`)
       .then(res => { if (!res.ok) throw new Error('not found'); return res.json() })
-      .then(data => { if (!cancelled) { setMerchant(data); setLoadState('ready') } })
+      .then(data => {
+        if (cancelled) return
+        setMerchant(data)
+        if (data.inAppPayment) setPayment('WAVE')
+        setLoadState('ready')
+        document.title = `Commander chez ${data.businessName} — DEM`
+      })
       .catch(() => { if (!cancelled) setLoadState('notfound') })
     return () => { cancelled = true }
   }, [merchantId])
@@ -709,68 +65,45 @@ export default function OrderRequest() {
       .catch(() => setProducts([]))
   }, [loadState, merchantId])
 
-  const productsById = useMemo(() => new Map(products.map(p => [p.id, p])), [products])
+  // Chaque étape repart du haut de page
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }, [step, submitted])
 
-  const cartItems = useMemo(() => {
-    return Object.entries(cart)
-      .filter(([, qty]) => qty > 0)
-      .map(([productId, quantity]) => {
-        const p = productsById.get(productId)
-        return p ? { productId, name: p.name, price: p.defaultPrice ?? 0, quantity, image: p.image } : null
-      })
-      .filter(Boolean)
-  }, [cart, productsById])
-
+  const productsById = useMemo(() => new Map((products || []).map(p => [p.id, p])), [products])
+  const cartItems = useMemo(() => Object.entries(cart)
+    .filter(([, q]) => q > 0)
+    .map(([productId, quantity]) => {
+      const p = productsById.get(productId)
+      return p ? { productId, name: p.name, price: p.defaultPrice ?? 0, quantity, image: p.image } : null
+    })
+    .filter(Boolean), [cart, productsById])
+  const itemCount = cartItems.reduce((s, i) => s + i.quantity, 0)
   const cartTotal = cartItems.reduce((s, i) => s + i.price * i.quantity, 0)
 
-  function changeQty(productId, qty) {
-    setCart(prev => ({ ...prev, [productId]: qty }))
+  const phoneValid = isValidSenegalMobile(phone)
+  const addressValid = address.trim().length >= 4
+  const outOfZone = !!coords && !isInZone(merchant?.deliveryZone, coords.lat, coords.lng)
+
+  // Ce que l'étape attend encore avant de continuer (null = prête)
+  const blocker =
+    step === 1 ? (cartItems.length ? null : 'Ajoutez au moins un article')
+    : step === 2 ? (!addressValid ? 'Indiquez l\'adresse de livraison'
+      : !coords ? 'Placez votre adresse sur la carte'
+      : outOfZone ? 'Adresse hors de la zone de livraison'
+      : !phoneValid ? 'Indiquez un numéro de téléphone valide' : null)
+    : null
+
+  const previous = useMemo(
+    () => recentOrders().find(o => o.merchantId === merchantId),
+    [merchantId, submitted], // eslint-disable-line react-hooks/exhaustive-deps
+  )
+
+  function next() {
+    if (blocker) { setTouched(true); return }
+    setTouched(false)
+    setStep(s => Math.min(3, s + 1))
   }
 
-  function useGps() {
-    if (!navigator.geolocation) {
-      setGpsError("Votre navigateur ne permet pas la géolocalisation.")
-      return
-    }
-    setGpsLoading(true)
-    setGpsError(null)
-    navigator.geolocation.getCurrentPosition(
-      async pos => {
-        const { latitude, longitude } = pos.coords
-        setDeliveryLat(latitude)
-        setDeliveryLng(longitude)
-        try {
-          const res = await fetch(`${API_URL}/public/places/reverse-geocode?lat=${latitude}&lng=${longitude}`)
-          const data = await res.json()
-          setDeliveryAddress(data.address || 'Position actuelle (coordonnées GPS)')
-        } catch {
-          setDeliveryAddress('Position actuelle (coordonnées GPS)')
-        } finally {
-          setGpsLoading(false)
-        }
-      },
-      err => {
-        setGpsLoading(false)
-        if (err.code === err.PERMISSION_DENIED) {
-          setGpsError("Autorisez la localisation dans votre navigateur pour utiliser cette option.")
-        } else if (err.code === err.TIMEOUT) {
-          setGpsError("Délai dépassé — réessayez ou saisissez votre adresse.")
-        } else {
-          setGpsError("Position indisponible — saisissez votre adresse manuellement.")
-        }
-      },
-      { enableHighAccuracy: true, timeout: 10000 },
-    )
-  }
-
-  function selectPlace({ address, lat, lng }) {
-    setDeliveryAddress(address)
-    setDeliveryLat(lat)
-    setDeliveryLng(lng)
-    setGpsError(null)
-  }
-
-  async function handleSubmit() {
+  async function submit() {
     setSubmitting(true)
     setSubmitError(null)
     try {
@@ -778,202 +111,707 @@ export default function OrderRequest() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          customerName: customerName.trim() || undefined,
-          customerPhone: customerPhone.trim() || undefined,
-          deliveryAddress: deliveryAddress.trim(),
-          deliveryLatitude: deliveryLat ?? undefined,
-          deliveryLongitude: deliveryLng ?? undefined,
+          customerName: name.trim() || undefined,
+          customerPhone: `+221${phone}`,
+          deliveryAddress: address.trim(),
+          deliveryLatitude: coords?.lat ?? undefined,
+          deliveryLongitude: coords?.lng ?? undefined,
           landmark: landmark.trim() || undefined,
           notes: notes.trim() || undefined,
           items: cartItems.map(i => ({ productId: i.productId, quantity: i.quantity })),
-          customerPaymentMethod: paymentMethod,
+          customerPaymentMethod: payment,
+          channel: 'web',
           website,
         }),
       })
       const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data.message || "Impossible d'envoyer votre commande. Réessayez.")
-      setSubmitted(true)
+      if (!res.ok) throw new Error(data.message || 'Impossible d\'envoyer votre commande. Réessayez.')
+      if (data.id) rememberOrder({ id: data.id, merchantId, merchantName: merchant.businessName })
+      setSubmitted({ id: data.id ?? null })
     } catch (err) {
-      setSubmitError(err.message)
+      setSubmitError(err.message || 'Connexion impossible. Vérifiez votre réseau et réessayez.')
     } finally {
       setSubmitting(false)
     }
   }
 
+  const action = step < 3
+    ? { label: step === 1 ? 'Continuer' : 'Vérifier ma commande', onClick: next, disabled: false, icon: 'arrowRight' }
+    : { label: `Envoyer ma commande`, onClick: submit, disabled: submitting, icon: null }
+
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", background: '#021520', color: 'rgba(255,255,255,0.85)', minHeight: '100vh', overflowX: 'hidden' }}>
-      <style>{`
-        .dem-order * { box-sizing: border-box; }
-        .dem-input:focus { border-color: ${C.cyan} !important; box-shadow: 0 0 0 3px rgba(0,210,255,0.15); }
-        .dem-input::placeholder { color: rgba(255,255,255,0.35); }
-        .dem-primary-btn:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(0,210,255,0.3); }
-        .dem-icon-btn:hover { border-color: rgba(0,210,255,0.4) !important; }
-        .dem-chip-scroll > div::-webkit-scrollbar { display: none; }
-        .dem-chip-scroll > div { scrollbar-width: none; }
-        .dem-chip-fade {
-          position: absolute; top: 0; right: 0; bottom: 12px; width: 28px;
-          background: linear-gradient(90deg, rgba(2,21,32,0), #021520);
-          pointer-events: none;
-        }
-        .dem-content { max-width: 560px; }
-        @media (min-width: 720px) {
-          .dem-content { max-width: 660px; padding-top: 44px !important; }
-          .dem-header { padding: 52px 24px 44px !important; }
-        }
-        @media (max-width: 360px) {
-          .dem-content { padding-left: 14px !important; padding-right: 14px !important; }
-        }
-      `}</style>
+    <div className="ds">
+      <Hero />
 
-      <div className="dem-order">
-        {loadState === 'ready' && <OpenInAppBanner merchantId={merchantId} />}
+      {loadState === 'notfound' ? (
+        <NotFound />
+      ) : (
+        <>
+          <MerchantHeader merchant={merchant} loading={loadState === 'loading'} compact={step > 1 || !!submitted} />
 
-        {/* Header */}
-        <div className="dem-header" style={{
-          background: 'linear-gradient(160deg, #00D2FF 0%, #0086C8 55%, #005A8C 100%)',
-          padding: '40px 24px 36px', textAlign: 'center',
-        }}>
-          <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 20, textDecoration: 'none' }}>
-            <img src="/logo.png" alt="DEM" style={{ width: 36, height: 36, borderRadius: 9 }} />
-            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.85)', fontWeight: 700, letterSpacing: 1.2 }}>DELIVERY EXPRESS MOBILITY</span>
-          </Link>
+          <main className="ds-main">
+            {submitted ? (
+              <Success merchant={merchant} id={submitted.id} total={cartTotal} />
+            ) : (
+              <div className="ds-layout">
+                <section style={{ minWidth: 0 }}>
+                  {previous && step === 1 && <PreviousOrder order={previous} />}
+                  <Steps step={step} onBack={() => setStep(s => Math.max(1, s - 1))} />
 
-          {loadState === 'ready' && (
-            <>
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', marginBottom: 6 }}>Commander chez</p>
-              <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.1rem)', fontWeight: 900, color: '#fff', margin: 0 }}>
-                {merchant.businessName}
-              </h1>
-            </>
-          )}
-          {loadState === 'loading' && (
-            <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', margin: 0 }}>Chargement…</h1>
-          )}
-          {loadState === 'notfound' && (
-            <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', margin: 0 }}>Lien introuvable</h1>
-          )}
-        </div>
+                  {step === 1 && (
+                    <Catalogue products={products} cart={cart} onChange={(id, q) => setCart(c => ({ ...c, [id]: q }))} />
+                  )}
+                  {step === 2 && (
+                    <Delivery
+                      address={address} setAddress={setAddress} coords={coords} setCoords={setCoords}
+                      landmark={landmark} setLandmark={setLandmark} notes={notes} setNotes={setNotes}
+                      name={name} setName={setName} phone={phone} setPhone={setPhone}
+                      showErrors={touched} outOfZone={outOfZone}
+                    />
+                  )}
+                  {step === 3 && (
+                    <Confirm
+                      merchant={merchant} items={cartItems} total={cartTotal} inApp={!!merchant?.inAppPayment}
+                      address={address} landmark={landmark} notes={notes} name={name} phone={phone}
+                      payment={payment} setPayment={setPayment} onEdit={setStep}
+                      error={submitError}
+                    />
+                  )}
 
-        {/* Contenu */}
-        <div className="dem-content" style={{ margin: '0 auto', padding: '36px 20px 80px' }}>
+                  {/* Pot de miel — invisible, hors du parcours clavier, jamais rempli par un humain */}
+                  <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
+                    <label htmlFor="website">Ne pas remplir</label>
+                    <input id="website" name="website" tabIndex={-1} autoComplete="off" value={website} onChange={e => setWebsite(e.target.value)} />
+                  </div>
+                </section>
 
-          {loadState === 'notfound' && (
-            <div style={{
-              background: 'rgba(255,92,92,0.08)', border: '1px solid rgba(255,92,92,0.25)',
-              borderRadius: 16, padding: '24px 28px', textAlign: 'center',
-            }}>
-              <Icon name="linkOff" size={30} color="rgba(255,255,255,0.5)" style={{ marginBottom: 12 }} />
-              <p style={{ fontSize: 15, lineHeight: 1.7, margin: 0 }}>
-                Ce lien de commande n'est plus disponible. Il a peut-être expiré, le compte n'est plus actif,
-                ou n'est pas (ou plus) sur un plan payant. Contactez directement le commerçant pour passer votre commande.
-              </p>
-            </div>
-          )}
-
-          {loadState === 'ready' && !submitted && (
-            <>
-              <StepIndicator step={step} onBack={() => setStep(s => Math.max(1, s - 1))} />
-
-              {step === 1 && (
-                <CatalogueStep
-                  products={products}
-                  cart={cart}
-                  cartItems={cartItems}
-                  cartTotal={cartTotal}
-                  onChangeQty={changeQty}
-                  onNext={() => setStep(2)}
-                />
-              )}
-
-              {step === 2 && (
-                <AddressStep
-                  address={deliveryAddress}
-                  onAddressChange={setDeliveryAddress}
-                  onSelectPlace={selectPlace}
-                  onUseGps={useGps}
-                  gpsLoading={gpsLoading}
-                  gpsError={gpsError}
-                  onNext={() => setStep(3)}
-                />
-              )}
-
-              {step === 3 && (
-                <PaymentStep
-                  paymentMethod={paymentMethod}
-                  onChangePaymentMethod={setPaymentMethod}
-                  landmark={landmark}
-                  onChangeLandmark={setLandmark}
-                  notes={notes}
-                  onChangeNotes={setNotes}
-                  customerName={customerName}
-                  onChangeName={setCustomerName}
-                  customerPhone={customerPhone}
-                  onChangePhone={setCustomerPhone}
-                  onNext={() => setStep(4)}
-                />
-              )}
-
-              {step === 4 && (
-                <ReviewStep
-                  cartItems={cartItems}
-                  cartTotal={cartTotal}
-                  deliveryAddress={deliveryAddress}
-                  landmark={landmark}
-                  notes={notes}
-                  paymentMethod={paymentMethod}
-                  customerName={customerName}
-                  customerPhone={customerPhone}
-                  submitting={submitting}
-                  submitError={submitError}
-                  onSubmit={handleSubmit}
-                />
-              )}
-
-              {/* Honeypot — masqué visuellement et hors du parcours clavier, jamais rempli par un humain */}
-              <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
-                <label htmlFor="website">Ne pas remplir</label>
-                <input
-                  id="website"
-                  name="website"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  value={website}
-                  onChange={e => setWebsite(e.target.value)}
-                />
+                <aside className="ds-aside">
+                  <CartSummary
+                    merchant={merchant} items={cartItems} total={cartTotal} inApp={!!merchant?.inAppPayment}
+                    action={action} blocker={touched ? blocker : null} step={step} submitting={submitting}
+                  />
+                </aside>
               </div>
-            </>
-          )}
+            )}
+          </main>
 
-          {submitted && (
-            <div style={{
-              background: 'rgba(0,224,140,0.08)', border: '1px solid rgba(0,224,140,0.25)',
-              borderRadius: 16, padding: '32px 28px', textAlign: 'center',
-            }}>
-              <div style={{
-                width: 56, height: 56, borderRadius: '50%', margin: '0 auto 16px',
-                background: 'rgba(0,224,140,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <Icon name="check" size={26} color={C.success} strokeWidth={2.4} />
-              </div>
-              <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginBottom: 10 }}>Commande envoyée !</h2>
-              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: 'rgba(255,255,255,0.75)', margin: 0 }}>
-                {merchant.businessName} va confirmer votre commande. Un livreur DEM viendra récupérer et vous livrer votre commande.
-              </p>
+          {!submitted && (step > 1 || cartItems.length > 0) && (
+            <CartBar count={itemCount} total={cartTotal} action={action} submitting={submitting} blocker={touched ? blocker : null} />
+          )}
+        </>
+      )}
+
+      <footer className="ds-footer" style={{ paddingBottom: !submitted && (step > 1 || cartItems.length > 0) ? 110 : undefined }}>
+        Livraison assurée par <Link to="/">DEM — Delivery Express Mobility</Link>
+        <br />
+        <Link to="/terms">Conditions</Link> · <Link to="/privacy">Confidentialité</Link>
+      </footer>
+    </div>
+  )
+}
+
+// ── En-tête ────────────────────────────────────────────────────────────────
+function Hero() {
+  return (
+    <header className="ds-hero">
+      <div className="ds-topbar">
+        <Link to="/" className="ds-brand">
+          <img src="/logo.png" alt="" />
+          <span>DEM</span>
+        </Link>
+        <span className="ds-secure"><Icon name="lock" size={13} /> Commande sécurisée</span>
+      </div>
+    </header>
+  )
+}
+
+function MerchantHeader({ merchant, loading, compact }) {
+  return (
+    <div className="ds-merchant">
+      <div className={`ds-merchant-card ds-fade ${compact ? 'is-compact' : ''}`}>
+        {loading ? (
+          <>
+            <div className="ds-skel" style={{ width: 64, height: 64, borderRadius: 18 }} />
+            <div>
+              <div className="ds-skel" style={{ width: '60%', height: 22, marginBottom: 8 }} />
+              <div className="ds-skel" style={{ width: '40%', height: 14 }} />
             </div>
-          )}
-        </div>
-
-        {/* Footer */}
-        <div style={{
-          borderTop: '1px solid rgba(255,255,255,0.08)',
-          padding: '28px 24px', textAlign: 'center',
-          color: 'rgba(255,255,255,0.35)', fontSize: 13, background: '#010E18',
-        }}>
-          <p>© {new Date().getFullYear()} DEM — Delivery Express Mobility &nbsp;|&nbsp;
-            <Link to="/" style={{ color: C.cyan }}>dem.sn</Link>
-          </p>
+          </>
+        ) : (
+          <>
+            <MerchantAvatar name={merchant.businessName} avatar={merchant.avatar} />
+            <div style={{ minWidth: 0 }}>
+              <p className="ds-merchant-kicker" style={{ margin: 0, fontSize: 12.5, fontWeight: 600, color: 'var(--ds-muted)' }}>Commander chez</p>
+              <h1 className="ds-merchant-name">{merchant.businessName}</h1>
+              {/* Compte DEM Pro validé par l'équipe DEM — pas une vérification
+                  d'identité ou de documents : « partenaire », pas « vérifié » */}
+              <span className="ds-verified"><Icon name="shield" size={15} /> Partenaire DEM Pro</span>
+            </div>
+          </>
+        )}
+        <div className="ds-trust">
+          {merchant?.inAppPayment
+            ? <TrustItem icon="shield" title="Paiement sécurisé" text="Wave ou Orange Money" />
+            : <TrustItem icon="cash" title="Payez à la réception" text="Espèces, Wave, Orange Money" />}
+          <TrustItem icon="bike" title="Livreur DEM" text="Récupère et vous livre" />
+          <TrustItem icon="route" title="Suivi en direct" text="Sur votre téléphone" />
         </div>
       </div>
+    </div>
+  )
+}
+
+function TrustItem({ icon, title, text }) {
+  return (
+    <div className="ds-trust-item">
+      <span className="ds-trust-ico"><Icon name={icon} size={16} /></span>
+      <span className="ds-trust-text"><b>{title}</b><span>{text}</span></span>
+    </div>
+  )
+}
+
+function NotFound() {
+  return (
+    <main className="ds-main" style={{ maxWidth: 560, paddingTop: 0 }}>
+      <div className="ds-card ds-fade" style={{ marginTop: -40, position: 'relative', textAlign: 'center', padding: '32px 24px' }}>
+        <div className="ds-success-badge" style={{ background: 'var(--ds-fill)', color: 'var(--ds-muted)' }}>
+          <Icon name="linkOff" size={30} />
+        </div>
+        <h2 style={{ fontSize: 20, fontWeight: 800, margin: '0 0 8px' }}>Ce lien n'est plus disponible</h2>
+        <p style={{ color: 'var(--ds-muted)', fontSize: 14.5, lineHeight: 1.6, margin: 0 }}>
+          La boutique est peut-être fermée pour le moment. Contactez directement le commerçant pour passer votre commande.
+        </p>
+      </div>
+    </main>
+  )
+}
+
+function PreviousOrder({ order }) {
+  const date = new Date(order.at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })
+  return (
+    <Link to={`/suivi/${order.id}`} className="ds-banner ds-fade" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <span className="ds-trust-ico"><Icon name="route" size={16} /></span>
+      <span style={{ flex: 1, minWidth: 0 }}>
+        <b>Votre commande du {date}</b>
+        <small>Voir où elle en est</small>
+      </span>
+      <Icon name="arrowRight" size={18} style={{ color: 'var(--ds-blue)' }} />
+    </Link>
+  )
+}
+
+// ── Étapes ─────────────────────────────────────────────────────────────────
+function Steps({ step, onBack }) {
+  return (
+    <nav className="ds-steps" aria-label="Étapes de la commande">
+      {step > 1 && (
+        <button type="button" className="ds-back" onClick={onBack} aria-label="Étape précédente">
+          <Icon name="arrowLeft" size={18} />
+        </button>
+      )}
+      {STEPS.map((label, i) => {
+        const n = i + 1
+        const state = n < step ? 'is-done' : n === step ? 'is-current' : ''
+        return (
+          <div key={label} className={`ds-step ${state}`} aria-current={n === step ? 'step' : undefined}>
+            <span className="ds-step-dot">{n < step ? <Icon name="check" size={14} strokeWidth={3} /> : n}</span>
+            <span className="ds-step-label">{label}</span>
+            {n < STEPS.length && <span className="ds-step-line" />}
+          </div>
+        )
+      })}
+    </nav>
+  )
+}
+
+// ── Étape 1 : articles ─────────────────────────────────────────────────────
+function Catalogue({ products, cart, onChange }) {
+  const [category, setCategory] = useState('Tous')
+  const [query, setQuery] = useState('')
+
+  const categories = useMemo(() => {
+    const set = new Set((products || []).map(p => p.category?.trim()).filter(Boolean))
+    return [...set].sort((a, b) => a.localeCompare(b, 'fr'))
+  }, [products])
+
+  const visible = useMemo(() => {
+    let list = products || []
+    if (category !== 'Tous') list = list.filter(p => p.category?.trim() === category)
+    const q = query.trim().toLowerCase()
+    if (q) list = list.filter(p => p.name.toLowerCase().includes(q))
+    return list
+  }, [products, category, query])
+
+  if (products === null) {
+    return (
+      <div className="ds-grid">
+        {Array.from({ length: 6 }, (_, i) => (
+          <div key={i} className="ds-product">
+            <div className="ds-skel" style={{ aspectRatio: '1 / 1', borderRadius: 0 }} />
+            <div className="ds-product-body">
+              <div className="ds-skel" style={{ height: 14, width: '80%' }} />
+              <div className="ds-skel" style={{ height: 14, width: '45%' }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  if (products.length === 0) {
+    return (
+      <div className="ds-card ds-empty">
+        <Icon name="bag" size={34} />
+        <p style={{ margin: 0 }}>Ce commerçant n'a pas encore d'articles en ligne.</p>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      {products.length >= 8 && (
+        <div className="ds-search ds-input-wrap">
+          <Icon name="search" size={17} />
+          <input
+            className="ds-input has-icon" value={query} onChange={e => setQuery(e.target.value)}
+            placeholder="Rechercher un article" aria-label="Rechercher un article"
+          />
+        </div>
+      )}
+      {categories.length > 0 && (
+        <div className="ds-chips" role="tablist">
+          {['Tous', ...categories].map(c => (
+            <button
+              key={c} type="button" role="tab" aria-selected={category === c}
+              className={`ds-chip ${category === c ? 'is-active' : ''}`} onClick={() => setCategory(c)}
+            >{c}</button>
+          ))}
+        </div>
+      )}
+      {visible.length === 0 ? (
+        <div className="ds-card ds-empty">Aucun article ne correspond à votre recherche.</div>
+      ) : (
+        <div className="ds-grid">
+          {visible.map((p, i) => (
+            <ProductCard key={p.id} product={p} qty={cart[p.id] || 0} index={i} onChange={q => onChange(p.id, q)} />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ProductCard({ product: p, qty, index, onChange }) {
+  const [imgFailed, setImgFailed] = useState(false)
+  const atMax = p.quantity != null && qty >= p.quantity
+  const lowStock = p.quantity != null && p.quantity <= 5
+  return (
+    <article className={`ds-product ${qty ? 'is-in-cart' : ''}`} style={{ animationDelay: `${Math.min(index, 12) * 35}ms` }}>
+      <div className="ds-product-img">
+        {p.image && !imgFailed
+          ? <img src={p.image} alt="" loading="lazy" onError={() => setImgFailed(true)} />
+          : <Icon name="bag" size={34} strokeWidth={1.4} />}
+      </div>
+      <div className="ds-product-body">
+        <h3 className="ds-product-name">{p.name}</h3>
+        {lowStock && <span className="ds-stock">Plus que {p.quantity} en stock</span>}
+        <div className="ds-product-foot">
+          {p.defaultPrice != null
+            ? <span className="ds-price">{formatFcfa(p.defaultPrice)}</span>
+            : <span className="ds-price-muted">Prix à confirmer</span>}
+          {qty === 0 ? (
+            <button type="button" className="ds-add" onClick={() => onChange(1)} aria-label={`Ajouter ${p.name}`}>
+              <Icon name="plus" size={18} strokeWidth={2.4} />
+            </button>
+          ) : (
+            <div className="ds-stepper">
+              <button type="button" onClick={() => onChange(qty - 1)} aria-label="Retirer un">
+                <Icon name="minus" size={16} strokeWidth={2.4} />
+              </button>
+              <span aria-live="polite">{qty}</span>
+              <button type="button" onClick={() => onChange(qty + 1)} disabled={atMax} aria-label="Ajouter un">
+                <Icon name="plus" size={16} strokeWidth={2.4} />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </article>
+  )
+}
+
+// ── Étape 2 : livraison et contact ─────────────────────────────────────────
+function Delivery({
+  address, setAddress, coords, setCoords, landmark, setLandmark, notes, setNotes,
+  name, setName, phone, setPhone, showErrors, outOfZone,
+}) {
+  const [suggestions, setSuggestions] = useState([])
+  const [open, setOpen] = useState(false)
+  const [gps, setGps] = useState({ loading: false, error: null })
+  // Précision du GPS (m) tant que le repère n'a pas été ajusté à la main
+  const [accuracy, setAccuracy] = useState(null)
+  const [showMap, setShowMap] = useState(!!coords)
+  const token = useRef(newSessionToken())
+  const debounce = useRef(null)
+  const phoneValid = isValidSenegalMobile(phone)
+
+  // Retoucher le texte (« Villa 12 »…) ne déplace pas le repère déjà posé :
+  // seul le choix d'une suggestion, le GPS ou la carte le déplacent.
+  function onType(v) {
+    setAddress(v)
+    clearTimeout(debounce.current)
+    if (v.trim().length < 3) { setSuggestions([]); setOpen(false); return }
+    debounce.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`${API_URL}/public/places/autocomplete?input=${encodeURIComponent(v)}&sessionToken=${token.current}`)
+        const data = await res.json()
+        setSuggestions(data.predictions || [])
+        setOpen(true)
+      } catch { setSuggestions([]) }
+    }, 300)
+  }
+
+  async function pick(s) {
+    setOpen(false)
+    setAddress(s.description)
+    try {
+      const res = await fetch(`${API_URL}/public/places/details?placeId=${s.place_id}&sessionToken=${token.current}`)
+      const data = await res.json()
+      if (data.lat != null && data.lng != null) {
+        setAddress(data.address || s.description)
+        setCoords({ lat: data.lat, lng: data.lng })
+        setAccuracy(null)
+        setShowMap(true)
+      }
+    } catch { /* l'adresse texte reste renseignée */ }
+    token.current = newSessionToken()
+  }
+
+  async function reverse(lat, lng) {
+    try {
+      const res = await fetch(`${API_URL}/public/places/reverse-geocode?lat=${lat}&lng=${lng}`)
+      const data = await res.json()
+      return data.address || null
+    } catch {
+      return null
+    }
+  }
+
+  function useMyPosition() {
+    if (!navigator.geolocation) {
+      setGps({ loading: false, error: 'Votre navigateur ne permet pas la localisation : saisissez votre adresse.' })
+      return
+    }
+    setGps({ loading: true, error: null })
+    navigator.geolocation.getCurrentPosition(
+      async pos => {
+        const { latitude: lat, longitude: lng, accuracy: acc } = pos.coords
+        setCoords({ lat, lng })
+        setAccuracy(acc > 100 ? Math.round(acc) : null)
+        setShowMap(true)
+        setAddress((await reverse(lat, lng)) || 'Ma position actuelle')
+        setGps({ loading: false, error: null })
+      },
+      err => setGps({
+        loading: false,
+        error: err.code === err.PERMISSION_DENIED
+          ? 'Localisation refusée : saisissez votre adresse ou placez-la sur la carte.'
+          : 'Position indisponible : saisissez votre adresse ou placez-la sur la carte.',
+      }),
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 },
+    )
+  }
+
+  async function onMapChange(lat, lng) {
+    setCoords({ lat, lng })
+    setAccuracy(null) // repère ajusté à la main
+    if (address.trim().length < 4) {
+      const found = await reverse(lat, lng)
+      if (found) setAddress(found)
+    }
+  }
+
+  const addressError = showErrors && address.trim().length < 4
+  const coordsError = showErrors && !coords
+  const phoneError = (showErrors || phone.length === 9) && !phoneValid
+
+  return (
+    <div className="ds-fade">
+      <div className="ds-card">
+        <h2 className="ds-card-title"><span className="ds-ico"><Icon name="pin" size={17} /></span>Où livrer ?</h2>
+        <button type="button" className="ds-btn ds-btn-ghost" onClick={useMyPosition} disabled={gps.loading} style={{ marginBottom: 12 }}>
+          {gps.loading ? <span className="ds-spinner" style={{ borderColor: 'rgba(6,113,186,0.25)', borderTopColor: 'var(--ds-blue)' }} /> : <Icon name="crosshair" size={18} />}
+          {gps.loading ? 'Localisation en cours…' : 'Utiliser ma position actuelle'}
+        </button>
+        {gps.error && <p className="ds-help is-error" style={{ margin: '-4px 0 10px' }}>{gps.error}</p>}
+
+        <div className="ds-field" style={{ marginBottom: 0 }}>
+          <label className="ds-label" htmlFor="ds-address">Adresse de livraison</label>
+          <div className="ds-input-wrap">
+            <Icon name="search" size={17} />
+            <input
+              id="ds-address" className={`ds-input has-icon ${addressError ? 'is-invalid' : ''}`}
+              value={address} onChange={e => onType(e.target.value)}
+              onFocus={() => suggestions.length && setOpen(true)}
+              onBlur={() => setTimeout(() => setOpen(false), 150)}
+              placeholder="Quartier, rue, numéro…" autoComplete="street-address"
+            />
+            {open && suggestions.length > 0 && (
+              <div className="ds-suggest" role="listbox">
+                {suggestions.map(s => (
+                  <button key={s.place_id} type="button" role="option" onMouseDown={e => e.preventDefault()} onClick={() => pick(s)}>
+                    <Icon name="pin" size={16} style={{ color: 'var(--ds-faint)' }} />
+                    <span>
+                      {s.structured_formatting?.main_text ?? s.description}
+                      {s.structured_formatting?.secondary_text && <small>{s.structured_formatting.secondary_text}</small>}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {showMap ? (
+            <Suspense fallback={<div className="ds-skel" style={{ height: 230, marginTop: 12, borderRadius: 14 }} />}>
+              <MapPicker value={coords} accuracy={accuracy} onChange={onMapChange} />
+            </Suspense>
+          ) : (
+            <button type="button" className="ds-linkbtn" onClick={() => setShowMap(true)}>
+              <Icon name="pin" size={15} /> Adresse introuvable ? Placez-la vous-même sur la carte
+            </button>
+          )}
+
+          {outOfZone ? (
+            <div className="ds-alert is-error" style={{ marginTop: 10, marginBottom: 0 }}>
+              <Icon name="x" size={17} />
+              <span>Cette adresse est hors de notre zone de livraison. Vérifiez le repère, ou choisissez une adresse plus proche.</span>
+            </div>
+          ) : coords && accuracy ? (
+            <div className="ds-located is-warn"><Icon name="crosshair" size={16} /> Position approximative (± {accuracy} m) : déplacez le repère pour l'ajuster.</div>
+          ) : coords ? (
+            <div className="ds-located"><Icon name="check" size={16} strokeWidth={2.6} /> Adresse placée sur la carte : le livreur vous trouvera facilement</div>
+          ) : coordsError || addressError ? (
+            <p className="ds-help is-error">{addressError ? 'Indiquez l\'adresse de livraison.' : 'Placez votre adresse sur la carte : choisissez une suggestion, utilisez votre position ou touchez la carte.'}</p>
+          ) : address.trim().length >= 4 ? (
+            <p className="ds-help">Choisissez une suggestion, ou placez le repère sur la carte, pour que le livreur vous trouve.</p>
+          ) : null}
+        </div>
+      </div>
+
+      <div className="ds-card">
+        <h2 className="ds-card-title"><span className="ds-ico"><Icon name="flag" size={17} /></span>Pour le livreur</h2>
+        <div className="ds-field">
+          <label className="ds-label" htmlFor="ds-landmark">Point de repère <small>(recommandé)</small></label>
+          <input id="ds-landmark" className="ds-input" value={landmark} onChange={e => setLandmark(e.target.value)} placeholder="Ex. : face à la pharmacie, portail bleu" maxLength={200} />
+        </div>
+        <div className="ds-field" style={{ marginBottom: 0 }}>
+          <label className="ds-label" htmlFor="ds-notes">Instructions <small>(facultatif)</small></label>
+          <textarea id="ds-notes" className="ds-input" rows={2} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Ex. : m'appeler en arrivant" maxLength={500} style={{ resize: 'vertical' }} />
+        </div>
+      </div>
+
+      <div className="ds-card">
+        <h2 className="ds-card-title"><span className="ds-ico"><Icon name="user" size={17} /></span>Vos coordonnées</h2>
+        <p className="ds-sub">Le livreur vous appelle à ce numéro en arrivant. Il n'est utilisé que pour cette livraison.</p>
+        <div className="ds-field">
+          <label className="ds-label" htmlFor="ds-name">Votre prénom <small>(facultatif)</small></label>
+          <input id="ds-name" className="ds-input" value={name} onChange={e => setName(e.target.value)} placeholder="Ex. : Awa" autoComplete="given-name" maxLength={80} />
+        </div>
+        <div className="ds-field" style={{ marginBottom: 0 }}>
+          <label className="ds-label" htmlFor="ds-phone">Téléphone</label>
+          <div className="ds-phone">
+            <span className="ds-phone-prefix">+221</span>
+            <input
+              id="ds-phone" className={`ds-input ${phoneError ? 'is-invalid' : ''}`} type="tel" inputMode="numeric"
+              autoComplete="tel-national" placeholder="77 123 45 67"
+              value={formatLocalPhone(phone)}
+              onChange={e => setPhone(localPhoneDigits(e.target.value))}
+            />
+          </div>
+          {phoneError && <p className="ds-help is-error">Numéro invalide, exemple : 77 123 45 67.</p>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Étape 3 : paiement et récapitulatif ────────────────────────────────────
+function Confirm({ merchant, inApp, items, total, address, landmark, notes, name, phone, payment, setPayment, onEdit, error }) {
+  // Paiement intégré : le client paie en ligne (Wave / Orange Money via DEM),
+  // jamais en espèces au livreur (voir Order.proPaymentMode côté serveur).
+  const methods = inApp ? PAYMENT_METHODS.filter(m => m.value === 'WAVE' || m.value === 'ORANGE_MONEY') : PAYMENT_METHODS
+  return (
+    <div className="ds-fade">
+      {error && <div className="ds-alert is-error"><Icon name="x" size={18} />{error}</div>}
+
+      <div className="ds-card">
+        <h2 className="ds-card-title">
+          <span className="ds-ico"><Icon name={inApp ? 'shield' : 'cash'} size={17} /></span>
+          {inApp ? 'Paiement sécurisé par Wave ou Orange Money' : 'Paiement à la réception'}
+        </h2>
+        <p className="ds-sub">
+          {inApp
+            ? 'Rien n\'est payé maintenant. Vous payez à la livraison, par Wave ou Orange Money : le paiement passe par DEM, puis est reversé au commerçant.'
+            : 'Rien n\'est payé maintenant. Vous réglez à la livraison, par le moyen de votre choix :'}
+        </p>
+        <div className="ds-pay" role="radiogroup">
+          {methods.map(m => (
+            <button key={m.value} type="button" role="radio" aria-checked={payment === m.value}
+              className={payment === m.value ? 'is-active' : ''} onClick={() => setPayment(m.value)}>
+              <span className="ds-pay-dot" style={{ background: m.color }}>{m.mark}</span>
+              {m.label}
+              <span className="ds-radio" />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="ds-card">
+        <h2 className="ds-card-title"><span className="ds-ico"><Icon name="note" size={17} /></span>Récapitulatif</h2>
+        <div className="ds-recap-row">
+          <span className="ds-recap-ico"><Icon name="bag" size={17} /></span>
+          <div className="ds-recap-body">
+            <small>Articles</small>
+            {items.map(i => <div key={i.productId}>{i.quantity} × {i.name}</div>)}
+          </div>
+          <button type="button" className="ds-recap-edit" onClick={() => onEdit(1)}>Modifier</button>
+        </div>
+        <div className="ds-recap-row">
+          <span className="ds-recap-ico"><Icon name="pin" size={17} /></span>
+          <div className="ds-recap-body">
+            <small>Livraison</small>
+            {address}
+            {landmark && <div style={{ color: 'var(--ds-muted)' }}>Repère : {landmark}</div>}
+            {notes && <div style={{ color: 'var(--ds-muted)' }}>{notes}</div>}
+          </div>
+          <button type="button" className="ds-recap-edit" onClick={() => onEdit(2)}>Modifier</button>
+        </div>
+        <div className="ds-recap-row">
+          <span className="ds-recap-ico"><Icon name="user" size={17} /></span>
+          <div className="ds-recap-body">
+            <small>Contact</small>
+            {name ? `${name} · ` : ''}+221 {formatLocalPhone(phone)}
+          </div>
+          <button type="button" className="ds-recap-edit" onClick={() => onEdit(2)}>Modifier</button>
+        </div>
+        {/* Sur téléphone, le total est dans la barre du bas */}
+        <div className="ds-total" style={{ marginTop: 14 }}>
+          <span>Total des articles</span>
+          <b>{formatFcfa(total)}</b>
+        </div>
+        <p className="ds-fee-note">Les frais de livraison éventuels sont fixés par {merchant.businessName}.</p>
+      </div>
+    </div>
+  )
+}
+
+// ── Panier : colonne (ordinateur) et barre du bas (téléphone) ─────────────
+function ActionButton({ action, submitting }) {
+  return (
+    <button type="button" className="ds-btn ds-btn-primary" onClick={action.onClick} disabled={action.disabled}>
+      {submitting ? <span className="ds-spinner" /> : null}
+      {submitting ? 'Envoi…' : action.label}
+      {!submitting && action.icon && <Icon name={action.icon} size={18} strokeWidth={2.2} />}
+    </button>
+  )
+}
+
+function CartSummary({ merchant, inApp, items, total, action, blocker, step, submitting }) {
+  return (
+    <div className="ds-card">
+      <h2 className="ds-card-title" style={{ marginBottom: 10 }}>
+        <span className="ds-ico"><Icon name="bag" size={17} /></span>Votre panier
+      </h2>
+      {items.length === 0 ? (
+        <div className="ds-empty" style={{ padding: '14px 0 18px' }}>
+          <Icon name="bag" size={30} strokeWidth={1.5} />
+          <div>Ajoutez des articles pour commencer.</div>
+        </div>
+      ) : (
+        <>
+          {items.map(i => (
+            <div key={i.productId} className="ds-line">
+              <span className="ds-line-thumb">
+                {i.image ? <img src={i.image} alt="" /> : <Icon name="bag" size={18} />}
+              </span>
+              <span className="ds-line-name">{i.name}<small>{i.quantity} × {formatFcfa(i.price)}</small></span>
+              <span className="ds-line-price">{formatFcfa(i.price * i.quantity)}</span>
+            </div>
+          ))}
+          <div className="ds-total"><span>Total</span><b>{formatFcfa(total)}</b></div>
+          {step === 3 && merchant && (
+            <p className="ds-fee-note">Les frais de livraison éventuels sont fixés par {merchant.businessName}.</p>
+          )}
+        </>
+      )}
+      <div style={{ marginTop: 16 }}>
+        <ActionButton action={action} submitting={submitting} />
+        {blocker
+          ? <p className="ds-help is-error" style={{ textAlign: 'center' }}>{blocker}</p>
+          : <p className="ds-reassure"><Icon name="lock" size={13} /> {inApp ? 'Rien à payer maintenant' : 'Vous payez à la réception'}</p>}
+      </div>
+    </div>
+  )
+}
+
+function CartBar({ count, total, action, submitting, blocker }) {
+  return (
+    <div className="ds-cartbar">
+      {/* Ce qui manque encore, sur toute la largeur (à côté du bouton, le
+          message s'écrasait sur 3 lignes) */}
+      {blocker && <p className="ds-cartbar-blocker"><Icon name="x" size={13} strokeWidth={2.6} /> {blocker}</p>}
+      <div className="ds-cartbar-inner">
+        <div className="ds-cartbar-info">
+          <small>{count} article{count > 1 ? 's' : ''}</small>
+          <b>{formatFcfa(total)}</b>
+        </div>
+        <ActionButton action={action} submitting={submitting} />
+      </div>
+    </div>
+  )
+}
+
+// ── Commande envoyée ───────────────────────────────────────────────────────
+function Success({ merchant, id, total }) {
+  const [copied, setCopied] = useState(false)
+  const link = id ? `${window.location.origin}/suivi/${id}` : null
+
+  async function share() {
+    if (!link) return
+    const text = `Ma commande chez ${merchant.businessName} — suivi : ${link}`
+    if (navigator.share) {
+      try { await navigator.share({ title: 'Suivi de commande DEM', text, url: link }); return } catch { /* annulé */ }
+    }
+    try {
+      await navigator.clipboard.writeText(link)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2200)
+    } catch { /* presse-papiers refusé : le lien reste affiché */ }
+  }
+
+  return (
+    <div className="ds-card ds-success ds-fade" style={{ maxWidth: 620, margin: '0 auto' }}>
+      <div className="ds-success-badge"><Icon name="check" size={38} strokeWidth={2.6} /></div>
+      <h2>Commande envoyée</h2>
+      <p>{merchant.businessName} a bien reçu votre commande de {formatFcfa(total)}.</p>
+      {id && <span className="ds-ref"><Icon name="note" size={14} /> N° {id.slice(0, 8).toUpperCase()}</span>}
+
+      <ol className="ds-next" style={{ padding: 0 }}>
+        <li><span>1</span><div><b>{merchant.businessName} confirme</b><br /><small style={{ color: 'var(--ds-muted)' }}>Vous suivez chaque étape en direct.</small></div></li>
+        <li><span>2</span><div><b>Un livreur DEM récupère votre commande</b><br /><small style={{ color: 'var(--ds-muted)' }}>Puis vous la livre à l'adresse indiquée.</small></div></li>
+        <li><span>3</span><div><b>Vous payez à la réception</b><br /><small style={{ color: 'var(--ds-muted)' }}>{merchant.inAppPayment ? 'Par Wave ou Orange Money, en toute sécurité via DEM.' : 'Espèces ou mobile money, comme choisi.'}</small></div></li>
+      </ol>
+
+      {link && (
+        <div className="ds-actions">
+          <Link to={`/suivi/${id}`} className="ds-btn ds-btn-primary">
+            <Icon name="route" size={18} /> Suivre ma commande
+          </Link>
+          <button type="button" className="ds-btn ds-btn-secondary" onClick={share}>
+            <Icon name={copied ? 'check' : 'share'} size={18} /> {copied ? 'Lien copié' : 'Garder le lien de suivi'}
+          </button>
+        </div>
+      )}
     </div>
   )
 }

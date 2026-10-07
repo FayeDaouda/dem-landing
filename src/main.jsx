@@ -1,6 +1,6 @@
-import { StrictMode } from 'react'
+import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
 import './tailwind.css'
 import ScrollToTop from './utils/ScrollToTop.jsx'
 import Header from './components/layout/Header.jsx'
@@ -21,13 +21,28 @@ import DeleteAccount from './DeleteAccount.jsx'
 import OrderRequest from './OrderRequest.jsx'
 import NotFound from './pages/NotFound.jsx'
 
+// Chargé à la demande : la carte (Leaflet) n'alourdit pas le reste du site
+const Tracking = lazy(() => import('./Tracking.jsx'))
+
+// Pages du site : en-tête et pied de page communs.
+function SiteLayout() {
+  return (
+    <>
+      <Header />
+      <main className="min-h-screen">
+        <Outlet />
+      </main>
+      <Footer />
+    </>
+  )
+}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <ScrollToTop />
-      <Header />
-      <main className="min-h-screen">
-        <Routes>
+      <Routes>
+        <Route element={<SiteLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/notre-histoire" element={<NotreHistoire />} />
           <Route path="/a-propos" element={<NotreHistoire />} />
@@ -49,11 +64,17 @@ createRoot(document.getElementById('root')).render(
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/delete-account" element={<DeleteAccount />} />
-          <Route path="/commander/:merchantId" element={<OrderRequest />} />
           <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-      <Footer />
+        </Route>
+
+        {/* Boutique DEM Pro et suivi de commande : pages plein écran, avec
+            leur propre barre (pas l'en-tête ni le pied de page du site). */}
+        <Route path="/commander/:merchantId" element={<OrderRequest />} />
+        <Route
+          path="/suivi/:id"
+          element={<Suspense fallback={<div style={{ minHeight: '100vh', background: '#f4f6fa' }} />}><Tracking /></Suspense>}
+        />
+      </Routes>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 )

@@ -1,0 +1,177 @@
+/* Page de suivi (dem.sn/suivi/:id) — téléphone : carte en haut, détails
+   en carte qui la chevauche ; tablette : idem, plus large ; ordinateur :
+   panneau de 440 px à gauche, carte plein écran à droite. */
+
+.dt { min-height: 100vh; min-height: 100dvh; }
+.dt-layout { display: flex; flex-direction: column; }
+/* Téléphone : la colonne latérale s'efface, ses enfants s'ordonnent
+   barre → carte → détails ; ordinateur : barre + détails à gauche. */
+.dt-side { display: contents; }
+.dt-top { order: 0; }
+.dt-map-wrap { order: 1; }
+.dt-panel { order: 2; }
+.dt-top {
+  display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+  background: linear-gradient(135deg, #0cb8de 0%, #0671ba 50%, #04317c 100%); color: #fff;
+  position: sticky; top: 0; z-index: 500;
+}
+.dt-top .ds-brand img { width: 28px; height: 28px; }
+.dt-top-title { flex: 1; min-width: 0; }
+.dt-top-title b { display: block; font-size: 14.5px; font-weight: 800; }
+.dt-top-title small { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 600; }
+.dt-top-btn {
+  display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(2,8,34,0.22); color: #fff; font-size: 13px; font-weight: 700;
+  padding: 8px 11px; border-radius: 10px; cursor: pointer;
+}
+
+.dt-map-wrap { position: relative; height: 46vh; min-height: 260px; max-height: 520px; background: #e8edf2; }
+.dt-map { position: absolute; inset: 0; }
+.dt-map-empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--ds-muted); font-size: 13.5px; gap: 8px; }
+.dt-recenter {
+  position: absolute; right: 12px; bottom: 34px; z-index: 450;
+  width: 42px; height: 42px; border-radius: 12px; border: none; cursor: pointer;
+  background: #fff; color: var(--ds-text); box-shadow: var(--ds-shadow);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.dt-panel {
+  position: relative; z-index: 460; margin-top: -22px;
+  background: var(--ds-bg); border-radius: 22px 22px 0 0; padding: 16px 16px 28px;
+}
+.dt-panel-inner { max-width: 640px; margin: 0 auto; }
+
+@media (min-width: 900px) {
+  .dt-layout { display: grid; grid-template-columns: 440px minmax(0, 1fr); height: 100vh; height: 100dvh; }
+  .dt-side { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--ds-line); background: var(--ds-bg); }
+  .dt-top { position: static; }
+  .dt-panel { margin-top: 0; border-radius: 0; flex: 1; overflow-y: auto; padding: 20px 22px 28px; }
+  .dt-map-wrap { height: auto; max-height: none; min-height: 0; order: 2; }
+}
+@media (min-width: 1400px) {
+  .dt-layout { grid-template-columns: 480px minmax(0, 1fr); }
+}
+
+/* ── Statut ──────────────────────────────────────────────────────────── */
+.dt-status { display: flex; gap: 14px; align-items: flex-start; }
+.dt-status-ico {
+  width: 48px; height: 48px; border-radius: 15px; flex-shrink: 0; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  background: #eaf4fb; color: var(--ds-blue);
+}
+.dt-status-ico.is-green { background: var(--ds-green-bg); color: var(--ds-green); }
+.dt-status-ico.is-red { background: var(--ds-red-bg); color: var(--ds-red); }
+.dt-status-ico.is-live::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  border: 2px solid currentColor; opacity: 0.5; animation: dt-ring 1.8s ease-out infinite;
+}
+.dt-status h1 { font-size: 20px; font-weight: 800; margin: 2px 0 4px; line-height: 1.25; }
+.dt-status p { margin: 0; color: var(--ds-muted); font-size: 14px; line-height: 1.5; }
+.dt-eta {
+  display: flex; align-items: baseline; gap: 8px; margin-top: 14px; padding: 12px 14px;
+  border-radius: 14px; background: linear-gradient(135deg, #0a86d4, #04317c); color: #fff;
+}
+.dt-eta b { font-size: 26px; font-weight: 800; letter-spacing: -0.4px; }
+.dt-eta span { font-size: 13.5px; font-weight: 600; opacity: 0.9; }
+.dt-live { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--ds-green); margin-top: 10px; }
+.dt-live i { width: 8px; height: 8px; border-radius: 50%; background: var(--ds-green); position: relative; }
+.dt-live i::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--ds-green); animation: ds-pulse 1.6s ease-out infinite; }
+
+/* ── Frise des étapes ────────────────────────────────────────────────── */
+.dt-steps { list-style: none; margin: 0; padding: 0; }
+.dt-steps li { display: grid; grid-template-columns: 26px 1fr; gap: 12px; position: relative; padding-bottom: 16px; }
+.dt-steps li:last-child { padding-bottom: 0; }
+.dt-steps li::before {
+  content: ''; position: absolute; left: 12px; top: 26px; bottom: 0; width: 2px; background: var(--ds-line);
+}
+.dt-steps li:last-child::before { display: none; }
+.dt-steps li.is-done::before { background: var(--ds-green); }
+.dt-dot {
+  width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--ds-card); border: 2px solid var(--ds-line); color: var(--ds-faint); position: relative; z-index: 1;
+  transition: all .3s ease;
+}
+.dt-steps li.is-done .dt-dot { background: var(--ds-green); border-color: var(--ds-green); color: #fff; }
+.dt-steps li.is-current .dt-dot { border-color: var(--ds-blue); color: var(--ds-blue); box-shadow: 0 0 0 5px rgba(6,113,186,0.12); }
+.dt-steps li.is-current .dt-dot::after { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--ds-blue); }
+.dt-steps li.is-failed .dt-dot { background: var(--ds-red); border-color: var(--ds-red); color: #fff; }
+.dt-step-text { padding-top: 2px; }
+.dt-step-text b { display: block; font-size: 14px; font-weight: 700; color: var(--ds-faint); }
+.dt-steps li.is-done .dt-step-text b, .dt-steps li.is-current .dt-step-text b, .dt-steps li.is-failed .dt-step-text b { color: var(--ds-text); }
+.dt-step-text small { font-size: 12.5px; color: var(--ds-muted); }
+
+/* ── Divers ──────────────────────────────────────────────────────────── */
+.dt-merchant { display: flex; align-items: center; gap: 12px; }
+.dt-merchant b { font-size: 15px; display: block; }
+.dt-merchant small { font-size: 12.5px; color: var(--ds-muted); }
+.dt-kv { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; }
+.dt-kv + .dt-kv { border-top: 1px solid var(--ds-line); }
+.dt-offline { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--ds-amber); background: #fdf6e7; padding: 8px 12px; border-radius: 10px; margin-bottom: 12px; }
+
+/* ── Repères de carte ────────────────────────────────────────────────── */
+.dt-marker-dest { width: 34px; height: 44px; }
+.dt-marker-driver { width: 44px; height: 44px; position: relative; }
+.dt-marker-driver span {
+  position: absolute; inset: 6px; border-radius: 50%; background: #0671ba; border: 3px solid #fff;
+  box-shadow: 0 4px 14px rgba(4, 49, 124, 0.45); display: flex; align-items: center; justify-content: center; color: #fff;
+}
+.dt-marker-driver::before {
+  content: ''; position: absolute; inset: 6px; border-radius: 50%; background: rgba(6,113,186,0.35);
+  animation: ds-pulse 2s ease-out infinite;
+}
+.leaflet-container { font-family: inherit; background: #e8edf2; }
+/* Fond OpenStreetMap adouci : moins chargé, plus calme (lisible quand même) */
+.dt-map .leaflet-tile-pane { filter: saturate(0.55) brightness(1.05) contrast(0.9); }
+/* Tant que le livreur n'est pas en route, la carte ne montre que l'adresse :
+   plus petite, le statut reste visible sans défiler (téléphone). */
+@media (max-width: 899px) {
+  .dt-map-wrap.is-compact { height: 26vh; min-height: 170px; }
+}
+.leaflet-control-attribution { font-size: 10px; }
+
+@keyframes dt-ring { 0% { transform: scale(1); opacity: 0.55; } 100% { transform: scale(1.35); opacity: 0; } }
+
+/* ── Thème sombre (option, clair par défaut — choix mémorisé) ─────────── */
+.ds.dt.is-dark {
+  --ds-bg: #0b1220;
+  --ds-card: #131c2e;
+  --ds-text: #e8edf5;
+  --ds-muted: #9aa8bd;
+  --ds-faint: #6f7f96;
+  --ds-line: #24314a;
+  --ds-fill: #1a2539;
+  --ds-blue: #3aa3ec;
+  --ds-green: #34c56f;
+  --ds-green-bg: rgba(52, 197, 111, 0.14);
+  --ds-red: #f06363;
+  --ds-red-bg: rgba(240, 99, 99, 0.14);
+  --ds-amber: #e0a73c;
+  --ds-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+.dt.is-dark .dt-status-ico, .dt.is-dark .ds-card-title-ico { background: rgba(58, 163, 236, 0.14); }
+.dt.is-dark .dt-recenter { background: var(--ds-card); }
+.dt.is-dark .dt-map-wrap { background: #121a28; }
+.dt.is-dark .dt-offline { background: rgba(224, 167, 60, 0.12); }
+.dt.is-dark .ds-skel { background: linear-gradient(90deg, #1a2539 25%, #22304a 37%, #1a2539 63%); background-size: 400% 100%; }
+.dt.is-dark .ds-btn-secondary:hover { border-color: #3a4a66; }
+/* Fond de carte assombri sans changer de fournisseur de tuiles. */
+.dt.is-dark .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.88) saturate(0.7); }
+.dt.is-dark .leaflet-control-zoom a, .dt.is-dark .leaflet-control-attribution { background: var(--ds-card) !important; color: var(--ds-muted) !important; border-color: var(--ds-line) !important; }
+.dt-top-actions { display: flex; gap: 8px; }
+.dt-top-btn.is-icon { padding: 8px; }
+
+/* ── Bandeau « Télécharger l'app » ───────────────────────────────────── */
+.dt-app {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin-bottom: 12px;
+  background: var(--ds-card); border: 1px solid var(--ds-line); border-radius: 14px; box-shadow: var(--ds-shadow);
+}
+.dt-app img { width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; }
+.dt-app-text { flex: 1; min-width: 0; font-size: 13px; line-height: 1.4; color: var(--ds-muted); }
+.dt-app-text b { display: block; color: var(--ds-text); font-size: 14px; }
+.dt-app-cta {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; padding: 9px 12px; border-radius: 10px;
+  background: linear-gradient(135deg, #0a86d4, #04317c); color: #fff !important; font-size: 13px; font-weight: 700; text-decoration: none;
+}
+.dt-app-close { flex-shrink: 0; background: none; border: none; color: var(--ds-faint); cursor: pointer; padding: 4px; display: flex; }
+.dt-app-stores { display: flex; gap: 8px; flex-wrap: wrap; }
