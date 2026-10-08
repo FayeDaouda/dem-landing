@@ -27,8 +27,9 @@ export const driverIcon = L.divIcon({
 })
 
 export function baseMap(el, options = {}) {
-  const m = L.map(el, { zoomControl: false, attributionControl: true, ...options })
-  L.control.zoom({ position: 'topright' }).addTo(m)
+  const { zoomButtons = true, ...rest } = options
+  const m = L.map(el, { zoomControl: false, attributionControl: true, ...rest })
+  if (zoomButtons) L.control.zoom({ position: 'topright' }).addTo(m)
   L.tileLayer(TILE_URL, { maxZoom: 19, attribution: TILE_ATTRIBUTION }).addTo(m)
   return m
 }

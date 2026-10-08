@@ -175,3 +175,24 @@
 }
 .dt-app-close { flex-shrink: 0; background: none; border: none; color: var(--ds-faint); cursor: pointer; padding: 4px; display: flex; }
 .dt-app-stores { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ── Paiement en ligne (lien de commande) ─────────────────────────────── */
+.dt-paycard { display: flex; align-items: center; gap: 12px; }
+.dt-paycard.is-due { display: block; border: 1.5px solid var(--ds-blue); box-shadow: 0 6px 20px rgba(6,113,186,.12); }
+.dt-paycard-top { display: flex; align-items: center; gap: 12px; }
+.dt-paycard b { display: block; font-size: 15.5px; }
+.dt-paycard small { display: block; color: var(--ds-muted); font-size: 13px; margin-top: 2px; }
+.dt-paycard-ico { width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #e8f3fb; color: var(--ds-blue); }
+.dt-paycard.is-paid .dt-paycard-ico { background: #e6f6ed; color: var(--ds-green); }
+.dt-paycard-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.dt-paybtn { background: var(--op); color: #fff; border: 0; font-weight: 800; }
+.dt-paybtn:disabled { opacity: .6; }
+.dt-paycard-qr { margin-top: 12px; text-align: center; }
+.dt-paycard-qr img { width: 180px; height: 180px; border-radius: 12px; background: #fff; padding: 8px; }
+.dt-paycard-hint { margin-top: 10px !important; }
+.dt.is-dark .dt-paycard-ico { background: rgba(6,113,186,.18); }
+
+.dt-paysplit { display: grid; gap: 6px; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--ds-fill); font-size: 14px; }
+.dt-paysplit div { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.dt-paysplit span { color: var(--ds-muted); font-weight: 600; }
+.dt-paysplit small { color: var(--ds-muted); }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useLocation, Link } from 'react-router-dom'
 import { L, baseMap, destIcon, driverIcon } from './shop/map.js'
 import './shop/shop.css'
 import './shop/tracking.css'
@@ -14,7 +14,7 @@ import {
 // quand l'onglet est caché ; arrêt une fois la commande terminée. Thème
 // clair par défaut, sombre en option (mémorisé sur l'appareil).
 
-const ACTIVE = new Set(['RECEIVED', 'SCHEDULED', 'SEARCHING', 'PICKUP', 'ON_THE_WAY'])
+const ACTIVE = new Set(['AWAITING_PAYMENT', 'RECEIVED', 'SCHEDULED', 'SEARCHING', 'PICKUP', 'ON_THE_WAY'])
 
 // Préférences du visiteur (navigateur seulement) — jamais bloquant : en
 // navigation privée, le stockage peut être refusé.
@@ -48,9 +48,16 @@ function when(d) {
 
 function statusOf(t) {
   const name = t.merchant?.name ?? 'Le commerçant'
+  const paidOnline = !!t.payment?.paidAt
   switch (t.stage) {
+    case 'AWAITING_PAYMENT':
+      return { icon: 'shield', title: 'Paiement en attente', text: `Payez votre commande pour l'envoyer à ${name}.`, live: true }
+    case 'EXPIRED':
+      return { icon: 'clock', title: 'Paiement non reçu', text: 'Le délai de 30 minutes est dépassé : la commande n\'a pas été envoyée. Repassez-la depuis la boutique.', tone: 'red' }
     case 'RECEIVED':
-      return { icon: 'note', title: 'Commande reçue', text: `${name} va la confirmer dans quelques instants.`, live: true }
+      return paidOnline
+        ? { icon: 'check', title: 'Commande payée', text: `${name} va la confirmer dans quelques instants.`, live: true }
+        : { icon: 'note', title: 'Commande reçue', text: `${name} va la confirmer dans quelques instants.`, live: true }
     case 'SCHEDULED':
       return { icon: 'clock', title: 'Livraison programmée', text: t.times.scheduled ? `Prévue ${when(t.times.scheduled).toLowerCase()}.` : 'Un livreur vous sera attribué à l\'heure prévue.' }
     case 'SEARCHING':
@@ -64,7 +71,9 @@ function statusOf(t) {
     case 'CANCELLED':
       return { icon: 'x', title: 'Commande annulée', text: `Cette livraison a été annulée. Contactez ${t.merchant ? name : 'le support'} si besoin.`, tone: 'red' }
     case 'REJECTED':
-      return { icon: 'x', title: 'Commande non acceptée', text: `${name} n'a pas pu accepter cette commande. Vous n'avez rien payé.`, tone: 'red' }
+      return { icon: 'x', title: 'Commande non acceptée', text: paidOnline
+        ? `${name} n'a pas pu accepter cette commande. Votre paiement vous est remboursé automatiquement.`
+        : `${name} n'a pas pu accepter cette commande. Vous n'avez rien payé.`, tone: 'red' }
     default:
       return { icon: 'note', title: 'Suivi de commande', text: '' }
   }
@@ -72,9 +81,11 @@ function statusOf(t) {
 
 function stepsOf(t) {
   const name = t.merchant?.name
-  const ended = t.stage === 'CANCELLED' || t.stage === 'REJECTED'
+  const ended = ['CANCELLED', 'REJECTED', 'EXPIRED'].includes(t.stage)
   const list = []
   if (t.kind === 'request') list.push({ label: 'Commande envoyée', at: t.times.received })
+  // Lien prépayé : le paiement lance la commande
+  if (t.payment?.prepaid) list.push({ label: 'Payée en ligne', at: t.times.paid, hint: t.stage === 'AWAITING_PAYMENT' ? 'En attente de votre paiement' : null })
   list.push({
     label: t.kind === 'request' ? `Confirmée${name ? ` par ${name}` : ''}` : 'Commande créée',
     at: t.times.confirmed,
@@ -96,7 +107,7 @@ function stepsOf(t) {
   if (ended) {
     const cut = firstOpen === -1 ? out.length : firstOpen
     out.splice(cut, out.length - cut, {
-      label: t.stage === 'REJECTED' ? 'Non acceptée' : 'Annulée', at: t.times.ended, state: 'is-failed',
+      label: t.stage === 'REJECTED' ? 'Non acceptée' : t.stage === 'EXPIRED' ? 'Non payée à temps' : 'Annulée', at: t.times.ended, state: 'is-failed',
     })
   }
   return out
@@ -104,6 +115,19 @@ function stepsOf(t) {
 
 export default function Tracking() {
   const { id } = useParams()
+  // Commande tout juste passée sur la boutique : paiement déjà lancé, on
+  // ouvre Wave tout de suite (cette page reste dans l'historique : au retour,
+  // elle affiche « Payé »). Orange Money : QR affiché dans la carte.
+  const location = useLocation()
+  const autoPayment = location.state?.payment ?? null
+  useEffect(() => {
+    if (!autoPayment?.paymentUrl) return
+    const t = setTimeout(() => {
+      window.history.replaceState({}, '')
+      window.location.href = autoPayment.paymentUrl
+    }, 700)
+    return () => clearTimeout(t)
+  }, [autoPayment])
   // Clair par défaut ; le sombre est une option, mémorisée sur cet appareil.
   const [dark, setDark] = useState(() => readPref(THEME_KEY) === 'dark')
   useLightPage(dark ? '#0b1220' : '#f4f6fa')
@@ -158,7 +182,7 @@ export default function Tracking() {
             <div className="dt-panel-inner">
               {offline && <div className="dt-offline"><Icon name="refresh" size={15} /> Connexion perdue — nouvelle tentative en cours…</div>}
               <AppBanner />
-              {state === 'loading' ? <PanelSkeleton /> : <Panel data={data} />}
+              {state === 'loading' ? <PanelSkeleton /> : <Panel data={data} autoPayment={autoPayment} />}
             </div>
           </div>
         </div>
@@ -199,7 +223,7 @@ function TopBar({ data, dark, onToggleTheme }) {
   )
 }
 
-function Panel({ data }) {
+function Panel({ data, autoPayment }) {
   const s = statusOf(data)
   const payment = PAYMENT_METHODS.find(m => m.value === data.paymentMethod)
   const help = `https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent(`Bonjour, j'ai besoin d'aide pour ma commande N° ${data.reference}.`)}`
@@ -221,6 +245,8 @@ function Panel({ data }) {
         )}
         {ACTIVE.has(data.stage) && <span className="dt-live"><i /> Mis à jour en direct</span>}
       </div>
+
+      <PaymentCard data={data} autoPayment={autoPayment} />
 
       <div className="ds-card">
         <h2 className="ds-card-title" style={{ fontSize: 15 }}>Étapes</h2>
@@ -264,7 +290,7 @@ function Panel({ data }) {
             {data.total != null && <div className="ds-total"><span>Total des articles</span><b>{formatFcfa(data.total)}</b></div>}
           </>
         )}
-        {payment && (
+        {payment && data.payment?.productPayment !== 'ONLINE' && (
           <div className="dt-kv" style={{ borderTop: data.items.length ? '1px solid var(--ds-line)' : 'none', marginTop: data.items.length ? 10 : 0 }}>
             <span className="ds-pay-dot" style={{ background: payment.color }}>{payment.mark}</span>
             <div style={{ fontSize: 14, lineHeight: 1.45 }}>
@@ -294,6 +320,131 @@ function Panel({ data }) {
       </p>
     </div>
   )
+}
+
+const OPERATORS = [['WAVE', 'Wave', '#1dc8ce'], ['ORANGE_MONEY', 'Orange Money', '#ff7a00']]
+const OPERATOR_LABEL = { WAVE: 'Wave', ORANGE_MONEY: 'Orange Money' }
+
+// Paiement sur la page de suivi :
+// - lien prépayé en attente : payer pour envoyer la commande (articles, et
+//   livraison si choisie « avec la commande ») — Wave / Orange Money ;
+// - payé : confirmation ; refusé / annulé : remboursement automatique suivi ;
+// - livraison restée « à la livraison » : payable en ligne aussi.
+function PaymentCard({ data, autoPayment }) {
+  const p = data.payment
+  const [busy, setBusy] = useState(null)
+  const [error, setError] = useState(null)
+  const [qr, setQr] = useState(autoPayment?.qrCode ?? null)
+  if (!p) return null
+
+  async function pay(operatorName) {
+    setBusy(operatorName)
+    setError(null)
+    setQr(null)
+    try {
+      const res = await fetch(`${API_URL}/public/suivi/${data.id}/pay`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ operatorName }),
+      })
+      const out = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(out.message || 'Paiement impossible pour le moment. Réessayez.')
+      if (out.paymentUrl) window.location.href = out.paymentUrl
+      else if (out.qrCode) setQr(out.qrCode)
+      else throw new Error('Paiement impossible pour le moment. Réessayez.')
+    } catch (err) {
+      setError(err.message || 'Connexion impossible. Réessayez.')
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  const buttons = (
+    <>
+      <div className="dt-paycard-actions">
+        {OPERATORS.map(([op, label, color]) => (
+          <button key={op} type="button" className="ds-btn dt-paybtn" style={{ '--op': color }}
+            disabled={!!busy} onClick={() => pay(op)}>
+            {busy === op ? 'Ouverture…' : label}
+          </button>
+        ))}
+      </div>
+      {qr && (
+        <div className="dt-paycard-qr">
+          <img src={qr.startsWith('data:') || qr.startsWith('http') ? qr : `data:image/png;base64,${qr}`} alt="QR code de paiement" />
+          <small>Scannez ce code avec Orange Money, ou payez depuis l'app Orange Money.</small>
+        </div>
+      )}
+      {error && <div className="ds-alert is-error" style={{ marginTop: 10, marginBottom: 0 }}><Icon name="x" size={18} />{error}</div>}
+    </>
+  )
+
+  // 1. Lien prépayé : en attente du paiement
+  if (p.prepaid && p.awaitingPayment) {
+    return (
+      <div className="ds-card dt-paycard is-due">
+        <div className="dt-paycard-top">
+          <span className="dt-paycard-ico"><Icon name="shield" size={19} /></span>
+          <div>
+            <b>Payer {formatFcfa(p.amountDue)} pour envoyer la commande</b>
+            <small>Paiement sécurisé via DEM · à faire dans les 30 minutes</small>
+          </div>
+        </div>
+        <div className="dt-paysplit">
+          <div><span>Articles</span><b>{formatFcfa(p.productAmount)}</b></div>
+          {p.deliveryAmount != null
+            ? <div><span>Livraison</span><b>{formatFcfa(p.deliveryAmount)}</b></div>
+            : <div><span>Livraison</span><small>à régler au coursier</small></div>}
+        </div>
+        {buttons}
+        <small className="dt-paycard-hint">Validez dans l'application, puis revenez ici : la page se met à jour toute seule.</small>
+      </div>
+    )
+  }
+
+  // 2. Remboursement (refus, sans réponse, annulation, doublon)
+  if (p.refund) {
+    const sent = p.refund.status === 'SENT'
+    return (
+      <div className={`ds-card dt-paycard ${sent ? 'is-paid' : ''}`}>
+        <span className="dt-paycard-ico"><Icon name={sent ? 'check' : 'refresh'} size={19} /></span>
+        <div>
+          <b>{sent ? 'Remboursement envoyé' : 'Remboursement en cours'}</b>
+          <small>{formatFcfa(p.refund.amount)} {sent ? 'renvoyés' : 'à renvoyer'} sur votre {OPERATOR_LABEL[p.paymentOperator] ?? 'compte mobile money'}.</small>
+        </div>
+      </div>
+    )
+  }
+
+  // 3. Payé en ligne
+  if (p.prepaid && p.paidAt) {
+    return (
+      <div className="ds-card dt-paycard is-paid">
+        <span className="dt-paycard-ico"><Icon name="check" size={20} strokeWidth={2.6} /></span>
+        <div>
+          <b>Payé en ligne — {formatFcfa(p.amountDue)}</b>
+          <small>{p.deliveryAmount != null ? 'Articles et livraison réglés.' : 'Articles réglés · la livraison se règle au coursier.'}</small>
+        </div>
+      </div>
+    )
+  }
+
+  // 4. Livraison à régler : possible en ligne aussi
+  if (p.deliveryDue != null) {
+    return (
+      <div className="ds-card dt-paycard">
+        <div className="dt-paycard-top" style={{ width: '100%' }}>
+          <span className="dt-paycard-ico"><Icon name="bike" size={19} /></span>
+          <div>
+            <b>Livraison : {formatFcfa(p.deliveryDue)}</b>
+            <small>À régler au coursier, ou dès maintenant en ligne.</small>
+          </div>
+        </div>
+        {buttons}
+      </div>
+    )
+  }
+  return null
 }
 
 function PanelSkeleton() {
