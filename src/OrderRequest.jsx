@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import './shop/shop.css'
 import {
   API_URL, Icon, MerchantAvatar, PAYMENT_METHODS,
@@ -34,7 +34,14 @@ export default function OrderRequest() {
   const [notes, setNotes] = useState('')
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('') // 9 chiffres
-  const [payment, setPayment] = useState('CASH')
+  const [payment, setPayment] = useState('CASH') // boutique sans prépaiement : moyen à la livraison
+  // Boutique avec paiement intégré (merchant.prepaid) : articles payés pour
+  // lancer la commande ; livraison maintenant ('WITH_ORDER', au prix exact)
+  // ou à la livraison, au choix ; Wave ou Orange Money pour payer.
+  const [deliveryPayment, setDeliveryPayment] = useState('WITH_ORDER')
+  const [operator, setOperator] = useState('WAVE')
+  const [quote, setQuote] = useState(null) // { loading } | { available, total }
+  const navigate = useNavigate()
   const [website, setWebsite] = useState('') // pot de miel anti-robot
   const [touched, setTouched] = useState(false)
 
@@ -49,7 +56,6 @@ export default function OrderRequest() {
       .then(data => {
         if (cancelled) return
         setMerchant(data)
-        if (data.inAppPayment) setPayment('WAVE')
         setLoadState('ready')
         document.title = `Commander chez ${data.businessName} — DEM`
       })
@@ -64,6 +70,24 @@ export default function OrderRequest() {
       .then(data => setProducts(Array.isArray(data) ? data : []))
       .catch(() => setProducts([]))
   }, [loadState, merchantId])
+
+  // Prix de la livraison si elle est payée maintenant — depuis l'adresse de
+  // la boutique jusqu'au point placé par le client.
+  const prepaid = !!merchant?.prepaid
+  useEffect(() => {
+    if (!prepaid || step !== 3 || !coords) return
+    let cancelled = false
+    setQuote({ loading: true })
+    fetch(`${API_URL}/public/dem-pro/${merchantId}/delivery-quote?lat=${coords.lat}&lng=${coords.lng}`)
+      .then(res => res.json())
+      .then(q => {
+        if (cancelled) return
+        setQuote(q?.available ? q : { available: false })
+        if (!q?.available) setDeliveryPayment('ON_DELIVERY')
+      })
+      .catch(() => { if (!cancelled) { setQuote({ available: false }); setDeliveryPayment('ON_DELIVERY') } })
+    return () => { cancelled = true }
+  }, [prepaid, step, coords, merchantId])
 
   // Chaque étape repart du haut de page
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }, [step, submitted])
@@ -119,7 +143,9 @@ export default function OrderRequest() {
           landmark: landmark.trim() || undefined,
           notes: notes.trim() || undefined,
           items: cartItems.map(i => ({ productId: i.productId, quantity: i.quantity })),
-          customerPaymentMethod: payment,
+          ...(prepaid
+            ? { deliveryPayment: deliveryNow ? 'WITH_ORDER' : 'ON_DELIVERY', operatorName: operator }
+            : { customerPaymentMethod: payment }),
           channel: 'web',
           website,
         }),
@@ -127,6 +153,12 @@ export default function OrderRequest() {
       const data = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(data.message || 'Impossible d\'envoyer votre commande. Réessayez.')
       if (data.id) rememberOrder({ id: data.id, merchantId, merchantName: merchant.businessName })
+      // Prépayée : direction le suivi, qui ouvre Wave / Orange Money (ou
+      // propose de réessayer si le lancement du paiement a échoué).
+      if (data.awaitingPayment && data.id) {
+        navigate(`/suivi/${data.id}`, { state: { payment: data.payment ?? null } })
+        return
+      }
       setSubmitted({ id: data.id ?? null })
     } catch (err) {
       setSubmitError(err.message || 'Connexion impossible. Vérifiez votre réseau et réessayez.')
@@ -135,9 +167,13 @@ export default function OrderRequest() {
     }
   }
 
+  const deliveryNow = prepaid && deliveryPayment === 'WITH_ORDER' && !!quote?.available
+  const amountDue = cartTotal + (deliveryNow ? quote.total : 0)
   const action = step < 3
     ? { label: step === 1 ? 'Continuer' : 'Vérifier ma commande', onClick: next, disabled: false, icon: 'arrowRight' }
-    : { label: `Envoyer ma commande`, onClick: submit, disabled: submitting, icon: null }
+    : prepaid
+      ? { label: `Payer ${formatFcfa(amountDue)}`, onClick: submit, disabled: submitting || quote?.loading, icon: null }
+      : { label: `Envoyer ma commande`, onClick: submit, disabled: submitting, icon: null }
 
   return (
     <div className="ds">
@@ -174,6 +210,9 @@ export default function OrderRequest() {
                       merchant={merchant} items={cartItems} total={cartTotal} inApp={!!merchant?.inAppPayment}
                       address={address} landmark={landmark} notes={notes} name={name} phone={phone}
                       payment={payment} setPayment={setPayment} onEdit={setStep}
+                      prepaid={prepaid} quote={quote} deliveryNow={deliveryNow}
+                      setDeliveryPayment={setDeliveryPayment} operator={operator} setOperator={setOperator}
+                      amountDue={amountDue}
                       error={submitError}
                     />
                   )}
@@ -189,6 +228,7 @@ export default function OrderRequest() {
                   <CartSummary
                     merchant={merchant} items={cartItems} total={cartTotal} inApp={!!merchant?.inAppPayment}
                     action={action} blocker={touched ? blocker : null} step={step} submitting={submitting}
+                    prepaid={prepaid} deliveryNow={deliveryNow} quote={quote} amountDue={amountDue}
                   />
                 </aside>
               </div>
@@ -196,7 +236,10 @@ export default function OrderRequest() {
           </main>
 
           {!submitted && (step > 1 || cartItems.length > 0) && (
-            <CartBar count={itemCount} total={cartTotal} action={action} submitting={submitting} blocker={touched ? blocker : null} />
+            <CartBar
+              count={itemCount} total={cartTotal} action={action} submitting={submitting} blocker={touched ? blocker : null}
+              due={step === 3 && prepaid ? amountDue : null}
+            />
           )}
         </>
       )}
@@ -451,6 +494,10 @@ function Delivery({
   // Précision du GPS (m) tant que le repère n'a pas été ajusté à la main
   const [accuracy, setAccuracy] = useState(null)
   const [showMap, setShowMap] = useState(!!coords)
+  const [mapOpenNow, setMapOpenNow] = useState(false) // « Adresse introuvable ? » : carte plein écran directe
+  // Adresse remplie automatiquement (GPS, carte) : remplacée par la suivante ;
+  // tapée par le client : jamais écrasée.
+  const autoAddress = useRef(false)
   const token = useRef(newSessionToken())
   const debounce = useRef(null)
   const phoneValid = isValidSenegalMobile(phone)
@@ -458,6 +505,7 @@ function Delivery({
   // Retoucher le texte (« Villa 12 »…) ne déplace pas le repère déjà posé :
   // seul le choix d'une suggestion, le GPS ou la carte le déplacent.
   function onType(v) {
+    autoAddress.current = false
     setAddress(v)
     clearTimeout(debounce.current)
     if (v.trim().length < 3) { setSuggestions([]); setOpen(false); return }
@@ -480,6 +528,7 @@ function Delivery({
       if (data.lat != null && data.lng != null) {
         setAddress(data.address || s.description)
         setCoords({ lat: data.lat, lng: data.lng })
+        autoAddress.current = false // adresse choisie par le client : gardée
         setAccuracy(null)
         setShowMap(true)
       }
@@ -509,6 +558,7 @@ function Delivery({
         setCoords({ lat, lng })
         setAccuracy(acc > 100 ? Math.round(acc) : null)
         setShowMap(true)
+        autoAddress.current = true
         setAddress((await reverse(lat, lng)) || 'Ma position actuelle')
         setGps({ loading: false, error: null })
       },
@@ -522,12 +572,13 @@ function Delivery({
     )
   }
 
-  async function onMapChange(lat, lng) {
+  // Point confirmé sur la carte plein écran (avec l'adresse trouvée)
+  async function onMapChange(lat, lng, _source, found) {
     setCoords({ lat, lng })
     setAccuracy(null) // repère ajusté à la main
-    if (address.trim().length < 4) {
-      const found = await reverse(lat, lng)
-      if (found) setAddress(found)
+    if (address.trim().length < 4 || autoAddress.current) {
+      const label = found && found !== 'Point sélectionné sur la carte' ? found : await reverse(lat, lng)
+      if (label) { setAddress(label); autoAddress.current = true }
     }
   }
 
@@ -573,10 +624,13 @@ function Delivery({
 
           {showMap ? (
             <Suspense fallback={<div className="ds-skel" style={{ height: 230, marginTop: 12, borderRadius: 14 }} />}>
-              <MapPicker value={coords} accuracy={accuracy} onChange={onMapChange} />
+              <MapPicker
+                value={coords} accuracy={accuracy} onChange={onMapChange} reverse={reverse}
+                openOnMount={mapOpenNow} onOpenChange={o => { if (!o) setMapOpenNow(false) }}
+              />
             </Suspense>
           ) : (
-            <button type="button" className="ds-linkbtn" onClick={() => setShowMap(true)}>
+            <button type="button" className="ds-linkbtn" onClick={() => { setMapOpenNow(true); setShowMap(true) }}>
               <Icon name="pin" size={15} /> Adresse introuvable ? Placez-la vous-même sur la carte
             </button>
           )}
@@ -636,35 +690,73 @@ function Delivery({
 }
 
 // ── Étape 3 : paiement et récapitulatif ────────────────────────────────────
-function Confirm({ merchant, inApp, items, total, address, landmark, notes, name, phone, payment, setPayment, onEdit, error }) {
-  // Paiement intégré : le client paie en ligne (Wave / Orange Money via DEM),
-  // jamais en espèces au livreur (voir Order.proPaymentMode côté serveur).
-  const methods = inApp ? PAYMENT_METHODS.filter(m => m.value === 'WAVE' || m.value === 'ORANGE_MONEY') : PAYMENT_METHODS
+function Confirm({
+  merchant, inApp, items, total, address, landmark, notes, name, phone, payment, setPayment, onEdit, error,
+  prepaid, quote, deliveryNow, setDeliveryPayment, operator, setOperator, amountDue,
+}) {
   return (
     <div className="ds-fade">
       {error && <div className="ds-alert is-error"><Icon name="x" size={18} />{error}</div>}
 
-      <div className="ds-card">
-        <h2 className="ds-card-title">
-          <span className="ds-ico"><Icon name={inApp ? 'shield' : 'cash'} size={17} /></span>
-          {inApp ? 'Paiement sécurisé par Wave ou Orange Money' : 'Paiement à la réception'}
-        </h2>
-        <p className="ds-sub">
-          {inApp
-            ? 'Rien n\'est payé maintenant. Vous payez à la livraison, par Wave ou Orange Money : le paiement passe par DEM, puis est reversé au commerçant.'
-            : 'Rien n\'est payé maintenant. Vous réglez à la livraison, par le moyen de votre choix :'}
-        </p>
-        <div className="ds-pay" role="radiogroup">
-          {methods.map(m => (
-            <button key={m.value} type="button" role="radio" aria-checked={payment === m.value}
-              className={payment === m.value ? 'is-active' : ''} onClick={() => setPayment(m.value)}>
-              <span className="ds-pay-dot" style={{ background: m.color }}>{m.mark}</span>
-              {m.label}
-              <span className="ds-radio" />
-            </button>
-          ))}
+      {prepaid ? (
+        <div className="ds-card">
+          <h2 className="ds-card-title">
+            <span className="ds-ico"><Icon name="shield" size={17} /></span>
+            Paiement sécurisé
+          </h2>
+          <p className="ds-sub">
+            Vos articles sont payés à la commande : {merchant.businessName} la reçoit une fois payée.
+            Si elle ne peut pas la préparer, vous êtes remboursé automatiquement.
+          </p>
+
+          <div className="ds-paychoice">
+            <div className="ds-paychoice-head">
+              <span className="ds-recap-ico"><Icon name="bag" size={17} /></span>
+              <span className="ds-paychoice-title"><b>Articles</b><small>Payés maintenant</small></span>
+              <b style={{ marginLeft: 'auto' }}>{formatFcfa(total)}</b>
+            </div>
+          </div>
+
+          <PayChoice
+            icon="bike" title="Livraison"
+            amount={quote?.loading ? 'Calcul du prix…' : quote?.available ? formatFcfa(quote.total) : 'Prix fixé à la livraison'}
+            options={[['WITH_ORDER', 'Maintenant'], ['ON_DELIVERY', 'À la livraison']]}
+            value={deliveryNow ? 'WITH_ORDER' : 'ON_DELIVERY'} onChange={setDeliveryPayment}
+            disabledValues={quote?.available ? [] : ['WITH_ORDER']}
+            note={deliveryNow ? 'Rien à donner au coursier.' : 'Vous la réglez au coursier (espèces ou mobile money).'}
+          />
+
+          <p className="ds-sub" style={{ marginTop: 14, marginBottom: 8 }}>Payer {formatFcfa(amountDue)} avec :</p>
+          <div className="ds-pay" role="radiogroup" aria-label="Moyen de paiement">
+            {PAYMENT_METHODS.filter(m => m.value === 'WAVE' || m.value === 'ORANGE_MONEY').map(m => (
+              <button key={m.value} type="button" role="radio" aria-checked={operator === m.value}
+                className={operator === m.value ? 'is-active' : ''} onClick={() => setOperator(m.value)}>
+                <span className="ds-pay-dot" style={{ background: m.color }}>{m.mark}</span>
+                {m.label}
+                <span className="ds-radio" />
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="ds-card">
+          <h2 className="ds-card-title">
+            <span className="ds-ico"><Icon name="cash" size={17} /></span>
+            Paiement à la réception
+          </h2>
+          <p className="ds-sub">Rien n'est payé maintenant. Vous réglez à la livraison, par le moyen de votre choix :</p>
+          <div className="ds-pay" role="radiogroup">
+            {PAYMENT_METHODS.map(m => (
+              <button key={m.value} type="button" role="radio" aria-checked={payment === m.value}
+                className={payment === m.value ? 'is-active' : ''} onClick={() => setPayment(m.value)}>
+                <span className="ds-pay-dot" style={{ background: m.color }}>{m.mark}</span>
+                {m.label}
+                <span className="ds-radio" />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="ds-card">
         <h2 className="ds-card-title"><span className="ds-ico"><Icon name="note" size={17} /></span>Récapitulatif</h2>
@@ -694,13 +786,56 @@ function Confirm({ merchant, inApp, items, total, address, landmark, notes, name
           </div>
           <button type="button" className="ds-recap-edit" onClick={() => onEdit(2)}>Modifier</button>
         </div>
-        {/* Sur téléphone, le total est dans la barre du bas */}
-        <div className="ds-total" style={{ marginTop: 14 }}>
-          <span>Total des articles</span>
-          <b>{formatFcfa(total)}</b>
-        </div>
-        <p className="ds-fee-note">Les frais de livraison éventuels sont fixés par {merchant.businessName}.</p>
+        {prepaid ? (
+          <PayTotals total={total} deliveryNow={deliveryNow} quote={quote} amountDue={amountDue} style={{ marginTop: 14 }} />
+        ) : (
+          <>
+            <div className="ds-total" style={{ marginTop: 14 }}>
+              <span>Total des articles</span>
+              <b>{formatFcfa(total)}</b>
+            </div>
+            <p className="ds-fee-note">Les frais de livraison éventuels sont fixés par {merchant.businessName}.</p>
+          </>
+        )}
       </div>
+    </div>
+  )
+}
+
+// Articles + livraison (maintenant ou au coursier) = à payer maintenant
+function PayTotals({ total, deliveryNow, quote, amountDue, style }) {
+  return (
+    <div className="ds-paytotals" style={style}>
+      <div><span>Articles</span><span>{formatFcfa(total)}</span></div>
+      <div>
+        <span>Livraison</span>
+        <span>{deliveryNow ? formatFcfa(quote.total) : <small>au coursier</small>}</span>
+      </div>
+      <div className="ds-total"><span>À payer maintenant</span><b>{formatFcfa(amountDue)}</b></div>
+    </div>
+  )
+}
+
+// Choix segmenté (ex. livraison payée maintenant ou à la livraison)
+function PayChoice({ icon, title, amount, options, value, onChange, disabledValues = [], note }) {
+  return (
+    <div className="ds-paychoice">
+      <div className="ds-paychoice-head">
+        <span className="ds-recap-ico"><Icon name={icon} size={17} /></span>
+        <span className="ds-paychoice-title"><b>{title}</b><small>{amount}</small></span>
+      </div>
+      <div className="ds-seg" role="radiogroup" aria-label={title}>
+        {options.map(([v, label]) => {
+          const disabled = disabledValues.includes(v)
+          return (
+            <button key={v} type="button" role="radio" aria-checked={value === v} disabled={disabled}
+              className={value === v ? 'is-active' : ''} onClick={() => !disabled && onChange(v)}>
+              {label}
+            </button>
+          )
+        })}
+      </div>
+      {note && <small className="ds-paychoice-note">{note}</small>}
     </div>
   )
 }
@@ -716,7 +851,7 @@ function ActionButton({ action, submitting }) {
   )
 }
 
-function CartSummary({ merchant, inApp, items, total, action, blocker, step, submitting }) {
+function CartSummary({ merchant, inApp, items, total, action, blocker, step, submitting, prepaid, deliveryNow, quote, amountDue }) {
   return (
     <div className="ds-card">
       <h2 className="ds-card-title" style={{ marginBottom: 10 }}>
@@ -738,9 +873,15 @@ function CartSummary({ merchant, inApp, items, total, action, blocker, step, sub
               <span className="ds-line-price">{formatFcfa(i.price * i.quantity)}</span>
             </div>
           ))}
-          <div className="ds-total"><span>Total</span><b>{formatFcfa(total)}</b></div>
-          {step === 3 && merchant && (
-            <p className="ds-fee-note">Les frais de livraison éventuels sont fixés par {merchant.businessName}.</p>
+          {step === 3 && prepaid ? (
+            <PayTotals total={total} deliveryNow={deliveryNow} quote={quote} amountDue={amountDue} style={{ marginTop: 10 }} />
+          ) : (
+            <>
+              <div className="ds-total"><span>Total</span><b>{formatFcfa(total)}</b></div>
+              {step === 3 && merchant && (
+                <p className="ds-fee-note">Les frais de livraison éventuels sont fixés par {merchant.businessName}.</p>
+              )}
+            </>
           )}
         </>
       )}
@@ -748,13 +889,13 @@ function CartSummary({ merchant, inApp, items, total, action, blocker, step, sub
         <ActionButton action={action} submitting={submitting} />
         {blocker
           ? <p className="ds-help is-error" style={{ textAlign: 'center' }}>{blocker}</p>
-          : <p className="ds-reassure"><Icon name="lock" size={13} /> {inApp ? 'Rien à payer maintenant' : 'Vous payez à la réception'}</p>}
+          : <p className="ds-reassure"><Icon name="lock" size={13} /> {prepaid ? 'Paiement sécurisé · remboursé en cas de refus' : 'Vous payez à la réception'}</p>}
       </div>
     </div>
   )
 }
 
-function CartBar({ count, total, action, submitting, blocker }) {
+function CartBar({ count, total, action, submitting, blocker, due }) {
   return (
     <div className="ds-cartbar">
       {/* Ce qui manque encore, sur toute la largeur (à côté du bouton, le
@@ -762,8 +903,8 @@ function CartBar({ count, total, action, submitting, blocker }) {
       {blocker && <p className="ds-cartbar-blocker"><Icon name="x" size={13} strokeWidth={2.6} /> {blocker}</p>}
       <div className="ds-cartbar-inner">
         <div className="ds-cartbar-info">
-          <small>{count} article{count > 1 ? 's' : ''}</small>
-          <b>{formatFcfa(total)}</b>
+          <small>{due != null ? 'À payer maintenant' : `${count} article${count > 1 ? 's' : ''}`}</small>
+          <b>{formatFcfa(due ?? total)}</b>
         </div>
         <ActionButton action={action} submitting={submitting} />
       </div>
@@ -799,7 +940,7 @@ function Success({ merchant, id, total }) {
       <ol className="ds-next" style={{ padding: 0 }}>
         <li><span>1</span><div><b>{merchant.businessName} confirme</b><br /><small style={{ color: 'var(--ds-muted)' }}>Vous suivez chaque étape en direct.</small></div></li>
         <li><span>2</span><div><b>Un livreur DEM récupère votre commande</b><br /><small style={{ color: 'var(--ds-muted)' }}>Puis vous la livre à l'adresse indiquée.</small></div></li>
-        <li><span>3</span><div><b>Vous payez à la réception</b><br /><small style={{ color: 'var(--ds-muted)' }}>{merchant.inAppPayment ? 'Par Wave ou Orange Money, en toute sécurité via DEM.' : 'Espèces ou mobile money, comme choisi.'}</small></div></li>
+        <li><span>3</span><div><b>Vous payez à la réception</b><br /><small style={{ color: 'var(--ds-muted)' }}>Espèces ou mobile money, comme choisi.</small></div></li>
       </ol>
 
       {link && (

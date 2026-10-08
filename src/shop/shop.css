@@ -273,16 +273,80 @@
 }
 
 /* ── Carte de placement de l'adresse ─────────────────────────────────── */
-.ds-picker { position: relative; margin-top: 12px; border-radius: 14px; overflow: hidden; border: 1px solid var(--ds-line); }
-.ds-picker-map { height: 230px; background: #e8edf2; }
-.ds-picker-map .leaflet-tile-pane { filter: saturate(0.55) brightness(1.05) contrast(0.9); }
-.ds-picker-map.leaflet-container { cursor: crosshair; }
-.ds-picker-hint {
-  position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 450;
-  background: rgba(20, 24, 43, 0.82); color: #fff; font-size: 12px; font-weight: 600;
-  padding: 6px 11px; border-radius: 999px; white-space: nowrap; pointer-events: none;
+/* Aperçu de la carte (figé : le doigt fait défiler la page) */
+.ds-picker {
+  position: relative; display: block; width: 100%; margin-top: 12px; padding: 0; border: 1px solid var(--ds-line);
+  border-radius: 16px; overflow: hidden; cursor: pointer; background: #e8edf2; font: inherit; text-align: left;
+  transition: box-shadow .2s ease, border-color .2s ease;
 }
-@media (min-width: 640px) { .ds-picker-map { height: 280px; } }
+.ds-picker:hover { border-color: #c9d6e4; box-shadow: var(--ds-shadow); }
+.ds-picker:focus-visible { outline: 3px solid rgba(6,113,186,.35); outline-offset: 2px; }
+.ds-picker-map { height: 170px; pointer-events: none; }
+.ds-picker-map .leaflet-tile-pane, .ds-mapsheet-map .leaflet-tile-pane { filter: saturate(0.55) brightness(1.05) contrast(0.9); }
+.ds-picker-map .leaflet-control-attribution { display: none; }
+.ds-picker-cta {
+  position: absolute; right: 10px; bottom: 10px; display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 13px; border-radius: 999px; background: #fff; color: var(--ds-blue); font-size: 13.5px; font-weight: 800;
+  box-shadow: 0 4px 14px rgba(16,24,40,.16); pointer-events: none;
+}
+@media (min-width: 640px) { .ds-picker-map { height: 210px; } }
+
+/* Carte plein écran : la carte bouge sous un repère fixe */
+.ds-mapsheet {
+  position: fixed; inset: 0; z-index: 1000; background: #e8edf2; min-height: 0;
+  animation: ds-sheet-in .28s cubic-bezier(.05,.7,.1,1) both;
+}
+@keyframes ds-sheet-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.ds-mapsheet-map { position: absolute; inset: 0; }
+/* Crédit de la carte au-dessus du panneau du bas, jamais dessous */
+.ds-mapsheet .leaflet-bottom { bottom: calc(176px + env(safe-area-inset-bottom)); }
+.ds-mapsheet .leaflet-control-attribution { border-radius: 6px 0 0 6px; }
+.ds-mapsheet-pin {
+  position: absolute; left: 50%; top: 50%; z-index: 500; pointer-events: none;
+  /* pointe du repère exactement au centre de la carte = point enregistré */
+  transform: translate(-50%, -100%); transition: transform .18s ease;
+}
+.ds-mapsheet-pin svg { display: block; filter: drop-shadow(0 4px 6px rgba(0,0,0,.25)); }
+.ds-mapsheet-pin.is-moving { transform: translate(-50%, calc(-100% - 12px)); }
+.ds-mapsheet-shadow {
+  position: absolute; left: 50%; bottom: -4px; width: 14px; height: 6px; margin-left: -7px; border-radius: 50%;
+  background: rgba(0,0,0,.28); transition: transform .18s ease, opacity .18s ease;
+}
+.ds-mapsheet-pin.is-moving .ds-mapsheet-shadow { transform: translateY(12px) scale(1.3); opacity: .5; }
+.ds-mapsheet-top {
+  position: absolute; z-index: 600; left: 0; right: 0; top: 0; display: flex; align-items: center; gap: 10px;
+  padding: calc(12px + env(safe-area-inset-top)) 14px 12px; pointer-events: none;
+}
+.ds-mapsheet-top > * { pointer-events: auto; }
+.ds-mapsheet-title {
+  flex: 1; min-width: 0; padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,.94);
+  box-shadow: 0 4px 14px rgba(16,24,40,.12); font-size: 14px; font-weight: 700; color: var(--ds-text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ds-mapsheet-round {
+  width: 46px; height: 46px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 50%; background: #fff; color: var(--ds-text); cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16,24,40,.16);
+}
+.ds-mapsheet-locate { position: absolute; z-index: 600; right: 14px; bottom: calc(196px + env(safe-area-inset-bottom)); color: var(--ds-blue); }
+.ds-mapsheet-panel {
+  position: absolute; z-index: 600; left: 0; right: 0; bottom: 0; padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+  background: #fff; border-radius: 22px 22px 0 0; box-shadow: 0 -8px 30px rgba(16,24,40,.14);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.ds-mapsheet-panel small { color: var(--ds-muted); font-size: 12px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; }
+.ds-mapsheet-address { display: flex; align-items: flex-start; gap: 8px; min-height: 44px; font-size: 15.5px; font-weight: 700; line-height: 1.35; }
+.ds-mapsheet-address svg { color: var(--ds-red); flex-shrink: 0; margin-top: 2px; }
+@keyframes ds-sheet-fade { from { opacity: 0; } to { opacity: 1; } }
+/* Ordinateur : fenêtre centrée sur un voile, pas plein écran */
+@media (min-width: 720px) {
+  .ds-mapsheet {
+    inset: auto; left: 50%; top: 5vh; width: min(720px, 92vw); height: 90vh; transform: translateX(-50%);
+    border-radius: 22px; overflow: hidden; box-shadow: 0 0 0 100vmax rgba(10,18,32,.45), 0 30px 80px rgba(16,24,40,.35);
+    animation: ds-sheet-fade .2s ease both;
+  }
+  .ds-mapsheet-panel { border-radius: 0; }
+}
 .ds-located.is-warn { color: var(--ds-amber); background: #fdf6e7; }
 .ds-linkbtn { background: none; border: none; color: var(--ds-blue); font-weight: 700; font-size: 13.5px; cursor: pointer; padding: 6px 0 0; display: inline-flex; align-items: center; gap: 6px; }
 
@@ -359,6 +423,23 @@
 .ds-pay button.is-active .ds-radio { border-color: var(--ds-blue); }
 .ds-pay button.is-active .ds-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--ds-blue); }
 
+/* Articles / coursier : « En ligne » ou « À la livraison » */
+.ds-paychoice { padding: 12px 0; border-top: 1px solid var(--ds-line); }
+.ds-paychoice:first-of-type { border-top: 0; padding-top: 4px; }
+.ds-paychoice-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ds-paychoice-title { display: flex; flex-direction: column; line-height: 1.25; }
+.ds-paychoice-title b { font-size: 14.5px; }
+.ds-paychoice-title small { color: var(--ds-muted); font-size: 12.5px; font-weight: 600; }
+.ds-paychoice-note { display: block; margin-top: 8px; color: var(--ds-muted); font-size: 12.5px; }
+.ds-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px; border-radius: 14px; background: var(--ds-fill); }
+.ds-seg button {
+  display: flex; align-items: center; justify-content: center; gap: 7px; padding: 11px 8px; border: 0; border-radius: 11px;
+  background: transparent; color: var(--ds-muted); font-size: 14px; font-weight: 700; cursor: pointer; transition: all .18s ease;
+}
+.ds-seg button.is-active { background: var(--ds-card); color: var(--ds-blue); box-shadow: 0 1px 3px rgba(16,32,64,.12), 0 0 0 1.5px var(--ds-blue); }
+.ds-seg button:disabled { cursor: not-allowed; opacity: .45; }
+.ds-seg button.is-active:disabled { opacity: 1; cursor: default; }
+
 /* ── Récapitulatif ───────────────────────────────────────────────────── */
 .ds-recap-row { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--ds-line); }
 .ds-recap-row:last-child { border-bottom: none; padding-bottom: 0; }
@@ -415,3 +496,42 @@
 @media (prefers-reduced-motion: reduce) {
   .ds *, .ds *::before, .ds *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* ── Téléphones : pas de zoom ni de jeu horizontal ─────────────────────── */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+.ds { overflow-x: clip; }
+/* iOS zoome sur tout champ < 16 px, et la page « flotte » ensuite */
+.ds input, .ds textarea, .ds select, .ds .ds-input { font-size: 16px; }
+.ds button, .ds a, .ds [role="button"] { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.ds img { max-width: 100%; }
+/* Opérateurs : jamais « Orange / Money » sur deux lignes */
+.ds-pay { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.ds-pay button { white-space: nowrap; min-width: 0; }
+
+/* Détail du paiement : articles, livraison, à payer maintenant */
+.ds-paytotals { display: grid; gap: 6px; font-size: 14.5px; }
+.ds-paytotals > div:not(.ds-total) { display: flex; justify-content: space-between; color: var(--ds-muted); font-weight: 600; }
+.ds-paytotals small { font-size: 13px; }
+.ds-paytotals .ds-total { margin-top: 4px; }
+
+/* Barre du bas : le montant ne se fait jamais écraser par le bouton */
+.ds-cartbar-info { flex: 0 0 auto; }
+.ds-cartbar-info b { white-space: nowrap; }
+.ds-cartbar .ds-btn { flex: 1 1 auto; min-width: 0; justify-content: center; }
+@media (max-width: 380px) {
+  .ds-cartbar .ds-btn { padding: 13px 12px; font-size: 14.5px; }
+  .ds-cartbar .ds-btn svg { display: none; }
+}
+/* Réassurance : cadenas et texte sur la même ligne, centrés */
+.ds-reassure { display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; flex-wrap: wrap; }
+
+/* Carte produit étroite (téléphone, 2 colonnes) : au panier, le sélecteur
+   − 1 + passe sous le prix, sur toute la largeur — il débordait de la carte */
+.ds-product { container-type: inline-size; }
+@container (max-width: 220px) {
+  .ds-product.is-in-cart .ds-product-foot { flex-direction: column; align-items: stretch; gap: 8px; }
+  .ds-product.is-in-cart .ds-stepper { width: 100%; justify-content: space-between; }
+}
+
+/* Tablette : bouton de la barre du bas à une largeur raisonnable */
+@media (min-width: 600px) { .ds-cartbar .ds-btn { flex: 0 1 360px; margin-left: auto; } }
