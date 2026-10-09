@@ -4,12 +4,12 @@ import { L, baseMap, destIcon, driverIcon } from './shop/map.js'
 import './shop/shop.css'
 import './shop/tracking.css'
 import {
-  API_URL, Icon, MerchantAvatar, PAYMENT_METHODS, SUPPORT_WHATSAPP, formatFcfa, useLightPage,
+  API_URL, Icon, MerchantAvatar, PAYMENT_METHODS, SUPPORT_WHATSAPP, formatFcfa, useLightPage, useNoZoom,
 } from './shop/ui.jsx'
 
 // Suivi public d'une commande (dem.sn/suivi/:id) — sans compte ni app, sur
 // téléphone comme sur ordinateur. Données : GET /public/suivi/:id (statut,
-// étapes, adresse de livraison, position du livreur une fois en route —
+// étapes, adresse de livraison, position du coursier une fois en route —
 // jamais son identité). Relu toutes les 5 s en route, 10 s sinon ; en pause
 // quand l'onglet est caché ; arrêt une fois la commande terminée. Thème
 // clair par défaut, sombre en option (mémorisé sur l'appareil).
@@ -59,13 +59,13 @@ function statusOf(t) {
         ? { icon: 'check', title: 'Commande payée', text: `${name} va la confirmer dans quelques instants.`, live: true }
         : { icon: 'note', title: 'Commande reçue', text: `${name} va la confirmer dans quelques instants.`, live: true }
     case 'SCHEDULED':
-      return { icon: 'clock', title: 'Livraison programmée', text: t.times.scheduled ? `Prévue ${when(t.times.scheduled).toLowerCase()}.` : 'Un livreur vous sera attribué à l\'heure prévue.' }
+      return { icon: 'clock', title: 'Livraison programmée', text: t.times.scheduled ? `Prévue ${when(t.times.scheduled).toLowerCase()}.` : 'Un coursier vous sera attribué à l\'heure prévue.' }
     case 'SEARCHING':
-      return { icon: 'bike', title: 'Commande confirmée', text: 'Nous attribuons un livreur DEM à votre commande.', live: true }
+      return { icon: 'bike', title: 'Commande confirmée', text: 'Nous attribuons un coursier DEM à votre commande.', live: true }
     case 'PICKUP':
-      return { icon: 'store', title: 'Le livreur récupère votre commande', text: `Il est en route vers ${t.merchant ? name : 'le point de collecte'}.`, live: true }
+      return { icon: 'store', title: 'Le coursier récupère votre commande', text: `Il est en route vers ${t.merchant ? name : 'le point de collecte'}.`, live: true }
     case 'ON_THE_WAY':
-      return { icon: 'bike', title: 'En route vers vous', text: 'Gardez votre téléphone à portée de main : le livreur peut vous appeler en arrivant.', live: true }
+      return { icon: 'bike', title: 'En route vers vous', text: 'Gardez votre téléphone à portée de main : le coursier peut vous appeler en arrivant.', live: true }
     case 'DELIVERED':
       return { icon: 'check', title: 'Commande livrée', text: `${when(t.times.delivered)}. Merci de votre confiance !`, tone: 'green' }
     case 'CANCELLED':
@@ -92,9 +92,9 @@ function stepsOf(t) {
     hint: t.stage === 'SCHEDULED' && t.times.scheduled ? `Livraison prévue ${when(t.times.scheduled).toLowerCase()}` : null,
   })
   list.push({
-    label: 'Récupérée par le livreur',
+    label: 'Récupérée par le coursier',
     at: t.times.pickedUp,
-    hint: t.stage === 'SEARCHING' ? 'Attribution d\'un livreur…' : t.stage === 'PICKUP' ? 'Le livreur est en route pour la récupérer' : null,
+    hint: t.stage === 'SEARCHING' ? 'Attribution d\'un coursier…' : t.stage === 'PICKUP' ? 'Le coursier est en route pour la récupérer' : null,
   })
   list.push({ label: 'Livrée', at: t.times.delivered, hint: t.stage === 'ON_THE_WAY' ? 'En route vers vous' : null })
 
@@ -131,6 +131,7 @@ export default function Tracking() {
   // Clair par défaut ; le sombre est une option, mémorisée sur cet appareil.
   const [dark, setDark] = useState(() => readPref(THEME_KEY) === 'dark')
   useLightPage(dark ? '#0b1220' : '#f4f6fa')
+  useNoZoom()
   const toggleTheme = () => setDark(d => { writePref(THEME_KEY, d ? 'light' : 'dark'); return !d })
   const [data, setData] = useState(null)
   const [state, setState] = useState('loading') // loading | ready | notfound
@@ -583,7 +584,7 @@ function MapView({ data }) {
     if (data.driver) {
       const to = L.latLng(data.driver.lat, data.driver.lng)
       if (!driver.current) {
-        driver.current = L.marker(to, { icon: driverIcon, keyboard: false, title: 'Votre livreur', zIndexOffset: 500 }).addTo(m)
+        driver.current = L.marker(to, { icon: driverIcon, keyboard: false, title: 'Votre coursier', zIndexOffset: 500 }).addTo(m)
       } else {
         // Glissement de l'ancienne position vers la nouvelle (1,2 s)
         const from = driver.current.getLatLng()
