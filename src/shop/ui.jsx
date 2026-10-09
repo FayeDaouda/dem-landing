@@ -132,6 +132,19 @@ export function trackingUrl(id) {
 
 // Fond clair aussi derrière la page (rebond iOS, bas de page) — le reste
 // du site est sombre.
+// Pas de zoom sur téléphone : iOS zoome au double tap et sur certains champs,
+// et la page reste ensuite décalée. On fige l'échelle tant que la page est
+// affichée (le pincement reste possible sur iOS, qui ignore ce réglage).
+export function useNoZoom() {
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="viewport"]')
+    if (!meta) return
+    const prev = meta.getAttribute('content')
+    meta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1')
+    return () => { meta.setAttribute('content', prev) }
+  }, [])
+}
+
 export function useLightPage(background = '#f4f6fa') {
   useEffect(() => {
     const prev = document.body.style.background

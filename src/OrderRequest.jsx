@@ -4,7 +4,7 @@ import './shop/shop.css'
 import {
   API_URL, Icon, MerchantAvatar, PAYMENT_METHODS,
   formatFcfa, formatLocalPhone, isInZone, isValidSenegalMobile, localPhoneDigits,
-  recentOrders, rememberOrder, useLightPage,
+  recentOrders, rememberOrder, useLightPage, useNoZoom,
 } from './shop/ui.jsx'
 
 // Boutique publique d'un commerçant DEM Pro (dem.sn/commander/:id) — le
@@ -21,6 +21,7 @@ const newSessionToken = () => `${Date.now()}-${Math.random().toString(36).slice(
 export default function OrderRequest() {
   const { merchantId } = useParams()
   useLightPage()
+  useNoZoom()
 
   const [merchant, setMerchant] = useState(null)
   const [loadState, setLoadState] = useState('loading') // loading | ready | notfound
@@ -73,6 +74,25 @@ export default function OrderRequest() {
 
   const onlineAvailable = !!merchant?.prepaid
   const prepaid = onlineAvailable && payTiming === 'NOW'
+
+  // En-tête fixe : ombre dès qu'on défile, nom du commerçant dans la barre
+  // une fois sa carte sortie de l'écran
+  const merchantRef = useRef(null)
+  const [scrolled, setScrolled] = useState(false)
+  const [pastMerchant, setPastMerchant] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 4)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+  useEffect(() => {
+    const el = merchantRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(([e]) => setPastMerchant(!e.isIntersecting), { rootMargin: '-64px 0px 0px 0px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [loadState])
 
   // Chaque étape repart du haut de page
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }, [step, submitted])
@@ -161,14 +181,14 @@ export default function OrderRequest() {
       : { label: `Envoyer ma commande`, onClick: submit, disabled: submitting, icon: null }
 
   return (
-    <div className="ds">
-      <Hero />
+    <div className="ds ds-order">
+      <Hero merchant={merchant} showMerchant={pastMerchant} raised={scrolled} />
 
       {loadState === 'notfound' ? (
         <NotFound />
       ) : (
         <>
-          <MerchantHeader merchant={merchant} loading={loadState === 'loading'} compact={step > 1 || !!submitted} />
+          <MerchantHeader merchant={merchant} loading={loadState === 'loading'} compact={step > 1 || !!submitted} cardRef={merchantRef} />
 
           <main className="ds-main">
             {submitted ? (
@@ -240,23 +260,37 @@ export default function OrderRequest() {
 }
 
 // ── En-tête ────────────────────────────────────────────────────────────────
-function Hero() {
+// Barre fixe en haut de page (ne défile jamais), puis le fond dégradé sur
+// lequel vient se poser la carte du commerçant.
+function Hero({ merchant, showMerchant, raised }) {
+  const mini = showMerchant && merchant
   return (
-    <header className="ds-hero">
-      <div className="ds-topbar">
-        <Link to="/" className="ds-brand">
-          <img src="/logo.png" alt="" />
-          <span>DEM</span>
-        </Link>
-        <span className="ds-secure"><Icon name="lock" size={13} /> Commande sécurisée</span>
-      </div>
-    </header>
+    <>
+      <header className={`ds-appbar ${raised ? 'is-raised' : ''} ${mini ? 'has-merchant' : ''}`}>
+        <div className="ds-topbar">
+          <div className="ds-appbar-lead">
+            <Link to="/" className={`ds-brand ${mini ? 'is-hidden' : ''}`} aria-hidden={mini ? 'true' : undefined} tabIndex={mini ? -1 : undefined}>
+              <img src="/logo.png" alt="" />
+              <span>DEM</span>
+            </Link>
+            {merchant && (
+              <span className={`ds-appbar-merchant ${mini ? '' : 'is-hidden'}`} aria-hidden={mini ? undefined : 'true'}>
+                <MerchantAvatar name={merchant.businessName} avatar={merchant.avatar} size={30} />
+                <b>{merchant.businessName}</b>
+              </span>
+            )}
+          </div>
+          <span className="ds-secure" title="Commande sécurisée"><Icon name="lock" size={13} /> <span>Commande sécurisée</span></span>
+        </div>
+      </header>
+      <div className="ds-hero" aria-hidden="true" />
+    </>
   )
 }
 
-function MerchantHeader({ merchant, loading, compact }) {
+function MerchantHeader({ merchant, loading, compact, cardRef }) {
   return (
-    <div className="ds-merchant">
+    <div className="ds-merchant" ref={cardRef}>
       <div className={`ds-merchant-card ds-fade ${compact ? 'is-compact' : ''}`}>
         {loading ? (
           <>
@@ -282,7 +316,7 @@ function MerchantHeader({ merchant, loading, compact }) {
           {merchant?.inAppPayment
             ? <TrustItem icon="shield" title="Paiement sécurisé" text="Wave ou Orange Money" />
             : <TrustItem icon="cash" title="Payez à la réception" text="Espèces, Wave, Orange Money" />}
-          <TrustItem icon="bike" title="Livreur DEM" text="Récupère et vous livre" />
+          <TrustItem icon="bike" title="Coursier DEM" text="Récupère et vous livre" />
           <TrustItem icon="route" title="Suivi en direct" text="Sur votre téléphone" />
         </div>
       </div>
@@ -629,17 +663,17 @@ function Delivery({
           ) : coords && accuracy ? (
             <div className="ds-located is-warn"><Icon name="crosshair" size={16} /> Position approximative (± {accuracy} m) : déplacez le repère pour l'ajuster.</div>
           ) : coords ? (
-            <div className="ds-located"><Icon name="check" size={16} strokeWidth={2.6} /> Adresse placée sur la carte : le livreur vous trouvera facilement</div>
+            <div className="ds-located"><Icon name="check" size={16} strokeWidth={2.6} /> Adresse placée sur la carte : le coursier vous trouvera facilement</div>
           ) : coordsError || addressError ? (
             <p className="ds-help is-error">{addressError ? 'Indiquez l\'adresse de livraison.' : 'Placez votre adresse sur la carte : choisissez une suggestion, utilisez votre position ou touchez la carte.'}</p>
           ) : address.trim().length >= 4 ? (
-            <p className="ds-help">Choisissez une suggestion, ou placez le repère sur la carte, pour que le livreur vous trouve.</p>
+            <p className="ds-help">Choisissez une suggestion, ou placez le repère sur la carte, pour que le coursier vous trouve.</p>
           ) : null}
         </div>
       </div>
 
       <div className="ds-card">
-        <h2 className="ds-card-title"><span className="ds-ico"><Icon name="flag" size={17} /></span>Pour le livreur</h2>
+        <h2 className="ds-card-title"><span className="ds-ico"><Icon name="flag" size={17} /></span>Pour le coursier</h2>
         <div className="ds-field">
           <label className="ds-label" htmlFor="ds-landmark">Point de repère <small>(recommandé)</small></label>
           <input id="ds-landmark" className="ds-input" value={landmark} onChange={e => setLandmark(e.target.value)} placeholder="Ex. : face à la pharmacie, portail bleu" maxLength={200} />
@@ -652,7 +686,7 @@ function Delivery({
 
       <div className="ds-card">
         <h2 className="ds-card-title"><span className="ds-ico"><Icon name="user" size={17} /></span>Vos coordonnées</h2>
-        <p className="ds-sub">Le livreur vous appelle à ce numéro en arrivant. Il n'est utilisé que pour cette livraison.</p>
+        <p className="ds-sub">Le coursier vous appelle à ce numéro en arrivant. Il n'est utilisé que pour cette livraison.</p>
         <div className="ds-field">
           <label className="ds-label" htmlFor="ds-name">Votre prénom <small>(facultatif)</small></label>
           <input id="ds-name" className="ds-input" value={name} onChange={e => setName(e.target.value)} placeholder="Ex. : Awa" autoComplete="given-name" maxLength={80} />
@@ -937,7 +971,7 @@ function Success({ merchant, id, total }) {
 
       <ol className="ds-next" style={{ padding: 0 }}>
         <li><span>1</span><div><b>{merchant.businessName} confirme</b><br /><small style={{ color: 'var(--ds-muted)' }}>Vous suivez chaque étape en direct.</small></div></li>
-        <li><span>2</span><div><b>Un livreur DEM récupère votre commande</b><br /><small style={{ color: 'var(--ds-muted)' }}>Puis vous la livre à l'adresse indiquée.</small></div></li>
+        <li><span>2</span><div><b>Un coursier DEM récupère votre commande</b><br /><small style={{ color: 'var(--ds-muted)' }}>Puis vous la livre à l'adresse indiquée.</small></div></li>
         <li><span>3</span><div><b>Vous payez à la réception</b><br /><small style={{ color: 'var(--ds-muted)' }}>Espèces ou mobile money, comme choisi.</small></div></li>
       </ol>
 
