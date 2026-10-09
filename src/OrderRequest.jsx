@@ -39,6 +39,8 @@ export default function OrderRequest() {
   // lancer la commande ; livraison maintenant ('WITH_ORDER', au prix exact)
   // ou à la livraison, au choix ; Wave ou Orange Money pour payer.
   const [deliveryPayment, setDeliveryPayment] = useState('WITH_ORDER')
+  // Payer maintenant (en ligne, recommandé) ou à la livraison (09/10)
+  const [payTiming, setPayTiming] = useState('NOW')
   const [operator, setOperator] = useState('WAVE')
   const [quote, setQuote] = useState(null) // { loading } | { available, total }
   const navigate = useNavigate()
@@ -73,7 +75,8 @@ export default function OrderRequest() {
 
   // Prix de la livraison si elle est payée maintenant — depuis l'adresse de
   // la boutique jusqu'au point placé par le client.
-  const prepaid = !!merchant?.prepaid
+  const onlineAvailable = !!merchant?.prepaid
+  const prepaid = onlineAvailable && payTiming === 'NOW'
   useEffect(() => {
     if (!prepaid || step !== 3 || !coords) return
     let cancelled = false
@@ -143,6 +146,7 @@ export default function OrderRequest() {
           landmark: landmark.trim() || undefined,
           notes: notes.trim() || undefined,
           items: cartItems.map(i => ({ productId: i.productId, quantity: i.quantity })),
+          ...(onlineAvailable ? { paymentTiming: payTiming } : {}),
           ...(prepaid
             ? { deliveryPayment: deliveryNow ? 'WITH_ORDER' : 'ON_DELIVERY', operatorName: operator }
             : { customerPaymentMethod: payment }),
@@ -211,6 +215,7 @@ export default function OrderRequest() {
                       address={address} landmark={landmark} notes={notes} name={name} phone={phone}
                       payment={payment} setPayment={setPayment} onEdit={setStep}
                       prepaid={prepaid} quote={quote} deliveryNow={deliveryNow}
+                      onlineAvailable={onlineAvailable} payTiming={payTiming} setPayTiming={setPayTiming}
                       setDeliveryPayment={setDeliveryPayment} operator={operator} setOperator={setOperator}
                       amountDue={amountDue}
                       error={submitError}
@@ -693,20 +698,41 @@ function Delivery({
 function Confirm({
   merchant, inApp, items, total, address, landmark, notes, name, phone, payment, setPayment, onEdit, error,
   prepaid, quote, deliveryNow, setDeliveryPayment, operator, setOperator, amountDue,
+  onlineAvailable, payTiming, setPayTiming,
 }) {
   return (
     <div className="ds-fade">
       {error && <div className="ds-alert is-error"><Icon name="x" size={18} />{error}</div>}
 
+      {onlineAvailable && (
+        <div className="ds-card">
+          <h2 className="ds-card-title">
+            <span className="ds-ico"><Icon name="cash" size={17} /></span>
+            Comment voulez-vous payer ?
+          </h2>
+          <div className="ds-timing" role="radiogroup" aria-label="Moment du paiement">
+            <TimingOption
+              active={payTiming === 'NOW'} onClick={() => setPayTiming('NOW')} icon="shield"
+              title="Payer maintenant" badge="Recommandé"
+              text="En ligne, sécurisé · remboursé si la boutique ne peut pas préparer votre commande"
+            />
+            <TimingOption
+              active={payTiming === 'ON_DELIVERY'} onClick={() => setPayTiming('ON_DELIVERY')} icon="bike"
+              title="Payer à la livraison"
+              text="Espèces ou mobile money, au coursier"
+            />
+          </div>
+        </div>
+      )}
+
       {prepaid ? (
         <div className="ds-card">
           <h2 className="ds-card-title">
             <span className="ds-ico"><Icon name="shield" size={17} /></span>
-            Paiement sécurisé
+            Paiement en ligne
           </h2>
           <p className="ds-sub">
-            Vos articles sont payés à la commande : {merchant.businessName} la reçoit une fois payée.
-            Si elle ne peut pas la préparer, vous êtes remboursé automatiquement.
+            Articles payés maintenant. La livraison : maintenant, ou au coursier.
           </p>
 
           <div className="ds-paychoice">
@@ -799,6 +825,20 @@ function Confirm({
         )}
       </div>
     </div>
+  )
+}
+
+// Un moment de paiement (maintenant / à la livraison), en grande carte
+function TimingOption({ active, onClick, icon, title, badge, text }) {
+  return (
+    <button type="button" role="radio" aria-checked={active} className={`ds-timing-opt ${active ? 'is-active' : ''}`} onClick={onClick}>
+      <span className="ds-timing-ico"><Icon name={icon} size={18} /></span>
+      <span className="ds-timing-text">
+        <b>{title}{badge && <em>{badge}</em>}</b>
+        <small>{text}</small>
+      </span>
+      <span className="ds-radio" />
+    </button>
   )
 }
 

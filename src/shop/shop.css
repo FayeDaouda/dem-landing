@@ -535,3 +535,21 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 /* Tablette : bouton de la barre du bas à une largeur raisonnable */
 @media (min-width: 600px) { .ds-cartbar .ds-btn { flex: 0 1 360px; margin-left: auto; } }
+
+/* Moment du paiement : maintenant (en ligne) ou à la livraison */
+.ds-timing { display: grid; gap: 10px; }
+.ds-timing-opt {
+  display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px; border-radius: 14px; cursor: pointer;
+  border: 1.5px solid var(--ds-line); background: var(--ds-card); text-align: left; font: inherit; color: var(--ds-text);
+  transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+.ds-timing-opt:hover { border-color: #c9d6e4; }
+.ds-timing-opt.is-active { border-color: var(--ds-blue); background: #f2f8fd; box-shadow: 0 0 0 3px rgba(6,113,186,0.10); }
+.ds-timing-ico { width: 38px; height: 38px; flex-shrink: 0; border-radius: 11px; display: flex; align-items: center; justify-content: center; background: var(--ds-fill); color: var(--ds-muted); }
+.ds-timing-opt.is-active .ds-timing-ico { background: #e3f0fa; color: var(--ds-blue); }
+.ds-timing-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.ds-timing-text b { font-size: 15px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ds-timing-text em { font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: .3px; color: var(--ds-green); background: var(--ds-green-bg); padding: 2px 8px; border-radius: 999px; }
+.ds-timing-text small { color: var(--ds-muted); font-size: 13px; line-height: 1.4; }
+.ds-timing-opt.is-active .ds-radio { border-color: var(--ds-blue); }
+.ds-timing-opt.is-active .ds-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--ds-blue); }
