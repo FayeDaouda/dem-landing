@@ -35,12 +35,12 @@ export default function OrderRequest() {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('') // 9 chiffres
   const [payment, setPayment] = useState('CASH') // boutique sans prépaiement : moyen à la livraison
-  // Boutique avec paiement intégré (merchant.prepaid) : articles payés pour
-  // lancer la commande ; livraison maintenant ('WITH_ORDER', au prix exact)
-  // ou à la livraison, au choix ; Wave ou Orange Money pour payer.
-  const [deliveryPayment, setDeliveryPayment] = useState('WITH_ORDER')
+  // Boutique avec paiement intégré (merchant.prepaid) : payer maintenant
+  // (les ARTICLES, en ligne — recommandé) ou à la livraison. La livraison se
+  // règle toujours au coursier : son prix n'est connu qu'une fois la
+  // commande validée par la boutique (point de retrait choisi).
+  const [payTiming, setPayTiming] = useState('NOW')
   const [operator, setOperator] = useState('WAVE')
-  const [quote, setQuote] = useState(null) // { loading } | { available, total }
   const navigate = useNavigate()
   const [website, setWebsite] = useState('') // pot de miel anti-robot
   const [touched, setTouched] = useState(false)
@@ -71,23 +71,8 @@ export default function OrderRequest() {
       .catch(() => setProducts([]))
   }, [loadState, merchantId])
 
-  // Prix de la livraison si elle est payée maintenant — depuis l'adresse de
-  // la boutique jusqu'au point placé par le client.
-  const prepaid = !!merchant?.prepaid
-  useEffect(() => {
-    if (!prepaid || step !== 3 || !coords) return
-    let cancelled = false
-    setQuote({ loading: true })
-    fetch(`${API_URL}/public/dem-pro/${merchantId}/delivery-quote?lat=${coords.lat}&lng=${coords.lng}`)
-      .then(res => res.json())
-      .then(q => {
-        if (cancelled) return
-        setQuote(q?.available ? q : { available: false })
-        if (!q?.available) setDeliveryPayment('ON_DELIVERY')
-      })
-      .catch(() => { if (!cancelled) { setQuote({ available: false }); setDeliveryPayment('ON_DELIVERY') } })
-    return () => { cancelled = true }
-  }, [prepaid, step, coords, merchantId])
+  const onlineAvailable = !!merchant?.prepaid
+  const prepaid = onlineAvailable && payTiming === 'NOW'
 
   // Chaque étape repart du haut de page
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }, [step, submitted])
@@ -143,8 +128,9 @@ export default function OrderRequest() {
           landmark: landmark.trim() || undefined,
           notes: notes.trim() || undefined,
           items: cartItems.map(i => ({ productId: i.productId, quantity: i.quantity })),
+          ...(onlineAvailable ? { paymentTiming: payTiming } : {}),
           ...(prepaid
-            ? { deliveryPayment: deliveryNow ? 'WITH_ORDER' : 'ON_DELIVERY', operatorName: operator }
+            ? { operatorName: operator }
             : { customerPaymentMethod: payment }),
           channel: 'web',
           website,
@@ -167,12 +153,11 @@ export default function OrderRequest() {
     }
   }
 
-  const deliveryNow = prepaid && deliveryPayment === 'WITH_ORDER' && !!quote?.available
-  const amountDue = cartTotal + (deliveryNow ? quote.total : 0)
+  const amountDue = cartTotal // articles seulement : la livraison se règle au coursier
   const action = step < 3
     ? { label: step === 1 ? 'Continuer' : 'Vérifier ma commande', onClick: next, disabled: false, icon: 'arrowRight' }
     : prepaid
-      ? { label: `Payer ${formatFcfa(amountDue)}`, onClick: submit, disabled: submitting || quote?.loading, icon: null }
+      ? { label: `Payer ${formatFcfa(amountDue)}`, onClick: submit, disabled: submitting, icon: null }
       : { label: `Envoyer ma commande`, onClick: submit, disabled: submitting, icon: null }
 
   return (
@@ -210,8 +195,9 @@ export default function OrderRequest() {
                       merchant={merchant} items={cartItems} total={cartTotal} inApp={!!merchant?.inAppPayment}
                       address={address} landmark={landmark} notes={notes} name={name} phone={phone}
                       payment={payment} setPayment={setPayment} onEdit={setStep}
-                      prepaid={prepaid} quote={quote} deliveryNow={deliveryNow}
-                      setDeliveryPayment={setDeliveryPayment} operator={operator} setOperator={setOperator}
+                      prepaid={prepaid}
+                      onlineAvailable={onlineAvailable} payTiming={payTiming} setPayTiming={setPayTiming}
+                      operator={operator} setOperator={setOperator}
                       amountDue={amountDue}
                       error={submitError}
                     />
@@ -228,7 +214,7 @@ export default function OrderRequest() {
                   <CartSummary
                     merchant={merchant} items={cartItems} total={cartTotal} inApp={!!merchant?.inAppPayment}
                     action={action} blocker={touched ? blocker : null} step={step} submitting={submitting}
-                    prepaid={prepaid} deliveryNow={deliveryNow} quote={quote} amountDue={amountDue}
+                    prepaid={prepaid} amountDue={amountDue}
                   />
                 </aside>
               </div>
@@ -692,21 +678,42 @@ function Delivery({
 // ── Étape 3 : paiement et récapitulatif ────────────────────────────────────
 function Confirm({
   merchant, inApp, items, total, address, landmark, notes, name, phone, payment, setPayment, onEdit, error,
-  prepaid, quote, deliveryNow, setDeliveryPayment, operator, setOperator, amountDue,
+  prepaid, operator, setOperator, amountDue,
+  onlineAvailable, payTiming, setPayTiming,
 }) {
   return (
     <div className="ds-fade">
       {error && <div className="ds-alert is-error"><Icon name="x" size={18} />{error}</div>}
 
+      {onlineAvailable && (
+        <div className="ds-card">
+          <h2 className="ds-card-title">
+            <span className="ds-ico"><Icon name="cash" size={17} /></span>
+            Comment voulez-vous payer ?
+          </h2>
+          <div className="ds-timing" role="radiogroup" aria-label="Moment du paiement">
+            <TimingOption
+              active={payTiming === 'NOW'} onClick={() => setPayTiming('NOW')} icon="shield"
+              title="Payer maintenant" badge="Recommandé"
+              text="En ligne, sécurisé · remboursé si la boutique ne peut pas préparer votre commande"
+            />
+            <TimingOption
+              active={payTiming === 'ON_DELIVERY'} onClick={() => setPayTiming('ON_DELIVERY')} icon="bike"
+              title="Payer à la livraison"
+              text="Espèces ou mobile money, au coursier"
+            />
+          </div>
+        </div>
+      )}
+
       {prepaid ? (
         <div className="ds-card">
           <h2 className="ds-card-title">
             <span className="ds-ico"><Icon name="shield" size={17} /></span>
-            Paiement sécurisé
+            Paiement en ligne
           </h2>
           <p className="ds-sub">
-            Vos articles sont payés à la commande : {merchant.businessName} la reçoit une fois payée.
-            Si elle ne peut pas la préparer, vous êtes remboursé automatiquement.
+            Vos articles sont payés maintenant ; la livraison se règle au coursier.
           </p>
 
           <div className="ds-paychoice">
@@ -717,14 +724,15 @@ function Confirm({
             </div>
           </div>
 
-          <PayChoice
-            icon="bike" title="Livraison"
-            amount={quote?.loading ? 'Calcul du prix…' : quote?.available ? formatFcfa(quote.total) : 'Prix fixé à la livraison'}
-            options={[['WITH_ORDER', 'Maintenant'], ['ON_DELIVERY', 'À la livraison']]}
-            value={deliveryNow ? 'WITH_ORDER' : 'ON_DELIVERY'} onChange={setDeliveryPayment}
-            disabledValues={quote?.available ? [] : ['WITH_ORDER']}
-            note={deliveryNow ? 'Rien à donner au coursier.' : 'Vous la réglez au coursier (espèces ou mobile money).'}
-          />
+          <div className="ds-paychoice">
+            <div className="ds-paychoice-head" style={{ marginBottom: 0 }}>
+              <span className="ds-recap-ico"><Icon name="bike" size={17} /></span>
+              <span className="ds-paychoice-title">
+                <b>Livraison</b>
+                <small>À régler au coursier · prix fixé quand la boutique valide votre commande</small>
+              </span>
+            </div>
+          </div>
 
           <p className="ds-sub" style={{ marginTop: 14, marginBottom: 8 }}>Payer {formatFcfa(amountDue)} avec :</p>
           <div className="ds-pay" role="radiogroup" aria-label="Moyen de paiement">
@@ -787,7 +795,7 @@ function Confirm({
           <button type="button" className="ds-recap-edit" onClick={() => onEdit(2)}>Modifier</button>
         </div>
         {prepaid ? (
-          <PayTotals total={total} deliveryNow={deliveryNow} quote={quote} amountDue={amountDue} style={{ marginTop: 14 }} />
+          <PayTotals total={total} amountDue={amountDue} style={{ marginTop: 14 }} />
         ) : (
           <>
             <div className="ds-total" style={{ marginTop: 14 }}>
@@ -802,40 +810,30 @@ function Confirm({
   )
 }
 
+// Un moment de paiement (maintenant / à la livraison), en grande carte
+function TimingOption({ active, onClick, icon, title, badge, text }) {
+  return (
+    <button type="button" role="radio" aria-checked={active} className={`ds-timing-opt ${active ? 'is-active' : ''}`} onClick={onClick}>
+      <span className="ds-timing-ico"><Icon name={icon} size={18} /></span>
+      <span className="ds-timing-text">
+        <b>{title}{badge && <em>{badge}</em>}</b>
+        <small>{text}</small>
+      </span>
+      <span className="ds-radio" />
+    </button>
+  )
+}
+
 // Articles + livraison (maintenant ou au coursier) = à payer maintenant
-function PayTotals({ total, deliveryNow, quote, amountDue, style }) {
+function PayTotals({ total, amountDue, style }) {
   return (
     <div className="ds-paytotals" style={style}>
       <div><span>Articles</span><span>{formatFcfa(total)}</span></div>
       <div>
         <span>Livraison</span>
-        <span>{deliveryNow ? formatFcfa(quote.total) : <small>au coursier</small>}</span>
+        <span><small>au coursier</small></span>
       </div>
       <div className="ds-total"><span>À payer maintenant</span><b>{formatFcfa(amountDue)}</b></div>
-    </div>
-  )
-}
-
-// Choix segmenté (ex. livraison payée maintenant ou à la livraison)
-function PayChoice({ icon, title, amount, options, value, onChange, disabledValues = [], note }) {
-  return (
-    <div className="ds-paychoice">
-      <div className="ds-paychoice-head">
-        <span className="ds-recap-ico"><Icon name={icon} size={17} /></span>
-        <span className="ds-paychoice-title"><b>{title}</b><small>{amount}</small></span>
-      </div>
-      <div className="ds-seg" role="radiogroup" aria-label={title}>
-        {options.map(([v, label]) => {
-          const disabled = disabledValues.includes(v)
-          return (
-            <button key={v} type="button" role="radio" aria-checked={value === v} disabled={disabled}
-              className={value === v ? 'is-active' : ''} onClick={() => !disabled && onChange(v)}>
-              {label}
-            </button>
-          )
-        })}
-      </div>
-      {note && <small className="ds-paychoice-note">{note}</small>}
     </div>
   )
 }
@@ -851,7 +849,7 @@ function ActionButton({ action, submitting }) {
   )
 }
 
-function CartSummary({ merchant, inApp, items, total, action, blocker, step, submitting, prepaid, deliveryNow, quote, amountDue }) {
+function CartSummary({ merchant, inApp, items, total, action, blocker, step, submitting, prepaid, amountDue }) {
   return (
     <div className="ds-card">
       <h2 className="ds-card-title" style={{ marginBottom: 10 }}>
@@ -874,7 +872,7 @@ function CartSummary({ merchant, inApp, items, total, action, blocker, step, sub
             </div>
           ))}
           {step === 3 && prepaid ? (
-            <PayTotals total={total} deliveryNow={deliveryNow} quote={quote} amountDue={amountDue} style={{ marginTop: 10 }} />
+            <PayTotals total={total} amountDue={amountDue} style={{ marginTop: 10 }} />
           ) : (
             <>
               <div className="ds-total"><span>Total</span><b>{formatFcfa(total)}</b></div>
