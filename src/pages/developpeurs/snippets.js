@@ -161,6 +161,12 @@ export const cancelCurl = `curl -X POST ${BASE_URL}/deliveries/del_3kQm9xV2pLs8/
   -H "Content-Type: application/json" \\
   -d '{ "reason": "OUT_OF_STOCK" }'`
 
+export const advanceCurl = `curl -X POST ${BASE_URL}/test/deliveries/del_3kQm9xV2pLs8/advance \\
+  -H "Authorization: Bearer dem_test_VOTRE_CLE" \\
+  -H "Content-Type: application/json" \\
+  -d '{ "to": "DELIVERED" }'
+# Webhooks envoyés : delivery.driver_assigned, delivery.picked_up, delivery.delivered`
+
 export const listCurl = `curl "${BASE_URL}/deliveries?limit=20&external_order_id=MAX-45892" \\
   -H "Authorization: Bearer dem_test_VOTRE_CLE"`
 

@@ -166,7 +166,7 @@ export default function Developpeurs() {
             <Table head={['', 'Clé de Test', 'Clé de Production']} rows={[
               ['Préfixe', 'dem_test_…', 'dem_live_…'],
               ['Adresse', 'https://api.dem.sn/v1', 'https://api.dem.sn/v1'],
-              ['Courses', 'Aucune vraie course, aucun coursier sollicité', 'Vraies livraisons'],
+              ['Courses', 'Simulées : aucun coursier sollicité', 'Vraies livraisons'],
               ['Paiement', 'Rien n\'est débité', 'Espèces ou wallet DEM Pro'],
               ['Champ livemode', 'false', 'true'],
             ]} />
@@ -174,6 +174,26 @@ export default function Developpeurs() {
               Les deux environnements sont strictement séparés : une livraison, un devis ou une adresse webhook créés
               avec une clé de Test sont introuvables avec une clé de Production, et inversement.
             </P>
+            <H3>Une livraison de test vit comme une vraie</H3>
+            <P>
+              Sans rien faire, elle avance seule, avec les mêmes statuts et les mêmes webhooks qu'en production, et un
+              coursier fictif (« Coursier Test », numéro <Code>+221000000000</Code>) :
+            </P>
+            <Table head={['Après', 'Statut', 'Webhook']} rows={[
+              ['la création', 'SEARCHING_DRIVER', 'delivery.created'],
+              ['20 secondes', 'DRIVER_ASSIGNED', 'delivery.driver_assigned'],
+              ['1 minute de plus', 'PICKED_UP', 'delivery.picked_up'],
+              ['1 minute de plus', 'DELIVERED', 'delivery.delivered'],
+            ]} mono={[1, 2]} />
+            <P>Pour tester un cas tout de suite, faites-la avancer vous-même (clés de Test seulement) :</P>
+            <Endpoint method="POST" path="/test/deliveries/{id}/advance" scope="deliveries:create" />
+            <CodeBlock code={S.advanceCurl} />
+            <Table head={['to', 'Effet']} rows={[
+              ['DRIVER_ASSIGNED · PICKED_UP · DELIVERED', 'Avance jusqu\'à ce statut ; chaque étape intermédiaire envoie son webhook'],
+              ['DRIVER_UNASSIGNED', 'Le coursier se désiste : retour à SEARCHING_DRIVER (delivery.driver_unassigned)'],
+              ['NO_DRIVER_FOUND', 'Aucun coursier trouvé : CANCELLED, cancellation.reason = NO_DRIVER_FOUND'],
+            ]} mono={[0]} />
+            <P>Dès la première avance manuelle, la progression automatique s'arrête pour cette livraison. Avec une clé de Production, cet appel est refusé (<Code>TEST_MODE_ONLY</Code>).</P>
           </Section>
 
           <Section id="devis" title="Devis">
@@ -260,7 +280,7 @@ export default function Developpeurs() {
             ]} mono={[0, 2]} />
             <P>
               <Code>SCHEDULED</Code>, <Code>IN_TRANSIT</Code> et <Code>FAILED</Code> sont réservés. Avec une clé de Test,
-              une livraison reste <Code>PENDING</Code> jusqu'à son annulation.
+              les mêmes statuts sont simulés (voir <a href="#environnements" className="text-cyan underline">Test et production</a>).
             </P>
           </Section>
 
@@ -322,6 +342,7 @@ export default function Developpeurs() {
             <CodeBlock code={S.errorExample} />
             <Table head={['HTTP', 'Code', 'Que faire']} rows={[
               ['400', 'INVALID_REQUEST', 'Corriger le champ indiqué dans le message'],
+              ['403', 'TEST_MODE_ONLY', 'Appel réservé aux clés de Test'],
               ['400', 'IDEMPOTENCY_KEY_REQUIRED', 'Ajouter l\'en-tête Idempotency-Key'],
               ['401', 'UNAUTHORIZED · API_KEY_REVOKED · API_KEY_DISABLED · API_KEY_EXPIRED', 'Vérifier la clé, en demander une nouvelle au commerçant'],
               ['402', 'INSUFFICIENT_WALLET_BALANCE', 'Recharger le wallet DEM Pro ou payer en espèces'],
