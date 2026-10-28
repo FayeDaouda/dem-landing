@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Check, Copy, Download, KeyRound, Zap, ShieldCheck, Info } from 'lucide-react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Check, Copy, KeyRound, ShieldCheck, Info } from 'lucide-react'
 import * as S from './developpeurs/snippets.js'
+import { highlight, guessLang, LANG_LABELS } from './developpeurs/highlight.jsx'
+import { DevHero, DevStats, DevJourney, DevUseCases, DevSecurity } from './developpeurs/Presentation.jsx'
+import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx'
+import ContactCTA from '../components/sections/ContactCTA.jsx'
+
+gsap.registerPlugin(ScrollTrigger)
 
 // Documentation développeurs de l'API DEM — www.dem.sn/developpeurs.
 // Source de vérité technique : la spécification OpenAPI servie par l'API
@@ -55,41 +62,45 @@ export default function Developpeurs() {
     }
   }, [])
 
+  // Sections de la référence : apparition douce au défilement
+  const refRoot = useRef(null)
+  useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    const ctx = gsap.context(() => {
+      ScrollTrigger.batch('[data-reveal]', {
+        start: 'top 88%',
+        once: true,
+        onEnter: (els) => gsap.fromTo(els, { y: 36, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'expo.out', stagger: 0.08 }),
+      })
+    }, refRoot)
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <div className="w-full bg-[#021520] text-white min-h-screen pt-24 pb-24 font-sans" data-header-theme="black">
-      {/* ── En-tête ── */}
-      <section className="max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16 pt-12 pb-12">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-cyan/10 border border-cyan/30 text-cyan text-xs font-semibold uppercase tracking-wider mb-6">
-          API DEM · Développeurs
-        </div>
-        <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tight leading-none mb-6">
-          Branchez votre site au <span className="text-cyan">réseau DEM</span>
-        </h1>
-        <p className="text-lg text-white/80 max-w-2xl leading-relaxed font-light mb-8">
-          Quand un client commande sur votre site, votre application ou votre logiciel de caisse, la livraison DEM
-          se crée toute seule : prix annoncé avant le paiement, coursier trouvé en quelques minutes, et votre
-          commande mise à jour à chaque étape.
+    <>
+    <DevHero />
+    <DevStats />
+    <DevJourney />
+    <DevUseCases />
+    <DevSecurity />
+
+    <div ref={refRoot} className="w-full bg-[#021520] text-white pb-24 font-sans border-t border-white/10" data-header-theme="black">
+      {/* ── Titre de la référence ── */}
+      <section className="max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16 pt-20 sm:pt-28 pb-10 sm:pb-14">
+        <MiniTitleWithBar content="Référence de l'API" color="cyan-light" />
+        <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight max-w-[760px] mb-4">Tout ce qu'il faut pour intégrer.</h2>
+        <p className="text-white/65 max-w-[640px] text-base sm:text-lg font-['Raleway',sans-serif]">
+          Exemples prêts à copier en curl, Node.js et PHP. La même description existe au format OpenAPI pour vos outils.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 mb-8">
-          <a href="#demarrage" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-cyan text-[#021520] font-bold text-sm uppercase tracking-wide hover:bg-white transition-colors">
-            <Zap size={16} /> Démarrage rapide
-          </a>
-          <a href={S.OPENAPI_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-white/25 text-white font-semibold text-sm uppercase tracking-wide hover:border-cyan hover:text-cyan transition-colors">
-            <Download size={16} /> Spécification OpenAPI
-          </a>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl">
-          <Fact label="Adresse de l'API" value="https://api.dem.sn/v1" mono />
-          <Fact label="Format" value="JSON · UTF-8 · montants en XOF" />
-          <Fact label="Accès" value="Offre DEM Pro Premium" />
-        </div>
       </section>
 
       {/* ── Sommaire mobile ── */}
       <nav ref={chips} className="lg:hidden sticky top-[76px] z-20 bg-[#021520]/95 backdrop-blur border-y border-white/10 overflow-x-auto" aria-label="Sommaire">
         <div className="flex gap-1 px-6 py-2 w-max">
           {SECTIONS.map(([id, label]) => (
-            <a key={id} href={`#${id}`} className={`px-3 py-1.5 text-xs font-semibold whitespace-nowrap ${active === id ? 'bg-cyan text-[#021520]' : 'text-white/70'}`}>{label}</a>
+            <a key={id} href={`#${id}`} className={`px-3 py-1.5 whitespace-nowrap ${active === id ? 'bg-cyan' : ''}`}>
+              <span className={`text-xs font-semibold ${active === id ? 'text-[#021520]' : 'text-white/70'}`}>{label}</span>
+            </a>
           ))}
         </div>
       </nav>
@@ -99,8 +110,8 @@ export default function Developpeurs() {
         <aside className="hidden lg:block">
           <nav className="sticky top-28 border-l border-white/10" aria-label="Sommaire">
             {SECTIONS.map(([id, label]) => (
-              <a key={id} href={`#${id}`} className={`block pl-4 py-1.5 text-sm -ml-px border-l-2 transition-colors ${active === id ? 'border-cyan text-cyan font-semibold' : 'border-transparent text-white/60 hover:text-white'}`}>
-                {label}
+              <a key={id} href={`#${id}`} className={`group block pl-4 py-1.5 -ml-px border-l-2 transition-colors ${active === id ? 'border-cyan' : 'border-transparent'}`}>
+                <span className={`text-sm transition-colors ${active === id ? 'text-cyan font-semibold' : 'text-white/60 group-hover:text-white'}`}>{label}</span>
               </a>
             ))}
           </nav>
@@ -216,7 +227,7 @@ export default function Developpeurs() {
           <Section id="livraisons" title="Créer une livraison">
             <Endpoint method="POST" path="/deliveries" scope="deliveries:create" />
             <P>
-              L'en-tête <Code>Idempotency-Key</Code> est obligatoire (voir <a href="#idempotence" className="text-cyan underline">Idempotence</a>).
+              L'en-tête <Code>Idempotency-Key</Code> est obligatoire (voir <a href="#idempotence"><span className="text-cyan underline">Idempotence</span></a>).
               Utilisez votre numéro de commande.
             </P>
             <Tabs tabs={[['curl', S.deliveryCurl], ['Node.js', S.deliveryNode], ['PHP', S.deliveryPhp]]} />
@@ -270,6 +281,7 @@ export default function Developpeurs() {
           </Section>
 
           <Section id="statuts" title="Statuts">
+            <Lifecycle />
             <Table head={['Statut', 'Signification', 'Webhook']} rows={[
               ['SEARCHING_DRIVER', 'Recherche d\'un coursier', 'delivery.created'],
               ['DRIVER_ASSIGNED', 'Un coursier a accepté, il va au point de retrait', 'delivery.driver_assigned'],
@@ -280,7 +292,7 @@ export default function Developpeurs() {
             ]} mono={[0, 2]} />
             <P>
               <Code>SCHEDULED</Code>, <Code>IN_TRANSIT</Code> et <Code>FAILED</Code> sont réservés. Avec une clé de Test,
-              les mêmes statuts sont simulés (voir <a href="#environnements" className="text-cyan underline">Test et production</a>).
+              les mêmes statuts sont simulés (voir <a href="#environnements"><span className="text-cyan underline">Test et production</span></a>).
             </P>
           </Section>
 
@@ -398,19 +410,29 @@ export default function Developpeurs() {
             <Table head={['Date', 'Version', 'Changements']} rows={[
               ['Octobre 2026', 'v1', 'Première version : devis, livraisons, suivi, annulation, idempotence, webhooks signés, paiement espèces ou wallet DEM Pro.'],
             ]} />
-            <div className="mt-10 p-6 border border-cyan/30 bg-cyan/5 flex flex-col sm:flex-row sm:items-center gap-4">
-              <div className="flex-1">
-                <div className="font-bold text-lg mb-1">Une question sur l'intégration ?</div>
-                <div className="text-white/70 text-sm">Écrivez à <a href="mailto:support@dem.sn" className="text-cyan">support@dem.sn</a> avec le <Code>request_id</Code> concerné.</div>
-              </div>
-              <Link to="/contact?subject=Je%20suis%20DEM%20Pro" className="inline-flex items-center justify-center px-6 py-3 bg-cyan text-[#021520] font-bold text-sm uppercase tracking-wide hover:bg-white transition-colors">
-                Contacter DEM
-              </Link>
-            </div>
+            <P>Une question sur l'intégration ? Écrivez à <a href="mailto:support@dem.sn"><span className="text-cyan underline">support@dem.sn</span></a> avec le <Code>request_id</Code> concerné.</P>
           </Section>
         </main>
       </div>
     </div>
+
+    <div data-header-theme="black">
+      <ContactCTA
+        theme="cyan-deep"
+        watermark="API"
+        subtitle="Passez à l'action"
+        title="Prêt à brancher"
+        highlight="votre site ?"
+        description="L'API DEM est incluse dans l'offre DEM Pro Premium. Créez votre première clé de test dans l'application, ou parlons de votre projet."
+        primaryBtnText="Voir l'offre Premium"
+        primaryBtnLink="/dem-pro#tarifs"
+        primaryBtnIcon="arrow"
+        secondaryBtnText="Contacter DEM"
+        secondaryBtnLink="/contact?subject=Je%20suis%20DEM%20Pro"
+        secondaryBtnIcon="mail"
+      />
+    </div>
+    </>
   )
 }
 
@@ -437,9 +459,9 @@ function useActiveSection(ids) {
 
 function Section({ id, title, children }) {
   return (
-    <section id={id} className="scroll-mt-32 lg:scroll-mt-28 pb-14 mb-14 border-b border-white/10 last:border-0">
+    <section id={id} data-reveal className="scroll-mt-32 lg:scroll-mt-28 pb-14 mb-14 border-b border-white/10 last:border-0">
       <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6">
-        <a href={`#${id}`} className="hover:text-cyan transition-colors">{title}</a>
+        <a href={`#${id}`} className="group"><span className="group-hover:text-cyan transition-colors">{title}</span></a>
       </h2>
       {children}
     </section>
@@ -451,15 +473,6 @@ const P = ({ children }) => <p className="text-white/80 leading-relaxed mb-5">{c
 const Code = ({ children }) => (
   <code className="font-mono text-[0.86em] px-1.5 py-0.5 bg-white/10 text-cyan break-words">{children}</code>
 )
-
-function Fact({ label, value, mono }) {
-  return (
-    <div className="p-4 border border-white/10 bg-white/[0.03]">
-      <div className="text-[11px] uppercase tracking-wider text-white/50 font-semibold mb-1">{label}</div>
-      <div className={`text-sm font-semibold ${mono ? 'font-mono text-cyan' : ''}`}>{value}</div>
-    </div>
-  )
-}
 
 function Steps({ items }) {
   return (
@@ -485,20 +498,39 @@ function Callout({ icon: Icon = Info, tone = 'info', children }) {
   )
 }
 
-const METHOD_COLORS = { GET: 'bg-success/15 text-success', POST: 'bg-cyan/15 text-cyan', PATCH: 'bg-orange-brand/15 text-orange-brand', DELETE: 'bg-danger/15 text-danger' }
+const METHOD_COLORS = {
+  GET:    'bg-[#00E08C]/15 text-[#00E08C] border-[#00E08C]/30',
+  POST:   'bg-[#00D2FF]/15 text-[#00D2FF] border-[#00D2FF]/30',
+  PATCH:  'bg-[#FF9800]/15 text-[#FF9800] border-[#FF9800]/30',
+  DELETE: 'bg-[#FF5C5C]/15 text-[#FF5C5C] border-[#FF5C5C]/30',
+}
 
+// Carte d'une route : méthode, chemin, droit nécessaire
 function Endpoint({ method, path, scope }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 mb-4 p-3 border border-white/10 bg-[#0A0F1E]">
-      <span className={`font-mono text-xs font-bold px-2 py-1 ${METHOD_COLORS[method]}`}>{method}</span>
-      <span className="font-mono text-sm break-all">/v1{path}</span>
-      {scope && <span className="ml-auto inline-flex items-center gap-1.5 text-xs text-white/50"><KeyRound size={12} /> {scope}</span>}
+    <div className="group flex flex-wrap items-center gap-x-4 gap-y-2 mb-5 px-4 py-3.5 border border-white/10 bg-gradient-to-r from-white/[0.05] to-transparent hover:border-[#00D2FF]/40 transition-colors">
+      <span className={`font-mono text-[11px] font-bold tracking-wider px-2.5 py-1 border ${METHOD_COLORS[method]}`}>{method}</span>
+      <span className="font-mono text-[15px] text-white break-all">
+        <span className="text-white/40">/v1</span>{path.split(/(\{[^}]+\})/).map((part, i) => (
+          part.startsWith('{') ? <span key={i} className="text-[#FFA657]">{part}</span> : part
+        ))}
+      </span>
+      {scope && (
+        <span className="sm:ml-auto inline-flex items-center gap-1.5 text-[11px] font-mono text-white/55 px-2 py-1 bg-white/[0.04] border border-white/10">
+          <KeyRound size={11} /> {scope}
+        </span>
+      )}
     </div>
   )
 }
 
-function CodeBlock({ code, title }) {
+// Fenêtre de code façon éditeur : 3 points, langage, coloration, copier.
+// `tabs` = [[libellé, code], …] pour plusieurs langages dans la même fenêtre.
+function CodeWindow({ tabs, title }) {
+  const [i, setI] = useState(0)
   const [copied, setCopied] = useState(false)
+  const code = tabs[i][1]
+  const lang = guessLang(code)
   async function copy() {
     try {
       await navigator.clipboard.writeText(code)
@@ -507,33 +539,77 @@ function CodeBlock({ code, title }) {
     } catch { /* presse-papiers refusé */ }
   }
   return (
-    <div className="mb-6 border border-white/10 bg-[#0A0F1E]">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-white/10">
-        <span className="text-[11px] uppercase tracking-wider text-white/50 font-semibold">{title ?? ''}</span>
-        <button type="button" onClick={copy} className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-cyan transition-colors">
+    <div className="mb-6 border border-white/10 bg-[#0A0F1E] shadow-[0_20px_60px_-30px_rgba(0,134,200,0.5)]">
+      <div className="flex items-center gap-3 px-4 border-b border-white/10 bg-white/[0.03] min-h-[42px]">
+        <span className="hidden sm:flex gap-1.5 shrink-0" aria-hidden="true">
+          <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
+          <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
+          <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
+        </span>
+        {tabs.length > 1 ? (
+          <div className="flex self-stretch overflow-x-auto" role="tablist">
+            {tabs.map(([label], k) => (
+              <button key={label} type="button" role="tab" aria-selected={i === k} onClick={() => setI(k)}
+                className={`px-3 text-xs font-semibold border-b-2 whitespace-nowrap transition-colors ${i === k ? 'border-[#00D2FF] text-white' : 'border-transparent text-white/45 hover:text-white/80'}`}>
+                {label}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <span className="text-[11px] uppercase tracking-widest text-white/45 font-semibold">{title ?? LANG_LABELS[lang]}</span>
+        )}
+        <button type="button" onClick={copy} className={`ml-auto inline-flex items-center gap-1.5 text-xs px-2 py-1 transition-all ${copied ? 'text-[#00E08C] bg-[#00E08C]/10' : 'text-white/55 hover:text-[#00D2FF]'}`}>
           {copied ? <><Check size={13} /> Copié</> : <><Copy size={13} /> Copier</>}
         </button>
       </div>
-      <pre className="overflow-x-auto p-4 text-[13px] leading-relaxed font-mono text-white/90"><code>{code}</code></pre>
+      <pre className="overflow-x-auto p-4 sm:p-5 text-[12.5px] sm:text-[13px] leading-[1.7] font-mono text-white/90"><code>{highlight(code, lang)}</code></pre>
     </div>
   )
 }
 
-function Tabs({ tabs }) {
-  const [i, setI] = useState(0)
+const CodeBlock = ({ code, title }) => <CodeWindow tabs={[[title ?? '', code]]} title={title} />
+const Tabs = ({ tabs }) => <CodeWindow tabs={tabs} />
+
+// La vie d'une livraison : étapes cliquables, le point avance tout seul
+const LIFE = [
+  ['SEARCHING_DRIVER', 'Recherche', 'delivery.created', 'Livraison créée, DEM cherche le coursier le plus proche.'],
+  ['DRIVER_ASSIGNED', 'Coursier trouvé', 'delivery.driver_assigned', 'Un coursier a accepté et va au point de retrait. Prénom, téléphone et position disponibles.'],
+  ['PICKED_UP', 'Colis récupéré', 'delivery.picked_up', 'Le coursier a le colis et part vers votre client.'],
+  ['DELIVERED', 'Livrée', 'delivery.delivered', 'Votre client a reçu sa commande. Passez-la à « livrée ».'],
+]
+
+function Lifecycle() {
+  const [step, setStep] = useState(0)
+  const [auto, setAuto] = useState(true)
+  useEffect(() => {
+    if (!auto || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    const t = setInterval(() => setStep(n => (n + 1) % LIFE.length), 2400)
+    return () => clearInterval(t)
+  }, [auto])
+  const pick = (k) => { setAuto(false); setStep(k) }
+  const [status, , event, desc] = LIFE[step]
   return (
-    <div className="mb-6">
-      <div className="flex gap-1 border-b border-white/10" role="tablist">
-        {tabs.map(([label], k) => (
-          <button key={label} type="button" role="tab" aria-selected={i === k} onClick={() => setI(k)}
-            className={`px-4 py-2 text-sm font-semibold -mb-px border-b-2 transition-colors ${i === k ? 'border-cyan text-cyan' : 'border-transparent text-white/60 hover:text-white'}`}>
-            {label}
+    <div className="mb-8 border border-white/10 bg-[#0A0F1E] p-5 sm:p-7">
+      <div className="relative grid grid-cols-4 gap-2">
+        <div className="absolute left-[12.5%] right-[12.5%] top-[15px] h-[2px] bg-white/10" aria-hidden="true">
+          <div className="h-full bg-[#00D2FF] transition-all duration-700 ease-out" style={{ width: `${(step / (LIFE.length - 1)) * 100}%` }} />
+        </div>
+        {LIFE.map(([st, label], k) => (
+          <button key={st} type="button" onClick={() => pick(k)} className="relative z-10 flex flex-col items-center gap-2.5 group">
+            <span className={`w-8 h-8 flex items-center justify-center border-2 font-mono text-xs font-bold transition-all duration-500 ${k <= step ? 'bg-[#00D2FF] border-[#00D2FF] text-[#021520]' : 'bg-[#0A0F1E] border-white/20 text-white/40 group-hover:border-white/50'} ${k === step ? 'shadow-[0_0_0_6px_rgba(0,210,255,0.15)]' : ''}`}>{k + 1}</span>
+            <span className={`text-[11px] sm:text-xs font-semibold text-center leading-tight transition-colors ${k === step ? 'text-white' : 'text-white/45'}`}>{label}</span>
           </button>
         ))}
       </div>
-      <div className="[&>div]:border-t-0">
-        <CodeBlock code={tabs[i][1]} />
+      <div key={step} className="mt-6 pt-5 border-t border-white/10 grid sm:grid-cols-[auto_1fr] gap-x-6 gap-y-2 dev-fade">
+        <div className="flex flex-col gap-1.5">
+          <code className="font-mono text-[13px] text-[#00D2FF]">{status}</code>
+          <code className="font-mono text-[11.5px] text-[#00E08C]">→ {event}</code>
+        </div>
+        <p className="text-sm text-white/75 leading-relaxed">{desc}</p>
       </div>
+      <p className="mt-4 text-[11.5px] text-white/40">Cliquez sur une étape. En cas d'annulation (par vous, le support ou faute de coursier) : <span className="font-mono text-white/60">CANCELLED</span> et <span className="font-mono text-white/60">delivery.cancelled</span>.</p>
+      <style>{`.dev-fade{animation:devFade .45s ease-out}@keyframes devFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@media (prefers-reduced-motion: reduce){.dev-fade{animation:none}}`}</style>
     </div>
   )
 }
@@ -549,9 +625,9 @@ function Table({ head, rows, mono = [] }) {
         </thead>
         <tbody>
           {rows.map((r, ri) => (
-            <tr key={ri} className="border-t border-white/10 align-top">
+            <tr key={ri} className="border-t border-white/10 align-top hover:bg-white/[0.03] transition-colors">
               {r.map((c, ci) => (
-                <td key={ci} className={`px-4 py-2.5 ${ci === 0 ? 'text-white' : 'text-white/75'} ${mono.includes(ci) ? 'font-mono text-[12.5px] text-cyan' : ''}`}>{c}</td>
+                <td key={ci} className={`px-4 py-2.5 ${mono.includes(ci) ? 'font-mono text-[12.5px] text-[#00D2FF]' : ci === 0 ? 'text-white' : 'text-white/75'}`}>{c}</td>
               ))}
             </tr>
           ))}

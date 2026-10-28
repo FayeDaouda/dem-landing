@@ -152,7 +152,7 @@ export default function PricingDemPro({ onSelectPlan }) {
       desc: 'Volume illimité, API, service dédié. Pour les gros vendeurs et ceux qui ont déjà un site.',
       highlights: [
         <span className="bg-[#006091] text-white px-2 py-0.5 font-bold tracking-tight">Toutes les fonctionnalités de l'offre <span className="font-bold text-[#99d9fa]">Business</span></span>,
-        'API DEM (brancher son site)',
+        <Link to="/developpeurs" className="underline decoration-[#0086C8]/40 underline-offset-2 hover:text-[#0086C8] transition-colors">API DEM (brancher son site)</Link>,
         'Courses groupées (8 simultanées)',
         'Courses programmées (8 simultanées)',
         '8 catalogues de 8 produits chacun',
@@ -181,7 +181,7 @@ export default function PricingDemPro({ onSelectPlan }) {
         { name: 'Export CSV + PDF', starter: false, business: 'Inclus', premium: 'Inclus' },
         { name: 'Mes clients (CRM)', starter: false, business: 'Inclus', premium: 'Inclus' },
         { name: 'Factures avec logo', starter: false, business: 'Inclus', premium: 'Inclus' },
-        { name: 'API DEM (brancher son site)', starter: false, business: false, premium: 'Inclus' },
+        { name: <Link to="/developpeurs" className="underline decoration-[#0086C8]/40 underline-offset-2 hover:text-[#0086C8] transition-colors">API DEM (brancher son site)</Link>, starter: false, business: false, premium: 'Inclus' },
         { name: 'Utilisateurs par compte', starter: '1', business: '3', premium: '6' },
         { name: 'Adresses enregistrées', starter: '3', business: '5', premium: '8' },
         { name: 'Support', starter: 'Standard', business: 'Prioritaire', premium: 'Dédié' },
