@@ -86,6 +86,7 @@ export default function Footer() {
                                 </span>
                                 <Link to="/dem-pro" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">DEM PRO</Link>
                                 <Link to="/chef-de-flotte" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Chef de Flotte</Link>
+                                <Link to="/developpeurs" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">API Développeurs</Link>
                                 {/* <Link to="/coursiers" onClick={scrollToTop} className="text-xs sm:text-sm text-white/80 hover:text-white transition-colors">Devenir Coursier</Link> */}
                             </div>
 
