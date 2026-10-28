@@ -367,6 +367,7 @@ export default function Developpeurs() {
               ['Livraisons créées par jour', '200'],
               ['Adresses webhook', '3 par environnement'],
               ['Clés actives', '10'],
+              ['Taille d\'une requête', '64 Ko (413 PAYLOAD_TOO_LARGE au-delà)'],
             ]} />
             <P>
               Chaque réponse indique <Code>X-RateLimit-Limit</Code> et <Code>X-RateLimit-Remaining</Code>. Au-delà :
