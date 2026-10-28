@@ -294,7 +294,8 @@ export default function Developpeurs() {
               ['Même clé, même corps, déjà traitée', 'La réponse d\'origine, à l\'identique'],
               ['Même clé, corps différent', '422 IDEMPOTENCY_CONFLICT'],
               ['Même clé, première requête encore en cours', '409 IDEMPOTENCY_IN_PROGRESS — réessayez dans 2 s'],
-              ['Erreur 5xx ou 429', 'Rien n\'est gardé : réessayez avec la même clé'],
+              ['Refus 4xx (champ invalide, devis expiré, solde insuffisant, limite…)', 'Rien n\'a été créé : corrigez et renvoyez avec la même clé'],
+              ['Erreur 5xx ou coupure', 'Renvoyez la même requête avec la même clé : la livraison n\'est jamais créée deux fois'],
             ]} />
             <P>Une clé est gardée 24 heures, par compte et par environnement. 255 caractères ASCII maximum, sans espace.</P>
           </Section>
