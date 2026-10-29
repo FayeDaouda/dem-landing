@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Check, Copy, KeyRound, ShieldCheck, Info } from 'lucide-react'
 import * as S from './developpeurs/snippets.js'
 import { highlight, guessLang, LANG_LABELS } from './developpeurs/highlight.jsx'
-import { DevHero, DevStats, DevJourney, DevUseCases, DevSecurity } from './developpeurs/Presentation.jsx'
+import { DevHero, DevStats, DevJourney, DevUseCases, DevWooCommerce, DevSecurity, WOO_ZIP } from './developpeurs/Presentation.jsx'
 import MiniTitleWithBar from '../components/atoms/MiniTitleWithBar.jsx'
 import ContactCTA from '../components/sections/ContactCTA.jsx'
 
@@ -18,6 +18,7 @@ gsap.registerPlugin(ScrollTrigger)
 const SECTIONS = [
   ['introduction', 'Introduction'],
   ['demarrage', 'Démarrage rapide'],
+  ['woocommerce', 'Module WooCommerce'],
   ['authentification', 'Authentification'],
   ['environnements', 'Test et production'],
   ['devis', 'Devis'],
@@ -82,6 +83,7 @@ export default function Developpeurs() {
     <DevStats />
     <DevJourney />
     <DevUseCases />
+    <DevWooCommerce />
     <DevSecurity />
 
     <div ref={refRoot} className="w-full bg-[#021520] text-white pb-24 font-sans border-t border-white/10" data-header-theme="black">
@@ -149,6 +151,28 @@ export default function Developpeurs() {
               C'est tout : la livraison est créée, un coursier est recherché (en production), et votre adresse webhook
               sera prévenue à chaque étape.
             </P>
+          </Section>
+
+          <Section id="woocommerce" title="Module WooCommerce">
+            <P>
+              Pour une boutique WooCommerce, inutile d'appeler l'API vous-même : le module officiel
+              <strong> DEM Livraison pour WooCommerce</strong> affiche le prix DEM au panier, crée la livraison au
+              paiement, met la commande à jour à chaque étape et ajoute le lien de suivi aux e-mails du client.
+            </P>
+            <Table head={['Étape', 'Où']} rows={[
+              ['1. Installer le module', 'Extensions › Ajouter › Téléverser le .zip, puis Activer'],
+              ['2. Coller la clé API', 'WooCommerce › Réglages › DEM Livraison (clé de Test d\'abord)'],
+              ['3. Brancher les webhooks', 'Même page, bouton « Brancher les webhooks » (boutique en https)'],
+              ['4. Proposer la livraison', 'WooCommerce › Réglages › Expédition : ajouter « Livraison DEM » à la zone Sénégal'],
+            ]} />
+            <P>
+              Réglages : création automatique au paiement ou bouton « Envoyer à DEM », paiement du coursier en espèces
+              ou par le wallet DEM Pro, commande passée à « Terminée » à la livraison, prix de secours.
+              Compatible WordPress 6+, WooCommerce 7+ (HPOS et panier en blocs), PHP 7.4+.
+            </P>
+            <a href={WOO_ZIP} download className="inline-flex items-center gap-2 mb-2 px-5 py-3 bg-[#00D2FF] hover:bg-white transition-colors">
+              <span className="text-[#021520] text-sm font-bold uppercase tracking-wide">Télécharger le module (.zip)</span>
+            </a>
           </Section>
 
           <Section id="authentification" title="Authentification">

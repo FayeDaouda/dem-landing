@@ -248,6 +248,77 @@ export function DevUseCases() {
   )
 }
 
+// ── 4b. Module WooCommerce : branché sans développeur ─────────────────────────
+export const WOO_ZIP = '/telechargements/dem-livraison-1.0.0.zip'
+
+const WOO_STEPS = [
+  ['Installez le module', 'Extensions › Ajouter › Téléverser le fichier .zip, puis Activer.'],
+  ['Collez votre clé', 'WooCommerce › Réglages › DEM Livraison. Commencez par une clé de Test.'],
+  ['Ajoutez « Livraison DEM »', 'À votre zone de livraison Sénégal, puis branchez les webhooks d\'un clic.'],
+  ['C\'est tout', 'Prix DEM au panier, livraison créée au paiement, commande « Terminée » une fois livrée.'],
+]
+
+export function DevWooCommerce() {
+  const ref = useRef(null)
+  useEffect(() => {
+    if (reduceMotion()) return
+    const ctx = gsap.context(() => {
+      gsap.from('[data-woo]', { y: 40, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.1, scrollTrigger: { trigger: ref.current, start: 'top 75%', once: true } })
+    }, ref)
+    return () => ctx.revert()
+  }, [])
+
+  return (
+    <section ref={ref} id="woocommerce-module" data-header-theme="white" className="bg-white text-black py-20 sm:py-28 border-t border-slate-100">
+      <div className="max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-16 grid lg:grid-cols-[minmax(0,1fr)_minmax(0,480px)] gap-12 lg:gap-20 items-center">
+        <div>
+          <MiniTitleWithBar content="Module WooCommerce" />
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4" data-woo>Une boutique WooCommerce ? Branchée sans développeur.</h2>
+          <p className="text-slate-500 max-w-[600px] mb-10 font-['Raleway',sans-serif] text-base sm:text-lg" data-woo>
+            Le module officiel DEM fait tout le travail de l'API à votre place.
+          </p>
+          <ol className="grid sm:grid-cols-2 gap-px bg-slate-200 border border-slate-200 mb-10">
+            {WOO_STEPS.map(([t, d], i) => (
+              <li key={t} data-woo className="bg-white p-6">
+                <div className="text-[#0086C8] font-black text-2xl mb-2">{i + 1}</div>
+                <div className="font-bold mb-1">{t}</div>
+                <div className="text-sm text-slate-500 leading-relaxed">{d}</div>
+              </li>
+            ))}
+          </ol>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4" data-woo>
+            <a href={WOO_ZIP} download className="inline-flex items-center justify-center bg-[#021520] hover:bg-[#0086C8] px-8 py-4 transition-all duration-300">
+              <span className="inline-flex items-center gap-3 text-white text-xs sm:text-sm font-bold uppercase tracking-widest"><Download size={16} /> Télécharger le module</span>
+            </a>
+            <span className="text-xs text-slate-400 leading-relaxed">Version 1.0.0 · .zip · WordPress 6+, WooCommerce 7+, PHP 7.4+<br />Offre DEM Pro Premium · boutique en https</span>
+          </div>
+        </div>
+
+        {/* Aperçu : ce que voit le client au panier */}
+        <div data-woo className="border border-slate-200 bg-[#F4F7FA] p-6 sm:p-8">
+          <div className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-4">Au panier de votre boutique</div>
+          <div className="bg-white border border-slate-200 p-5 mb-4">
+            <div className="text-sm font-bold mb-3">Options de livraison</div>
+            <div className="flex items-center justify-between border-2 border-[#021520] px-4 py-3">
+              <span className="flex items-center gap-3 text-sm font-semibold"><span className="w-4 h-4 rounded-full border-[5px] border-[#021520]" /> Livraison DEM</span>
+              <span className="font-mono text-sm font-bold">1 300 F</span>
+            </div>
+          </div>
+          <div className="bg-white border border-slate-200 p-5 text-sm">
+            <div className="font-bold mb-2">Commande n° 1042 — <span className="text-[#0086C8]">Livraison DEM</span></div>
+            <ul className="space-y-1.5 text-slate-500 text-[13px]">
+              <li>✓ Livraison DEM créée (1 300 F)</li>
+              <li>✓ Coursier trouvé — Ibrahima, en route</li>
+              <li>✓ Colis récupéré</li>
+              <li className="text-[#00A86B] font-semibold">✓ Livrée — commande terminée</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // ── 5. Sécurité et fiabilité ─────────────────────────────────────────────────
 const TRUST = [
   [KeyRound,     'Clés secrètes',          'Jamais stockées en clair, révocables en un geste, avec des droits choisis clé par clé.', 'lg:col-span-2'],
