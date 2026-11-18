@@ -21,6 +21,7 @@ import DeleteAccount from './DeleteAccount.jsx'
 import OrderRequest from './OrderRequest.jsx'
 import NotFound from './pages/NotFound.jsx'
 import Developpeurs from './pages/Developpeurs.jsx'
+import Brancher from './pages/Brancher.jsx'
 
 // Chargé à la demande : la carte (Leaflet) n'alourdit pas le reste du site
 const Tracking = lazy(() => import('./Tracking.jsx'))
@@ -63,6 +64,8 @@ createRoot(document.getElementById('root')).render(
           <Route path="/essai-gratuit-dem-pro" element={<EssaiGratuitDemPro />} />
           <Route path="/essai-gratuit" element={<EssaiGratuitDemPro />} />
           {/* Documentation de l'API DEM (lien de l'écran « API DEM » de l'app DEM Pro) */}
+          <Route path="/brancher" element={<Brancher />} />
+          <Route path="/brancher-mon-site" element={<Brancher />} />
           <Route path="/developpeurs" element={<Developpeurs />} />
           <Route path="/developers" element={<Developpeurs />} />
           <Route path="/api" element={<Developpeurs />} />
