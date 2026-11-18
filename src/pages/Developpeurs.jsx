@@ -361,11 +361,12 @@ export default function Developpeurs() {
               ['402', 'INSUFFICIENT_WALLET_BALANCE', 'Recharger le wallet DEM Pro ou payer en espèces'],
               ['403', 'FORBIDDEN', 'La clé n\'a pas le droit nécessaire (details.scope)'],
               ['403', 'API_ACCESS_DISABLED · ACCOUNT_INACTIVE · ORGANIZATION_SUSPENDED', 'Offre Premium arrêtée, compte inactif ou accès suspendu : contacter DEM'],
+              ['403', 'IP_NOT_ALLOWED', 'Appel venu d\'une adresse IP absente de la liste autorisée du compte (Entreprise) : faire ajouter l\'IP de votre serveur'],
               ['404', 'DELIVERY_NOT_FOUND · QUOTE_NOT_FOUND · WEBHOOK_NOT_FOUND', 'Mauvais id, ou autre environnement'],
               ['409', 'QUOTE_EXPIRED · QUOTE_ALREADY_USED', 'Demander un nouveau devis'],
               ['409', 'INVALID_DELIVERY_STATE', 'La livraison ne peut plus être annulée'],
               ['409', 'IDEMPOTENCY_IN_PROGRESS', 'Réessayer dans quelques secondes'],
-              ['409', 'WEBHOOK_LIMIT', '3 adresses par environnement au maximum'],
+              ['409', 'WEBHOOK_LIMIT', '3 adresses par environnement au maximum (plus sous contrat Entreprise)'],
               ['422', 'INVALID_ADDRESS · OUT_OF_SERVICE_AREA', 'Envoyer les coordonnées / adresse hors zone DEM'],
               ['422', 'INVALID_STORE · PICKUP_REQUIRED · QUOTE_MISMATCH', 'Vérifier le point de retrait ou le devis'],
               ['422', 'IDEMPOTENCY_CONFLICT', 'Utiliser une nouvelle Idempotency-Key'],
@@ -375,17 +376,19 @@ export default function Developpeurs() {
           </Section>
 
           <Section id="limites" title="Limites">
-            <Table head={['Limite', 'Offre Premium']} rows={[
-              ['Appels par minute (par compte, toutes clés)', '60'],
-              ['Livraisons créées par jour', '200'],
-              ['Adresses webhook', '3 par environnement'],
-              ['Clés actives', '10'],
-              ['Taille d\'une requête', '64 Ko (413 PAYLOAD_TOO_LARGE au-delà)'],
+            <Table head={['Limite', 'Offre Premium', 'Entreprise (sous contrat)']} rows={[
+              ['Appels par minute (par compte, toutes clés)', '60', 'Sur mesure'],
+              ['Livraisons créées par jour', '200', 'Sur mesure'],
+              ['Adresses webhook', '3 par environnement', 'Jusqu\'à 20'],
+              ['Clés actives', '10', 'Jusqu\'à 100'],
+              ['Adresses IP autorisées', 'Toutes', 'Liste de vos serveurs (facultatif)'],
+              ['Taille d\'une requête', '64 Ko (413 PAYLOAD_TOO_LARGE au-delà)', '64 Ko'],
             ]} />
             <P>
               Chaque réponse indique <Code>X-RateLimit-Limit</Code> et <Code>X-RateLimit-Remaining</Code>. Au-delà :
               <Code>429</Code> avec <Code>Retry-After</Code>. Besoin de plus ? Contactez DEM : les limites sont
-              ajustables par compte.
+              ajustables par compte, et les grands comptes (marketplaces, enseignes multi-boutiques) bénéficient d'un
+              contrat Entreprise : quotas sur mesure, filiales regroupées, restriction par adresse IP.
             </P>
           </Section>
 
@@ -396,7 +399,8 @@ export default function Developpeurs() {
                 ['Une clé par site', 'En cas de fuite, révoquez seulement celle-là, sans couper les autres.'],
                 ['Droits minimaux', 'Ne cochez que ce dont le site a besoin. Une boutique qui ne fait que créer des livraisons n\'a pas besoin d\'annuler.'],
                 ['Signature vérifiée', 'N\'acceptez aucun webhook sans signature valide et récente.'],
-                ['request_id', 'Gardez-le dans vos journaux : avec lui, le support DEM retrouve la requête exacte.'],
+                ['request_id', 'Gardez-le dans vos journaux : avec lui, le support DEM retrouve la requête exacte. Le commerçant voit aussi chaque appel (30 jours) dans l\'app DEM Pro › API DEM › Journal des appels.'],
+                ['Adresses IP autorisées', 'Sous contrat Entreprise, l\'accès peut être limité aux adresses de vos serveurs : un appel venu d\'ailleurs est refusé (403 IP_NOT_ALLOWED), même avec une clé valide.'],
               ].map(([t, d]) => (
                 <li key={t} className="flex gap-3">
                   <ShieldCheck size={18} className="text-cyan shrink-0 mt-1" />
@@ -408,6 +412,7 @@ export default function Developpeurs() {
 
           <Section id="changelog" title="Versions">
             <Table head={['Date', 'Version', 'Changements']} rows={[
+              ['Octobre 2026', 'v1', 'Contrat Entreprise : adresses IP autorisées (403 IP_NOT_ALLOWED), limites sur mesure. Journal des appels visible par le commerçant. Aucun changement pour les intégrations existantes.'],
               ['Octobre 2026', 'v1', 'Première version : devis, livraisons, suivi, annulation, idempotence, webhooks signés, paiement espèces ou wallet DEM Pro.'],
             ]} />
             <P>Une question sur l'intégration ? Écrivez à <a href="mailto:support@dem.sn"><span className="text-cyan underline">support@dem.sn</span></a> avec le <Code>request_id</Code> concerné.</P>
