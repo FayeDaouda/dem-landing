@@ -255,7 +255,7 @@ const WOO_STEPS = [
   ['Installez le module', 'Extensions › Ajouter › Téléverser le fichier .zip, puis Activer.'],
   ['Collez votre code', 'App DEM Pro › API DEM › « Brancher mon site », puis WooCommerce › Réglages › DEM Livraison.'],
   ['Ajoutez « Livraison DEM »', 'À votre zone de livraison Sénégal, puis branchez les webhooks d\'un clic.'],
-  ['C\'est tout', 'Prix DEM au panier, livraison créée au paiement, commande « Terminée » une fois livrée.'],
+  ['C\'est tout', '« Livraison DEM » cochée par défaut au panier, livraison créée au paiement, commande « Terminée » une fois livrée.'],
 ]
 
 export function DevWooCommerce() {
