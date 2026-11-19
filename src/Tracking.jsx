@@ -431,14 +431,17 @@ function PaymentCard({ data, autoPayment }) {
   }
 
   // 4. Livraison à régler : possible en ligne aussi
+  // Lien de commande payé à l'arrivée (19/11) : deliveryDue = articles +
+  // livraison (deliveryDueIncludesItems)
   if (p.deliveryDue != null) {
+    const withItems = !!p.deliveryDueIncludesItems
     return (
       <div className="ds-card dt-paycard">
         <div className="dt-paycard-top" style={{ width: '100%' }}>
           <span className="dt-paycard-ico"><Icon name="bike" size={19} /></span>
           <div>
-            <b>Livraison : {formatFcfa(p.deliveryDue)}</b>
-            <small>À régler au coursier, ou dès maintenant en ligne.</small>
+            <b>{withItems ? 'Total à payer' : 'Livraison'} : {formatFcfa(p.deliveryDue)}</b>
+            <small>{withItems ? 'Articles + livraison, à régler au coursier ou dès maintenant en ligne.' : 'À régler au coursier, ou dès maintenant en ligne.'}</small>
           </div>
         </div>
         {buttons}

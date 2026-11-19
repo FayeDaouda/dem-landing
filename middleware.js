@@ -14,7 +14,7 @@ const ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
 
-function page({ title, description, image, url }) {
+function page({ title, description, image, url, large = false }) {
   return new Response(`<!DOCTYPE html>
 <html lang="fr"><head>
 <meta charset="utf-8">
@@ -26,7 +26,7 @@ function page({ title, description, image, url }) {
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:image" content="${esc(image)}">
 <meta property="og:url" content="${esc(url)}">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="${large ? 'summary_large_image' : 'summary'}">
 </head><body><a href="${esc(url)}">${esc(title)}</a></body></html>`, {
     headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=600' },
   })
@@ -53,10 +53,16 @@ export default async function middleware(request) {
     if (!res.ok) return
     const merchant = await res.json()
     const name = merchant.businessName || 'Commerçant DEM'
+    const shop = merchant.shop || {}
+    const https = v => (typeof v === 'string' && /^https:\/\//.test(v) ? v : null)
+    const label = /^boutique\b/i.test(name) ? name : `Boutique ${name}`
     return page({
-      title: `Commander chez ${name}`,
-      description: 'Choisissez vos articles et payez à la réception. Livraison par DEM, suivie en direct.',
-      image: /^https:\/\//.test(merchant.avatar || '') ? merchant.avatar : logo,
+      title: `${label} — commander en ligne | DEM`,
+      description: shop.tagline || shop.description?.slice(0, 160)
+        || 'Choisissez vos articles et commandez en ligne. Livraison par un coursier DEM, suivie en direct.',
+      // Bannière de la boutique, sinon son logo, sinon celui de DEM
+      image: https(shop.banner) || https(merchant.avatar) || logo,
+      large: !!https(shop.banner),
       url: url.href,
     })
   } catch {
