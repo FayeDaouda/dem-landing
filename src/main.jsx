@@ -24,6 +24,8 @@ import Developpeurs from './pages/Developpeurs.jsx'
 
 // Chargé à la demande : la carte (Leaflet) n'alourdit pas le reste du site
 const Tracking = lazy(() => import('./Tracking.jsx'))
+// « Il envoie sa position » : page ouverte depuis le SMS DEM
+const Position = lazy(() => import('./Position.jsx'))
 
 // Pages du site : en-tête et pied de page communs.
 function SiteLayout() {
@@ -78,6 +80,10 @@ createRoot(document.getElementById('root')).render(
         <Route
           path="/suivi/:id"
           element={<Suspense fallback={<div style={{ minHeight: '100vh', background: '#f4f6fa' }} />}><Tracking /></Suspense>}
+        />
+        <Route
+          path="/position/:token"
+          element={<Suspense fallback={<div style={{ minHeight: '100vh', background: '#0757B4' }} />}><Position /></Suspense>}
         />
       </Routes>
     </BrowserRouter>
