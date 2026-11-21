@@ -14,7 +14,7 @@ import {
 // quand l'onglet est caché ; arrêt une fois la commande terminée. Thème
 // clair par défaut, sombre en option (mémorisé sur l'appareil).
 
-const ACTIVE = new Set(['AWAITING_PAYMENT', 'RECEIVED', 'SCHEDULED', 'SEARCHING', 'PICKUP', 'ON_THE_WAY'])
+const ACTIVE = new Set(['AWAITING_PAYMENT', 'RECEIVED', 'CONFIRMED', 'PREPARING', 'READY', 'SCHEDULED', 'SEARCHING', 'PICKUP', 'ON_THE_WAY'])
 
 // Préférences du visiteur (navigateur seulement) — jamais bloquant : en
 // navigation privée, le stockage peut être refusé.
@@ -58,6 +58,13 @@ function statusOf(t) {
       return paidOnline
         ? { icon: 'check', title: 'Commande payée', text: `${name} va la confirmer dans quelques instants.`, live: true }
         : { icon: 'note', title: 'Commande reçue', text: `${name} va la confirmer dans quelques instants.`, live: true }
+    // Boutique : commande acceptée, préparée, prête — avant l'appel du coursier
+    case 'CONFIRMED':
+      return { icon: 'check', title: 'Commande confirmée', text: `${name} a accepté votre commande et va la préparer.`, live: true }
+    case 'PREPARING':
+      return { icon: 'store', title: 'En préparation', text: `${name} prépare votre commande.`, live: true }
+    case 'READY':
+      return { icon: 'check', title: 'Commande prête', text: 'Votre commande est prête : un coursier DEM va venir la chercher.', live: true }
     case 'SCHEDULED':
       return { icon: 'clock', title: 'Livraison programmée', text: t.times.scheduled ? `Prévue ${when(t.times.scheduled).toLowerCase()}.` : 'Un coursier vous sera attribué à l\'heure prévue.' }
     case 'SEARCHING':
@@ -91,6 +98,11 @@ function stepsOf(t) {
     at: t.times.confirmed,
     hint: t.stage === 'SCHEDULED' && t.times.scheduled ? `Livraison prévue ${when(t.times.scheduled).toLowerCase()}` : null,
   })
+  // Préparation par la boutique (quand elle l'indique)
+  if (t.kind === 'request' && (t.times.preparing || t.times.ready || ['CONFIRMED', 'PREPARING', 'READY'].includes(t.stage))) {
+    list.push({ label: 'En préparation', at: t.times.preparing, hint: t.stage === 'PREPARING' ? `${name ?? 'La boutique'} prépare votre commande` : null })
+    list.push({ label: 'Prête', at: t.times.ready })
+  }
   list.push({
     label: 'Récupérée par le coursier',
     at: t.times.pickedUp,
