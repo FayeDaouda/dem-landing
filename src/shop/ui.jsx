@@ -7,6 +7,7 @@ export const SUPPORT_WHATSAPP = '221710131926' // chatbot WhatsApp (07/10)
 // Icônes ligne dessinées à la main (aucune dépendance externe).
 const PATHS = {
   bag: <><path d="M6 8h12l1 12H5L6 8z" /><path d="M9 8V6a3 3 0 016 0v2" /></>,
+  star: <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.5z" />,
   pin: <><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z" /><circle cx="12" cy="10" r="2.4" /></>,
   crosshair: <><circle cx="12" cy="12" r="7" /><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" /></>,
   card: <><rect x="3" y="6" width="18" height="13" rx="2.5" /><path d="M3 10.5h18" /><path d="M7 14.5h4" /></>,

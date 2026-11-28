@@ -56,7 +56,8 @@ export default async function middleware(request) {
     return page({
       title: `Commander chez ${name}`,
       description: 'Choisissez vos articles et payez à la réception. Livraison par DEM, suivie en direct.',
-      image: /^https:\/\//.test(merchant.avatar || '') ? merchant.avatar : logo,
+      // Bannière (Business et Premium), sinon logo, sinon logo DEM
+      image: [merchant.banner, merchant.logo, merchant.avatar].find(u => /^https:\/\//.test(u || '')) || logo,
       url: url.href,
     })
   } catch {

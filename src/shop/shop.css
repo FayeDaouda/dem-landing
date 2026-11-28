@@ -64,6 +64,31 @@
   position: relative;
   overflow: hidden;
 }
+/* Bannière du commerçant : image en couverture, voile pour la lisibilité */
+.ds-hero.has-banner {
+  height: 150px;
+  background-size: cover; background-position: center;
+}
+.ds-hero.has-banner::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(5, 20, 40, .35), rgba(5, 20, 40, .05) 60%);
+}
+.ds-hero.has-banner::after { display: none; }
+.ds-merchant-message {
+  margin: 8px 0 0; display: inline-block; max-width: 100%;
+  padding: 5px 11px; border-radius: 999px;
+  background: rgba(0, 119, 182, .08); color: var(--ds-text, #0f2236);
+  font-size: 13px; font-weight: 600; line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.ds-product-img { position: relative; }
+.ds-featured {
+  position: absolute; top: 8px; left: 8px; z-index: 1;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px; border-radius: 999px;
+  background: #fff7e6; color: #b7791f; border: 1px solid #f6d68f;
+  font-size: 11px; font-weight: 800;
+}
 .ds-hero::after {
   content: '';
   position: absolute; inset: auto -20% -60% auto;
@@ -136,6 +161,7 @@
 @media (min-width: 960px) {
   .ds-appbar { padding: 0 28px; }
   .ds-hero { height: 72px; }
+  .ds-hero.has-banner { height: 220px; }
   .ds-merchant { padding: 0 24px; }
   .ds-merchant-card { grid-template-columns: auto 1fr auto; padding: 20px 24px; }
   .ds-trust { grid-column: auto; border-top: none; padding-top: 0; margin-top: 0; grid-template-columns: repeat(3, auto); gap: 18px; }
