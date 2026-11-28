@@ -21,6 +21,7 @@ import DeleteAccount from './DeleteAccount.jsx'
 import OrderRequest from './OrderRequest.jsx'
 import NotFound from './pages/NotFound.jsx'
 import Developpeurs from './pages/Developpeurs.jsx'
+import AmbassadorInvite from './pages/AmbassadorInvite.jsx'
 
 // Chargé à la demande : la carte (Leaflet) n'alourdit pas le reste du site
 const Tracking = lazy(() => import('./Tracking.jsx'))
@@ -68,6 +69,8 @@ createRoot(document.getElementById('root')).render(
           <Route path="/developpeurs" element={<Developpeurs />} />
           <Route path="/developers" element={<Developpeurs />} />
           <Route path="/api" element={<Developpeurs />} />
+          {/* Lien d'un ambassadeur DEM Pro : code à saisir à l'inscription */}
+          <Route path="/pro/:code" element={<AmbassadorInvite />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/delete-account" element={<DeleteAccount />} />
