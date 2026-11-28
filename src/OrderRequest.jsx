@@ -275,7 +275,7 @@ function Hero({ merchant, showMerchant, raised }) {
             </Link>
             {merchant && (
               <span className={`ds-appbar-merchant ${mini ? '' : 'is-hidden'}`} aria-hidden={mini ? undefined : 'true'}>
-                <MerchantAvatar name={merchant.businessName} avatar={merchant.avatar} size={30} />
+                <MerchantAvatar name={merchant.businessName} avatar={merchant.logo || merchant.avatar} size={30} />
                 <b>{merchant.businessName}</b>
               </span>
             )}
@@ -283,7 +283,10 @@ function Hero({ merchant, showMerchant, raised }) {
           <span className="ds-secure" title="Commande sécurisée"><Icon name="lock" size={13} /> <span>Commande sécurisée</span></span>
         </div>
       </header>
-      <div className="ds-hero" aria-hidden="true" />
+      {/* Bannière du commerçant (Business et Premium) à la place du dégradé */}
+      {merchant?.banner
+        ? <div className="ds-hero has-banner" aria-hidden="true" style={{ backgroundImage: `url(${JSON.stringify(merchant.banner)})` }} />
+        : <div className="ds-hero" aria-hidden="true" />}
     </>
   )
 }
@@ -302,13 +305,14 @@ function MerchantHeader({ merchant, loading, compact, cardRef }) {
           </>
         ) : (
           <>
-            <MerchantAvatar name={merchant.businessName} avatar={merchant.avatar} />
+            <MerchantAvatar name={merchant.businessName} avatar={merchant.logo || merchant.avatar} />
             <div style={{ minWidth: 0 }}>
               <p className="ds-merchant-kicker" style={{ margin: 0, fontSize: 12.5, fontWeight: 600, color: 'var(--ds-muted)' }}>Commander chez</p>
               <h1 className="ds-merchant-name">{merchant.businessName}</h1>
               {/* Compte DEM Pro validé par l'équipe DEM — pas une vérification
                   d'identité ou de documents : « partenaire », pas « vérifié » */}
               <span className="ds-verified"><Icon name="shield" size={15} /> Partenaire DEM Pro</span>
+              {merchant.bannerText && !compact && <p className="ds-merchant-message">{merchant.bannerText}</p>}
             </div>
           </>
         )}
@@ -471,6 +475,7 @@ function ProductCard({ product: p, qty, index, onChange }) {
   return (
     <article className={`ds-product ${qty ? 'is-in-cart' : ''}`} style={{ animationDelay: `${Math.min(index, 12) * 35}ms` }}>
       <div className="ds-product-img">
+        {p.featured && <span className="ds-featured"><Icon name="star" size={12} strokeWidth={2.2} /> À la une</span>}
         {p.image && !imgFailed
           ? <img src={p.image} alt="" loading="lazy" onError={() => setImgFailed(true)} />
           : <Icon name="bag" size={34} strokeWidth={1.4} />}
